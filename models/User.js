@@ -83,6 +83,7 @@ class User{
 	}
 
 	checkData(data){
+		console.log(data)
 		return new Promise((resolve, reject) => {
 			this.checkUsername(data)
 			.then((res) => {
@@ -107,10 +108,9 @@ class User{
 			})
 			.then((res) => {
 				console.log("<----all check OK---->");
-				resolve();
+				resolve("Youhou");
 			})
 			.catch(function(error){
-
 				console.log("error function");
 				console.log("hellooooo");
 				reject(error);
@@ -123,10 +123,10 @@ class User{
 			this.checkData(data).then(function(res){
 				if (db.state === 'disconnected')
 					reject(errJson("error", "hello", "choux"));
-				db.query("INSERT INTO `users` ( `username`, `password`, `firstname`, `lastname`, `address`, `email`) VALUES data = ? )", data, (err, res, fields) => {
-					console.log("test");
+				db.query("INSERT INTO `users` ( `username`, `password`, `firstname`, `lastname`, `address`, `email`) VALUES ?", data, (err, res, fields) => {
+					console.log(err);
+					resolve({pouet : "hello"});
 				})
-				resolve(errJson("error", "hello", "choux"));
 			}).catch(function(error){
 				console.log("error=>>>  " + error);
 				reject(error)

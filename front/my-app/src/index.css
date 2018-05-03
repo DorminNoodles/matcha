@@ -48,3 +48,11 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.signup {
+	padding: 12px;
+}
+
+.submit {
+	/* margin: 5px; */
+}

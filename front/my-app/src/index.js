@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'reactstrap';
+import TopMenu from './navbar';
+import Signup from './signup';
 
 // class Square extends React.Component {
 //   render() {
@@ -20,17 +23,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // 		</button>
 // 	);
 // }
-//
-//
-// class Board extends React.Component {
-// 	renderSquare(i) {
-// 		return (
-// 			<Square
-// 				value={this.props.squares[i]}
-// 		        onClick={() => this.props.onClick(i)}
-// 			/>
-// 		);
-//   }
 //
 //   render() {
 // 	  return (
@@ -142,11 +134,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //   return null;
 // }
 
-export default (props) => {
-  return (
-    <Button color="danger">Danger!</Button>
-  );
-};
+// export default (props) => {
+//   return (
+//     <Button color="danger">Danger!</Button>
+//   );
+// };
 
 class Square extends React.Component {
 	render()
@@ -166,7 +158,7 @@ class Lastname extends React.Component {
 			<label>
 				Lastname:
 				<input type="text" name="lastname" />
-				</label>
+			</label>
 		);
 	}
 }
@@ -202,29 +194,29 @@ class Username extends React.Component {
 			<label>
 				Username:
 				<input type="text" name="username" />
-				</label>
+			</label>
 		);
 	}
 }
 
-class Signup extends React.Component {
-	render()
-	{
-		return (
-			<form>
-				<Username />
-				<br />
-				<Lastname />
-				<br />
-				<Password />
-				<br />
-				<Mail />
-				<br />
-				<input type="submit" value="Submit" />
-			</form>
-		);
-	}
-}
+// class Signup extends React.Component {
+// 	render()
+// 	{
+// 		return (
+// 			<form>
+// 				<Username salut='toto'/>
+// 				<br />
+// 				<Lastname />
+// 				<br />
+// 				<Password />
+// 				<br />
+// 				<Mail />
+// 				<br />
+// 				<input type="submit" value="Submit" />
+// 			</form>
+// 		);
+// 	}
+// }
 
 class Menu extends React.Component {
 	// render()
@@ -234,21 +226,26 @@ class Menu extends React.Component {
 	// }
 }
 
-class Game extends React.Component {
+class Main extends React.Component {
 	render()
 	{
 		return (
 			<div>
-				<Signup />
+				<TopMenu />
+				<div className="signup">
+					<Signup />
+				</div>
 			</div>
 		);
 	}
 }
 
 
+
+
 // ========================================
 
 ReactDOM.render(
-  <Game />,
+	<Main />,
   document.getElementById('root')
 );
