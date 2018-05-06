@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // const signup = require('./routes/signup');
 const user = require('./routes/user');
+const Fortest = require('./models/Fortest')
 
 
 const app = express();
@@ -21,6 +22,18 @@ app.get('/', function (req, res){
 	res.send('api available');
 });
 
+
+app.get('/fortest', function (req, res){
+
+	ft = new Fortest()
+	ft.hello().then((res)=>{
+		console.log("this is then")
+	}).catch((res)=>{
+		console.log("this is catch")
+	})
+
+	res.send('hello')
+});
 
 
 

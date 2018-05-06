@@ -140,16 +140,16 @@ import Signup from './signup';
 //   );
 // };
 
-class Square extends React.Component {
-	render()
-	{
-		return (
-			<h1>
-				Square
-			</h1>
-		);
-	}
-}
+// class Square extends React.Component {
+// 	render()
+// 	{
+// 		return (
+// 			<h1>
+// 				Square
+// 			</h1>
+// 		);
+// 	}
+// }
 
 class Lastname extends React.Component {
 	render()

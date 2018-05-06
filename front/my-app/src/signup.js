@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import countries from 'country-list';
-import API from './api'
+import axios from './api'
 
 function Submit(props) {
 	return(
@@ -26,7 +26,7 @@ export default class Signup extends React.Component {
 	signup(event) {
 		event.preventDefault()
 
-		API.post('/user', {
+		axios.post('/user', {
 			username: this.state.username,
 			password: this.state.password,
 			firstname: this.state.firstname,
@@ -52,18 +52,6 @@ export default class Signup extends React.Component {
 	  })
  	}
 
-	// listCountries() {
-	// 	return countries().getData().map((country) => {
-	// 		return <option key={country.code}>{country.name}</option>
-	// 	})
-	// }
-
-
-	// listCountries() {
-	// 	return countries().getData().map((country) => {
-	// 		return <option key={country.code}>{country.name}</option>
-	// 	})
-	// }
   render() {
 
 	  let listCountries = countries().getData().map((country) => {

@@ -7,28 +7,21 @@ class User{
 		console.log('new user created !')
 	}
 
-	// pouet(){
-	// 	return new Promise(pute){
-	// 		resolve();
-	// 		reject();
-	// 	}
-	// }
-
 	checkUsername(data){
 		return new Promise(function(resolve, reject){
 			if (data.username){
 				if(db.state === 'disconnected')
-					reject("Database connection failed !");
+					reject("Database connection failed !")
 				db.query('SELECT * FROM `users` WHERE `username` = ?', data.username, (err, res, fields) => {
 					console.log(res);
 				}, function(err){
 					reject(err);
-					console.log("Query Failed");
+					console.log("Query Failed")
 				});
-				resolve("username checked !");
+				resolve("username checked !")
 			}
 			else
-				reject("error Username");
+				reject("error Username")
 		})
 	}
 
@@ -123,7 +116,8 @@ class User{
 			this.checkData(data).then(function(res){
 				if (db.state === 'disconnected')
 					reject(errJson("error", "hello", "choux"));
-				db.query("INSERT INTO `users` ( `username`, `password`, `firstname`, `lastname`, `address`, `email`) VALUES ?", data, (err, res, fields) => {
+				// console.log("hellooooo " + data.username);
+				db.query("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", [ data.username, data.password, data.email ], (err, res, fields) => {
 					console.log(err);
 					resolve({pouet : "hello"});
 				})
