@@ -151,6 +151,18 @@ import Signup from './signup';
 // 	}
 // }
 
+class Firstname extends React.Component {
+	render()
+	{
+		return (
+			<label>
+				Lastname:
+				<input type="text" name="Firstname" />
+			</label>
+		);
+	}
+}
+
 class Lastname extends React.Component {
 	render()
 	{

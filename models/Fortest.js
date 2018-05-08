@@ -1,23 +1,27 @@
 class Fortest{
-
-	hello(){
+	hello(str){
 		return new Promise((resolve, reject) => {
 
-			if (1)
-			{
-				console.log("in the promise");
-				resolve();
-				return;
-			}
-			else {
-				console.log("+reject+");
-				return reject;
-			}
+			setTimeout(()=>{
+
+				if (1)
+				{
+					console.log("in the promise");
+					resolve(str);
+					return;
+				}
+				else {
+					console.log("+reject+");
+					reject();
+					return;
+				}
+
+			}, 10)
+
 
 		})
 
 	}
-
 }
 
 module.exports = Fortest;

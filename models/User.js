@@ -35,22 +35,12 @@ class User{
 		})
 	}
 
-	checkFirstname(data){
+	checkName(data){
 		return new Promise((resolve, reject) => {
-			if (!data.firstname)
-				reject("error Password");
+			if (!data.firstname && !data.lastname)
+				reject("error Name");
 			else {
 				resolve("password checked !");
-			}
-		})
-	}
-
-	checkLastname(data){
-		return new Promise((resolve, reject) => {
-			if (!data.lastname)
-				reject(errJson("error", "lastname error"));
-			else {
-				resolve("lastname checked !");
 			}
 		})
 	}
@@ -85,14 +75,10 @@ class User{
 			})
 			.then((res) => {
 				console.log('Password       OK');
-				return this.checkFirstname(data)
+				return this.checkName(data)
 			})
 			.then((res) => {
-				console.log('Firstname      OK');
-				return this.checkLastname(data)
-			})
-			.then((res) => {
-				console.log('Lastname       OK');
+				console.log('Name      OK');
 				return this.checkAddress(data)
 			})
 			.then((res) => {
@@ -117,9 +103,13 @@ class User{
 				if (db.state === 'disconnected')
 					reject(errJson("error", "hello", "choux"));
 				// console.log("hellooooo " + data.username);
-				db.query("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", [ data.username, data.password, data.email ], (err, res, fields) => {
-					console.log(err);
-					resolve({pouet : "hello"});
+				db.query("INSERT INTO users (username, password, email, firstname, lastname, address) VALUES (?, ?, ?, ?, ?, ?)", [ data.username, data.password, data.email, data.firstname, data.lastname, data.address, ], (err, res, fields) => {
+					// console.log(err);
+					if (err)
+						reject();
+					else
+						resolve();
+					// resolve({pouet : "hello"});
 				})
 			}).catch(function(error){
 				console.log("error=>>>  " + error);
