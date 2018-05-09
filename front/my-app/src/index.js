@@ -5,7 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'reactstrap';
 import TopMenu from './navbar';
 import Signup from './signup';
+import Signin from './signin';
 
+
+// import { Link } from 'react'
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 // class Square extends React.Component {
 //   render() {
 //     return (
@@ -23,57 +27,8 @@ import Signup from './signup';
 // 		</button>
 // 	);
 // }
-//
-//   render() {
-// 	  return (
-// 			<div>
-// 				<div className="board-row">
-// 					{this.renderSquare(0)}
-// 					{this.renderSquare(1)}
-// 					{this.renderSquare(2)}
-// 				</div>
-// 				<div className="board-row">
-// 					{this.renderSquare(3)}
-// 					{this.renderSquare(4)}
-// 					{this.renderSquare(5)}
-// 				</div>
-// 				<div className="board-row">
-// 					{this.renderSquare(6)}
-// 					{this.renderSquare(7)}
-// 					{this.renderSquare(8)}
-// 				</div>
-// 			</div>
-// 		);
-// 	}
-// }
-//
-// class Game extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			history: [{
-// 				squares: Array(9).fill(null),
-// 			}],
-// 			xIsNext: true
-// 		};
-// 	}
-//
-// 	handleClick(i) {
-// 		const history = this.state.history;
-// 		const current = history[history.length - 1];
-// 		const squares = current.squares.slice();
-// 		if (calculateWinner(squares) || squares[i]) {
-// 			return;
-// 		}
-// 		squares[i] = this.state.xIsNext ? 'X' : '0';
-// 		this.setState({
-// 			history: history.concat([{
-// 				squares: squares
-// 			}]),
-// 			xIsNext: !this.state.xIsNext,
-// 		});
-// 	}
-//
+
+
 //   render() {
 // 	  const history = this.state.history;
 // 	  const current = history[history.length - 1];
@@ -238,15 +193,72 @@ class Menu extends React.Component {
 	// }
 }
 
-class Main extends React.Component {
+class Hello extends React.Component {
 	render()
 	{
 		return (
 			<div>
-				<TopMenu />
-				<div className="signup">
-					<Signup />
-				</div>
+				Hello
+			</div>
+		)
+	}
+}
+
+class Game extends React.Component {
+	render()
+	{
+		return (
+			<div>
+				Game
+			</div>
+		)
+	}
+}
+
+class Main extends React.Component {
+	render()
+	{
+		return (
+			<main>
+				<Switch>
+					<Route exact path='/' component={Hello}/>
+					<Route exact path='/game' component={Game}/>
+					<Route exact path='/signup' component={Signup}/>
+					<Route exact path='/signin' component={Signin}/>
+				</Switch>
+			</main>
+		)
+	}
+}
+
+class Header extends React.Component {
+	render()
+	{
+		return (
+			<TopMenu />
+		)
+	}
+}
+
+class App extends React.Component {
+
+
+
+	render()
+	{
+		// let data = {bordel: "hello"}
+        //
+        //
+		// sessionStorage.setItem('myData', JSON.stringify(data))
+        //
+		// let data2 = JSON.parse(sessionStorage.getItem('myData'))
+        //
+		// console.log(data2.bordel);
+
+		return (
+			<div>
+				<Header />
+				<Main />
 			</div>
 		);
 	}
@@ -254,10 +266,29 @@ class Main extends React.Component {
 
 
 
+class MonFormulaire extends React.Component{
+
+	render(){
+		return (
+			<div>
+			</div>
+		);
+	}
+
+}
+
+
 
 // ========================================
 
-ReactDOM.render(
-	<Main />,
-  document.getElementById('root')
+// ReactDOM.render(
+// 	<Main />,
+//   document.getElementById('root')
+// );
+
+ReactDOM.render((
+	<BrowserRouter>
+		<App />
+	</BrowserRouter>
+), document.getElementById('root')
 );

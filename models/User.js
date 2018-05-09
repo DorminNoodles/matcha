@@ -1,5 +1,7 @@
 const db = require("../models/database");
 const errJson = require("../models/errorJson");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class User{
 
@@ -30,7 +32,10 @@ class User{
 			if (!data.password)
 				reject("error Password")
 			else {
-				resolve("password checked !");
+				bcrypt.hash(data.password, saltRounds).then(function(hash) {
+					data.password = hash;
+					resolve("password checked !");
+				});
 			}
 		})
 	}
@@ -115,6 +120,15 @@ class User{
 				console.log("error=>>>  " + error);
 				reject(error)
 			})
+		})
+	}
+
+	connection(username, password){
+		return new Promise((resolve, reject) => {
+
+
+
+
 		})
 	}
 }
