@@ -146,7 +146,12 @@ class User{
 				if (err)
 					reject()
 				else
-					resolve(token)
+					resolve({
+						id: userData.id,
+						username: userData.username,
+						token: token
+
+					})
 			})
 		})
 	}

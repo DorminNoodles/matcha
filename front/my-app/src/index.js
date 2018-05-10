@@ -6,7 +6,7 @@ import { Button } from 'reactstrap';
 import TopMenu from './navbar';
 import Signup from './signup';
 import Signin from './signin';
-import Profil from './profil';
+import MyProfile from './myProfile';
 
 
 // import { Link } from 'react'
@@ -226,7 +226,7 @@ class Main extends React.Component {
 					<Route exact path='/game' component={Game}/>
 					<Route exact path='/signup' component={Signup}/>
 					<Route exact path='/signin' component={Signin}/>
-					<Route exact path='/profil' component={Profil}/>
+					<Route exact path='/myprofile' component={MyProfile}/>
 				</Switch>
 			</main>
 		)

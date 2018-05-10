@@ -17,17 +17,26 @@ export default class TopMenu extends React.Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+		isOpen: false,
+		token: ''
     };
+
+	if (sessionStorage.getItem('token'))
+		this.state.token = sessionStorage.getItem('token')
+		// console.log(sessionStorage.getItem('token'))
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
+
   render() {
     return (
 		<div>
+
+			token : {this.state.token}
+
 			<Navbar color="light" light expand="md">
 				<NavbarBrand href="/">Matcha</NavbarBrand>
 				<NavbarToggler onClick={this.toggle} />
@@ -37,7 +46,7 @@ export default class TopMenu extends React.Component {
 							<NavLink href="/signup">Signup</NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="/profil">Profil</NavLink>
+							<NavLink href="/myprofile">Profile</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink href="/signin">Signin</NavLink>

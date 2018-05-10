@@ -31,10 +31,11 @@ export default class Signin extends React.Component {
 			body: JSON.stringify(this.state)
 		})
 		.then((response) => {
-			if (response.ok){
-
-				console.log("RESPONSE !!!")
-			}
+			return response.json();
+		})
+		.then((json) => {
+			sessionStorage.setItem('token', json.token)
+			console.log(json)
 		})
 	}
 
