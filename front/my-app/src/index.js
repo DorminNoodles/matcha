@@ -6,10 +6,11 @@ import { Button } from 'reactstrap';
 import TopMenu from './navbar';
 import Signup from './signup';
 import Signin from './signin';
+import Profil from './profil';
 
 
 // import { Link } from 'react'
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 // class Square extends React.Component {
 //   render() {
 //     return (
@@ -225,6 +226,7 @@ class Main extends React.Component {
 					<Route exact path='/game' component={Game}/>
 					<Route exact path='/signup' component={Signup}/>
 					<Route exact path='/signin' component={Signin}/>
+					<Route exact path='/profil' component={Profil}/>
 				</Switch>
 			</main>
 		)
@@ -239,6 +241,7 @@ class Header extends React.Component {
 		)
 	}
 }
+
 
 class App extends React.Component {
 

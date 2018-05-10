@@ -1,15 +1,41 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import TopMenu from './navbar';
-
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 export default class Signin extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			username: '',
+			password: ''
+		}
+	}
 
-	submit(){
+	handleChange = (event) => {
+		let newState = {}
+
+		newState[event.target.name] = event.target.value;
+		this.setState(newState)
+		console.log(this.state)
+	}
+
+	submit = () => {
 		console.log("connexion !")
+		fetch('http://localhost:3000/api/login', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(this.state)
+		})
+		.then((response) => {
+			if (response.ok){
+
+				console.log("RESPONSE !!!")
+			}
+		})
 	}
 
 	render(){
@@ -17,16 +43,15 @@ export default class Signin extends React.Component {
 			<Form>
 				<FormGroup>
 					<Label for="username">Username</Label>
-					<Input type="text" name="username" id="username" placeholder="Franklin"/>
+					<Input type="text" onChange={this.handleChange} name="username" id="username" placeholder="Franklin"/>
 				</FormGroup>
 				<FormGroup>
 					<Label for="password">Password</Label>
-					<Input type="password" name="password" id="password"/>
+					<Input type="password" onChange={this.handleChange} name="password" id="password"/>
 				</FormGroup>
 				<Button onClick={this.submit}>Submit</Button>
 			</Form>
 		)
 	}
-
 
 }

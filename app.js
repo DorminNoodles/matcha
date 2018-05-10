@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // const signup = require('./routes/signup');
 const user = require('./routes/user');
+const login = require('./routes/login');
 const Fortest = require('./models/Fortest')
 
 
@@ -17,6 +18,7 @@ app.use(function(req, res, next) {
 
 
 app.use('/api/user', user);
+app.use('/api/login', login);
 
 app.get('/', function (req, res){
 	res.send('api available');
