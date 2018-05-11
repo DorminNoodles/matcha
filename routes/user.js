@@ -3,6 +3,9 @@ const bodyParser = require('body-parser')
 const router = express.Router()
 const db = require("../models/database")
 const errorJson = require("../models/errorJson")
+const jwt = require('jsonwebtoken')
+
+const key = "e12eI21U1g8rilghi7ghd1D4Y5r9lk3g1d4"
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
@@ -54,6 +57,34 @@ router.post('/', urlencodedParser, function (req, res){
 		console.log('\x1b[31m%s\x1b[0m', "user not saved !")
 		res.json(error);
 	})
+})
+
+router.get('/:userid', (req, res) => {
+
+	if (!req.params.userid)
+		res.json({msg: "error"})
+	let token = req.headers['x-access-token']
+	let data = {}
+	// let token = "24"
+
+	jwt.verify(token, key, function(err, decoded) {
+		if (err)
+		{
+			// res.json({msg:"error"})
+			// return res.send("hello")
+		}
+		else {
+			let info = decoded;
+		}
+		// console.log("fichtre")
+		// console.log(decoded)
+	});
+
+	// console.log(info);
+
+	// console.log(req.headers['x-access-token'])
+	// console.log("here : " + req.params.userid);
+	res.json({hello: "hello"})
 })
 
 module.exports = router

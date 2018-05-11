@@ -34,7 +34,7 @@ export default class Signin extends React.Component {
 			return response.json();
 		})
 		.then((json) => {
-			sessionStorage.setItem('token', json.token)
+			sessionStorage.setItem('token', JSON.stringify(json))
 			console.log(json)
 		})
 	}
