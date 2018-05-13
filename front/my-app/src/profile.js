@@ -3,7 +3,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-export default class Profil extends React.Component {
+export default class Profile extends React.Component {
 
 	render(){
 		return(

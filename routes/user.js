@@ -4,6 +4,7 @@ const router = express.Router()
 const db = require("../models/database")
 const errorJson = require("../models/errorJson")
 const jwt = require('jsonwebtoken')
+const User = require("../models/User")
 
 const key = "e12eI21U1g8rilghi7ghd1D4Y5r9lk3g1d4"
 
@@ -68,23 +69,28 @@ router.get('/:userid', (req, res) => {
 	// let token = "24"
 
 	jwt.verify(token, key, function(err, decoded) {
-		if (err)
-		{
-			// res.json({msg:"error"})
-			// return res.send("hello")
+
+		if (decoded){
+			console.log(decoded)
+
+			let user = new User()
+			data = user.getData(decoded['id'])
+			.then((res) => {
+				console.log(res)
+			})
+			.catch(() => {
+				data = {msg : "error"}
+				console.log("error")
+			})
 		}
-		else {
-			let info = decoded;
-		}
-		// console.log("fichtre")
-		// console.log(decoded)
-	});
+		// res.json({hello: "hello"})
+	})
 
 	// console.log(info);
 
 	// console.log(req.headers['x-access-token'])
 	// console.log("here : " + req.params.userid);
-	res.json({hello: "hello"})
+	res.json(data)
 })
 
 module.exports = router

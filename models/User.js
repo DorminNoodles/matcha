@@ -186,40 +186,17 @@ class User{
 				console.log("error in connection")
 				reject();
 			})
+		})
+	}
 
-			// db.query("SELECT * FROM users WHERE username = ? LIMIT 1", [username], (err, res, fields) => {
-			// 	if (err || !res[0])
-			// 	{
-			// 		reject()
-			// 		return
-			// 	}
-			// 	bcrypt.compare(password, res[0].password, function(errBcrypt, resBcrypt) {
-			// 		if (errBcrypt)
-			// 		{
-			// 			reject()
-			// 			return;
-			// 		}
-            //
-			// 		let data = {
-			// 			id: res[0].id,
-			// 			username: res[0].username
-			// 		}
-            //
-			// 		// jwt.sign({data : 'fuck'}, 'secret', {algorithm: 'RS256', expiresIn : '1h'}, (errJWT, token)=>{
-			// 		jwt.sign(data, key, { expiresIn: '1h' }, (errJWT, token) => {
-			// 			if (errJWT)
-			// 			{
-			// 				reject()
-			// 				return;
-			// 			}
-			// 			console.log(token)
-			// 			resolve()
-			// 			return (token);
-			// 		});
-			// 		// 	console.log(errJWT)
-			// 		// });
-			// 	});
-			// })
+	getData(id){
+		return new Promise((resolve, reject) => {
+			db.query("SELECT * FROM users WHERE id = ? LIMIT 1", [id], (err, res, fields) => {
+				if (err || !res[0])
+					reject()
+				else
+					resolve(res[0])
+			})
 		})
 	}
 }

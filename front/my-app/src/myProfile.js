@@ -5,6 +5,27 @@ import { Button, Form, FormGroup, Label, Input, Nav, NavItem, NavLink  } from 'r
 
 export default class MyProfile extends React.Component {
 
+	constructor(props){
+		super(props);
+		this.state = {
+			showForm: ''
+		}
+
+
+		// console.log("fetch");
+
+		fetch('http://localhost:3000/api/user/2', {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			}
+		})
+
+		console.log(sessionStorage.getItem('id'))
+		// this.fillUserData()
+	}
+
 	fillUserData(){
 
 		// fetch('http://localhost:3000/api/login', {
@@ -17,15 +38,6 @@ export default class MyProfile extends React.Component {
 		// 	body: JSON.stringify(this.state)
 		// })
 
-	}
-
-	constructor(props){
-		super(props);
-		this.state = {
-			showForm: ''
-		}
-
-		this.fillUserData()
 	}
 
 	render(){
