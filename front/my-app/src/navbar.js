@@ -21,11 +21,11 @@ export default class TopMenu extends React.Component {
 		token: ''
     };
 
-	if (sessionStorage.getItem('token'))
+	if (sessionStorage.getItem('user'))
 	{
-		this.state.token = sessionStorage.getItem('token')
-		console.log(JSON.stringify(this.state.token))
-		// console.log(sessionStorage.getItem('token'))
+		console.log(sessionStorage.getItem('user'))
+		this.state.user = JSON.parse(sessionStorage.getItem('user'))
+
 	}
   }
   toggle() {
@@ -38,7 +38,7 @@ export default class TopMenu extends React.Component {
     return (
 		<div>
 
-			token : {this.state.token.token}
+			token : {this.state.user.token}
 
 			<Navbar color="light" light expand="md">
 				<NavbarBrand href="/">Matcha</NavbarBrand>

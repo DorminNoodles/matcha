@@ -191,11 +191,17 @@ class User{
 
 	getData(id){
 		return new Promise((resolve, reject) => {
-			db.query("SELECT * FROM users WHERE id = ? LIMIT 1", [id], (err, res, fields) => {
+			db.query("SELECT id, username, firstname, lastname, email, address FROM users WHERE id = ? LIMIT 1", [id], (err, res, fields) => {
 				if (err || !res[0])
+				{
+					console.log("error in get data")
 					reject()
+				}
 				else
+				{
+					console.log("resolve")
 					resolve(res[0])
+				}
 			})
 		})
 	}

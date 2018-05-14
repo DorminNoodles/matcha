@@ -60,37 +60,40 @@ router.post('/', urlencodedParser, function (req, res){
 	})
 })
 
-router.get('/:userid', (req, res) => {
+// router.options('/', (req, res) => {
+// 	res.send()
+// })
 
-	if (!req.params.userid)
-		res.json({msg: "error"})
+router.get('/', (req, res) => {
+
 	let token = req.headers['x-access-token']
 	let data = {}
+
+	// res.json({fuck: "you"})
+	// res.send("bordel")
+	// return
 	// let token = "24"
 
 	jwt.verify(token, key, function(err, decoded) {
-
 		if (decoded){
 			console.log(decoded)
 
 			let user = new User()
-			data = user.getData(decoded['id'])
-			.then((res) => {
-				console.log(res)
+			user.getData(decoded['id'])
+			.then((userData) => {
+				console.log("pas d erreur bordel")
+				data = userData
+				console.log(data)
+				res.json(data);
+				// res.send(JSON.stringify(data))
 			})
 			.catch(() => {
-				data = {msg : "error"}
-				console.log("error")
+				res.json({error: "error"})
 			})
 		}
-		// res.json({hello: "hello"})
+		else
+			res.json({error: true})
 	})
-
-	// console.log(info);
-
-	// console.log(req.headers['x-access-token'])
-	// console.log("here : " + req.params.userid);
-	res.json(data)
 })
 
 module.exports = router
