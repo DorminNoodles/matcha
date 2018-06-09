@@ -7,6 +7,7 @@ import TopMenu from './navbar';
 import Signup from './signup';
 import Signin from './signin';
 import MyProfile from './myProfile';
+import MyCard from './card';
 
 
 // import { Link } from 'react'
@@ -148,6 +149,7 @@ class App extends React.Component {
 			<div>
 				<Header />
 				<Main />
+				<MyCard />
 			</div>
 		);
 	}
@@ -165,15 +167,6 @@ class MonFormulaire extends React.Component{
 	}
 
 }
-
-
-
-// ========================================
-
-// ReactDOM.render(
-// 	<Main />,
-//   document.getElementById('root')
-// );
 
 ReactDOM.render((
 	<BrowserRouter>

@@ -38,7 +38,6 @@ export default class TopMenu extends React.Component {
     return (
 		<div>
 
-			token : {this.state.user.token}
 
 			<Navbar color="light" light expand="md">
 				<NavbarBrand href="/">Matcha</NavbarBrand>
