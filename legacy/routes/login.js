@@ -14,7 +14,7 @@ router.post("/", urlencodedParser, function(req,res){
 		console.log(resConnect);
 		res.json({token : resConnect});
 	})
-	.catch(()=>{
+	.catch(() => {
 		res.send("error of connection")
 	})
 })
