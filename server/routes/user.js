@@ -1,20 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
+const user = require('../controllers/user');
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/', urlencodedParser, (req, res) => {
-	res.send("Pokemon");
-});
+router.post('/createUser', urlencodedParser, (req, res) => {
+	user.new(req.body)
+	.then((resolve)=>{
+		console.log(resolve);
+	}).catch((error)=>{
+		console.log(error);
+	})
+	console.log('User created !')
+	res.send('Create User');
+})
 
-router.get('/', urlencodedParser, (req, res) => {
-	res.send("Pokemon");
-});
-
-router.get('/list', (req, res) => {
-	// console.log(req.params);
-	res.send("UserList");
-});
+// router.get('/createUser', urlencodedParser, (req, res) => {
+// 	res.send('Create User');
+// })
 
 module.exports = router;
