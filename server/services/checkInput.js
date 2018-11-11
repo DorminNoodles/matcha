@@ -19,3 +19,13 @@ exports.password = (password) => {
 		}
 	})
 }
+
+exports.firstname = (firstname) => {
+	return new Promise((resolve, reject) => {
+		if (firstname && firstname.length >= 3) {
+			resolve('ok');
+		} else {
+			reject('too small');
+		}
+	})
+}

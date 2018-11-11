@@ -9,10 +9,10 @@ exports.new = (data) => {
 		user.createUser({
 				username : data.username,
 				password : data.password,
-				firstname : data.firstname)
+				firstname : data.firstname
 		})
 		.then((res) => {
-			console.log('res');
+			console.log(res);
 			return user.saveUser(res);
 		})
 		.then(() => {

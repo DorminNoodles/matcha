@@ -24,7 +24,7 @@ async function fakeDB() {
 			password VARCHAR(30) NOT NULL,	\
 			firstname VARCHAR(30) NOT NULL,	\
 			lastname VARCHAR(30) NOT NULL,	\
-			email VARCHAR(255),\
+			email VARCHAR(255) NOT NULL,\
 			bio BLOB,\
 			mailValidation VARCHAR(80),\
 			tags TEXT,\
