@@ -16,6 +16,19 @@ router.post('/createUser', urlencodedParser, (req, res) => {
 	res.send('Create User');
 })
 
+router.get('/profil/:id', urlencodedParser, (req, res) => {
+
+	console.log(req.params);
+	// user.new(req.body)
+	// .then((resolve)=>{
+	// 	console.log(resolve);
+	// }).catch((error)=>{
+	// 	console.log(error);
+	// })
+	// console.log('User created !')
+	res.send('Get profil');
+})
+
 // router.get('/createUser', urlencodedParser, (req, res) => {
 // 	res.send('Create User');
 // })

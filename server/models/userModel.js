@@ -13,8 +13,12 @@ exports.saveUser = (data) => {
 				password,\
 				firstname,\
 				lastname,\
-				email\
+				email,\
+				gender,\
+				lookingfor\
 			)VALUES (\
+				\'hello\',\
+				\'hello\',\
 				\'hello\',\
 				\'hello\',\
 				\'hello\',\
@@ -27,6 +31,7 @@ exports.saveUser = (data) => {
 				resolve();
 
 			}).catch((err) => {
+				console.log(err);
 				console.log("error database");
 				conn.end();
 				reject(err);
