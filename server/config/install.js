@@ -26,13 +26,64 @@ async function fakeDB() {
 			lastname VARCHAR(30) NOT NULL,	\
 			email VARCHAR(255) NOT NULL,\
 			gender VARCHAR(30) NOT NULL,\
-			lookingfor VARCHAR(30) NOT NULL,\
+			orientation VARCHAR(30) NOT NULL,\
 			bio BLOB,\
 			mailValidation VARCHAR(80),\
 			tags TEXT,\
 			score INT(6),\
 			reg_date TIMESTAMP\
 		)');
+		connection.query('INSERT INTO users (\
+			username,	\
+			password,	\
+			firstname,	\
+			lastname,	\
+			email,		\
+			gender,		\
+			orientation)\
+			VALUES (\
+			\'Kevin\',\
+			\'qwerty\',\
+			\'Paul\',\
+			\'Dupont\',\
+			\'tache@wawaland.git\',\
+			\'male\',\
+			\'chevre\')\
+		');
+		connection.query('INSERT INTO users (\
+			username,	\
+			password,	\
+			firstname,	\
+			lastname,	\
+			email,		\
+			gender,		\
+			orientation)\
+			VALUES (\
+			\'Mickey\',\
+			\'qwerty\',\
+			\'Paul\',\
+			\'Dupont\',\
+			\'tache@wawaland.git\',\
+			\'male\',\
+			\'chevre\')\
+		');
+		connection.query('INSERT INTO users (\
+			username,	\
+			password,	\
+			firstname,	\
+			lastname,	\
+			email,		\
+			gender,		\
+			orientation)\
+			VALUES (\
+			\'Jules\',\
+			\'qwerty\',\
+			\'Paul\',\
+			\'Dupont\',\
+			\'tache@wawaland.git\',\
+			\'male\',\
+			\'chevre\')\
+		');
 		await connection.end();
 	} catch (error) {
 		console.error(error);

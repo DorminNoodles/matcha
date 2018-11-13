@@ -40,3 +40,10 @@ exports.saveUser = (data) => {
 		});
 	})
 }
+
+
+exports.findUserByName = (name) => {
+	return new Promise((resolve, reject) => {
+
+	})
+}

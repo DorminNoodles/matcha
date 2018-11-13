@@ -1,6 +1,8 @@
 // controller
 const User = require('../services/user');
 const UserModel = require('../services/user');
+const jwt = require('jsonwebtoken');
+const user = require('../models/userModel');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
@@ -27,3 +29,14 @@ exports.new = (data) => {
 		resolve('Perfect !');
 	})
 };
+
+
+exports.authenticate = (data) => {
+	return new Promise((resolve, reject) => {
+
+		user.findUserByName();
+		var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+		console.log(token);
+
+	})
+}

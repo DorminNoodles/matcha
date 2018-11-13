@@ -19,14 +19,35 @@ router.post('/createUser', urlencodedParser, (req, res) => {
 router.get('/profil/:id', urlencodedParser, (req, res) => {
 
 	console.log(req.params);
-	// user.new(req.body)
-	// .then((resolve)=>{
-	// 	console.log(resolve);
-	// }).catch((error)=>{
-	// 	console.log(error);
-	// })
-	// console.log('User created !')
 	res.send('Get profil');
+})
+
+router.post('/connection', urlencodedParser, (req, res) => {
+
+	console.log(req.body.username);
+	console.log(req.body.password);
+
+	user.authenticate(req.body)
+	.then((resolve) => {
+		console.log('connected !');
+	})
+
+
+	res.send('hello');
+})
+
+router.post('/test/connection', urlencodedParser, (req, res) => {
+
+	console.log(req);
+
+	res.send('hello');
+})
+
+router.post('/test/connection', urlencodedParser, (req, res) => {
+
+	console.log(req);
+
+	res.send('hello');
 })
 
 // router.get('/createUser', urlencodedParser, (req, res) => {
