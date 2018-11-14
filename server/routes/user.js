@@ -34,7 +34,7 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 		res.send({
 			status: 'ok',
 			message: 'connected !',
-			token: 'something'
+			token: resolve
 		});
 		console.log('connected !');
 	}).catch((error) => {
@@ -45,7 +45,6 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 		});
 	})
 
-	res.send('hello');
 })
 
 // router.post('/test/connection', urlencodedParser, (req, res) => {
@@ -54,13 +53,8 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 //
 // 	res.send('hello');
 // })
-
-
-
 // router.get('/createUser', urlencodedParser, (req, res) => {
 // 	res.send('Create User');
 // })
-
-
 
 module.exports = router;

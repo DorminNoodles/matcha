@@ -35,10 +35,16 @@ exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		user.findUserByName(data.username)
 		.then((data) => {
+			console.log("Fuck > ");
 			console.log(data);
-			return jwt.sign({ foo: 'bar' }, 'shhhhh');
+			var token = jwt.sign({
+				id: data.id,
+				username: data.username,
+				email: data.email
+			}, 'shhhhh');
+			resolve(token);
 		}).catch((err) => {
-
+			reject(err);
 			// console.log(token);
 		})
 
