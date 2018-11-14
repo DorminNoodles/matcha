@@ -33,7 +33,9 @@ exports.new = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		user.findUserByName(data.username).then((data) => {
+		user.findUserByName(data.username)
+		.then((data) => {
+			console.log(data);
 			return jwt.sign({ foo: 'bar' }, 'shhhhh');
 		}).catch((err) => {
 

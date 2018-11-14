@@ -24,8 +24,7 @@ exports.saveUser = (data) => {
 				\'hello\',\
 				\'hello\',\
 				\'hello\'\
-			)')
-			.then((res) => {
+			)').then((res) => {
 				console.log("success database");
 				conn.end();
 				resolve();
