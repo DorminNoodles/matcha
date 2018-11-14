@@ -6,9 +6,6 @@ const events = require('events');
 
 class User {
 
-
-
-
 	constructor(){
 		// setTimeout(function () {
 		// 	console.log('1');

@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const user = require('../controllers/user');
 
+const mysql = require('promise-mysql');
+
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
 router.post('/createUser', urlencodedParser, (req, res) => {
@@ -22,7 +24,7 @@ router.get('/profil/:id', urlencodedParser, (req, res) => {
 	res.send('Get profil');
 })
 
-router.post('/connection', urlencodedParser, (req, res) => {
+router.post('/authenticate', urlencodedParser, (req, res) => {
 
 	console.log(req.body.username);
 	console.log(req.body.password);
@@ -32,26 +34,22 @@ router.post('/connection', urlencodedParser, (req, res) => {
 		console.log('connected !');
 	})
 
-
 	res.send('hello');
 })
 
-router.post('/test/connection', urlencodedParser, (req, res) => {
+// router.post('/test/connection', urlencodedParser, (req, res) => {
+//
+// 	console.log(req);
+//
+// 	res.send('hello');
+// })
 
-	console.log(req);
 
-	res.send('hello');
-})
-
-router.post('/test/connection', urlencodedParser, (req, res) => {
-
-	console.log(req);
-
-	res.send('hello');
-})
 
 // router.get('/createUser', urlencodedParser, (req, res) => {
 // 	res.send('Create User');
 // })
+
+
 
 module.exports = router;

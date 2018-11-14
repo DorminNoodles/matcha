@@ -1,5 +1,4 @@
 
-
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
 		if (username && username.length >= 3) {
