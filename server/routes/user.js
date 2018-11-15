@@ -1,11 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const router = express.Router();
+const jwt = require('jsonwebtoken');
+
 const user = require('../controllers/user');
+
+const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/createUser', urlencodedParser, (req, res) => {
+router.post('/register', urlencodedParser, (req, res) => {
 	user.new(req.body)
 	.then((resolve)=>{
 		console.log(resolve);
@@ -27,6 +30,17 @@ router.get('/profil/:id', urlencodedParser, (req, res) => {
 	// })
 	// console.log('User created !')
 	res.send('Get profil');
+})
+
+router.patch('/profil/:id', urlencodedParser, (req, res) => {
+
+
+	res.send('Update Profil');
+})
+
+router.get('/login', urlencodedParser, (req, res) => {
+
+	res.send('Connect user give him jwt');
 })
 
 // router.get('/createUser', urlencodedParser, (req, res) => {

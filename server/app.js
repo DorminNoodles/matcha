@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -15,5 +16,7 @@ app.post('/api/:pouet', (req, res) => {
 	console.log(req.params);
 	res.send("Hello fuck 2");
 });
+
+
 
 app.listen(3000);
