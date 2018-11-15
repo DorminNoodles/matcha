@@ -22,27 +22,38 @@ router.post('/register', urlencodedParser, (req, res) => {
 router.get('/profil/:id', urlencodedParser, (req, res) => {
 
 	console.log(req.params);
-	// user.new(req.body)
-	// .then((resolve)=>{
-	// 	console.log(resolve);
-	// }).catch((error)=>{
-	// 	console.log(error);
-	// })
-	// console.log('User created !')
 	res.send('Get profil');
 })
 
-router.patch('/profil/:id', urlencodedParser, (req, res) => {
+router.post('/authenticate', urlencodedParser, (req, res) => {
 
+	console.log(req.body.username);
+	console.log(req.body.password);
 
-	res.send('Update Profil');
+	user.authenticate(req.body)
+	.then((resolve) => {
+		res.send({
+			status: 'ok',
+			message: 'connected !',
+			token: resolve
+		});
+		console.log('connected !');
+	}).catch((error) => {
+		console.log(error);
+		res.send({
+			status: 'error',
+			message: ''
+		});
+	})
+
 })
 
-router.get('/login', urlencodedParser, (req, res) => {
-
-	res.send('Connect user give him jwt');
-})
-
+// router.post('/test/connection', urlencodedParser, (req, res) => {
+//
+// 	console.log(req);
+//
+// 	res.send('hello');
+// })
 // router.get('/createUser', urlencodedParser, (req, res) => {
 // 	res.send('Create User');
 // })

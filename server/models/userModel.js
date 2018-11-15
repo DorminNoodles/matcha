@@ -24,8 +24,7 @@ exports.saveUser = (data) => {
 				\'hello\',\
 				\'hello\',\
 				\'hello\'\
-			)')
-			.then((res) => {
+			)').then((res) => {
 				console.log("success database");
 				conn.end();
 				resolve();
@@ -38,5 +37,27 @@ exports.saveUser = (data) => {
 			})
 			console.log("TEST");
 		});
+	})
+}
+
+
+exports.findUserByName = (name) => {
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		}).then((conn) => {
+			// console.log("name => " + name);
+			// return result = conn.query('SELECT * FROM users');
+			return conn.query('SELECT * FROM users WHERE username=\''+ name +'\'');
+			// console.log(result);
+		}).then((result) => {
+			// console.log(result);
+			resolve(result);
+		}).catch((error) => {
+			reject(error);
+		})
 	})
 }
