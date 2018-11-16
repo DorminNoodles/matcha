@@ -5,7 +5,6 @@ const user = require('./routes/user');
 const login = require('./routes/login');
 const Fortest = require('./models/Fortest')
 
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -16,7 +15,6 @@ app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Methods", 'POST, PUT, GET, DELETE');
   next();
 });
-
 
 app.use('/api/user', user);
 app.use('/api/login', login);
