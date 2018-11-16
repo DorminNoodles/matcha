@@ -28,3 +28,23 @@ exports.firstname = (firstname) => {
 		}
 	})
 }
+
+exports.email = (email) => {
+	return new Promise((resolve, reject) => {
+		if (email && email.length >= 5) {
+			resolve('ok');
+		} else {
+			reject('too small');
+		}
+	})
+}
+
+exports.geoloc = (location) => {
+	return new Promise((resolve, reject) => {
+		if (email && email.length >= 5) {
+			resolve('ok');
+		} else {
+			reject('too small');
+		}
+	})
+}

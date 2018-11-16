@@ -17,14 +17,10 @@ exports.new = (data) => {
 			console.log(res);
 			return user.saveUser(res);
 		})
-		.then(() => {
-
-		})
 		.catch((err) => {
 			reject(err);
 		})
 
-		// console.log('2');
 		console.log(data);
 		resolve('Perfect !');
 	})
@@ -35,7 +31,6 @@ exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		user.findUserByName(data.username)
 		.then((data) => {
-			console.log("Fuck > ");
 			console.log(data);
 			var token = jwt.sign({
 				id: data.id,
@@ -45,7 +40,6 @@ exports.authenticate = (data) => {
 			resolve(token);
 		}).catch((err) => {
 			reject(err);
-			// console.log(token);
 		})
 
 	})

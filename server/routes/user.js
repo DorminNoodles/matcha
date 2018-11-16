@@ -48,14 +48,4 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 
 })
 
-// router.post('/test/connection', urlencodedParser, (req, res) => {
-//
-// 	console.log(req);
-//
-// 	res.send('hello');
-// })
-// router.get('/createUser', urlencodedParser, (req, res) => {
-// 	res.send('Create User');
-// })
-
 module.exports = router;
