@@ -51,6 +51,7 @@ class User {
 				resolve(data);
 			})
 			.catch((err) => {
+				console.log(err);
 				console.log("checkData error");
 				reject(err);
 			})
