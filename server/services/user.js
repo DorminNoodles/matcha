@@ -29,7 +29,7 @@ class User {
 			})
 			.then((res) => {
 				console.log('Email Checked');
-				return checkInput.geoloc(data.geoloc);
+				return checkInput.geoloc(data.location);
 			})
 			.then((res) => {
 				console.log('Location Checked');

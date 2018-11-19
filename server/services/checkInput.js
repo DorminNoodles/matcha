@@ -5,7 +5,7 @@ exports.username = (username) => {
 		if (username && username.length >= 3) {
 			resolve('ok');
 		} else {
-			reject('Username small');
+			reject('Username too small');
 		}
 	})
 }
@@ -15,7 +15,7 @@ exports.password = (password) => {
 		if (password && password.length >= 3) {
 			resolve('ok');
 		} else {
-			reject('Password small');
+			reject('Password too small');
 		}
 	})
 }
@@ -42,7 +42,8 @@ exports.email = (email) => {
 
 exports.geoloc = (location) => {
 	return new Promise((resolve, reject) => {
-		if (location && location.length >= 5) {
+		console.log("++++++++++++" + location);
+		if (location && location.length >= 2) {
 			geocoder.geocode("Atlanta, GA", function ( err, data ) {
 				console.log(data);
 			// do something with data
@@ -50,7 +51,7 @@ exports.geoloc = (location) => {
 
 			resolve('ok');
 		} else {
-			reject('Location small');
+			reject('Location too small');
 		}
 	})
 }
