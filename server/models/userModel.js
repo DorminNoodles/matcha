@@ -15,7 +15,7 @@ exports.saveUser = (data) => {
 				lastname,\
 				email,\
 				gender,\
-				lookingfor\
+				orientation\
 			)VALUES (\
 				\'hello\',\
 				\'hello\',\

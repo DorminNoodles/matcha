@@ -46,7 +46,8 @@ class User {
 			if (!data)
 				reject();
 			this.checkData(data)
-			.then((data) => {
+			.then((res) => {
+				console.log(res);
 				console.log("checkData Valid");
 				resolve(data);
 			})
