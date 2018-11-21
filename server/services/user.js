@@ -1,15 +1,27 @@
 "use strict";
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
-const events = require('events');
+const EventEmitter = require('events').EventEmitter;
+
+const chatRoomEvents = new EventEmitter;
 
 
 class User {
 
 	constructor(){
+		chatRoomEvents.on('userJoined', this.userJoined);
 		// setTimeout(function () {
 		// 	console.log('1');
 		// }, 2000);
+	}
+
+	displayMessage (message){
+		console.log(message);
+	}
+
+	userJoined (username) {
+		chatRoomEvents.on('message', displayMessage);
+		// console.log('User Joined ! +++++++++++++'+ username +'++++++++++++++');
 	}
 
 	checkData(data) {
@@ -63,7 +75,9 @@ class User {
 		return new Promise((resolve, reject) => {
 			userModel.saveUser(data)
 			.then(() => {
-				//send Email Verif
+				console.log('hello+++++++++++++++');
+				chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
+				console.log('hello+++++++++++++++');
 				resolve();
 			})
 			.catch(() => {
