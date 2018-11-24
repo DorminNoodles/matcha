@@ -15,12 +15,14 @@ class User {
 		// }, 2000);
 	}
 
-	displayMessage (message){
-		console.log(message);
+	displayMessage (){
+		console.log('testo');
 	}
 
 	userJoined (username) {
-		chatRoomEvents.on('message', displayMessage);
+		console.log("USERJOINED");
+		chatRoomEvents.on('message', this.displayMessage);
+		console.log("USERJOINED");
 		// console.log('User Joined ! +++++++++++++'+ username +'++++++++++++++');
 	}
 
@@ -77,6 +79,7 @@ class User {
 			.then(() => {
 				console.log('hello+++++++++++++++');
 				chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
+				// chatRoomEvents.removeListener('message', this.displayMessage);
 				console.log('hello+++++++++++++++');
 				resolve();
 			})

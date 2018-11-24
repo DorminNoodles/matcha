@@ -54,8 +54,10 @@ exports.email = (email) => {
 
 exports.geoloc = (location) => {
 	return new Promise((resolve, reject) => {
+		// let = new Geoloc();
 		if (location && location.length >= 2) {
 			// geocoder.selectProvider("geonames",{"username":"dormin"});
+
 			// geocoder.geocode(location, function ( err, data ) {
 			// 	console.log(data);
 			// // do something with data
