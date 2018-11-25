@@ -1,15 +1,17 @@
 "use strict";
+
+const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const EventEmitter = require('events').EventEmitter;
 
-const chatRoomEvents = new EventEmitter;
+const userRegisterEvent = new EventEmitter;
 
 
 class User {
 
 	constructor(){
-		chatRoomEvents.on('userJoined', this.userJoined);
+		userRegisterEvent.on('userJoined', this.displayMessage);
 		// setTimeout(function () {
 		// 	console.log('1');
 		// }, 2000);
@@ -20,9 +22,9 @@ class User {
 	}
 
 	userJoined (username) {
-		console.log("USERJOINED");
-		chatRoomEvents.on('message', this.displayMessage);
-		console.log("USERJOINED");
+		// console.log("USERJOINED");
+		// chatRoomEvents.on('message', this.displayMessage);
+		// console.log("USERJOINED");
 		// console.log('User Joined ! +++++++++++++'+ username +'++++++++++++++');
 	}
 
@@ -78,7 +80,9 @@ class User {
 			userModel.saveUser(data)
 			.then(() => {
 				console.log('hello+++++++++++++++');
-				chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
+				let ho = new ActivationMail;
+				// userRegisterEvent.emit('userJoined', 'GOOOOOOOOO');
+				// chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
 				// chatRoomEvents.removeListener('message', this.displayMessage);
 				console.log('hello+++++++++++++++');
 				resolve();
