@@ -1,0 +1,13 @@
+/* Description de App */
+
+.description {
+    text-align:  center;
+    height: 80vh;
+    background-image: url("../image/balloons.jpg");
+    background-size : cover;
+    background-position: center center;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px
+}
