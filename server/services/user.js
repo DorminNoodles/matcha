@@ -1,20 +1,16 @@
 "use strict";
-
 const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
-const EventEmitter = require('events').EventEmitter;
+const emitter = require('../emitter');
 
-const userRegisterEvent = new EventEmitter;
-
+// const userRegisterEvent = new EventEmitter;
 
 class User {
 
 	constructor(){
-		userRegisterEvent.on('userJoined', this.displayMessage);
-		// setTimeout(function () {
-		// 	console.log('1');
-		// }, 2000);
+		console.log('Hellomoto');
+		emitter.on('userRegistered', this.displayMessage);
 	}
 
 	displayMessage (){
@@ -80,7 +76,8 @@ class User {
 			userModel.saveUser(data)
 			.then(() => {
 				console.log('hello+++++++++++++++');
-				let ho = new ActivationMail;
+				emitter.emit('userRegistered');
+				// let ho = new ActivationMail;
 				// userRegisterEvent.emit('userJoined', 'GOOOOOOOOO');
 				// chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
 				// chatRoomEvents.removeListener('message', this.displayMessage);
