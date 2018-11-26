@@ -1,5 +1,3 @@
-console.log("test++++++++++++++++++++");
-
 const emitter = require('../emitter');
 
 // const EventEmitter = require('events').EventEmitter;
@@ -9,7 +7,7 @@ const emitter = require('../emitter');
 class ActivationMail {
 
 	constructor() {
-		console.log("BORDEL");
+		console.log("BORDEL++++++++++++++++++++++++++++++++++++");
 		emitter.on('userRegistered');
 	}
 
