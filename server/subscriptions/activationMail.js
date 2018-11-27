@@ -7,13 +7,7 @@ module.exports = () => {
 	// emitter.on('userRegistered', tmp.sendActivationMail);
 }
 
-
-
-
 /*
 - subscribe to event
-
-
-
 
 */

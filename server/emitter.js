@@ -1,10 +1,9 @@
 const EventEmitter = require('events');
 const activationMailSubscribe = require('./subscriptions/activationMail');
 
-const testy = require('./testy');
+// const testy = require('./testy');
 
-
-// console.log('papapapapapa');
+console.log("create emitter");
 const emitter = new EventEmitter();
 
 module.exports = emitter;
