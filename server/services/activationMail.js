@@ -1,19 +1,18 @@
 const emitter = require('../emitter');
 
-// const EventEmitter = require('events').EventEmitter;
-
-// const userRegistreEvent = new EventEmitter;
-
 class ActivationMail {
 
 	constructor() {
+		emitter.on('userRegistered', this.sendActivationMail);
 		console.log("BORDEL++++++++++++++++++++++++++++++++++++");
-		emitter.on('userRegistered');
+	}
+
+	displayMessage() {
+		console.log("DISPLAY MESSAGE");
 	}
 
 	sendActivationMail() {
 		console.log('sendActivationMail');
 	}
 }
-
-module.exports = ActivationMail;
+module.exports = new ActivationMail();

@@ -4,7 +4,6 @@ const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const emitter = require('../emitter');
 
-// const userRegisterEvent = new EventEmitter;
 
 class User {
 
@@ -18,10 +17,7 @@ class User {
 	}
 
 	userJoined (username) {
-		// console.log("USERJOINED");
-		// chatRoomEvents.on('message', this.displayMessage);
-		// console.log("USERJOINED");
-		// console.log('User Joined ! +++++++++++++'+ username +'++++++++++++++');
+
 	}
 
 	checkData(data) {
@@ -77,10 +73,7 @@ class User {
 			.then(() => {
 				console.log('hello+++++++++++++++');
 				emitter.emit('userRegistered');
-				// let ho = new ActivationMail;
-				// userRegisterEvent.emit('userJoined', 'GOOOOOOOOO');
-				// chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
-				// chatRoomEvents.removeListener('message', this.displayMessage);
+				console.log(emitter.hello);
 				console.log('hello+++++++++++++++');
 				resolve();
 			})
