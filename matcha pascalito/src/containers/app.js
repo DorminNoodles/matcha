@@ -11,12 +11,12 @@ import '../style/app.css'
 import PageAccueil from '../components/pageAccueil'
 import Inscription from '../components/inscription'
 import Connexion from '../components/connexion'
-import PageIntrouvable from '../components/pageIntrouvable'
+import PageIntrouvable from '../components/PageIntrouvable'
 
 class App extends Component{
-    
+
     state = {
-        
+
     }
 
     render(){
