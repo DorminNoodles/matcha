@@ -7,8 +7,6 @@ const activationMail = require('./services/activationMail');
 
 const app = express();
 
-console.log(emitter.hello);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

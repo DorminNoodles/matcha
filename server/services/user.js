@@ -73,7 +73,6 @@ class User {
 			.then(() => {
 				console.log('hello+++++++++++++++');
 				emitter.emit('userRegistered');
-				console.log(emitter.hello);
 				console.log('hello+++++++++++++++');
 				resolve();
 			})
