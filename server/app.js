@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const user = require('./routes/user');
 const emitter = require('./emitter');
-
 const activationMail = require('./services/activationMail');
 
 const app = express();

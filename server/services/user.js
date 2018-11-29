@@ -1,9 +1,8 @@
 "use strict";
-const ActivationMail = require('../services/activationMail');
+// const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const emitter = require('../emitter');
-
 
 class User {
 
@@ -82,6 +81,37 @@ class User {
 
 			console.log("saveUser");
 			resolve();
+		})
+	}
+
+	authenticate(username, password) {
+		return new Promise((resolve, reject) => {
+
+			checkInput.username(username)
+			.then(() => {
+				return checkInput.password(password);
+			})
+			.then(() => {
+				resolve();
+			})
+			.catch(() => {
+				reject();
+			})
+
+
+			user.findUserByName(username)
+			.then((data) => {
+				console.log(data);
+				let token = jwt.sign({
+					id: data.id,
+					username: data.username,
+					email: data.email
+				}, 'shhhhhhh');
+				resolve(token);
+			})
+			.catch(() => {
+				reject();
+			})
 		})
 	}
 

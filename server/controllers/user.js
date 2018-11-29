@@ -43,18 +43,12 @@ exports.register = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		user.findUserByName(data.username)
-		.then((data) => {
-			console.log(data);
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username,
-				email: data.email
-			}, 'shhhhh');
-			resolve(token);
-		}).catch((err) => {
-			reject(err);
+		user.authenticate(data.name, data.password)
+		.then(() => {
+			resolve();
 		})
-
+		.catch(() => {
+			reject();
+		})
 	})
 }
