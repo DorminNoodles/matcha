@@ -3,6 +3,7 @@ const emitter = require('../emitter');
 class ActivationMail {
 
 	constructor() {
+		emitter.on('userRegistered', this.sendActivationMail);
 		console.log("BORDEL++++++++++++++++++++++++++++++++++++");
 		emitter.on('userRegistered', this.sendActivationMail);
 	}
@@ -11,5 +12,4 @@ class ActivationMail {
 		console.log('sendActivationMail');
 	}
 }
-
-module.exports = ActivationMail;
+module.exports = new ActivationMail();

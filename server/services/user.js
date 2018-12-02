@@ -1,9 +1,8 @@
 "use strict";
+// const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const emitter = require('../emitter');
-// const emitterSubTest = require('../subscriptions/activationMail');
-// const userRegisterEvent = new EventEmitter;
 
 class User {
 
@@ -17,10 +16,7 @@ class User {
 	}
 
 	userJoined (username) {
-		// console.log("USERJOINED");
-		// chatRoomEvents.on('message', this.displayMessage);
-		// console.log("USERJOINED");
-		// console.log('User Joined ! +++++++++++++'+ username +'++++++++++++++');
+
 	}
 
 	checkData(data) {
@@ -76,10 +72,6 @@ class User {
 			.then(() => {
 				console.log('hello+++++++++++++++');
 				emitter.emit('userRegistered');
-				// let ho = new ActivationMail;
-				// userRegisterEvent.emit('userJoined', 'GOOOOOOOOO');
-				// chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
-				// chatRoomEvents.removeListener('message', this.displayMessage);
 				console.log('hello+++++++++++++++');
 				resolve();
 			})
@@ -89,6 +81,37 @@ class User {
 
 			console.log("saveUser");
 			resolve();
+		})
+	}
+
+	authenticate(username, password) {
+		return new Promise((resolve, reject) => {
+
+			checkInput.username(username)
+			.then(() => {
+				return checkInput.password(password);
+			})
+			.then(() => {
+				resolve();
+			})
+			.catch(() => {
+				reject();
+			})
+
+
+			user.findUserByName(username)
+			.then((data) => {
+				console.log(data);
+				let token = jwt.sign({
+					id: data.id,
+					username: data.username,
+					email: data.email
+				}, 'shhhhhhh');
+				resolve(token);
+			})
+			.catch(() => {
+				reject();
+			})
 		})
 	}
 
