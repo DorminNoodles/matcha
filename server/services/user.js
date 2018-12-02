@@ -1,9 +1,8 @@
 "use strict";
-const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const emitter = require('../emitter');
-
+// const emitterSubTest = require('../subscriptions/activationMail');
 // const userRegisterEvent = new EventEmitter;
 
 class User {
@@ -14,7 +13,7 @@ class User {
 	}
 
 	displayMessage (){
-		console.log('testo');
+		// console.log('testy');
 	}
 
 	userJoined (username) {

@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const user = require('./routes/user');
 
+const activationMail = require('./services/activationMail');
+const sendMail = new activationMail();
+
 const app = express();
 
 app.use(bodyParser.json());
