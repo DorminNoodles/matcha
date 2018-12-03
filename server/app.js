@@ -16,10 +16,10 @@ app.use('/api/user', user);
 // 	res.send("Hello world");
 // }
 
-app.get('/:id', (req, res) => {
-	console.log(req.params);
-	res.send("hello");
-});
+// app.get('/:id', (req, res) => {
+// 	console.log(req.params);
+// 	res.send("hello");
+// });
 
 
 
