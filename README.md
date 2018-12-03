@@ -1,7 +1,5 @@
 # matcha
 
-Hello
-
 API
 
 user
