@@ -5,10 +5,7 @@ class ActivationMail {
 	constructor() {
 		emitter.on('userRegistered', this.sendActivationMail);
 		console.log("BORDEL++++++++++++++++++++++++++++++++++++");
-	}
-
-	displayMessage() {
-		console.log("DISPLAY MESSAGE");
+		emitter.on('userRegistered', this.sendActivationMail);
 	}
 
 	sendActivationMail() {

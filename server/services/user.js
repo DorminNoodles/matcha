@@ -13,7 +13,7 @@ class User {
 	}
 
 	displayMessage (){
-		console.log('testo');
+		// console.log('testy');
 	}
 
 	userJoined (username) {

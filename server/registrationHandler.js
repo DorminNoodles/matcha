@@ -1,4 +1,4 @@
-const myEmitter = require('./myEmitter');
+const myEmitter = require('./emitter');
 // const subscriptions = require('./subscriptions');
 const subscriptions = require('./subscriptions');
 
