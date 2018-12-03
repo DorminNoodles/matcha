@@ -7,6 +7,7 @@ const emitter = require('../emitter');
 class User {
 
 	constructor(){
+		userModel.
 		console.log('Hellomoto');
 		emitter.on('userRegistered', this.displayMessage);
 	}
@@ -48,7 +49,7 @@ class User {
 		})
 	}
 
-	createUser(data) {
+	register(data) {
 		return new Promise((resolve, reject) => {
 			if (!data)
 				reject();
@@ -56,7 +57,12 @@ class User {
 			.then((res) => {
 				console.log(res);
 				console.log("checkData Valid");
+				return(userModel.saveUser(data));
 				resolve(data);
+			})
+			.then((res) => {
+					console.log("User saved !");
+					resolve("User saved !");
 			})
 			.catch((err) => {
 				console.log(err);
@@ -66,23 +72,7 @@ class User {
 		})
 	}
 
-	saveUser(data) {
-		return new Promise((resolve, reject) => {
-			userModel.saveUser(data)
-			.then(() => {
-				console.log('hello+++++++++++++++');
-				emitter.emit('userRegistered');
-				console.log('hello+++++++++++++++');
-				resolve();
-			})
-			.catch(() => {
-				reject();
-			})
 
-			console.log("saveUser");
-			resolve();
-		})
-	}
 
 	authenticate(username, password) {
 		return new Promise((resolve, reject) => {

@@ -20,7 +20,7 @@ exports.register = (data) => {
 		let user = new User();
 
 		console.log(data);
-		user.createUser({
+		user.register({
 				username : data.username,
 				password : data.password,
 				firstname : data.firstname,
@@ -51,4 +51,8 @@ exports.authenticate = (data) => {
 			reject();
 		})
 	})
+}
+
+exports.search = (name) => {
+	console.log("search user in database");
 }
