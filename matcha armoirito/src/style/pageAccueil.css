@@ -1,0 +1,30 @@
+/* Description de App */
+
+.title{
+    font-size: 30vmin;
+    color: #f7ff00;
+}
+
+.description {
+    text-align:  center;
+    height: 100vh;
+    background-image: url("../image/purple.jpg");
+    background-size : cover;
+    background-position: center center;
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    font-family: 'Rokkitt', serif;
+}
+
+.btn-info{
+    display: table;
+    margin: auto;
+    background-color: #4c9e85;
+}
+
+a:link{
+    text-decoration: none;
+}
