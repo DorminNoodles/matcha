@@ -11,7 +11,7 @@ const PageAccueil = () => {
         <Fragment>
             <div className="description">
                 <h1 className="title">Matcha</h1>
-                <Link to="/inscription"><p><button  className="btn btn-info btn-lg">Inscription</button></p></Link>
+                <Link to="/inscription"><p><button  className="btn btn-info btn-lg btn-pageaccueil">Inscription</button></p></Link>
             </div>
         </Fragment>
     )

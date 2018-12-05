@@ -12,18 +12,22 @@
 
 input[type="text"], input[type="email"], input[type="password"], select
 {
-    background: linear-gradient(#ECE9E6, #FFFFFF);
+    color: #FB4D2F;
 }
 
-.container-fluid{
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus{
+    outline: none;
+}
+
+.form-control{
+    border: 0;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 2px solid #FB4D2F;
+    border-radius: 0;
+}
+
+.container-fluid {
     height: 100vh;
-    background-image: url("../image/love.jpg");
-    background-size : cover;
-    background-position: center center;
-    border : 3px solid red;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 
@@ -32,10 +36,20 @@ input[type="text"], input[type="email"], input[type="password"], select
 }
 
 .formulaire{
-    border : 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90%;
 }
 
 .container-fluid .title-center{
-    justify-self: end;
+    justify-content: start;
+}
 
+.button-inscription{
+    background-color: #FB4D2F;
+    border: 1px solid #FB4D2F;
+    width: 200px;
+    border-radius: 30px;
+    padding: 5px;
 }

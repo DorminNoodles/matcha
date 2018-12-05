@@ -1,5 +1,5 @@
 //React
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 
 //Style
@@ -43,11 +43,13 @@ class Inscription extends Component {
                 {/* Redirection vers connexion*/}
                 {this.renderRedirect()}
                 
+
                 <div className="formulaire">
+                <div>
                     <h2 className="title_form">Inscription</h2>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="row">
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                        
+                            <div className="form-group ">
                                 <input
                                     value={this.state.firstname}
                                     onChange={this.handleChange}
@@ -57,7 +59,7 @@ class Inscription extends Component {
                                     className="form-control" 
                                     />
                             </div>
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                            <div className="form-group">
                                 <input 
                                     value={this.state.lastname}
                                     onChange={this.handleChange}
@@ -67,9 +69,9 @@ class Inscription extends Component {
                                     className="form-control" 
                                     />
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                        
+                        
+                            <div className="form-group">
                                 <select 
                                     value={this.state.gender}
                                     onChange={this.handleChange}
@@ -79,20 +81,19 @@ class Inscription extends Component {
                                     <option value="feminin">Féminin</option>
                                 </select>
                             </div>
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                            <div className="form-group ">
                                 <select 
                                     value={this.state.orientation}
                                     onChange={this.handleChange}
                                     id="orientation" 
                                     className="form-control">
-                                    <option value="masculin">Masculin</option>
-                                    <option value="feminin">Féminin</option>
-                                    <option value="non_binary">Non-binaire</option>
+                                    <option value="masculin">Hétéro</option>
+                                    <option value="feminin">Gay</option>
                                 </select>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                        
+                        
+                            <div className="form-group ">
                                 <input
                                     value={this.state.email}
                                     onChange={this.handleChange}
@@ -102,7 +103,7 @@ class Inscription extends Component {
                                     className="form-control" 
                                     />
                             </div>
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                            <div className="form-group ">
                                 <input
                                     value={this.state.emailValidation}
                                     onChange={this.handleChange}
@@ -112,9 +113,9 @@ class Inscription extends Component {
                                     className="form-control" 
                                     />
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                        
+                        
+                            <div className="form-group ">
                                 <input
                                     value={this.state.password}
                                     onChange={this.handleChange}
@@ -124,7 +125,7 @@ class Inscription extends Component {
                                     className="form-control" 
                                     />
                             </div>
-                            <div className="form-group col-lg-6 col-md-6 col-sm-6">
+                            <div className="form-group ">
                                 <input
                                     value={this.state.password_confirm}
                                     onChange={this.handleChange}
@@ -134,11 +135,12 @@ class Inscription extends Component {
                                     className="form-control" 
                                     />
                             </div>
-                        </div>
-                        <div className="boutton-form">
-                            <input className="btn btn-info btn-lg" type="submit" value="S'inscrire"/>
+                        
+                        <div className="boutton-form ">
+                            <input className="btn btn-info btn-lg button-inscription" type="submit" value="S'inscrire"/>
                         </div>
                     </form>
+                </div>
                 </div>
             </div>
         )
