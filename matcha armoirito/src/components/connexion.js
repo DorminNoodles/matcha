@@ -11,8 +11,8 @@ class Connexion extends Component {
     
     state = {
         redirect: false,
-        email : '',
-        password : ''
+        mail_connection : '',
+        password_connection : ''
     }
 
     renderRedirect = () => {
@@ -50,7 +50,7 @@ class Connexion extends Component {
                                         value={this.state.email}
                                         onChange={this.handleChange}
                                         placeholder="Email"
-                                        id="mail_conection"
+                                        id="mail_connection"
                                         type="email"
                                         className="form-control"
                                         required />
