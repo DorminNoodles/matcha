@@ -1,6 +1,8 @@
 //React
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import Logo1 from '../image/logo1.png'
+
 
 //Style
 import '../style/inscription.css'
@@ -32,115 +34,133 @@ class Inscription extends Component {
     
     handleSubmit = (event) => {
         this.setState({redirect: true})
-      }
+    }
 
     render () {
         return (
-            <div className="container-fluid">
-                <div className="title-center">
-                    <h1 className="title-inscription"><Link to="/">Matcha</Link></h1>
+            <div className="container">
+                <div className="logo-center">
+                    <Link to="/"> <img className="logo1" src={Logo1} alt="logo"/> </Link>
                 </div>
+
                 {/* Redirection vers connexion*/}
                 {this.renderRedirect()}
                 
-
                 <div className="formulaire">
-                <div>
-                    <h2 className="title_form">Inscription</h2>
-                    <form onSubmit={this.handleSubmit}>
-                        
-                            <div className="form-group ">
-                                <input
-                                    value={this.state.firstname}
-                                    onChange={this.handleChange}
-                                    placeholder="Firstname" 
-                                    id="firstname" 
-                                    type="text" 
-                                    className="form-control" 
-                                    />
+                    <div>
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group">
+                                    <input
+                                        value={this.state.firstname}
+                                        onChange={this.handleChange}
+                                        placeholder="Firstname" 
+                                        id="firstname" 
+                                        type="text" 
+                                        className="form-control" 
+                                        />
+                                </div>
                             </div>
-                            <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group">
+                                    <input 
+                                        value={this.state.lastname}
+                                        onChange={this.handleChange}
+                                        placeholder="Lastname" 
+                                        id="lastname" 
+                                        type="text" 
+                                        className="form-control" 
+                                        />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group">
+                                    <select 
+                                        value={this.state.gender}
+                                        onChange={this.handleChange}
+                                        id="gender" 
+                                        className="form-control">
+                                        <option value="masculin">Masculin</option>
+                                        <option value="feminin">Féminin</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group ">
+                                    <select 
+                                        value={this.state.orientation}
+                                        onChange={this.handleChange}
+                                        id="orientation" 
+                                        className="form-control">
+                                        <option value="masculin">Hétéro</option>
+                                        <option value="feminin">Gay</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group ">
+                                    <input
+                                        value={this.state.email}
+                                        onChange={this.handleChange}
+                                        placeholder="Email" 
+                                        id="email" 
+                                        type="email" 
+                                        className="form-control" 
+                                        />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group ">
+                                    <input
+                                        value={this.state.emailValidation}
+                                        onChange={this.handleChange}
+                                        placeholder="Confirm email" 
+                                        id="emailValidation" 
+                                        type="email" 
+                                        className="form-control" 
+                                        />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>                          
+                                <div className="col-md-4 col-sm-8 form-group ">
+                                    <input
+                                        value={this.state.password}
+                                        onChange={this.handleChange}
+                                        placeholder="Password"
+                                        id="password" 
+                                        type="password" 
+                                        className="form-control" 
+                                        />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-2"></div>
+                                <div className="col-md-4 col-sm-8 form-group">
+                                    <input
+                                        value={this.state.password_confirm}
+                                        onChange={this.handleChange}
+                                        placeholder="Confirm password"
+                                        id="password_confirm" 
+                                        type="password" 
+                                        className="form-control" 
+                                        />
+                                </div>
+                            </div>
+                            <div className="boutton-form">
                                 <input 
-                                    value={this.state.lastname}
-                                    onChange={this.handleChange}
-                                    placeholder="Lastname" 
-                                    id="lastname" 
-                                    type="text" 
-                                    className="form-control" 
-                                    />
+                                    className="btn btn-info btn-lg button-inscription"
+                                    type="submit"
+                                    value="S'inscrire"/>
                             </div>
-                        
-                        
-                            <div className="form-group">
-                                <select 
-                                    value={this.state.gender}
-                                    onChange={this.handleChange}
-                                    id="gender" 
-                                    className="form-control">
-                                    <option value="masculin">Masculin</option>
-                                    <option value="feminin">Féminin</option>
-                                </select>
-                            </div>
-                            <div className="form-group ">
-                                <select 
-                                    value={this.state.orientation}
-                                    onChange={this.handleChange}
-                                    id="orientation" 
-                                    className="form-control">
-                                    <option value="masculin">Hétéro</option>
-                                    <option value="feminin">Gay</option>
-                                </select>
-                            </div>
-                        
-                        
-                            <div className="form-group ">
-                                <input
-                                    value={this.state.email}
-                                    onChange={this.handleChange}
-                                    placeholder="Email" 
-                                    id="email" 
-                                    type="email" 
-                                    className="form-control" 
-                                    />
-                            </div>
-                            <div className="form-group ">
-                                <input
-                                    value={this.state.emailValidation}
-                                    onChange={this.handleChange}
-                                    placeholder="Confirm email" 
-                                    id="emailValidation" 
-                                    type="email" 
-                                    className="form-control" 
-                                    />
-                            </div>
-                        
-                        
-                            <div className="form-group ">
-                                <input
-                                    value={this.state.password}
-                                    onChange={this.handleChange}
-                                    placeholder="Password"
-                                    id="password" 
-                                    type="password" 
-                                    className="form-control" 
-                                    />
-                            </div>
-                            <div className="form-group ">
-                                <input
-                                    value={this.state.password_confirm}
-                                    onChange={this.handleChange}
-                                    placeholder="Confirm password"
-                                    id="password_confirm" 
-                                    type="password" 
-                                    className="form-control" 
-                                    />
-                            </div>
-                        
-                        <div className="boutton-form ">
-                            <input className="btn btn-info btn-lg button-inscription" type="submit" value="S'inscrire"/>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         )

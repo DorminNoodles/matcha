@@ -1,18 +1,22 @@
 /* Formulaire inscrisption */
 
-.title_form{
-    text-align: center;
+.logo{
+    background-image: url("../image/logo1.png");
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
 }
 
 .boutton-form{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: 20px;
 }
 
 input[type="text"], input[type="email"], input[type="password"], select
 {
-    color: #FB4D2F;
 }
 
 input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus{
@@ -24,6 +28,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     background-color: rgba(255, 255, 255, 0);
     border-bottom: 2px solid #FB4D2F;
     border-radius: 0;
+    font-size: 15px;
 }
 
 .container-fluid {
@@ -31,15 +36,9 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 
-.title-inscription{
-    margin: 0px;
-}
-
-.formulaire{
+.logo-center{
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    height: 90%;
 }
 
 .container-fluid .title-center{
@@ -52,4 +51,8 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     width: 200px;
     border-radius: 30px;
     padding: 5px;
+}
+
+.logo1{
+    height: 200px;
 }
