@@ -15,10 +15,6 @@
     margin-top: 20px;
 }
 
-input[type="text"], input[type="email"], input[type="password"], select
-{
-}
-
 input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus{
     outline: none;
 }

@@ -53,7 +53,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group">
                                     <input
-                                        value={this.state.firstname}
                                         onChange={this.handleChange}
                                         placeholder="Firstname" 
                                         id="firstname" 
@@ -66,7 +65,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group">
                                     <input 
-                                        value={this.state.lastname}
                                         onChange={this.handleChange}
                                         placeholder="Lastname" 
                                         id="lastname" 
@@ -79,7 +77,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group">
                                     <select 
-                                        value={this.state.gender}
                                         onChange={this.handleChange}
                                         id="gender" 
                                         className="form-control">
@@ -92,12 +89,11 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group ">
                                     <select 
-                                        value={this.state.orientation}
                                         onChange={this.handleChange}
                                         id="orientation" 
                                         className="form-control">
-                                        <option value="masculin">Hétéro</option>
-                                        <option value="feminin">Gay</option>
+                                        <option value="hetero">Hétéro</option>
+                                        <option value="gay">Gay</option>
                                     </select>
                                 </div>
                             </div>
@@ -105,7 +101,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group ">
                                     <input
-                                        value={this.state.email}
                                         onChange={this.handleChange}
                                         placeholder="Email" 
                                         id="email" 
@@ -118,7 +113,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group ">
                                     <input
-                                        value={this.state.emailValidation}
                                         onChange={this.handleChange}
                                         placeholder="Confirm email" 
                                         id="emailValidation" 
@@ -131,7 +125,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>                          
                                 <div className="col-md-4 col-sm-8 form-group ">
                                     <input
-                                        value={this.state.password}
                                         onChange={this.handleChange}
                                         placeholder="Password"
                                         id="password" 
@@ -144,7 +137,6 @@ class Inscription extends Component {
                                 <div className="col-md-4 col-sm-2"></div>
                                 <div className="col-md-4 col-sm-8 form-group">
                                     <input
-                                        value={this.state.password_confirm}
                                         onChange={this.handleChange}
                                         placeholder="Confirm password"
                                         id="password_confirm" 

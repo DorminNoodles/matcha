@@ -4,20 +4,19 @@ import {Link, Redirect} from 'react-router-dom'
 import Logo1 from '../image/logo1.png'
 
 //Style
-import '../style/connexion.css'
+import '../style/recuperationMotdepasse.css'
 
 
 class Connexion extends Component {
     
     state = {
         redirect: false,
-        mail_connection : '',
-        password_connection : ''
+        mail_recup : ''
     }
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return <Redirect to='/connexion' />
+            return <Redirect to='/' />
         }
     }
 
@@ -25,6 +24,11 @@ class Connexion extends Component {
         if (event.target.id in this.state) {
             this.setState({[event.target.id]: event.target.value})
         }
+        console.log(event.target.id)
+        console.log(this.state)
+        console.log(this.state.email)
+        
+        
     }    
     
     handleSubmit = (event) => {
@@ -49,35 +53,17 @@ class Connexion extends Component {
                                     <input 
                                         onChange={this.handleChange}
                                         placeholder="Email"
-                                        id="mail_connection"
+                                        id="mail_recup"
                                         type="email"
                                         className="form-control"
                                         required />
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="Password"
-                                        id="password_connection"
-                                        type="password" 
-                                        className="form-control" 
-                                        required />
-                                </div>
-                            </div>
-                            <div>
-                                <div className="information_user">
-                                    <Link to="/recup_motdepasse">Mot de passe oublié</Link><br />
-                                    <Link to="/inscription">Pas encore inscrit ?</Link>
-                                </div>
-                            </div>
                             <div className="boutton-form">
                                 <input 
-                                    className="btn btn-info btn-lg button-inscription" 
+                                    className="btn btn-info btn-lg button-recup" 
                                     type="submit" 
-                                    value="Connexion" 
+                                    value="Récupére ton mot de passe" 
                                     required />
                             </div>
                         </form>

@@ -12,6 +12,7 @@ import PageAccueil from '../components/pageAccueil'
 import Inscription from '../components/inscription'
 import Connexion from '../components/connexion'
 import PageIntrouvable from '../components/pageIntrouvable'
+import RecupereMotdepasse from '../components/recupérationMotdepasse' 
 
 class App extends Component{
     
@@ -23,6 +24,7 @@ class App extends Component{
                         <Route exact path='/' render={() => <PageAccueil />} />
                         <Route exact path='/inscription' render={() => <Inscription />} />
                         <Route exact path='/connexion' render={() => <Connexion />} />
+                        <Route exact path='/recup_motdepasse' render={() => <RecupereMotdepasse />} />
                         <Route  render={() => <PageIntrouvable />} />
                     </Switch>
                 </BrowserRouter>
