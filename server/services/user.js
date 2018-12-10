@@ -88,7 +88,6 @@ class User {
 				reject();
 			})
 
-
 			user.findUserByName(username)
 			.then((data) => {
 				console.log(data);
