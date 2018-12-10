@@ -45,7 +45,6 @@ exports.saveUser = (data) => {
 
 		console.log("saveUser in DB");
 
-		resolve();
 	})
 }
 

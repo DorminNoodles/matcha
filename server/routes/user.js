@@ -26,7 +26,6 @@ router.get('/profil/:id', urlencodedParser, (req, res) => {
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-
 	console.log(req.body.username);
 	console.log(req.body.password);
 
@@ -45,6 +44,10 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 			message: ''
 		});
 	})
+})
+
+router.put('/user/:id', urlencodedParser, (req, res) => {
+	console.log(req.params);
 
 })
 

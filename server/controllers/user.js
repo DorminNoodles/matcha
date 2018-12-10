@@ -56,3 +56,9 @@ exports.authenticate = (data) => {
 exports.search = (name) => {
 	console.log("search user in database");
 }
+
+exports.update = (data) => {
+	return new Promise((resolve, reject) => {
+
+	})
+}

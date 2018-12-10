@@ -72,8 +72,6 @@ class User {
 		})
 	}
 
-
-
 	authenticate(username, password) {
 		return new Promise((resolve, reject) => {
 
