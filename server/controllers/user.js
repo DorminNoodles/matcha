@@ -22,10 +22,28 @@ exports.new = (data) => {
 		})
 
 		console.log(data);
+		return user.saveUser(data);
 		resolve('Perfect !');
 	})
 };
 
+exports.find = (data) => {
+	return new Promise((resolve, reject) => {
+		user.findUserByID(data.id)
+		.then((data) => {
+			console.log(data);
+			var token = jwt.sign({
+				id: data.id,
+				username: data.username,
+				email: data.email
+			}, 'shhhhh');
+			resolve(token);
+		}).catch((err) => {
+			reject(err);
+		})
+
+	})
+}
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {

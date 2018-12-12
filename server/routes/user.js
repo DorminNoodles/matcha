@@ -20,8 +20,13 @@ router.post('/register', urlencodedParser, (req, res) => {
 })
 
 router.get('/profil/:id', urlencodedParser, (req, res) => {
-
 	console.log(req.params);
+	user.find(req.params)
+	.then((resolve)=>{
+		console.log(resolve);
+	}).catch((error)=>{
+		console.log(error);
+	})
 	res.send('Get profil');
 })
 
