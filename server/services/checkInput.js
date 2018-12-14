@@ -2,11 +2,15 @@ var geocoder = require('geocoder');
 
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
-		if (username && username.length >= 3) {
-			resolve('ok');
-		} else {
-			reject('Username too small');
+		if (!username) {
+			reject('Username must be filled');
+			return;
 		}
+		if (username.length >= 3) {
+			reject('Username too small');
+			return;
+		}
+		resolve('ok');
 	})
 }
 
