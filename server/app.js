@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const user = require('./routes/user');
-
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+
+const user = require('./routes/user');
+const messages = require('./routes/messages');
 
 
 io.on('connection', (socket) => {
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/api/user', user);
+app.use('/api/messages', messages);
 
 // function foo(req, res) {
 //
