@@ -2,11 +2,15 @@ var geocoder = require('geocoder');
 
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
-		if (username && username.length >= 3) {
-			resolve('ok');
-		} else {
-			reject('Username too small');
+		if (!username) {
+			reject('Username must be filled');
+			return;
 		}
+		if (username.length >= 3) {
+			reject('Username too small');
+			return;
+		}
+		resolve('ok');
 	})
 }
 
@@ -30,10 +34,22 @@ exports.firstname = (firstname) => {
 	})
 }
 
+// exports.email = (email) => {
+// 	return new Promise((resolve, reject) => {
+// 		if (email && email.length >= 5) {
+// 			resolve('ok');
+// 		} else {
+// 			reject('email too small');
+// 		}
+// 	})
+// }
+
 exports.email = (email) => {
 	return new Promise((resolve, reject) => {
-		if (email && email.length >= 5) {
-			resolve('ok');
+			var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (email && email.length >= 5 && re.test(email)) {
+			console.log('email ok');
+			resolve('email ok');
 		} else {
 			reject('email too small');
 		}
@@ -42,12 +58,14 @@ exports.email = (email) => {
 
 exports.geoloc = (location) => {
 	return new Promise((resolve, reject) => {
-		console.log("++++++++++++" + location);
+		// let = new Geoloc();
 		if (location && location.length >= 2) {
-			geocoder.geocode("Atlanta, GA", function ( err, data ) {
-				console.log(data);
-			// do something with data
-			});
+			// geocoder.selectProvider("geonames",{"username":"dormin"});
+
+			// geocoder.geocode(location, function ( err, data ) {
+			// 	console.log(data);
+			// // do something with data
+			// });
 
 			resolve('ok');
 		} else {
