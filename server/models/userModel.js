@@ -50,10 +50,28 @@ exports.findUserByName = (name) => {
 		}).then((conn) => {
 			return conn.query('SELECT * FROM users WHERE username=\''+ name +'\'');
 		}).then((result) => {
-			// console.log(result);
+			console.log(result);
 			resolve(result);
 		}).catch((error) => {
 			reject(error);
 		})
 	})
+}
+
+exports.findUserById = (name) => {
+	// return new Promise((resolve, reject) => {
+	// 	mysql.createConnection({
+	// 		host: 'localhost',
+	// 		user: 'root',
+	// 		password: 'qwerty',
+	// 		database: 'matcha'
+	// 	}).then((conn) => {
+	// 		return conn.query('SELECT * FROM users WHERE username=\''+ name +'\'');
+	// 	}).then((result) => {
+	// 		// console.log(result);
+	// 		resolve(result);
+	// 	}).catch((error) => {
+	// 		reject(error);
+	// 	})
+	// })
 }
