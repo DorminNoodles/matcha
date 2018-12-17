@@ -5,6 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const user = require('./routes/user');
+const users = require('./routes/users');
 const messages = require('./routes/messages');
 
 
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/api/user', user);
 app.use('/api/messages', messages);
+app.use('/api/users', users);
 
 // function foo(req, res) {
 //
@@ -34,8 +36,6 @@ app.use('/api/messages', messages);
 // 	console.log(req.params);
 // 	res.send("hello");
 // });
-
-
 
 app.get('/', (req, res) => {
 	console.log('app.get');
