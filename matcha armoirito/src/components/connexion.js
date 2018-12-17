@@ -7,17 +7,18 @@ import Logo1 from '../image/logo1.png'
 import '../style/connexion.css'
 
 
+
 class Connexion extends Component {
     
     state = {
         redirect: false,
-        mail_connection : '',
-        password_connection : ''
+        mail_connection : null,
+        password_connection : null
     }
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return <Redirect to='/connexion' />
+            return <Redirect to='/client' />
         }
     }
 
@@ -52,7 +53,7 @@ class Connexion extends Component {
                                         id="mail_connection"
                                         type="email"
                                         className="form-control"
-                                        required />
+                                        />
                                 </div>
                             </div>
                             <div className="row">
@@ -64,7 +65,7 @@ class Connexion extends Component {
                                         id="password_connection"
                                         type="password" 
                                         className="form-control" 
-                                        required />
+                                        />
                                 </div>
                             </div>
                             <div>

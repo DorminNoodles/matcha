@@ -11,7 +11,7 @@ class Connexion extends Component {
     
     state = {
         redirect: false,
-        mail_recup : ''
+        mail_recup : null
     }
 
     renderRedirect = () => {
@@ -24,11 +24,6 @@ class Connexion extends Component {
         if (event.target.id in this.state) {
             this.setState({[event.target.id]: event.target.value})
         }
-        console.log(event.target.id)
-        console.log(this.state)
-        console.log(this.state.email)
-        
-        
     }    
     
     handleSubmit = (event) => {

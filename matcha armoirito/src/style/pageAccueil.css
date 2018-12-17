@@ -23,8 +23,15 @@
     display: table;
     margin: auto;
     background-color: #4c9e85;
+    margin-right: 20px;
 }
 
 a:link{
     text-decoration: none;
+}
+
+.button-accueil{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

@@ -10,14 +10,13 @@ import '../style/inscription.css'
 class Inscription extends Component {
     state = {
         redirect: false,
-        firstname : '',
-        lastname : '',
-        gender : '',
-        orientation : '',
-        email : '',
-        emailValidation : '',
-        password : '',
-        password_confirm : ''      
+        firstname : null,
+        lastname : null,
+        gender : null,
+        orientation : null,
+        email : null,
+        password : null,
+        password_confirm : null      
     }
 
     renderRedirect = () => {
@@ -37,6 +36,7 @@ class Inscription extends Component {
     }
 
     render () {
+        
         return (
             <div className="container">
                 <div className="logo-center">
@@ -110,18 +110,6 @@ class Inscription extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group ">
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="Confirm email" 
-                                        id="emailValidation" 
-                                        type="email" 
-                                        className="form-control" 
-                                        />
-                                </div>
-                            </div>
-                            <div className="row">
                                 <div className="col-md-4 col-sm-2"></div>                          
                                 <div className="col-md-4 col-sm-8 form-group ">
                                     <input
@@ -150,6 +138,11 @@ class Inscription extends Component {
                                     className="btn btn-info btn-lg button-inscription"
                                     type="submit"
                                     value="S'inscrire"/>
+                            </div>
+                            <div>
+                                <div className="information_user">
+                                    <Link to="/connexion">Déja client ?</Link><br />
+                                </div>
                             </div>
                         </form>
                     </div>
