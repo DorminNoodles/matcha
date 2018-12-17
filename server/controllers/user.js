@@ -3,16 +3,18 @@ const User = require('../services/user');
 const UserModel = require('../services/user');
 const jwt = require('jsonwebtoken');
 
+
 const events = require('events');
 
 const user = require('../models/userModel');
+const Token = require('../services/token');
+const checkInput = require('../services/checkInput');
 
 var eventEmitter = new events.EventEmitter();
 
 eventEmitter.on('pouet', function() {
 	console.log("test Event !");
 });
-
 
 
 exports.register = (data) => {
@@ -35,7 +37,6 @@ exports.register = (data) => {
 		.catch((err) => {
 			reject(err);
 		})
-
 		console.log(data);
 		resolve('Perfect !');
 	})
@@ -43,18 +44,27 @@ exports.register = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		user.findUserByName(data.username)
-		.then((data) => {
-			console.log(data);
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username,
-				email: data.email
-			}, 'shhhhh');
-			resolve(token);
+		console.log("fuck 1");
+		checkInput.username(data.username).then(() => {
+			user.findUserByName(data.username)
+			.then((res) => {
+				console.log(res);
+				new Token().hello();
+				// resolve(new Token().hello());
+				// var token =
+				//
+				// jwt.sign({
+				// 	id: data.id,
+				// 	username: data.username,
+				// 	email: data.email
+				// }, 'shhhhh');
+				// resolve(token);
+			}).catch((err) => {
+				console.log("fuck 2");
+				reject(err);
+			})
 		}).catch((err) => {
 			reject(err);
 		})
-
 	})
 }

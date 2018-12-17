@@ -1,9 +1,7 @@
 const mysql = require('promise-mysql');
 
-
 exports.newMessage = (data) => {
 	return new Promise((resolve, reject) => {
-		resolve();
 		mysql.createConnection({
 			host: 'localhost',
 			user: 'root',
@@ -11,8 +9,8 @@ exports.newMessage = (data) => {
 			database: 'matcha'
 		}).then((conn) => {
 			conn.query('INSERT INTO messages (\
-				from,\
-				to,\
+				`from`,\
+				`to`,\
 				body\
 			)VALUES (\
 				\'hello\',\
@@ -29,5 +27,6 @@ exports.newMessage = (data) => {
 				reject(err);
 			})
 		});
+		resolve();
 	})
 }

@@ -8,18 +8,18 @@ const chatRoomEvents = new EventEmitter;
 
 class User {
 
-	constructor(){
+	constructor() {
 		chatRoomEvents.on('userJoined', this.userJoined);
 		// setTimeout(function () {
 		// 	console.log('1');
 		// }, 2000);
 	}
 
-	displayMessage (){
+	displayMessage() {
 		console.log('testo');
 	}
 
-	userJoined (username) {
+	userJoined(username) {
 		console.log("USERJOINED");
 		chatRoomEvents.on('message', this.displayMessage);
 		console.log("USERJOINED");
