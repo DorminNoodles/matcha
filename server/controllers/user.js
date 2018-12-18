@@ -22,7 +22,7 @@ exports.register = (data) => {
 		let user = new User();
 
 		console.log(data);
-		user.createUser({
+		user.register({
 				username : data.username,
 				password : data.password,
 				firstname : data.firstname,
@@ -44,6 +44,7 @@ exports.register = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
+<<<<<<< HEAD
 		console.log("fuck 1");
 		checkInput.username(data.username).then(() => {
 			user.findUserByName(data.username)
@@ -66,5 +67,24 @@ exports.authenticate = (data) => {
 		}).catch((err) => {
 			reject(err);
 		})
+=======
+		user.authenticate(data.name, data.password)
+		.then(() => {
+			resolve();
+		})
+		.catch(() => {
+			reject();
+		})
+	})
+}
+
+exports.search = (name) => {
+	console.log("search user in database");
+}
+
+exports.update = (data) => {
+	return new Promise((resolve, reject) => {
+
+>>>>>>> origin/mailActivation
 	})
 }

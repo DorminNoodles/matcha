@@ -1,29 +1,23 @@
 "use strict";
+// const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
-const EventEmitter = require('events').EventEmitter;
-
-const chatRoomEvents = new EventEmitter;
-
+const emitter = require('../emitter');
 
 class User {
 
-	constructor() {
-		chatRoomEvents.on('userJoined', this.userJoined);
-		// setTimeout(function () {
-		// 	console.log('1');
-		// }, 2000);
+	constructor(){
+		userModel.
+		console.log('Hellomoto');
+		emitter.on('userRegistered', this.displayMessage);
 	}
 
-	displayMessage() {
-		console.log('testo');
+	displayMessage (){
+		// console.log('testy');
 	}
 
-	userJoined(username) {
-		console.log("USERJOINED");
-		chatRoomEvents.on('message', this.displayMessage);
-		console.log("USERJOINED");
-		// console.log('User Joined ! +++++++++++++'+ username +'++++++++++++++');
+	userJoined (username) {
+
 	}
 
 	checkData(data) {
@@ -55,7 +49,7 @@ class User {
 		})
 	}
 
-	createUser(data) {
+	register(data) {
 		return new Promise((resolve, reject) => {
 			if (!data)
 				reject();
@@ -63,7 +57,12 @@ class User {
 			.then((res) => {
 				console.log(res);
 				console.log("checkData Valid");
+				return(userModel.saveUser(data));
 				resolve(data);
+			})
+			.then((res) => {
+					console.log("User saved !");
+					resolve("User saved !");
 			})
 			.catch((err) => {
 				console.log(err);
@@ -73,22 +72,33 @@ class User {
 		})
 	}
 
-	saveUser(data) {
+	authenticate(username, password) {
 		return new Promise((resolve, reject) => {
-			userModel.saveUser(data)
+
+			checkInput.username(username)
 			.then(() => {
-				console.log('hello+++++++++++++++');
-				chatRoomEvents.emit('userJoined', 'GOOOOOOOOO');
-				// chatRoomEvents.removeListener('message', this.displayMessage);
-				console.log('hello+++++++++++++++');
+				return checkInput.password(password);
+			})
+			.then(() => {
 				resolve();
 			})
 			.catch(() => {
 				reject();
 			})
 
-			console.log("saveUser");
-			resolve();
+			user.findUserByName(username)
+			.then((data) => {
+				console.log(data);
+				let token = jwt.sign({
+					id: data.id,
+					username: data.username,
+					email: data.email
+				}, 'shhhhhhh');
+				resolve(token);
+			})
+			.catch(() => {
+				reject();
+			})
 		})
 	}
 
