@@ -44,30 +44,6 @@ exports.register = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-<<<<<<< HEAD
-		console.log("fuck 1");
-		checkInput.username(data.username).then(() => {
-			user.findUserByName(data.username)
-			.then((res) => {
-				console.log(res);
-				new Token().hello();
-				// resolve(new Token().hello());
-				// var token =
-				//
-				// jwt.sign({
-				// 	id: data.id,
-				// 	username: data.username,
-				// 	email: data.email
-				// }, 'shhhhh');
-				// resolve(token);
-			}).catch((err) => {
-				console.log("fuck 2");
-				reject(err);
-			})
-		}).catch((err) => {
-			reject(err);
-		})
-=======
 		user.authenticate(data.name, data.password)
 		.then(() => {
 			resolve();
@@ -85,6 +61,5 @@ exports.search = (name) => {
 exports.update = (data) => {
 	return new Promise((resolve, reject) => {
 
->>>>>>> origin/mailActivation
 	})
 }

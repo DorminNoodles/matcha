@@ -5,17 +5,13 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const user = require('./routes/user');
-<<<<<<< HEAD
 const users = require('./routes/users');
+
 const messages = require('./routes/messages');
-=======
 const emitter = require('./emitter');
 const activationMail = require('./services/activationMail');
 
-const activationMail = require('./services/activationMail');
 const sendMail = new activationMail();
->>>>>>> origin/mailActivation
-
 
 io.on('connection', (socket) => {
 	// console.log('fichtre');
@@ -33,7 +29,6 @@ app.use('/api/user', user);
 app.use('/api/messages', messages);
 app.use('/api/users', users);
 
-<<<<<<< HEAD
 // function foo(req, res) {
 //
 // 	console.log(req.params);
@@ -57,8 +52,6 @@ app.get('/', (req, res) => {
 // });
 
 
-=======
->>>>>>> origin/mailActivation
 
 server.listen(3000);
 // app.listen(3000);
