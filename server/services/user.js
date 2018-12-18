@@ -7,7 +7,6 @@ const emitter = require('../emitter');
 class User {
 
 	constructor(){
-		userModel.
 		console.log('Hellomoto');
 		emitter.on('userRegistered', this.displayMessage);
 	}
@@ -100,6 +99,10 @@ class User {
 				reject();
 			})
 		})
+	}
+
+	checkAuth(token) {
+
 	}
 
 }

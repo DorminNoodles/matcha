@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const events = require('events');
 
 const user = require('../models/userModel');
-const Token = require('../services/token');
 const checkInput = require('../services/checkInput');
 
 var eventEmitter = new events.EventEmitter();
