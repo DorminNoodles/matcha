@@ -26,10 +26,9 @@ router.get('/profil/:id', urlencodedParser, (req, res) => {
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
+	console.log("fuck");
 	console.log(req.body.username);
 	console.log(req.body.password);
-
-
 
 	user.authenticate(req.body)
 	.then((resolve) => {

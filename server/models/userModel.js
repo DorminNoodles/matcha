@@ -58,10 +58,15 @@ exports.findUserByName = (name) => {
 		}).then((conn) => {
 			return conn.query('SELECT * FROM users WHERE username=\''+ name +'\'');
 		}).then((result) => {
-			console.log(result);
+			console.log("findUserByName success");
+			// console.log(result);
 			resolve(result);
+			return;
 		}).catch((error) => {
+			console.log("findUserByName failed");
+
 			reject(error);
+			return;
 		})
 	})
 }

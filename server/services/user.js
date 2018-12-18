@@ -74,26 +74,31 @@ class User {
 	authenticate(username, password) {
 		return new Promise((resolve, reject) => {
 
-			checkInput.username(username)
-			.then(() => {
-				return checkInput.password(password);
-			})
-			.then(() => {
-				resolve();
-			})
-			.catch(() => {
-				reject();
-			})
+			console.log("HELOOOOOOO");
+			console.log(username);
 
-			user.findUserByName(username)
+			// checkInput.username(username)
+			// .then(() => {
+			// 	return checkInput.password(password);
+			// })
+			// .then(() => {
+			// 	resolve();
+			// })
+			// .catch(() => {
+			// 	reject();
+			// })
+
+			userModel.findUserByName(username)
 			.then((data) => {
 				console.log(data);
+				console.log(data.username);
 				let token = jwt.sign({
 					id: data.id,
 					username: data.username,
 					email: data.email
 				}, 'shhhhhhh');
 				resolve(token);
+				return;
 			})
 			.catch(() => {
 				reject();
