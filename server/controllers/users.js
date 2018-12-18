@@ -17,18 +17,3 @@ exports.getUsers = () => {
 		});
 	})
 }
-
-
-
-// {
-// 	id: 5,
-// 	username: 'Pascalou'
-// },
-// {
-// 	id: 8,
-// 	username: 'Mika'
-// },
-// {
-// 	id: 9,
-// 	username: 'lolo'
-// }
