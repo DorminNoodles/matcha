@@ -10,9 +10,11 @@ import '../style/app.css'
 import PageAccueil from '../components/pageAccueil'
 import Inscription from '../components/inscription'
 import Connexion from '../components/connexion'
-import PageIntrouvable from '../components/pageIntrouvable'
+import PageIntrouvable from '../components/PageIntrouvable'
 import RecupereMotdepasse from '../components/recupérationMotdepasse'
 import Client from '../components/clients'
+import ClientProfil from '../components/clientProfil'
+import ClientMessage from '../components/clientMessage'
 
 class App extends Component{
     
@@ -25,8 +27,10 @@ class App extends Component{
                         <Route exact path='/inscription' render={() => <Inscription />} />
                         <Route exact path='/connexion' render={() => <Connexion />} />
                         <Route exact path='/client' render={() => <Client />} />
+                        <Route exact path='/client/profil' render={() => <ClientProfil />} />
+                        <Route exact path='/client/message' render={() => <ClientMessage />} />
                         <Route exact path='/recup_motdepasse' render={() => <RecupereMotdepasse />} />
-                        <Route  render={() => <PageIntrouvable />} />
+                        <Route render={() => <PageIntrouvable />} />
                     </Switch>
                 </BrowserRouter>
             </div>

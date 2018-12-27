@@ -4,19 +4,22 @@ import {Link, Redirect} from 'react-router-dom'
 import Logo1 from '../image/logo1.png'
 
 //Style
-import '../style/recuperationMotdepasse.css'
+import '../style/connexion.css'
 
 
-class Connexion extends Component {
+
+class RecupereMotdepasse extends Component {
     
     state = {
         redirect: false,
-        mail_recup : null
+        mail_connection : null,
+        password_connection : null,
+        username: "mi"
     }
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return <Redirect to='/' />
+            return <Redirect to='/recup_motdepasse' />
         }
     }
 
@@ -40,32 +43,32 @@ class Connexion extends Component {
                 {/* Redirection vers connexion*/}
                 {this.renderRedirect()}
 
-                <div className="formulaire-connexion">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
-                                    <input 
-                                        onChange={this.handleChange}
-                                        placeholder="Email"
-                                        id="mail_recup"
-                                        type="email"
-                                        className="form-control"
-                                        required />
-                                </div>
-                            </div>
-                            <div className="boutton-form">
+
+                <div className='center-form'>
+                        <form className='position-form' onSubmit={this.handleSubmit}>
+                            <input 
+                                onChange={this.handleChange}
+                                placeholder="Email"
+                                id="mail_connection"
+                                type="email"
+                                className="form-ins"
+                                />
+                            <div className='center-button'>
                                 <input 
-                                    className="btn btn-info btn-lg button-recup" 
-                                    type="submit" 
-                                    value="Récupére ton mot de passe" 
-                                    required />
+                                    className="button-ins"
+                                    type="submit"
+                                    value="Change ton mot de passe"
+                                />
+                            </div>
+                            <div className="information_user">
+                                <Link to="/connexion">Connexion ?</Link><br />
+                                
                             </div>
                         </form>
-                </div>
+                    </div>
             </div>
         );
     }
 }
 
-export default Connexion
+export default RecupereMotdepasse

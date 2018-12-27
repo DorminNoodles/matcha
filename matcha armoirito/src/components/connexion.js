@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import Logo1 from '../image/logo1.png'
+import axios from 'axios'
 
 //Style
 import '../style/connexion.css'
@@ -13,12 +14,13 @@ class Connexion extends Component {
     state = {
         redirect: false,
         mail_connection : null,
-        password_connection : null
+        password_connection : null,
+        username: "mi"
     }
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return <Redirect to='/client' />
+            return <Redirect push to='/client' />
         }
     }
 
@@ -29,6 +31,13 @@ class Connexion extends Component {
     }    
     
     handleSubmit = (event) => {
+            axios.post('http://localhost:3000/api/user/register', this.state)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         this.setState({redirect: true})
     }
 
@@ -42,47 +51,36 @@ class Connexion extends Component {
                 {/* Redirection vers connexion*/}
                 {this.renderRedirect()}
 
-                <div className="formulaire-connexion">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
-                                    <input 
-                                        onChange={this.handleChange}
-                                        placeholder="Email"
-                                        id="mail_connection"
-                                        type="email"
-                                        className="form-control"
-                                        />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="Password"
-                                        id="password_connection"
-                                        type="password" 
-                                        className="form-control" 
-                                        />
-                                </div>
-                            </div>
-                            <div>
-                                <div className="information_user">
-                                    <Link to="/recup_motdepasse">Mot de passe oublié</Link><br />
-                                    <Link to="/inscription">Pas encore inscrit ?</Link>
-                                </div>
-                            </div>
-                            <div className="boutton-form">
+
+                <div className='center-form'>
+                        <form className='position-form' onSubmit={this.handleSubmit}>
+                            <input 
+                                onChange={this.handleChange}
+                                placeholder="Email"
+                                id="mail_connection"
+                                type="email"
+                                className="form-ins"
+                                />
+                            <input
+                                onChange={this.handleChange}
+                                placeholder="Password"
+                                id="password_connection"
+                                type="password" 
+                                className="form-ins" 
+                                />
+                            <div className='center-button'>
                                 <input 
-                                    className="btn btn-info btn-lg button-inscription" 
-                                    type="submit" 
-                                    value="Connexion" 
-                                    required />
+                                    className="button-ins"
+                                    type="submit"
+                                    value="Connexion"
+                                />
+                            </div>
+                            <div className="information_user">
+                                <Link to="/recup_motdepasse">Mot de passe oublié</Link><br />
+                                <Link to="/inscription">Pas encore inscrit ?</Link>
                             </div>
                         </form>
-                </div>
+                    </div>
             </div>
         );
     }

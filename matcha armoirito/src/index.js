@@ -8,6 +8,11 @@ import App from './containers/app';
 //Style
 import './style/index.css';
 
+//Axios
+
+
+
+
 
 
 ReactDom.render(<App />, document.querySelector('#root'));

@@ -5,16 +5,3 @@
     text-align: center;
     padding: 10px;
 }
-
-.test{
-    border: 1px solid red;
-    
-
-}
-.formulaire-connexion{
-    height: 70vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
-}
