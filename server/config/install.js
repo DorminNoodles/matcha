@@ -84,6 +84,19 @@ async function fakeDB() {
 			\'male\',\
 			\'chevre\')\
 		');
+		await connection.query('CREATE TABLE messages (\
+			id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+			`from` VARCHAR(30) NOT NULL,\
+			`to` VARCHAR(30) NOT NULL,	\
+			body BLOB\
+		)');
+		// await connection.query('CREATE TABLE messages (\
+		// 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+		// 	from VARCHAR(30) NOT NULL,	\
+		// 	to VARCHAR(30) NOT NULL,	\
+		// 	content BLOB,\
+		// 	date TIMESTAMP\
+		// )');
 		await connection.end();
 	} catch (error) {
 		console.error(error);

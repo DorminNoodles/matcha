@@ -26,9 +26,10 @@ router.get('/profil/:id', urlencodedParser, (req, res) => {
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-
 	console.log(req.body.username);
 	console.log(req.body.password);
+
+
 
 	user.authenticate(req.body)
 	.then((resolve) => {
@@ -39,12 +40,17 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 		});
 		console.log('connected !');
 	}).catch((error) => {
+		console.log('error');
 		console.log(error);
 		res.send({
 			status: 'error',
-			message: ''
+			message: error
 		});
 	})
+})
+
+router.put('/user/:id', urlencodedParser, (req, res) => {
+	console.log(req.params);
 
 })
 

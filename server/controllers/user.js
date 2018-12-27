@@ -3,9 +3,12 @@ const User = require('../services/user');
 const UserModel = require('../services/user');
 const jwt = require('jsonwebtoken');
 
+
 const events = require('events');
 
 const user = require('../models/userModel');
+const Token = require('../services/token');
+const checkInput = require('../services/checkInput');
 
 var eventEmitter = new events.EventEmitter();
 
@@ -14,13 +17,12 @@ eventEmitter.on('pouet', function() {
 });
 
 
-
 exports.register = (data) => {
 	return new Promise((resolve, reject) => {
 		let user = new User();
 
 		console.log(data);
-		user.createUser({
+		user.register({
 				username : data.username,
 				password : data.password,
 				firstname : data.firstname,
@@ -35,7 +37,6 @@ exports.register = (data) => {
 		.catch((err) => {
 			reject(err);
 		})
-
 		console.log(data);
 		resolve('Perfect !');
 	})
@@ -43,18 +44,22 @@ exports.register = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		user.findUserByName(data.username)
-		.then((data) => {
-			console.log(data);
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username,
-				email: data.email
-			}, 'shhhhh');
-			resolve(token);
-		}).catch((err) => {
-			reject(err);
+		user.authenticate(data.name, data.password)
+		.then(() => {
+			resolve();
 		})
+		.catch(() => {
+			reject();
+		})
+	})
+}
+
+exports.search = (name) => {
+	console.log("search user in database");
+}
+
+exports.update = (data) => {
+	return new Promise((resolve, reject) => {
 
 	})
 }
