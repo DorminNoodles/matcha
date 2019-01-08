@@ -3,27 +3,25 @@ const User = require('../services/user');
 const UserModel = require('../services/user');
 const jwt = require('jsonwebtoken');
 const user = require('../models/userModel');
+var nodemailer = require('nodemailer');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		let user = new User();
-
 		user.createUser({
 				username : data.username,
 				password : data.password,
-				firstname : data.firstname
+				firstname : data.firstname,
+				lastname : data.lastname,
+				email : data.email
 		})
 		.then((res) => {
 			console.log(res);
-			return user.saveUser(res);
+			resolve(user.createUser(data));
 		})
 		.catch((err) => {
 			reject(err);
 		})
-
-		console.log(data);
-		return user.saveUser(data);
-		resolve('Perfect !');
 	})
 };
 

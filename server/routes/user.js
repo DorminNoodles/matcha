@@ -8,7 +8,7 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser, (req, res) => {
+router.post('/register', urlencodedParser,async (req, res) => {
 	user.new(req.body)
 	.then((resolve)=>{
 		console.log(resolve);
