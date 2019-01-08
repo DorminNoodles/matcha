@@ -10,14 +10,14 @@ import '../style/app.css'
 import PageAccueil from '../components/pageAccueil'
 import Inscription from '../components/inscription'
 import Connexion from '../components/connexion'
-import PageIntrouvable from '../components/PageIntrouvable'
+import PageIntrouvable from '../components/pageIntrouvable'
 import RecupereMotdepasse from '../components/recupérationMotdepasse'
 import Client from '../components/clients'
 import ClientProfil from '../components/clientProfil'
 import ClientMessage from '../components/clientMessage'
 
 class App extends Component{
-    
+
     render(){
         return(
             <div>
