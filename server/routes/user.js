@@ -15,7 +15,6 @@ router.post('/register', urlencodedParser,async (req, res) => {
 	}).catch((error)=>{
 		console.log(error);
 	})
-	console.log('User created !')
 	res.send('Create User');
 })
 

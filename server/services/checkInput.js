@@ -10,7 +10,6 @@ exports.username = (username) => {
 		}
 		userModel.findUserByUsername(username)
 		.then(() => {
-			console.log("TAKEN");
 			reject("Already taken");
 			return;
 		})
@@ -52,8 +51,8 @@ exports.email = (email) => {
 		}
 		userModel.findUserByEmail(email)
 		.then(() => {
-			console.log("???");
 			reject("Already used");
+			return;
 		})
 		.catch((err) => {
 			resolve(email);

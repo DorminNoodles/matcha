@@ -10,6 +10,9 @@ exports.findUserByEmail = (email) => {
 		}).then((conn) => {
 			var result = conn.query('SELECT email FROM users WHERE email=\''+ email +'\'');
 			conn.end();
+			if (result) {
+				reject(error);
+			}
 			return (result);
 		}).then((result) => {
 			resolve(result[0]);
@@ -72,9 +75,11 @@ exports.findUserByUsername = (username) => {
 		}).then((conn) => {
 			var result = conn.query('SELECT * FROM users WHERE username=\''+ username +'\'');
 			conn.end();
+			if (result) {
+				reject(error);
+			}
 			return result;
 		}).then((result) => {
-			console.log(result[0].username);
 			resolve(result[0]);
 		}).catch((error) => {
 			reject(error);
