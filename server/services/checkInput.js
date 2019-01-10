@@ -10,7 +10,7 @@ exports.username = (username) => {
 		}
 		userModel.findUserByUsername(username)
 		.then(() => {
-			reject("Already taken");
+			reject("username taken");
 			return;
 		})
 		.catch((err) => {
@@ -51,10 +51,9 @@ exports.email = (email) => {
 		}
 		userModel.findUserByEmail(email)
 		.then(() => {
-			reject("Already used");
+			reject("email used.");
 			return;
-		})
-		.catch((err) => {
+		}).catch((err) => {
 			resolve(email);
 		})
 	})

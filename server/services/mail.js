@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-nodemailer.createTestAccount((err, account) => {
+nodemailer.createTestAccount((email) => {
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -13,7 +13,7 @@ nodemailer.createTestAccount((err, account) => {
 
     let mailOptions = {
         from: '"Fred Foo 👻" <matchaducancer@gmail.com>',
-        to: 'hypertyson@hotmail.fr',
+        to: email,
         subject: 'Hello ✔ Ganesh',
         text: 'Hello world?',
         html: '<b>Hello world?</b>'
