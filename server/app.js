@@ -9,9 +9,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/api/user', user);
 
-app.get('/:id', (req, res) => {
-	console.log(req.params);
-	res.send("hello");
-});
+//Mettre app.use(checkToken)
+//Mettre les routes protegées
 
 app.listen(3000);

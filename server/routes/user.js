@@ -30,26 +30,7 @@ router.get('/profil/:id', urlencodedParser, (req, res) => {
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-
-	console.log(req.body.username);
-	console.log(req.body.password);
-
-	user.authenticate(req.body)
-	.then((resolve) => {
-		res.send({
-			status: 'ok',
-			message: 'connected !',
-			token: resolve
-		});
-		console.log('connected !');
-	}).catch((error) => {
-		console.log(error);
-		res.send({
-			status: 'error',
-			message: ''
-		});
-	})
-
+	user.authenticate(req, res);
 })
 
 module.exports = router;

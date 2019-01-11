@@ -43,20 +43,25 @@ exports.find = (data) => {
 	})
 }
 
-exports.authenticate = (data) => {
-	return new Promise((resolve, reject) => {
-		user.findUserByName(data.username)
-		.then((data) => {
-			console.log(data);
+exports.authenticate = (req, res) => {
+	const data = req.body;
+	user.findUserByUsername(data.username)
+	.then(() => {
+		console.log("<- AUTH ---");
+		console.log(data);
+		console.log("--- AUTH ->");
+		user.checkLogin(data, res).then((res) => {
 			var token = jwt.sign({
 				id: data.id,
-				username: data.username,
-				email: data.email
+				username: data.username
 			}, 'shhhhh');
-			resolve(token);
-		}).catch((err) => {
-			reject(err);
+			console.log(token);
+			res.status(200).send({token});
+		}).catch((error) => {
+			console.log(error);
+			res.status(401).send("error");
 		})
-
+	}).catch((err) => {
+		console.log("error");
 	})
 }
