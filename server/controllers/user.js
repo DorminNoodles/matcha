@@ -1,13 +1,12 @@
 // controller
 const User = require('../services/user');
-const UserModel = require('../services/user');
+// const UserModel = require('../services/user');
 const jwt = require('jsonwebtoken');
 
 
 const events = require('events');
 
-const user = require('../models/userModel');
-const Token = require('../services/token');
+const UserModel = require('../models/userModel');
 const checkInput = require('../services/checkInput');
 
 var eventEmitter = new events.EventEmitter();
@@ -44,7 +43,7 @@ exports.register = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		user.authenticate(data.name, data.password)
+		User.authenticate(data.name, data.password)
 		.then(() => {
 			resolve();
 		})

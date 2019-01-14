@@ -3,11 +3,11 @@
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const emitter = require('../emitter');
+const jwt = require('jsonwebtoken');
 
 class User {
 
 	constructor(){
-		userModel.
 		console.log('Hellomoto');
 		emitter.on('userRegistered', this.displayMessage);
 	}
@@ -86,7 +86,7 @@ class User {
 				reject();
 			})
 
-			user.findUserByName(username)
+			userModel.findUserByName(username)
 			.then((data) => {
 				console.log(data);
 				let token = jwt.sign({
@@ -96,10 +96,15 @@ class User {
 				}, 'shhhhhhh');
 				resolve(token);
 			})
-			.catch(() => {
-				reject();
+			.catch((err) => {
+				console.log(err);
+				reject(err);
 			})
 		})
+	}
+
+	checkAuth(token) {
+
 	}
 
 }

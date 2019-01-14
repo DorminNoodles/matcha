@@ -19,17 +19,19 @@ router.post('/register', urlencodedParser, (req, res) => {
 	res.send('Create User');
 })
 
-router.get('/profil/:id', urlencodedParser, (req, res) => {
-
+router.get('/profil', urlencodedParser, (req, res) => {
 	console.log(req.params);
-	res.send('Get profil');
+	console.log(req.token);
+	if (!req.token)
+		res.send({connexion : false});
+	else
+		res.send('Get profil');
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
+	console.log("token middleware ok");
 	console.log(req.body.username);
 	console.log(req.body.password);
-
-
 
 	user.authenticate(req.body)
 	.then((resolve) => {
