@@ -7,6 +7,14 @@ const get = (str) => {
 }
 
 const getJwtToken = (req, res, next) => {
+	console.log("here");
+	if (!req.headers['authorization'])
+	{
+		req.token = false;
+		next();
+		return;
+	}
+	console.log("here");
 	const bearer = req.headers['authorization'].split(' ');
 	const token = bearer[1];
 	// const token = jwtToken.get(req.headers['authorization']);

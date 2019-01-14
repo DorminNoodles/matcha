@@ -42,7 +42,6 @@ const emitter = require('../emitter');
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
-
 		console.log("saveUser in DB");
 
 	})
@@ -56,13 +55,21 @@ exports.findUserByName = (name) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			return conn.query('SELECT * FROM users WHERE username=\''+ name +'\'');
+			let result = conn.query('SELECT * FROM users WHERE username=\''+ name +'\'');
+			conn.end();
+			return result;
 		}).then((result) => {
-			console.log(result);
+			if (!result[0]) {
+				reject('No found');
+				return;
+			}
+			console.log('here ===> ' + result[0]);
 			resolve(result);
 		}).catch((error) => {
+			console.log('HAHAHAHAHA');
 			reject(error);
 		})
+
 	})
 }
 
