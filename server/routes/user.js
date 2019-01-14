@@ -33,4 +33,8 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 	user.authenticate(req, res);
 })
 
+router.post('/forgot', urlencodedParser, (req, res) => {
+	user.forgot(req, res);
+})
+
 module.exports = router;
