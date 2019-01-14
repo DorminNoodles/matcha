@@ -2,79 +2,64 @@
 const User = require('../services/user');
 const UserModel = require('../services/user');
 const jwt = require('jsonwebtoken');
-const user = require('../models/userModel');
-var nodemailer = require('nodemailer');
 
-exports.new = (data) => {
+
+const events = require('events');
+
+const user = require('../models/userModel');
+const Token = require('../services/token');
+const checkInput = require('../services/checkInput');
+
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('pouet', function() {
+	console.log("test Event !");
+});
+
+
+exports.register = (data) => {
 	return new Promise((resolve, reject) => {
 		let user = new User();
-		user.createUser({
+
+		console.log(data);
+		user.register({
 				username : data.username,
 				password : data.password,
 				firstname : data.firstname,
-				lastname : data.lastname,
-				email : data.email
+				email : data.email,
+				location : data.location
 		})
 		.then((res) => {
+			eventEmitter.emit('pouet');
 			console.log(res);
-			resolve(user.createUser(data));
+			return user.saveUser(res);
 		})
 		.catch((err) => {
 			reject(err);
 		})
+		console.log(data);
+		resolve('Perfect !');
 	})
 };
 
-exports.find = (data) => {
+exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		user.findUserByID(data.id)
-		.then((data) => {
-			console.log(data);
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username,
-				email: data.email
-			}, 'shhhhh');
-			resolve(token);
-		}).catch((err) => {
-			reject(err);
+		user.authenticate(data.name, data.password)
+		.then(() => {
+			resolve();
 		})
-
+		.catch(() => {
+			reject();
+		})
 	})
 }
 
-exports.authenticate = (req, res) => {
-	const data = req.body;
-	user.findUserByUsername(data.username)
-	.then(() => {
-		console.log("<- AUTH ---");
-		console.log(data);
-		console.log("--- AUTH ->");
-		user.checkLogin(data, res).then((res) => {
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username
-			}, 'shhhhh');
-			console.log(token);
-			res.status(200).send({token});
-		}).catch((error) => {
-			console.log(error);
-			res.status(401).send("error");
-		})
-	}).catch((err) => {
-		console.log("error");
-	})
+exports.search = (name) => {
+	console.log("search user in database");
 }
 
-exports.forgot = (req, res) => {
-	const data = req.body;
-	user.forgotPassword(data)
-	.then(() => {
-		console.log("<- FGPSD1 ---");
-		console.log(data);
-		console.log("--- FGPSD1 ->");
-		console.log("Mail sent");
-	}).catch((err) => {
-		console.log("error");
+exports.update = (data) => {
+	return new Promise((resolve, reject) => {
+
 	})
 }
