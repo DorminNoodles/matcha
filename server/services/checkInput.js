@@ -2,8 +2,6 @@ const userModel = require('../models/userModel.js');
 
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
-		// if (userModel.findUserByUsername(username))
-			// reject("Already taken");
 		if (username && username.length < 2) {
 			reject("Username too short");
 			return;

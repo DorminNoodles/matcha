@@ -1,14 +1,13 @@
 // controller
-const User = require('../services/user');
-const UserModel = require('../services/user');
+const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
-const user = require('../models/userModel');
+const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		let user = new User();
-		user.createUser({
+		let userService = new UserService();
+		userService.createUser({
 				username : data.username,
 				password : data.password,
 				firstname : data.firstname,
@@ -17,7 +16,7 @@ exports.new = (data) => {
 		})
 		.then((res) => {
 			console.log(res);
-			resolve(user.createUser(data));
+			resolve();
 		})
 		.catch((err) => {
 			reject(err);
@@ -39,7 +38,6 @@ exports.find = (data) => {
 		}).catch((err) => {
 			reject(err);
 		})
-
 	})
 }
 

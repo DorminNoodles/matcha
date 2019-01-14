@@ -1,6 +1,7 @@
 "use strict";
 const checkInput = require('../services/checkInput');
-const check = require('../models/userModel')
+const userModel = require('../models/userModel')
+const myEmitter = require('../emitter');
 
 class User {
 	constructor(){
@@ -36,11 +37,16 @@ class User {
 
 	createUser(data) {
 		return new Promise((resolve, reject) => {
-			if (!data)
-				reject();
+			if (!data) {
+				reject('No Data');
+				return;
+			}
 			this.checkData(data)
 			.then((res) => {
-				resolve(check.saveUser(data));
+
+				myEmitter.emit('userRegistered', data);
+				resolve(userModel.saveUser(data));
+
 			})
 			.catch((err) => {
 				console.log("checkData error");
