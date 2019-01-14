@@ -8,52 +8,33 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser, (req, res) => {
-	user.register(req.body)
+router.post('/register', urlencodedParser,async (req, res) => {
+	user.new(req.body)
 	.then((resolve)=>{
 		console.log(resolve);
 	}).catch((error)=>{
 		console.log(error);
 	})
-	console.log('User created !')
 	res.send('Create User');
 })
 
-router.get('/profil', urlencodedParser, (req, res) => {
+router.get('/profil/:id', urlencodedParser, (req, res) => {
 	console.log(req.params);
-	console.log(req.token);
-	if (!req.token)
-		res.send({connexion : false});
-	else
-		res.send('Get profil');
+	user.find(req.params)
+	.then((resolve)=>{
+		console.log(resolve);
+	}).catch((error)=>{
+		console.log(error);
+	})
+	res.send('Get profil');
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-	console.log("token middleware ok");
-	console.log(req.body.username);
-	console.log(req.body.password);
-
-	user.authenticate(req.body)
-	.then((resolve) => {
-		res.send({
-			status: 'ok',
-			message: 'connected !',
-			token: resolve
-		});
-		console.log('connected !');
-	}).catch((error) => {
-		console.log('error');
-		console.log(error);
-		res.send({
-			status: 'error',
-			message: error
-		});
-	})
+	user.authenticate(req, res);
 })
 
-router.put('/user/:id', urlencodedParser, (req, res) => {
-	console.log(req.params);
-
+router.post('/forgot', urlencodedParser, (req, res) => {
+	user.forgot(req, res);
 })
 
 module.exports = router;

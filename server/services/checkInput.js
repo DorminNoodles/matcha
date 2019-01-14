@@ -1,75 +1,67 @@
-var geocoder = require('geocoder');
+const userModel = require('../models/userModel.js');
 
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
-		if (!username) {
-			reject('Username must be filled');
+		// if (userModel.findUserByUsername(username))
+			// reject("Already taken");
+		if (username && username.length < 2) {
+			reject("Username too short");
 			return;
 		}
-		if (username.length >= 3) {
-			reject('Username too small');
+		userModel.findUserByUsername(username)
+		.then(() => {
+			reject("username taken");
 			return;
-		}
-		resolve('ok');
+		})
+		.catch((err) => {
+			resolve(username);
+		})
 	})
 }
 
 exports.password = (password) => {
 	return new Promise((resolve, reject) => {
-		if (password && password.length >= 3) {
-			resolve('ok');
-		} else {
-			reject('Password too small');
+		const passwordRegex = RegExp(/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/);
+		if (passwordRegex.test(password)) {
+			resolve(password)
+		} else{
+			reject("fail password");
 		}
 	})
 }
 
 exports.firstname = (firstname) => {
 	return new Promise((resolve, reject) => {
-		if (firstname && firstname.length >= 3) {
-			resolve('ok');
-		} else {
-			reject('firstname too small');
-		}
+		firstname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(firstname) : reject(Error('fail'));
 	})
 }
 
-// exports.email = (email) => {
-// 	return new Promise((resolve, reject) => {
-// 		if (email && email.length >= 5) {
-// 			resolve('ok');
-// 		} else {
-// 			reject('email too small');
-// 		}
-// 	})
-// }
+exports.lastname = (lastname) => {
+	return new Promise((resolve, reject) => {
+		lastname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(lastname) : reject(Error('fail'));
+	})
+}
 
 exports.email = (email) => {
 	return new Promise((resolve, reject) => {
-			var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		if (email && email.length >= 5 && re.test(email)) {
-			console.log('email ok');
-			resolve('email ok');
-		} else {
-			reject('email too small');
+		var reg = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+		if (email && !email.match(reg)) {
+			reject("Email not conform");
+			return;
 		}
+		userModel.findUserByEmail(email)
+		.then(() => {
+			reject("email used.");
+			return;
+		}).catch((err) => {
+			resolve(email);
+		})
 	})
 }
 
 exports.geoloc = (location) => {
 	return new Promise((resolve, reject) => {
-		// let = new Geoloc();
-		if (location && location.length >= 2) {
-			// geocoder.selectProvider("geonames",{"username":"dormin"});
-
-			// geocoder.geocode(location, function ( err, data ) {
-			// 	console.log(data);
-			// // do something with data
-			// });
-
-			resolve('ok');
-		} else {
-			reject('Location too small');
-		}
+		const locationRegex = RegExp(/^[0-9]{5,5}$/);
+		locationRegex.test(location) ? resolve(location) : reject(new Error('fail'));
 	})
 }
