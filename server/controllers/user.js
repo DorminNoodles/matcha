@@ -26,7 +26,7 @@ exports.new = (data) => {
 
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
-		user.findUserByID(data.id)
+		userModel.findUserByID(data.id)
 		.then((data) => {
 			console.log(data);
 			var token = jwt.sign({
@@ -43,7 +43,7 @@ exports.find = (data) => {
 
 exports.authenticate = (req, res) => {
 	const data = req.body;
-	user.findUserByUsername(data.username)
+	userModel.findUserByUsername(data.username)
 	.then(() => {
 		console.log("<- AUTH ---");
 		console.log(data);
@@ -66,7 +66,7 @@ exports.authenticate = (req, res) => {
 
 exports.forgot = (req, res) => {
 	const data = req.body;
-	user.forgotPassword(data)
+	userModel.forgotPassword(data)
 	.then(() => {
 		console.log("<- FGPSD1 ---");
 		console.log(data);
