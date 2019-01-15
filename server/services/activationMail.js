@@ -46,7 +46,6 @@ class ActivationMail {
 							</body>\
 						</html>'
 			};
-
 		    transporter.sendMail(mailOptions, (error, info) => {
 				if (error) {
 				    return console.log(error);
