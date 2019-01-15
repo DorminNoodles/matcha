@@ -34,14 +34,18 @@ exports.findUserByEmail = (email) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT email FROM users WHERE email=\''+ email +'\'');
+			var result = conn.query('SELECT * FROM users WHERE email=\''+ email +'\'');
 			conn.end();
 			return result;
 		}).then((result) => {
-			if (result[0])
+			if (result[0]){
+				console.log("OK");
 				resolve(email);
-			else
+			}
+			else{
+				console.log("KO");
 				reject();
+			}
 		}).catch((error) => {
 			reject(error);
 		})
@@ -121,55 +125,27 @@ exports.checkLogin = (data, response) => {
 	})
 }
 
-exports.forgotPassword = (data, response) => {
+exports.forgotPassword = (data) => {
 	return new Promise((resolve, reject) => {
 		findUserByEmail(data)
 		.then(() => {
-			nodemailer.createTestAccount(() => {
-    			let transporter = nodemailer.createTransport({
-        			host: 'smtp.gmail.com',
-        			port: 465,
-        			secure: true,
-        			auth: {
-           				user: 'matchaducancer@gmail.com',
-           				pass: 'Suceboule42'
-        			}
-    			});
-
-    			var key = Math.floor(Math.random()*900000000) + 100000000;
-			    let mailOptions = {
-        			from: '"Jack & Michael 🔥" <matchaducancer@gmail.com>',
-        			to: data.email,
-        			subject: 'Hello',
-        			text: 'Hello world?',
-        			html: 	'<html>\
-    							<body style="background-color: #FF6B6C;font-family: Helvetica, sans-serif;font-style:oblique;">\
-        						<h1 style="color:white;text-align:center;padding-top:100px;font-size:70px;">Matcha</h1>\
-        						<img src="https://pngimage.net/wp-content/uploads/2018/06/forgot-password-images-png-2.png" alt="Paris" style="width:50%;display: block;margin-left: auto;margin-right: auto;">\
-        						<div style="text-align:center;font-size:25px;">\
-        							<br />\
-        							Forgot your password, ' + data.firstname + '?\
-									<br />\
-            						No worries, here is a new one: <br />\
-            						<p>'+ key +'</p>\
-            					</div>\
-        						<footer style="margin-top:200px;margin-bottom:50px;">\
-            						<hr />\
-            						<p style="font-style: italic;text-align: right;">© Matcha 2019</p>\
-        						</footer>\
-    							</body>\
-							</html>'
-    			};
-			    transporter.sendMail(mailOptions, (error, info) => {
-       				if (error) {
-       				    return console.log(error);
-       				}
-       				console.log('Message sent: %s', info.messageId);
-   				});
-			});
-		});
-		var res = conn.query('UPDATE ')
-	}).catch((error) => {
-		reject(error);
+			console.log("YOP");
+			var key = Math.floor(Math.random()*900000000) + 100000000;
+			bcrypt.hash(key.toString(), 10);
+		}).then((hash) => {
+			console.log(hash);
+			return mysql.createConnection({
+					host: 'localhost',
+					user: 'root',
+					password: 'qwerty',
+					database: 'matcha'
+			})
+		}).then((conn) => {
+			resolve();
+			conn.end();
+			return conn.query('UPDATE users SET password=\''+ hash +'\' WHERE email=\''+ data.email +'\'');
+		}).catch((error) => {
+			reject(error);
+		})
 	})
 }
