@@ -48,12 +48,11 @@ exports.authenticate = (req, res) => {
 		console.log("<- AUTH ---");
 		console.log(data);
 		console.log("--- AUTH ->");
-		user.checkLogin(data, res).then((res) => {
+		userModel.checkLogin(data, res).then((res) => {
 			var token = jwt.sign({
 				id: data.id,
 				username: data.username
 			}, 'shhhhh');
-			console.log(token);
 			res.status(200).send({token});
 		}).catch((error) => {
 			console.log(error);

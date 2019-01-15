@@ -15,6 +15,8 @@ router.post('/', urlencodedParser, (req, res) => {
 		console.log("token OK");
 	else
 		res.send("error");
+
+	res.send('tg');
 	// const token = jwtToken.get(req.headers['authorization']);
 	// var decoded = jwt.verify(token, 'shhhhh', (err, decoded) => {
 	// 	if (err) {
