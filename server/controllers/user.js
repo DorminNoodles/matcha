@@ -69,9 +69,8 @@ exports.forgot = (req, res) => {
 	userModel.forgotPassword(data)
 	.then(() => {
 		console.log("<- FGPSD1 ---");
-		console.log(data);
+		console.log(data.email);
 		console.log("--- FGPSD1 ->");
-		console.log("Mail sent");
 	}).catch((err) => {
 		console.log("error");
 	})

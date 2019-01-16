@@ -1,4 +1,5 @@
 const mysql = require('promise-mysql');
+var sql = require('mysql');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
@@ -10,14 +11,13 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username FROM users WHERE username=\''+ username +'\'');
+			var result = conn.query('SELECT username, id, email FROM users WHERE username=\''+ username +'\'');
 			conn.end();
 			return result;
 		}).then((result) => {
 			if (result[0])
-				resolve();
+				resolve(result[0]);
 			else {
-				console.log("IS NOT HERE");
 				reject();
 			}
 		}).catch((error) => {
@@ -58,11 +58,11 @@ exports.saveUser = (data) => {
 		.then((hash) => {
 			data.password = hash;
 			return mysql.createConnection({
-					host: 'localhost',
-					user: 'root',
-					password: 'qwerty',
-					database: 'matcha'
-				})
+				host: 'localhost',
+				user: 'root',
+				password: 'qwerty',
+				database: 'matcha'
+			})
 		})
 		.then ((conn) => {
 			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation)\
@@ -127,24 +127,29 @@ exports.checkLogin = (data, response) => {
 
 exports.forgotPassword = (data) => {
 	return new Promise((resolve, reject) => {
-		findUserByEmail(data)
+		this.findUserByEmail(data.email)
 		.then(() => {
-			console.log("YOP");
 			var key = Math.floor(Math.random()*900000000) + 100000000;
-			bcrypt.hash(key.toString(), 10);
+			return bcrypt.hash(key.toString(), 10);
 		}).then((hash) => {
+			console.log("<- Floor 1 ---");
 			console.log(hash);
+			console.log(data.email);
+			console.log("--- Floor 1 ->");
 			return mysql.createConnection({
-					host: 'localhost',
-					user: 'root',
-					password: 'qwerty',
-					database: 'matcha'
+				host: 'localhost',
+				user: 'root',
+				password: 'qwerty',
+				database: 'matcha'
 			})
 		}).then((conn) => {
-			resolve();
+			return conn.query('UPDATE users SET email= ?, WHERE email= ?', ['aaaaaaaaa@aaa.fr', data.email]);
 			conn.end();
-			return conn.query('UPDATE users SET password=\''+ hash +'\' WHERE email=\''+ data.email +'\'');
+		}).then((res) =>{
+			console.log(res[0].id);
+			resolve();
 		}).catch((error) => {
+			console.log("Error");
 			reject(error);
 		})
 	})
