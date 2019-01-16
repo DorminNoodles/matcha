@@ -3,6 +3,7 @@ const userModel = require('../models/userModel');
 userModel.findUserByUsername('Grinch')
 .then((res) => {
 	console.log('Grinch existe');
+	console.log(res);
 })
 .catch((err) => {
 	console.log('Grinch n existe pas');
