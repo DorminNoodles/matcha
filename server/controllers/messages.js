@@ -3,11 +3,12 @@ const messagesModel = require('../models/messagesModel');
 const user = require('../services/user');
 const jwtToken = require('../services/jwtToken');
 
-exports.new = (token, body) => {
+exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		// new jwtToken
-			console.log("HOHOHOHO");
-			console.log(data);
+
+
+		console.log(data);
+
 
 		// console.log(jwtToken.pouet);
 		// if (userAuth() && checkMessage() )

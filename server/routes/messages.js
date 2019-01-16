@@ -10,11 +10,26 @@ const jwtToken = require('../services/jwtToken');
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
 router.post('/', urlencodedParser, (req, res) => {
-	console.log(req.token);
-	if (req.token)
-		console.log("token OK");
-	else
-		res.send("error");
+
+	console.log(req.body);
+
+	messages.new({
+		data: {
+			from : req.body.from,
+			to: req.body.to
+		}
+	})
+	.then(() => {
+
+	})
+	.catch(() => {
+
+	})
+	res.send('pouet');
+	// if (req.token)
+	// 	console.log("token OK");
+	// else
+	// 	res.send("error");
 
 	//On peut envoyer des messages si
 	//le to exist
