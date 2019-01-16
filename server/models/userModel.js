@@ -17,7 +17,6 @@ exports.findUserByUsername = (username) => {
 			if (result[0])
 				resolve();
 			else {
-				console.log("IS NOT HERE");
 				reject();
 			}
 		}).catch((error) => {
