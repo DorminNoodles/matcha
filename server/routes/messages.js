@@ -15,6 +15,14 @@ router.post('/', urlencodedParser, (req, res) => {
 		console.log("token OK");
 	else
 		res.send("error");
+
+	//On peut envoyer des messages si
+	//le to exist
+	//le from correspon au token et on est connecte
+	//le to est dans nos matchs ? oui
+
+
+
 	// const token = jwtToken.get(req.headers['authorization']);
 	// var decoded = jwt.verify(token, 'shhhhh', (err, decoded) => {
 	// 	if (err) {
