@@ -10,12 +10,12 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username FROM users WHERE username=\''+ username +'\'');
+			var result = conn.query('SELECT username, id, email FROM users WHERE username=\''+ username +'\'');
 			conn.end();
 			return result;
 		}).then((result) => {
 			if (result[0])
-				resolve();
+				resolve(result[0]);
 			else {
 				reject();
 			}
