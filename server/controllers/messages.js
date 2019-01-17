@@ -32,19 +32,23 @@ exports.new = (data) => {
 
 exports.getRecentsMessages = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByUsername(data.from)
+		userModel.findUserByID(data.from)
 		.then((res) => {
-			data.from_id = res.id;
-			return userModel.findUserByUsername(data.to);
+			return userModel.findUserByID(data.to);
 		})
 		.then((res) => {
-			data.to_id = res.id;
-			return messagesModel.getRecentsMessages({
-
-			});
+			console.log("data");
+			console.log(data);
+			return messagesModel.getRecentsMessages(data);
+		})
+		.then((res) => {
+			console.log("HELLOOOO");
+			console.log(res);
+			resolve(res);
 		})
 		.catch((err) => {
 			console.log(err);
+			reject(err);
 		})
 	})
 }
