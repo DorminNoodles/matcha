@@ -56,8 +56,8 @@ class ActivationMail {
 		});
 	}
 
-	sendNewPass(data) {
-		console.log(data);
+	sendNewPass(data, key) {
+		console.log(data.email);
 		nodemailer.createTestAccount(() => {
     		let transporter = nodemailer.createTransport({
         		host: 'smtp.gmail.com',
@@ -80,10 +80,10 @@ class ActivationMail {
         					<img src="https://pngimage.net/wp-content/uploads/2018/06/forgot-password-images-png-2.png" alt="Paris" style="width:50%;display: block;margin-left: auto;margin-right: auto;">\
         					<div style="text-align:center;font-size:25px;">\
         						<br />\
-        						Forgot your password, ' + data.firstname + '?\
+        						Forgot your password?\
 								<br />\
-           						No worries, here is a new one: <br />\
-           						<p>'+ key +'</p>\
+           						No worries, here is a new one:<br />\
+           						<a href=http://localhost:8080/forgot?key='+ key +'>RESET MY PASSWORD</a>\
            					</div>\
         					<footer style="margin-top:200px;margin-bottom:50px;">\
             					<hr />\

@@ -1,7 +1,7 @@
 const mysql = require('promise-mysql');
 var sql = require('mysql');
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
+const myEmitter = require('../emitter');
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
@@ -39,8 +39,7 @@ exports.findUserByEmail = (email) => {
 			return result;
 		}).then((result) => {
 			if (result[0]){
-				console.log("OK");
-				resolve(email);
+				resolve(result);
 			}
 			else{
 				console.log("KO");
@@ -132,25 +131,10 @@ exports.forgotPassword = (data) => {
 			var key = Math.floor(Math.random()*900000000) + 100000000;
 			return bcrypt.hash(key.toString(), 10);
 		}).then((hash) => {
-			console.log("<- Floor 1 ---");
-			console.log(hash);
-			console.log(data.email);
-			console.log("--- Floor 1 ->");
-			return mysql.createConnection({
-				host: 'localhost',
-				user: 'root',
-				password: 'qwerty',
-				database: 'matcha'
-			})
-		}).then((conn) => {
-			return conn.query('UPDATE users SET email= ?, WHERE email= ?', ['aaaaaaaaa@aaa.fr', data.email]);
-			conn.end();
-		}).then((res) =>{
-			console.log(res[0].id);
-			resolve();
+			myEmitter.emit('forgotPass', data, hash);
 		}).catch((error) => {
-			console.log("Error");
-			reject(error);
+			console.log("Not a registered email address !");
+			reject();
 		})
 	})
 }
