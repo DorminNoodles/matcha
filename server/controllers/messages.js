@@ -29,3 +29,22 @@ exports.new = (data) => {
 		resolve('message ok');
 	})
 }
+
+exports.getRecentsMessages = (data) => {
+	return new Promise((resolve, reject) => {
+		userModel.findUserByUsername(data.from)
+		.then((res) => {
+			data.from_id = res.id;
+			return userModel.findUserByUsername(data.to);
+		})
+		.then((res) => {
+			data.to_id = res.id;
+			return messagesModel.getRecentsMessages({
+
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+	})
+}

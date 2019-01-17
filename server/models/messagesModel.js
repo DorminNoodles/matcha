@@ -32,3 +32,19 @@ exports.new = (data) => {
 		resolve();
 	})
 }
+
+exports.getRecentsMessages = (data) => {
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		}).then((conn) => {
+			return = conn.query('SELECT * FROM `chat` WHERE `from_id`=2');
+		})
+		.then((res) => {
+			console.log(res);
+		})
+	});
+}
