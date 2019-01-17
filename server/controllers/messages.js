@@ -3,41 +3,29 @@ const messagesModel = require('../models/messagesModel');
 const user = require('../services/user');
 const jwtToken = require('../services/jwtToken');
 const userModel = require('../models/userModel');
+const checkInput = require('../services/checkInput');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log('   > '+ data.from);
 		userModel.findUserByUsername(data.from)
 		.then((res) => {
-			console.log('from exist');
+			data.from_id = res.id;
 			return userModel.findUserByUsername(data.to);
 		})
-		.then(() => {
+		.then((res) => {
+			data.to_id = res.id;
 			return checkInput.message(data.body);
 		})
 		.then(() => {
 			return messagesModel.new({
-					from: data.from,
-					to: data.to,
+					from: data.from_id,
+					to: data.to_id,
 					body: data.body
-				});
+			});
 		})
-		.catch(() => {
-			console.log('from exist pas');
+		.catch((err) => {
+			reject(err)
 		})
-
-		console.log(data);
-
-
-		// console.log(jwtToken.pouet);
-		// if (userAuth() && checkMessage() )
-		// messagesModel.newMessage({
-		// // 	from: data.from,
-		// // 	to: data.to,
-		// // 	body: data.body
-		// }).then((res) => {
-		// 	console.log('controller new message !');
-		// })
-		resolve('hello');
+		resolve('message ok');
 	})
 }

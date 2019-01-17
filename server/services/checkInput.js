@@ -65,7 +65,8 @@ exports.geoloc = (location) => {
 }
 
 exports.message = (text) => {
-	return new Promise(() => {
-		
+	return new Promise((resolve, reject) => {
+		console.log("HELLLO");
+		resolve(text);
 	})
 }

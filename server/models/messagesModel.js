@@ -1,18 +1,19 @@
 const mysql = require('promise-mysql');
 
 
-exports.newMessage = (data) => {
+exports.new = (data) => {
 	return new Promise((resolve, reject) => {
+		console.log("NEW MESSAGES");
 		mysql.createConnection({
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			conn.query('INSERT INTO messages (\
-				`from`,\
-				`to`,\
-				body\
+			conn.query('INSERT INTO chat (\
+				`from_id`,\
+				`to_id`,\
+				`message`\
 			)VALUES (\
 				\'' + data.from + '\',\
 				\'' + data.to + '\',\
