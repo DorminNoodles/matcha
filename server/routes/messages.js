@@ -12,12 +12,12 @@ var urlencodedParser = bodyParser.urlencoded({extended : false})
 router.post('/', urlencodedParser, (req, res) => {
 
 	console.log(req.body);
+	console.log(req.body.from);
 
 	messages.new({
-		data: {
-			from : req.body.from,
-			to: req.body.to
-		}
+		from : req.body.from,
+		to: req.body.to,
+		body: req.body.body
 	})
 	.then(() => {
 

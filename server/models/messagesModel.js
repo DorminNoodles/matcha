@@ -1,5 +1,6 @@
 const mysql = require('promise-mysql');
 
+
 exports.newMessage = (data) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
@@ -13,9 +14,9 @@ exports.newMessage = (data) => {
 				`to`,\
 				body\
 			)VALUES (\
-				\'hello\',\
-				\'hello\',\
-				\'hello\'\
+				\'' + data.from + '\',\
+				\'' + data.to + '\',\
+				\'' + data.body + '\'\
 			)').then((res) => {
 				console.log("success database");
 				conn.end();

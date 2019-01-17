@@ -63,3 +63,9 @@ exports.geoloc = (location) => {
 		locationRegex.test(location) ? resolve(location) : reject(new Error('fail'));
 	})
 }
+
+exports.message = (text) => {
+	return new Promise(() => {
+		
+	})
+}
