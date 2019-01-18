@@ -29,11 +29,8 @@ router.post('/', urlencodedParser, (req, res) => {
 
 })
 
-router.get('/recent/:from_id/:to_id', urlencodedParser, (req, res) => {
-	// console.log(req.param);
-	console.log(req.params);
-
-	messages.getRecentsMessages({from: req.params.from_id, to: req.params.to_id})
+router.get('/recent', urlencodedParser, (req, res) => {
+	messages.getRecentsMessages({from: req.query.from, to: req.query.to})
 	.then((result) => {
 		res.send(result);
 	})

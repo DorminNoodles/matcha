@@ -1,6 +1,5 @@
 const mysql = require('promise-mysql');
 
-
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("NEW MESSAGES");
