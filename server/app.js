@@ -7,6 +7,7 @@ const io = require('socket.io')(server);
 const user = require('./routes/user');
 const users = require('./routes/users');
 const messages = require('./routes/messages');
+const likes = require('./routes/likes');
 const emitter = require('./emitter');
 const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
@@ -28,6 +29,7 @@ app.use(jwtToken);
 app.use('/api/user', user);
 app.use('/api/messages', messages);
 app.use('/api/users', users);
+app.use('/api/likes', likes);
 
 
 

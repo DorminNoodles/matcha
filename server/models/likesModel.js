@@ -23,7 +23,7 @@ exports.new = (data) => {
 		})
 }
 
-exports.new = (data) => {
+exports.getLike = (liker, liked) => {
 		return new Promise((resolve, reject) => {
 			mysql.createConnection({
 				host: 'localhost',
@@ -32,12 +32,12 @@ exports.new = (data) => {
 				database: 'matcha'
 			})
 			.then((conn) => {
-				return conn.query('INSERT INTO likes (`liker`, `liked`) \
-					VALUES (\''+ data.liker +'\', \''+ data.liked + '\')');
+				return conn.query('SELECT * FROM likes WHERE liker='+ liker);
 			})
 			.then((res) => {
-				console.log('like add !');
-				resolve();
+				console.log(res);
+				console.log('like FIND');
+				resolve(res);
 			})
 			.catch((err) => {
 				console.log(err);
