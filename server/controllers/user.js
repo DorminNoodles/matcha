@@ -3,6 +3,7 @@ const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
+const myEmitter = require('../emitter');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
@@ -64,14 +65,42 @@ exports.authenticate = (req, res) => {
 	})
 }
 
-exports.forgot = (req, res) => {
-	const data = req.body;
-	userModel.forgotPassword(data)
-	.then(() => {
-		console.log("<- FGPSD1 ---");
-		console.log(data.email);
-		console.log("--- FGPSD1 ->");
-	}).catch((err) => {
-		console.log("error");
+exports.forgot = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log(data);
+		userModel.findUserByEmail(data)
+		.then((res) => {
+			var token = jwt.sign({
+				id: res.id,
+				username: res.username,
+				email: res.email
+			}, 'shhhhh');
+			console.log(token);
+			myEmitter.emit('forgotPass', {
+				username: res.username,
+				email: res.email
+			}, token);
+
+			resolve();
+		}).catch((error) => {
+			console.log("Not a registered email address !");
+			reject();
+		})
+	})
+}
+
+exports.recog = (data) => {
+	return new Promise((resolve, reject) => {
+		var decoded = jwt.decode(data, {complete: true});
+		console.log(decoded.header);
+		console.log(decoded.payload);
+		console.log(decoded);
+		userModel.findUserByEmail(decoded.payload.email)
+		.then((res) => {
+			resolve();
+		})
+		.catch((err) => {
+			reject(err);
+		})
 	})
 }

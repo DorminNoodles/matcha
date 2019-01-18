@@ -38,7 +38,7 @@ class ActivationMail {
 								Welcome ' + data.firstname + '!\
 								<br />\
 								CLICK ON THE FOLLOWING LINK TO VALIDATE YOUR ACCOUNT: <br />\
-								<a href=http://localhost:8080/confirm?login='+ data.username +'&key='+ key +'>Confirm your Account</a>\
+								<a href=http://localhost:3000/confirm?login='+ data.username +'&key='+ key +'>Confirm your Account</a>\
 							</div>\
 							<footer style="margin-top:200px;margin-bottom:50px;">\
 								<hr />\
@@ -57,7 +57,7 @@ class ActivationMail {
 	}
 
 	sendNewPass(data, key) {
-		console.log(data.email);
+		console.log(data);
 		nodemailer.createTestAccount(() => {
     		let transporter = nodemailer.createTransport({
         		host: 'smtp.gmail.com',
@@ -83,7 +83,7 @@ class ActivationMail {
         						Forgot your password?\
 								<br />\
            						No worries, here is a new one:<br />\
-           						<a href=http://localhost:8080/forgot?key='+ key +'>RESET MY PASSWORD</a>\
+           						<a href=http://localhost:3000/api/user/forgot?key='+ key +'>RESET MY PASSWORD</a>\
            					</div>\
         					<footer style="margin-top:200px;margin-bottom:50px;">\
             					<hr />\

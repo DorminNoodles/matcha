@@ -34,17 +34,14 @@ exports.findUserByEmail = (email) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT * FROM users WHERE email=\''+ email +'\'');
+			var result = conn.query('SELECT username, id, email FROM users WHERE email=\''+ email +'\'');
 			conn.end();
 			return result;
 		}).then((result) => {
-			if (result[0]){
-				resolve(result);
-			}
-			else{
-				console.log("KO");
+			if (result[0])
+				resolve(result[0]);
+			else
 				reject();
-			}
 		}).catch((error) => {
 			reject(error);
 		})
@@ -120,21 +117,6 @@ exports.checkLogin = (data, response) => {
 			})
 		}).catch((error) => {
 			reject(error);
-		})
-	})
-}
-
-exports.forgotPassword = (data) => {
-	return new Promise((resolve, reject) => {
-		this.findUserByEmail(data.email)
-		.then(() => {
-			var key = Math.floor(Math.random()*900000000) + 100000000;
-			return bcrypt.hash(key.toString(), 10);
-		}).then((hash) => {
-			myEmitter.emit('forgotPass', data, hash);
-		}).catch((error) => {
-			console.log("Not a registered email address !");
-			reject();
 		})
 	})
 }

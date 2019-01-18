@@ -42,7 +42,19 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 })
 
 router.post('/forgot', urlencodedParser, (req, res) => {
-	user.forgot(req, res);
+	user.forgot(req.body.email)
+	.then(() => {
+		res.send('hello');
+	})
+	.catch((err) => {
+		res.send("error");
+		console.log(err);
+	})
+})
+
+router.get('/forgot', urlencodedParser, (req, res) => {
+	console.log(req.query.key);
+	user.recog(req.query.key);
 })
 
 module.exports = router;
