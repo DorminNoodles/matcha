@@ -53,8 +53,8 @@ async function db() {
         	)');
         await connection.query('CREATE TABLE likes (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-        	user_id INT NOT NULL,\
-        	his_id INT NOT NULL\
+        	liker INT NOT NULL,\
+        	liked INT NOT NULL\
         	)');
         await connection.query('CREATE TABLE report (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
