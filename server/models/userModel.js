@@ -87,8 +87,12 @@ exports.findUserByID = (id) => {
 			return (result);
 		}).then((result) => {
 			resolve(result);
+			return;
 		}).catch((error) => {
+			console.log("findUserByName failed");
+
 			reject(error);
+			return;
 		})
 	})
 }

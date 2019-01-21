@@ -1,9 +1,19 @@
-// controller
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
+
+const events = require('events');
+
+const userModel = require('../models/userModel');
+const checkInput = require('../services/checkInput');
+
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('pouet', function() {
+	console.log("test Event !");
+});
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
@@ -27,18 +37,14 @@ exports.new = (data) => {
 
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByID(data.id)
-		.then((data) => {
-			console.log(data);
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username,
-				email: data.email
-			}, 'shhhhh');
-			resolve(token);
-		}).catch((err) => {
-			reject(err);
+		let user = new userService();
+		user.authenticate(data.username, data.password)
+		.then(() => {
+			resolve();
 		})
+		.catch(() => {
+			reject();
+    })
 	})
 }
 
@@ -54,7 +60,6 @@ exports.authenticate = (req, res) => {
 				id: data.id,
 				username: data.username
 			}, 'shhhhh');
-			console.log(token);
 			res.status(200).send({token});
 		}).catch((error) => {
 			console.log(error);
