@@ -22,15 +22,11 @@ router.post('/register', urlencodedParser,async (req, res) => {
 		res.send(err);
 	});
 })
-// 	console.log(req.params);
-// 	res.send('Get profil');
-// })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
 	console.log("fuck");
 	console.log(req.body.username);
 	console.log(req.body.password);
-
 	user.authenticate(req.body)
 	.then((resolve) => {
 		res.send({

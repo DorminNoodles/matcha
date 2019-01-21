@@ -5,16 +5,20 @@ const myEmitter = require('../emitter');
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
+		console.log("findUserByUsername");
 		mysql.createConnection({
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username, id, email FROM users WHERE username=\''+ username +'\'');
+			console.log("findUserByUsername");
+			var result = conn.query('SELECT username, id, email FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {
+			console.log("***************");
+			console.log(result);
 			if (result[0])
 				resolve(result[0]);
 			else {
@@ -97,7 +101,8 @@ exports.findUserByID = (id) => {
 	})
 }
 
-exports.checkLogin = (data, response) => {
+exports.checkLogin = (username, password) => {
+	console.log("hello");
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			host:'localhost',
@@ -105,10 +110,11 @@ exports.checkLogin = (data, response) => {
 			password:'qwerty',
 			database:'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT password FROM users WHERE username=\''+ data.username +'\'');
+			let result = conn.query('SELECT password FROM users WHERE username=?', [username]);
 			return result;
 		}).then((result) => {
-			bcrypt.compare(data.password, result[0].password).then((res) => {
+			console.log("hello");
+			bcrypt.compare(password, result[0].password).then((res) => {
 				if (res) {
 					resolve(response);
 				}

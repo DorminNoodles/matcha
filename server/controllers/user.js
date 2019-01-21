@@ -48,25 +48,59 @@ exports.find = (data) => {
 	})
 }
 
-exports.authenticate = (req, res) => {
-	const data = req.body;
-	userModel.findUserByUsername(data.username)
-	.then(() => {
-		console.log("<- AUTH ---");
-		console.log(data);
-		console.log("--- AUTH ->");
-		userModel.checkLogin(data, res).then((res) => {
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username
-			}, 'shhhhh');
-			res.status(200).send({token});
-		}).catch((error) => {
-			console.log(error);
-			res.status(401).send("error");
+// exports.authenticate = (req, res) => {
+// 	const data = req.body;
+// 	userModel.findUserByUsername(data.username)
+// 	.then(() => {
+// 		console.log("<- AUTH ---");
+// 		console.log(data);
+// 		console.log("--- AUTH ->");
+// 		userModel.checkLogin(data, res).then((res) => {
+// 			var token = jwt.sign({
+// 				id: data.id,
+// 				username: data.username
+// 			}, 'shhhhh');
+// 			res.status(200).send({token});
+// 		}).catch((error) => {
+// 			console.log(error);
+// 			res.status(401).send("error");
+// 		})
+// 	}).catch((err) => {
+// 		console.log("error");
+// 	})
+// }
+
+exports.authenticate = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("hello authenticate");
+
+		checkInput.username(data.username)
+		.then(() => {
+			return checkInput.password(data.password)
 		})
-	}).catch((err) => {
-		console.log("error");
+		.then(() => {
+			return userModel.findUserByUsername(data.username, data.password);
+		})
+		.then((res) => {
+			console.log("hello authenticate*****");
+			console.log("<- AUTH ---");
+			console.log(data);
+			console.log("--- AUTH ->");
+			userModel.checkLogin(data.username, data.password)
+			.then((res) => {
+				var token = jwt.sign({
+					id: res.id,
+					username: res.username
+				}, 'shhhhh');
+				resolve(token);
+			}).catch((error) => {
+				console.log(error);
+				reject(error);
+			})
+		}).catch((err) => {
+			console.log("error");
+			reject(err);
+		})
 	})
 }
 
