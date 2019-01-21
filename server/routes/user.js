@@ -8,41 +8,16 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser,async (req, res) => {
-	// console.log(eq.headers['x-forwarded-for']);
-
-	var ip = req.headers['x-forwarded-for'] ||
-     req.connection.remoteAddress ||
-     req.socket.remoteAddress ||
-     (req.connection.socket ? req.connection.socket.remoteAddress : null);
-
-	 console.log(ip);
-	user.new(req.body)
-	.then((resolve)=>{
-		console.log(resolve);
-	}).catch((error)=>{
-		console.log(error);
+router.post('/', urlencodedParser, (req, res) => {
+	console.log('post likes');
+	console.log(req.body);
+	likes.new(req.body.liker, req.body.liked)
+	.then((result) => {
+		res.send(result);
 	})
-	res.send('Create User');
-})
-
-router.get('/profil/:id', urlencodedParser, (req, res) => {
-	console.log(req.params);
-	user.find(req.params)
-	.then((resolve)=>{
-		console.log(resolve);
-	}).catch((error)=>{
-		console.log(error);
-	})
-	res.send('Get profil');
-})
-
-router.post('/authenticate', urlencodedParser, (req, res) => {
-	user.authenticate(req, res);
-})
-
-router.post('/forgot', urlencodedParser, (req, res) => {
-	user.forgot(req, res);
+	.catch((err) => {
+		res.send(err);
+	});
 })
 
 

@@ -35,7 +35,11 @@ async function db() {
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) NOT NULL,\
 			mailValidation INT DEFAULT 0,\
-			reg_date TIMESTAMP\
+			score INT DEFAULT 0, \
+			bio TEXT, \
+			age DATETIME, \
+			active DATETIME, \
+			reg_date TIMESTAMP, \
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
@@ -49,8 +53,8 @@ async function db() {
         	)');
         await connection.query('CREATE TABLE likes (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-        	user_id INT NOT NULL,\
-        	his_id INT NOT NULL\
+        	liker INT NOT NULL,\
+        	liked INT NOT NULL\
         	)');
         await connection.query('CREATE TABLE report (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
