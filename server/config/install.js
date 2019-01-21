@@ -35,7 +35,11 @@ async function db() {
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) NOT NULL,\
 			mailValidation INT DEFAULT 0,\
-			reg_date TIMESTAMP\
+			score INT DEFAULT 0, \
+			bio TEXT, \
+			age DATETIME, \
+			active DATETIME, \
+			reg_date TIMESTAMP, \
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
