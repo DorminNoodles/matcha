@@ -57,4 +57,11 @@ router.get('/forgot', urlencodedParser, (req, res) => {
 	user.recog(req.query.key);
 })
 
+router.post('/settings', urlencodedParser, (req, res) => {
+	user.find(req.params.id)
+	.then(() => {
+		
+	})
+})
+
 module.exports = router;

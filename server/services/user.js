@@ -54,6 +54,12 @@ class User {
 			})
 		})
 	}
+
+	checkSettings(data) {
+		return new Promise((resolve, reject) => {
+			checkInput
+		})
+	}
 }
 
 module.exports = User;

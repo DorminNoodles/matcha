@@ -94,7 +94,6 @@ exports.recog = (data) => {
 		var decoded = jwt.decode(data, {complete: true});
 		console.log(decoded.header);
 		console.log(decoded.payload);
-		console.log(decoded);
 		userModel.findUserByEmail(decoded.payload.email)
 		.then((res) => {
 			resolve();
