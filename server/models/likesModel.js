@@ -1,6 +1,6 @@
 const mysql = require('promise-mysql');
 
-exports.new = (data) => {
+exports.new = (liker, liked) => {
 		return new Promise((resolve, reject) => {
 			mysql.createConnection({
 				host: 'localhost',
@@ -10,7 +10,7 @@ exports.new = (data) => {
 			})
 			.then((conn) => {
 				return conn.query('INSERT INTO likes (`liker`, `liked`) \
-					VALUES (\''+ data.liker +'\', \''+ data.liked + '\')');
+					VALUES ( ?, ?)', [liker, liked]);
 			})
 			.then((res) => {
 				console.log('like add !');
@@ -32,12 +32,61 @@ exports.getLike = (liker, liked) => {
 				database: 'matcha'
 			})
 			.then((conn) => {
-				return conn.query('SELECT * FROM likes WHERE liker='+ liker);
+				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked]);
 			})
 			.then((res) => {
-				console.log(res);
-				console.log('like FIND');
-				resolve(res);
+				if (res[0])
+					resolve(res[0]);
+				else
+					reject('Like not found.');
+			})
+			.catch((err) => {
+				console.log(err);
+				reject();
+			})
+		})
+}
+
+exports.getLikesSended = (liker) => {
+		return new Promise((resolve, reject) => {
+			mysql.createConnection({
+				host: 'localhost',
+				user: 'root',
+				password: 'qwerty',
+				database: 'matcha'
+			})
+			.then((conn) => {
+				return conn.query('SELECT * FROM likes WHERE liker=?', [liker]);
+			})
+			.then((res) => {
+				if (res[0])
+					resolve(res);
+				else
+					reject('Likes not found.');
+			})
+			.catch((err) => {
+				console.log(err);
+				reject();
+			})
+		})
+}
+
+exports.getLikesGived = (liked) => {
+		return new Promise((resolve, reject) => {
+			mysql.createConnection({
+				host: 'localhost',
+				user: 'root',
+				password: 'qwerty',
+				database: 'matcha'
+			})
+			.then((conn) => {
+				return conn.query('SELECT * FROM likes WHERE liked=?', [liked]);
+			})
+			.then((res) => {
+				if (res[0])
+					resolve(res);
+				else
+					reject('Like not found.');
 			})
 			.catch((err) => {
 				console.log(err);

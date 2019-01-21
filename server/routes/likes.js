@@ -7,15 +7,16 @@ const likes = require('../controllers/likes');
 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
-router.post('/', urlencodedParser, (req, res) => {
+router.get('/', urlencodedParser, (req, res) => {
 	console.log('post likes');
 	console.log(req.body);
-	likes.new({liker: req.body.liker, liked: req.body.liked})
-	.then((res) => {
-		console.log(res);
+	likes.getAll(req.body.liker, req.body.liked)
+	.then((result) => {
+		// console.log(res);
+		res.send(result);
 	})
 	.catch((err) => {
-
+		res.send(err);
 	});
 })
 
