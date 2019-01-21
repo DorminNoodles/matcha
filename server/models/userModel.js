@@ -10,14 +10,13 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username FROM users WHERE username=\''+ username +'\'');
+			var result = conn.query('SELECT username, id, email FROM users WHERE username=\''+ username +'\'');
 			conn.end();
 			return result;
 		}).then((result) => {
 			if (result[0])
-				resolve();
+				resolve(result[0]);
 			else {
-				console.log("IS NOT HERE");
 				reject();
 			}
 		}).catch((error) => {
@@ -87,8 +86,12 @@ exports.findUserByID = (id) => {
 			return (result);
 		}).then((result) => {
 			resolve(result);
+			return;
 		}).catch((error) => {
+			console.log("findUserByName failed");
+
 			reject(error);
+			return;
 		})
 	})
 }

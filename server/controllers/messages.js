@@ -2,22 +2,53 @@ const messagesModel = require('../models/messagesModel');
 // const jwtToken = require('../middlewares/jwtToken');
 const user = require('../services/user');
 const jwtToken = require('../services/jwtToken');
+const userModel = require('../models/userModel');
+const checkInput = require('../services/checkInput');
 
-exports.new = (token, body) => {
+exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		// new jwtToken
-			console.log("HOHOHOHO");
-			console.log(data);
+		userModel.findUserByUsername(data.from)
+		.then((res) => {
+			data.from_id = res.id;
+			return userModel.findUserByUsername(data.to);
+		})
+		.then((res) => {
+			data.to_id = res.id;
+			return checkInput.message(data.body);
+		})
+		.then(() => {
+			return messagesModel.new({
+					from: data.from_id,
+					to: data.to_id,
+					body: data.body
+			});
+		})
+		.catch((err) => {
+			reject(err)
+		})
+		resolve('message ok');
+	})
+}
 
-		// console.log(jwtToken.pouet);
-		// if (userAuth() && checkMessage() )
-		// messagesModel.newMessage({
-		// // 	from: data.from,
-		// // 	to: data.to,
-		// // 	body: data.body
-		// }).then((res) => {
-		// 	console.log('controller new message !');
-		// })
-		resolve('hello');
+exports.getRecentsMessages = (data) => {
+	return new Promise((resolve, reject) => {
+		userModel.findUserByID(data.from)
+		.then((res) => {
+			return userModel.findUserByID(data.to);
+		})
+		.then((res) => {
+			console.log("data");
+			console.log(data);
+			return messagesModel.getRecentsMessages(data);
+		})
+		.then((res) => {
+			console.log("HELLOOOO");
+			console.log(res);
+			resolve(res);
+		})
+		.catch((err) => {
+			console.log(err);
+			reject(err);
+		})
 	})
 }
