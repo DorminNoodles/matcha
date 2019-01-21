@@ -8,12 +8,15 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/', urlencodedParser, (req, res) => {
-	console.log('post likes');
-	console.log(req.body);
-	likes.new(req.body.liker, req.body.liked)
-	.then((result) => {
-		res.send(result);
+router.post('/register', urlencodedParser,async (req, res) => {
+	// console.log(eq.headers['x-forwarded-for']);
+
+	user.new(req.body)
+	.then((resolve)=>{
+		console.log(resolve);
+	}).catch((error)=>{
+		console.log(error);
+
 	})
 	.catch((err) => {
 		res.send(err);

@@ -37,7 +37,6 @@ router.get('/recent', urlencodedParser, (req, res) => {
 	.catch((err) => {
 		res.send(err);
 	})
-
 })
 
 module.exports = router;
