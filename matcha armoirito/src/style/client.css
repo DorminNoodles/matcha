@@ -1,25 +1,23 @@
-.container-fluid{
-    height: '100vh';
+.global{
+    background: linear-gradient( #bc3a63, #a843a1);
+    height: 100vh;
+    width: 100%;
     display: table;
-    background: linear-gradient(#FF416C, #FF4B2B);
 }
 
-/* NAV + FONTAWESOME 
-
-.test{
-    border: 1px solid yellow;
+.menu_main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.test1{
-    border: 2px solid black;
 
+
+.testb{
+    
 }
 
-.test3{
-    border: 2px solid green;
-}
-
-*/
+/* NAV + FONTAWESOME */
 
 .fa-layers-counter{
     background-color: #5a2f9b;
@@ -32,12 +30,7 @@
     justify-content: flex-start;
     align-items: center;
     color: white;
-    height: 1000px;
     font-size: 2.7em;
-}
-
-.fa-spin{
-    animation: fa-spin 4s infinite linear;
 }
 
 .cog-icone{
@@ -45,6 +38,11 @@
     color: white;
     cursor: pointer;
 }
+
+.cog-icone:hover{
+    color: #ED213A;
+}
+
 
 .margin-icone:hover , .margin-icone1:hover{
     color: #ED213A;
@@ -59,28 +57,22 @@
     cursor: pointer;
 }
 
+.fa-user:visited{
+    color: white;
+}
+
 .fa-nav{
     color: white;
 }
 
 /* TITLE */
 
-.col-11-modif{
-    padding: 0px;
+
+.main-title{
+    width: 100%;
 }
 
-.coq-icon{
-    display: table;
-    margin-right: 15%;
-}
-
-.mess{
-    display: table;
-    width: 150px;
-}
 .mess-title{
-    color: white;
-    font-size: 1.1em;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -88,29 +80,26 @@
     margin-top: 60px;
 }
 
-.mess-title1{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 610px;
-}
-
-.mess-client{
-    font-size: 0.8em;
-}
-
 .mess-title-picture{
     display: flex;
     flex-direction: row;
-    
+    justify-content: center;
     align-items: center;
-    width: 380px;
+}
+
+.mess{
+    color: white;
+}
+
+.coq-icon, mess{
+    display: table;
+    margin-right: 90px;
 }
 
 .title-picture{
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .dot-green{
@@ -149,6 +138,8 @@
     left: -40px;
 }
 
+
+
 /* TITLE PEOPLES */
 
 .title-peoples{
@@ -162,21 +153,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 30px;
 }
 
-.position-peoples{
+.center-title{
     margin-top: 60px;
 }
 
-
-/* PREFER*/
+/* PREFER */
 
 .position-prefer{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 55px;
+   
 }
 
 .position-prefer > div{
@@ -188,6 +179,10 @@
     border-radius: 15px;
     margin-top: 2px;
     cursor: pointer;
+}
+
+.position-marge{
+    margin-left: 30px;
 }
 
 /* PICTURE */
@@ -208,10 +203,17 @@
 }
 
 .heart-icon-pic-white{
-    color: white;
+    position: relative;
+    z-index: 2;
     font-size: 2em;
     margin-right: 15px;
     cursor: pointer;
+}
+
+
+.fa-heart{
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -278,7 +280,7 @@
 .position-legend{
     display: flex;
     justify-content: space-around;
-}
+} 
 
 
 
@@ -288,9 +290,23 @@
     .position-prefer{
         justify-content: center;
     }
+
+    .mess-title{
+        justify-content: space-around;
+    }
+
+    .center-title{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .title-peoples{
+        margin-left: 0px;
+    }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
     .mess {
       display: none;
     }
@@ -302,9 +318,6 @@
     .mess-title-picture{
         justify-content: center;
     }
-    .coq-icon{
-        margin-right: 10%;
-    }
 
     .icone-fontAwesome{
         font-size: 1.8em;
@@ -312,6 +325,14 @@
 
     .position-prefer{
         justify-content: center;
+    }
+
+    .mess-title{
+        justify-content: space-around;
+    }
+
+    .coq-icon{
+        margin-right: 25px;
     }
 }
 

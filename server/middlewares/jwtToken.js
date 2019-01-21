@@ -7,13 +7,16 @@ const get = (str) => {
 }
 
 const getJwtToken = (req, res, next) => {
-	if (!req.headers['authorization']) {
+	console.log("here");
+	if (!req.headers['authorization'])
+	{
+		req.token = false;
 		next();
 		return;
 	}
+	console.log("here");
 	const bearer = req.headers['authorization'].split(' ');
 	const token = bearer[1];
-	// const token = jwtToken.get(req.headers['authorization']);
 	if (token) {
 		var decoded = jwt.verify(token, 'shhhhh', (err, decoded) => {
 			if (err)

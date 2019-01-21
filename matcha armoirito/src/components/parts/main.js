@@ -1,14 +1,16 @@
 // React
-import React, {Component, Fragment} from 'react'
+import React, {Component, createRef} from 'react'
 
 //Image
 import Femme1 from '../../image/f1.png'
 
 //Fontawesome
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library , dom} from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
+import '../../style/fontawesome-free-5.6.1-web/css/all.css'
+
 
 
 import { 
@@ -35,124 +37,118 @@ library.add(
 )
 
 class Main extends Component {
+
+    constructor(props) {
+        super(props);
+        this.inputField = createRef();
+        this.inputField1 = createRef();
+
+      }
     state = {
         white : true,
         hov : true
     }
 
-    changeColor = () => {
-        this.setState({white : !this.state.white})
-        console.log('allo')
+    message = createRef()
+
+    changeColor = (event) => {
+        
+        console.log(event)
+        console.log(event.target.style)
+        console.log(event.target.style.color)
+
+
+
+
+
     }
 
     render () {
-        let btn = this.state.white ? 'heart-icon-pic-white' : 'heart-icon-pic-pink';
+    dom.watch();
+        
 
         return (
-            <Fragment>
-                <div className=' position-peoples'>
-                    <div className='1 title-peoples'>
-                        <div className=''>
-                            People
-                        </div>
-                    </div>
-                </div>
-
-                <div className=' position-prefer'>
-                    <div>Cougar</div>
-                    <div>Musique</div>
-                    <div>Alcool</div>
-                    <div>Cheveux</div>
-                    <div>Sida</div>
-                    <div>Vegan</div>
-                </div>
-
-                <div className=' position-picture-big'>
-                    <div className='picture-big' style={{ backgroundImage: `url(${Femme1})`}} >
-                        <div className=' heart-icon-picture'>
-                            <div>
-                                <FontAwesomeIcon onClick={this.changeColor} className={btn} icon='heart' />
-                            </div>
-                        </div>
-                        <div className='legend-icon-picture'>
-                            <div className='name-client'>
-                                <div>GaL Gadot</div>
-                                <div className="dot-green-picture"></div>
-                            </div>
-                            <div className="legend-client">
-                                <div className="position-legend">
-                                    <FontAwesomeIcon className='icon-envelope' icon={['far', 'envelope']} />
-                                    <FontAwesomeIcon className="icon-user" icon='user' />
-                                    <FontAwesomeIcon className="icon-trophy" icon="trophy" />
+            <div className='main-client'>
+                            <div className='center-title testb'>
+                                <div className='position-peoples'>
+                                    <div className='title-peoples'>
+                                        <div className=''>
+                                            People
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div className='picture-big' style={{ backgroundImage: `url(${Femme1})`}} >
-                        <div className=' heart-icon-picture'>
-                            <div>
-                                <FontAwesomeIcon onClick={this.changeColor} className={btn} icon='heart' />
+                            <div className='position-prefer testb'>
+                                <div className='position-marge'>Cougar</div>
+                                <div>Musique</div>
+                                <div>Alcool</div>
+                                <div>Cheveux</div>
+                                <div>Sida</div>
+                                <div>Vegan</div>
                             </div>
-                        </div>
-                        <div className='legend-icon-picture'>
-                            <div className='name-client'>
-                                <div>GaL Gadot</div>
-                                <div className="dot-green-picture"></div>
-                            </div>
-                            <div className="legend-client">
-                                <div className="position-legend">
-                                    <FontAwesomeIcon className='icon-envelope' icon={['far', 'envelope']} />
-                                    <FontAwesomeIcon className="icon-user" icon='user' />
-                                    <FontAwesomeIcon className="icon-trophy" icon="trophy" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className='picture-big' style={{ backgroundImage: `url(${Femme1})`}} >
-                        <div className=' heart-icon-picture'>
-                            <div>
-                                <FontAwesomeIcon onClick={this.changeColor} className={btn} icon='heart' />
-                            </div>
-                        </div>
-                        <div className='legend-icon-picture'>
-                            <div className='name-client'>
-                                <div>GaL Gadot</div>
-                                <div className="dot-green-picture"></div>
-                            </div>
-                            <div className="legend-client">
-                                <div className="position-legend">
-                                    <FontAwesomeIcon className='icon-envelope' icon={['far', 'envelope']} />
-                                    <FontAwesomeIcon className="icon-user" icon='user' />
-                                    <FontAwesomeIcon className="icon-trophy" icon="trophy" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className='picture-big' style={{ backgroundImage: `url(${Femme1})`}} >
-                        <div className=' heart-icon-picture'>
-                            <div>
-                                <FontAwesomeIcon onClick={this.changeColor} className={btn} icon='heart' />
-                            </div>
-                        </div>
-                        <div className='legend-icon-picture'>
-                            <div className='name-client'>
-                                <div>GaL Gadot</div>
-                                <div className="dot-green-picture"></div>
-                            </div>
-                            <div className="legend-client">
-                                <div className="position-legend">
-                                    <FontAwesomeIcon className='icon-envelope' icon={['far', 'envelope']} />
-                                    <FontAwesomeIcon className="icon-user" icon='user' />
-                                    <FontAwesomeIcon className="icon-trophy" icon="trophy" />
+                            <div className=' position-picture-big'>
+
+                            
+                                
+                                
+
+                                <div className='picture-big' style={{ backgroundImage: `url(${Femme1})`}} >
+                                    <div className=' heart-icon-picture'>
+                                        <div  onClick={(e) => this.changeColor(e)}  style={{color : 'white'}} className='testb heart-icon-pic-white'>
+                                            <i   className="fas fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div className='legend-icon-picture'>
+                                        <div className='name-client'>
+                                            <div>GaL Gadot</div>
+                                            <div className="dot-green-picture"></div>
+                                        </div>
+                                        <div className="legend-client">
+                                            <div className="position-legend">
+                                                <FontAwesomeIcon className='icon-envelope' icon={['far', 'envelope']} />
+                                                <FontAwesomeIcon className="icon-user" icon='user' />
+                                                <FontAwesomeIcon className="icon-trophy" icon="trophy" />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <div className='picture-big' style={{ backgroundImage: `url(${Femme1})`}} >
+                                    <div className=' heart-icon-picture'>
+                                        <div  onClick={(e) => this.changeColor(e)}  className='testb heart-icon-pic-white'>
+                                            <i  style={{color : 'blue'}} className="fas fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div className='legend-icon-picture'>
+                                        <div className='name-client'>
+                                            <div>GaL Gadot</div>
+                                            <div className="dot-green-picture"></div>
+                                        </div>
+                                        <div className="legend-client">
+                                            <div className="position-legend">
+                                                <FontAwesomeIcon className='icon-envelope' icon={['far', 'envelope']} />
+                                                <FontAwesomeIcon className="icon-user" icon='user' />
+                                                <FontAwesomeIcon className="icon-trophy" icon="trophy" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                                
+                                
+
+                                
+
+                                
+
+                                
                             </div>
                         </div>
-                    </div>
-                </div>
-            </Fragment>
         )
     }
 }

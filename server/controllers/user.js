@@ -1,7 +1,7 @@
-// controller
-const userService = require('../services/user');
+const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
-
+const userModel = require('../models/userModel');
+var nodemailer = require('nodemailer');
 
 const events = require('events');
 
@@ -14,33 +14,27 @@ eventEmitter.on('pouet', function() {
 	console.log("test Event !");
 });
 
-
-exports.register = (data) => {
+exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		let user = new User();
-
-		console.log(data);
-		user.register({
+		let userService = new UserService();
+		userService.createUser({
 				username : data.username,
 				password : data.password,
 				firstname : data.firstname,
-				email : data.email,
-				location : data.location
+				lastname : data.lastname,
+				email : data.email
 		})
 		.then((res) => {
-			eventEmitter.emit('pouet');
 			console.log(res);
-			return user.saveUser(res);
+			resolve();
 		})
 		.catch((err) => {
 			reject(err);
 		})
-		console.log(data);
-		resolve('Perfect !');
 	})
 };
 
-exports.authenticate = (data) => {
+exports.find = (data) => {
 	return new Promise((resolve, reject) => {
 		let user = new userService();
 		user.authenticate(data.username, data.password)
@@ -49,16 +43,42 @@ exports.authenticate = (data) => {
 		})
 		.catch(() => {
 			reject();
-		})
+    })
 	})
 }
 
-exports.search = (name) => {
-	console.log("search user in database");
+exports.authenticate = (req, res) => {
+	const data = req.body;
+	userModel.findUserByUsername(data.username)
+	.then(() => {
+		console.log("<- AUTH ---");
+		console.log(data);
+		console.log("--- AUTH ->");
+		user.checkLogin(data, res).then((res) => {
+			var token = jwt.sign({
+				id: data.id,
+				username: data.username
+			}, 'shhhhh');
+			console.log(token);
+			res.status(200).send({token});
+		}).catch((error) => {
+			console.log(error);
+			res.status(401).send("error");
+		})
+	}).catch((err) => {
+		console.log("error");
+	})
 }
 
-exports.update = (data) => {
-	return new Promise((resolve, reject) => {
-
+exports.forgot = (req, res) => {
+	const data = req.body;
+	userModel.forgotPassword(data)
+	.then(() => {
+		console.log("<- FGPSD1 ---");
+		console.log(data);
+		console.log("--- FGPSD1 ->");
+		console.log("Mail sent");
+	}).catch((err) => {
+		console.log("error");
 	})
 }

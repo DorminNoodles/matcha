@@ -38,7 +38,7 @@ class Inscription extends Component {
     render () {
         
         return (
-            <div className="container">
+            <div className="inscription">
                 <div className="logo-center">
                     <Link to="/"> <img className="logo1" src={Logo1} alt="logo"/> </Link>
                 </div>
@@ -46,107 +46,71 @@ class Inscription extends Component {
                 {/* Redirection vers connexion*/}
                 {this.renderRedirect()}
                 
-                <div className="formulaire">
-                    <div>
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
+                    <div className='center-form'>
+                        <form className='position-form' onSubmit={this.handleSubmit}>
                                     <input
                                         onChange={this.handleChange}
-                                        placeholder="Firstname" 
+                                        placeholder="firstname" 
                                         id="firstname" 
                                         type="text" 
-                                        className="form-control" 
+                                        className="form-ins" 
                                         />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
                                     <input 
                                         onChange={this.handleChange}
-                                        placeholder="Lastname" 
+                                        placeholder="lastname" 
                                         id="lastname" 
                                         type="text" 
-                                        className="form-control" 
+                                        className="form-ins" 
                                         />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
                                     <select 
                                         onChange={this.handleChange}
                                         id="gender" 
-                                        className="form-control">
-                                        <option value="masculin">Masculin</option>
-                                        <option value="feminin">Féminin</option>
+                                        className="form-ins">
+                                        <option value="masculin">masculin</option>
+                                        <option value="feminin">féminin</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group ">
                                     <select 
                                         onChange={this.handleChange}
                                         id="orientation" 
-                                        className="form-control">
-                                        <option value="hetero">Hétéro</option>
-                                        <option value="gay">Gay</option>
+                                        className="form-ins">
+                                        <option value="hetero">hétéro</option>
+                                        <option value="gay">gay</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group ">
                                     <input
                                         onChange={this.handleChange}
-                                        placeholder="Email" 
+                                        placeholder="email" 
                                         id="email" 
                                         type="email" 
-                                        className="form-control" 
+                                        className="form-ins" 
                                         />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>                          
-                                <div className="col-md-4 col-sm-8 form-group ">
                                     <input
                                         onChange={this.handleChange}
-                                        placeholder="Password"
+                                        placeholder="password"
                                         id="password" 
                                         type="password" 
-                                        className="form-control" 
+                                        className="form-ins" 
                                         />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4 col-sm-2"></div>
-                                <div className="col-md-4 col-sm-8 form-group">
                                     <input
                                         onChange={this.handleChange}
-                                        placeholder="Confirm password"
+                                        placeholder="confirm password"
                                         id="password_confirm" 
                                         type="password" 
-                                        className="form-control" 
+                                        className="form-ins" 
                                         />
-                                </div>
-                            </div>
-                            <div className="boutton-form">
-                                <input 
-                                    className="btn btn-info btn-lg button-inscription"
-                                    type="submit"
-                                    value="S'inscrire"/>
-                            </div>
-                            <div>
+                                    <div className='center-button'>
+                                        <input 
+                                            className="button-ins"
+                                            type="submit"
+                                            value="S'inscrire"
+                                            />
+                                    </div>
+                                <div>
                                 <div className="information_user">
                                     <Link to="/connexion">Déja client ?</Link><br />
                                 </div>
                             </div>
                         </form>
                     </div>
-                </div>
             </div>
         )
     }

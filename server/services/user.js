@@ -1,24 +1,14 @@
 "use strict";
-// const ActivationMail = require('../services/activationMail');
 const checkInput = require('../services/checkInput');
-const userModel = require('../models/userModel');
-const emitter = require('../emitter');
+const userModel = require('../models/userModel')
+const myEmitter = require('../emitter');
 
 class User {
-
 	constructor(){
-		console.log('Hellomoto');
-		emitter.on('userRegistered', this.displayMessage);
+		// setTimeout(function () {
+		// 	console.log('1');
+		// }, 2000);
 	}
-
-	displayMessage (){
-		// console.log('testy');
-	}
-
-	userJoined (username) {
-
-	}
-
 	checkData(data) {
 		return new Promise((resolve, reject) => {
 			checkInput.username(data.username)
@@ -26,7 +16,7 @@ class User {
 				console.log('Username Checked');
 				return checkInput.password(data.password);
 			})
-			.then((res) => {
+			.then(function (res) {
 				console.log('Password Checked');
 				return checkInput.firstname(data.firstname);
 			})
@@ -36,35 +26,29 @@ class User {
 			})
 			.then((res) => {
 				console.log('Email Checked');
-				return checkInput.geoloc(data.location);
-			})
-			.then((res) => {
-				console.log('Location Checked');
 				resolve(data);
 			})
 			.catch((err) => {
+				console.log(err);
 				reject(err);
 			})
 		})
 	}
 
-	register(data) {
+	createUser(data) {
 		return new Promise((resolve, reject) => {
-			if (!data)
-				reject();
+			if (!data) {
+				reject('No Data');
+				return;
+			}
 			this.checkData(data)
 			.then((res) => {
-				console.log(res);
-				console.log("checkData Valid");
-				return(userModel.saveUser(data));
-				resolve(data);
-			})
-			.then((res) => {
-					console.log("User saved !");
-					resolve("User saved !");
+
+				myEmitter.emit('userRegistered', data);
+				resolve(userModel.saveUser(data));
+
 			})
 			.catch((err) => {
-				console.log(err);
 				console.log("checkData error");
 				reject(err);
 			})
@@ -109,7 +93,6 @@ class User {
 	checkAuth(token) {
 
 	}
-
 }
 
 module.exports = User;

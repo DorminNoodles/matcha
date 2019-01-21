@@ -8,19 +8,17 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser, (req, res) => {
-	user.register(req.body)
-	.then((resolve)=>{
-		console.log(resolve);
-	}).catch((error)=>{
-		console.log(error);
+router.post('/', urlencodedParser, (req, res) => {
+	console.log('post likes');
+	console.log(req.body);
+	likes.new(req.body.liker, req.body.liked)
+	.then((result) => {
+		res.send(result);
 	})
-	console.log('User created !')
-	res.send('Create User');
+	.catch((err) => {
+		res.send(err);
+	});
 })
-
-router.get('/profil/:id', urlencodedParser, (req, res) => {
-
 	console.log(req.params);
 	res.send('Get profil');
 })
@@ -52,5 +50,4 @@ router.put('/user/:id', urlencodedParser, (req, res) => {
 	console.log(req.params);
 
 })
-
 module.exports = router;
