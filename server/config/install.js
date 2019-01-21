@@ -77,9 +77,9 @@ async function db() {
         )');
     	await connection.query('CREATE TABLE chat (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
+			from_id INT NOT NULL, \
+			to_id INT NOT NULL, \
         	message TEXT, \
-        	user_id INT NOT NULL, \
-        	his_id INT NOT NULL, \
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
         )');
 		await connection.end();

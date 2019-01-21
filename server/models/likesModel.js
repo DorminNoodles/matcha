@@ -30,7 +30,6 @@ exports.getLike = (liker, liked) => {
 				user: 'root',
 				password: 'qwerty',
 				database: 'matcha'
-			})
 			.then((conn) => {
 				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked]);
 			})
