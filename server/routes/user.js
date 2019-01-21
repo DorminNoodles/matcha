@@ -22,9 +22,9 @@ router.post('/register', urlencodedParser,async (req, res) => {
 		res.send(err);
 	});
 })
-	console.log(req.params);
-	res.send('Get profil');
-})
+// 	console.log(req.params);
+// 	res.send('Get profil');
+// })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
 	console.log("fuck");
@@ -70,4 +70,5 @@ router.put('/user/:id', urlencodedParser, (req, res) => {
 
 
 })
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/userModel');
+// const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
 
@@ -44,7 +44,7 @@ exports.find = (data) => {
 		})
 		.catch(() => {
 			reject();
-    })
+    	})
 	})
 }
 
@@ -72,7 +72,6 @@ exports.authenticate = (req, res) => {
 
 exports.forgot = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log(data);
 		userModel.findUserByEmail(data)
 		.then((res) => {
 			var token = jwt.sign({
@@ -85,7 +84,6 @@ exports.forgot = (data) => {
 				username: res.username,
 				email: res.email
 			}, token);
-
 			resolve();
 		}).catch((error) => {
 			console.log("Not a registered email address !");

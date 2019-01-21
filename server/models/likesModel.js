@@ -24,26 +24,27 @@ exports.new = (liker, liked) => {
 }
 
 exports.getLike = (liker, liked) => {
-		return new Promise((resolve, reject) => {
-			mysql.createConnection({
-				host: 'localhost',
-				user: 'root',
-				password: 'qwerty',
-				database: 'matcha'
-			.then((conn) => {
-				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked]);
-			})
-			.then((res) => {
-				if (res[0])
-					resolve(res[0]);
-				else
-					reject('Like not found.');
-			})
-			.catch((err) => {
-				console.log(err);
-				reject();
-			})
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
 		})
+		.then((conn) => {
+			return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked]);
+		})
+		.then((res) => {
+			if (res[0])
+				resolve(res[0]);
+			else
+				reject('Like not found.');
+		})
+		.catch((err) => {
+			console.log(err);
+			reject();
+		})
+	})
 }
 
 exports.getLikesSended = (liker) => {
