@@ -13,6 +13,9 @@ class User {
 		return new Promise((resolve, reject) => {
 			checkInput.username(data.username)
 			.then((res) => {
+				return checkInput.usernameAlreadyTaken(data.username);
+			})
+			.then((res) => {
 				console.log('Username Checked');
 				return checkInput.password(data.password);
 			})
@@ -23,6 +26,9 @@ class User {
 			.then((res) => {
 				console.log('Firstname Checked');
 				return checkInput.email(data.email);
+			})
+			.then((res) => {
+				return checkInput.emailAlreadyTaken(data.username);
 			})
 			.then((res) => {
 				console.log('Email Checked');

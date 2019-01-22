@@ -73,7 +73,6 @@ exports.find = (data) => {
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("hello authenticate");
-
 		checkInput.username(data.username)
 		.then(() => {
 			return checkInput.password(data.password)
