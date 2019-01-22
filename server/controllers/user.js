@@ -1,9 +1,19 @@
-// controller
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/userModel');
+// const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
+
+const events = require('events');
+
+const userModel = require('../models/userModel');
+const checkInput = require('../services/checkInput');
+
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('pouet', function() {
+	console.log("test Event !");
+});
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
@@ -27,47 +37,74 @@ exports.new = (data) => {
 
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByID(data.id)
-		.then((data) => {
+		let user = new userService();
+		user.authenticate(data.username, data.password)
+		.then(() => {
+			resolve();
+		})
+		.catch(() => {
+			reject();
+    	})
+	})
+}
+
+// exports.authenticate = (req, res) => {
+// 	const data = req.body;
+// 	userModel.findUserByUsername(data.username)
+// 	.then(() => {
+// 		console.log("<- AUTH ---");
+// 		console.log(data);
+// 		console.log("--- AUTH ->");
+// 		userModel.checkLogin(data, res).then((res) => {
+// 			var token = jwt.sign({
+// 				id: data.id,
+// 				username: data.username
+// 			}, 'shhhhh');
+// 			res.status(200).send({token});
+// 		}).catch((error) => {
+// 			console.log(error);
+// 			res.status(401).send("error");
+// 		})
+// 	}).catch((err) => {
+// 		console.log("error");
+// 	})
+// }
+
+exports.authenticate = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("hello authenticate");
+		checkInput.username(data.username)
+		.then(() => {
+			return checkInput.password(data.password)
+		})
+		.then(() => {
+			return userModel.findUserByUsername(data.username, data.password);
+		})
+		.then((res) => {
+			console.log("hello authenticate*****");
+			console.log("<- AUTH ---");
 			console.log(data);
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username,
-				email: data.email
-			}, 'shhhhh');
-			resolve(token);
+			console.log("--- AUTH ->");
+			userModel.checkLogin(data.username, data.password)
+			.then((res) => {
+				var token = jwt.sign({
+					id: res.id,
+					username: res.username
+				}, 'shhhhh');
+				resolve(token);
+			}).catch((error) => {
+				console.log(error);
+				reject(error);
+			})
 		}).catch((err) => {
+			console.log("error");
 			reject(err);
 		})
 	})
 }
 
-exports.authenticate = (req, res) => {
-	const data = req.body;
-	userModel.findUserByUsername(data.username)
-	.then(() => {
-		console.log("<- AUTH ---");
-		console.log(data);
-		console.log("--- AUTH ->");
-		userModel.checkLogin(data, res).then((res) => {
-			var token = jwt.sign({
-				id: data.id,
-				username: data.username
-			}, 'shhhhh');
-			console.log(token);
-			res.status(200).send({token});
-		}).catch((error) => {
-			console.log(error);
-			res.status(401).send("error");
-		})
-	}).catch((err) => {
-		console.log("error");
-	})
-}
-
 exports.forgot = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log(data);
 		userModel.findUserByEmail(data)
 		.then((res) => {
 			var token = jwt.sign({
@@ -80,7 +117,6 @@ exports.forgot = (data) => {
 				username: res.username,
 				email: res.email
 			}, token);
-
 			resolve();
 		}).catch((error) => {
 			console.log("Not a registered email address !");

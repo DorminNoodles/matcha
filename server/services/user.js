@@ -13,6 +13,9 @@ class User {
 		return new Promise((resolve, reject) => {
 			checkInput.username(data.username)
 			.then((res) => {
+				return checkInput.usernameAlreadyTaken(data.username);
+			})
+			.then((res) => {
 				console.log('Username Checked');
 				return checkInput.password(data.password);
 			})
@@ -23,6 +26,9 @@ class User {
 			.then((res) => {
 				console.log('Firstname Checked');
 				return checkInput.email(data.email);
+			})
+			.then((res) => {
+				return checkInput.emailAlreadyTaken(data.username);
 			})
 			.then((res) => {
 				console.log('Email Checked');
@@ -53,6 +59,45 @@ class User {
 				reject(err);
 			})
 		})
+	}
+
+	authenticate(username, password) {
+		return new Promise((resolve, reject) => {
+
+			console.log("HELOOOOOOO");
+			console.log(username);
+
+			// checkInput.username(username)
+			// .then(() => {
+			// 	return checkInput.password(password);
+			// })
+			// .then(() => {
+			// 	resolve();
+			// })
+			// .catch(() => {
+			// 	reject();
+			// })
+
+			userModel.findUserByName(username)
+			.then((data) => {
+				console.log(data);
+				console.log(data.username);
+				let token = jwt.sign({
+					id: data.id,
+					username: data.username,
+					email: data.email
+				}, 'shhhhhhh');
+				resolve(token);
+				return;
+			})
+			.catch(() => {
+				reject();
+			})
+		})
+	}
+
+	checkAuth(token) {
+
 	}
 }
 

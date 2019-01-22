@@ -11,34 +11,38 @@ var urlencodedParser = bodyParser.urlencoded({extended : false})
 router.post('/register', urlencodedParser,async (req, res) => {
 	// console.log(eq.headers['x-forwarded-for']);
 
-	var ip = req.headers['x-forwarded-for'] ||
-     req.connection.remoteAddress ||
-     req.socket.remoteAddress ||
-     (req.connection.socket ? req.connection.socket.remoteAddress : null);
-
-	 console.log(ip);
 	user.new(req.body)
 	.then((resolve)=>{
 		console.log(resolve);
 	}).catch((error)=>{
 		console.log(error);
-	})
-	res.send('Create User');
-})
 
-router.get('/profil/:id', urlencodedParser, (req, res) => {
-	console.log(req.params);
-	user.find(req.params)
-	.then((resolve)=>{
-		console.log(resolve);
-	}).catch((error)=>{
-		console.log(error);
 	})
-	res.send('Get profil');
+	.catch((err) => {
+		res.send(err);
+	});
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-	user.authenticate(req, res);
+	console.log("fuck");
+	console.log(req.body.username);
+	console.log(req.body.password);
+	user.authenticate(req.body)
+	.then((resolve) => {
+		res.send({
+			status: 'ok',
+			message: 'connected !',
+			token: resolve
+		});
+		console.log('connected !');
+	}).catch((error) => {
+		console.log('error');
+		console.log(error);
+		res.send({
+			status: 'error',
+			message: error
+		});
+	})
 })
 
 router.post('/forgot', urlencodedParser, (req, res) => {
@@ -57,11 +61,18 @@ router.get('/forgot', urlencodedParser, (req, res) => {
 	user.recog(req.query.key);
 })
 
+<<<<<<< HEAD
 router.post('/settings', urlencodedParser, (req, res) => {
 	user.find(req.params.id)
 	.then(() => {
 		
 	})
+=======
+router.put('/user/:id', urlencodedParser, (req, res) => {
+	console.log(req.params);
+
+
+>>>>>>> origin/master
 })
 
 module.exports = router;
