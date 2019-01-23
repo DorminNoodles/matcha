@@ -78,18 +78,22 @@ exports.authenticate = (data) => {
 			return checkInput.password(data.password)
 		})
 		.then(() => {
-			return userModel.findUserByUsername(data.username, data.password);
+			console.log("hello authenticate");
+			return userModel.findUserByUsername(data.username);
 		})
-		.then((res) => {
+		.then((result) => {
 			console.log("hello authenticate*****");
 			console.log("<- AUTH ---");
 			console.log(data);
 			console.log("--- AUTH ->");
 			userModel.checkLogin(data.username, data.password)
-			.then((res) => {
+			.then(() => {
+				console.log("HUMMM");
+				console.log(result);
 				var token = jwt.sign({
-					id: res.id,
-					username: res.username
+					id: result.id,
+					username: result.username,
+					email: result.email
 				}, 'shhhhh');
 				resolve(token);
 			}).catch((error) => {

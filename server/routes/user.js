@@ -8,15 +8,13 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser,async (req, res) => {
-	// console.log(eq.headers['x-forwarded-for']);
+router.post('/register', urlencodedParser, async (req, res) => {
 
 	user.new(req.body)
 	.then((resolve)=>{
 		console.log(resolve);
 	}).catch((error)=>{
 		console.log(error);
-
 	})
 	.catch((err) => {
 		res.send(err);
