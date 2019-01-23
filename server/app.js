@@ -27,6 +27,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 /*MIDDLEWARE*/
 app.use(jwtToken);
+
+/*ROUTES*/
 app.use('/api/user', user);
 app.use('/api/messages', messages);
 app.use('/api/users', users);

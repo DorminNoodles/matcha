@@ -45,7 +45,7 @@ class User {
 	createUser(data) {
 		return new Promise((resolve, reject) => {
 			if (!data) {
-				reject('No Data');
+				reject({"status": "error", "msg": "No Data !"});
 				return;
 			}
 			this.checkData(data)
@@ -64,20 +64,6 @@ class User {
 
 	authenticate(username, password) {
 		return new Promise((resolve, reject) => {
-
-			console.log("HELOOOOOOO");
-			console.log(username);
-
-			// checkInput.username(username)
-			// .then(() => {
-			// 	return checkInput.password(password);
-			// })
-			// .then(() => {
-			// 	resolve();
-			// })
-			// .catch(() => {
-			// 	reject();
-			// })
 
 			userModel.findUserByName(username)
 			.then((data) => {

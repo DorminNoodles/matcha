@@ -4,12 +4,12 @@ exports.new = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		likesModel.getLike(liker, liked)
 		.then(() => {
-			reject('like already exist.');
+			reject({"status": "error", "msg": "like already exist."});
 		})
 		.catch((err) => {
 			likesModel.new(liker, liked)
 			.then(() => {
-				resolve('like Added !');
+				resolve({"status": "success", "msg": "like Added !"});
 			})
 			.catch((err) => {
 				reject('error when adding like');
@@ -17,7 +17,6 @@ exports.new = (liker, liked) => {
 		})
 	});
 }
-
 
 exports.getAll = (id) => {
 	return new Promise((resolve, reject) => {
@@ -37,4 +36,16 @@ exports.getAll = (id) => {
 			reject(err);
 		})
 	});
+}
+
+exports.delete = (liker, liked) => {
+	return new Promise((resolve, reject) => {
+		likesModel.delete(liker, liked)
+		.then((res) => {
+			resolve(res);
+		})
+		.catch((err) => {
+			reject(err);
+		})
+	})
 }

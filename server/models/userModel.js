@@ -94,7 +94,6 @@ exports.findUserByID = (id) => {
 			return;
 		}).catch((error) => {
 			console.log("findUserByName failed");
-
 			reject(error);
 			return;
 		})
@@ -114,13 +113,12 @@ exports.checkLogin = (username, password) => {
 			return result;
 		}).then((result) => {
 			console.log("hello");
-			bcrypt.compare(password, result[0].password).then((res) => {
-				if (res) {
+			bcrypt.compare(password, result[0].password)
+			.then((res) => {
+				if (res)
 					resolve(res);
-				}
-				else{
+				else
 					reject();
-				}
 			}).catch((error) => {
 				reject();
 				console.log(error);

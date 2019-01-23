@@ -1,6 +1,5 @@
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
-// const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
 
@@ -48,28 +47,6 @@ exports.find = (data) => {
 	})
 }
 
-// exports.authenticate = (req, res) => {
-// 	const data = req.body;
-// 	userModel.findUserByUsername(data.username)
-// 	.then(() => {
-// 		console.log("<- AUTH ---");
-// 		console.log(data);
-// 		console.log("--- AUTH ->");
-// 		userModel.checkLogin(data, res).then((res) => {
-// 			var token = jwt.sign({
-// 				id: data.id,
-// 				username: data.username
-// 			}, 'shhhhh');
-// 			res.status(200).send({token});
-// 		}).catch((error) => {
-// 			console.log(error);
-// 			res.status(401).send("error");
-// 		})
-// 	}).catch((err) => {
-// 		console.log("error");
-// 	})
-// }
-
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("hello authenticate");
@@ -78,18 +55,22 @@ exports.authenticate = (data) => {
 			return checkInput.password(data.password)
 		})
 		.then(() => {
-			return userModel.findUserByUsername(data.username, data.password);
+			console.log("hello authenticate");
+			return userModel.findUserByUsername(data.username);
 		})
-		.then((res) => {
+		.then((result) => {
 			console.log("hello authenticate*****");
 			console.log("<- AUTH ---");
 			console.log(data);
 			console.log("--- AUTH ->");
 			userModel.checkLogin(data.username, data.password)
-			.then((res) => {
+			.then(() => {
+				console.log("HUMMM");
+				console.log(result);
 				var token = jwt.sign({
-					id: res.id,
-					username: res.username
+					id: result.id,
+					username: result.username,
+					email: result.email
 				}, 'shhhhh');
 				resolve(token);
 			}).catch((error) => {

@@ -23,6 +23,26 @@ exports.new = (liker, liked) => {
 		})
 }
 
+exports.delete = (liker, liked) => {
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		})
+		.then((conn) => {
+			return conn.query('DELETE FROM likes WHERE liker=? AND liked=?', [liker, liked]);
+		})
+		.then((res) => {
+			resolve({"status": "success"});
+		})
+		.catch((err) => {
+			reject({"status": "error", "msg" : "request failed"});
+		})
+	})
+}
+
 exports.getLike = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
