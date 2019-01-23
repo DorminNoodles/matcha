@@ -8,13 +8,10 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser, async (req, res) => {
-
+router.post('/register', urlencodedParser, (req, res) => {
 	user.new(req.body)
-	.then((resolve)=>{
-		console.log(resolve);
-	}).catch((error)=>{
-		console.log(error);
+	.then((result) => {
+		res.status(200).send({"status": "success", "msg": "user registered !"});
 	})
 	.catch((err) => {
 		res.send(err);
