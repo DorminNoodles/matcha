@@ -10,7 +10,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 router.get('/', urlencodedParser, (req, res) => {
 	console.log('post likes');
 	console.log(req.body);
-	likes.getAll(req.body.liker, req.body.liked)
+	likes.getAll(req.body.liker)
 	.then((result) => {
 		// console.log(res);
 		res.send(result);
