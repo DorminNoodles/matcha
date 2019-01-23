@@ -1,6 +1,5 @@
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
-// const userModel = require('../models/userModel');
 var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
 
@@ -47,28 +46,6 @@ exports.find = (data) => {
     	})
 	})
 }
-
-// exports.authenticate = (req, res) => {
-// 	const data = req.body;
-// 	userModel.findUserByUsername(data.username)
-// 	.then(() => {
-// 		console.log("<- AUTH ---");
-// 		console.log(data);
-// 		console.log("--- AUTH ->");
-// 		userModel.checkLogin(data, res).then((res) => {
-// 			var token = jwt.sign({
-// 				id: data.id,
-// 				username: data.username
-// 			}, 'shhhhh');
-// 			res.status(200).send({token});
-// 		}).catch((error) => {
-// 			console.log(error);
-// 			res.status(401).send("error");
-// 		})
-// 	}).catch((err) => {
-// 		console.log("error");
-// 	})
-// }
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {

@@ -9,7 +9,7 @@ exports.new = (liker, liked) => {
 		.catch((err) => {
 			likesModel.new(liker, liked)
 			.then(() => {
-				resolve('like Added !');
+				resolve({"status": "success", "msg": "like Added !"});
 			})
 			.catch((err) => {
 				reject('error when adding like');

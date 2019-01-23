@@ -12,6 +12,10 @@ router.post('/', urlencodedParser, (req, res) => {
 		res.status(401).send({"status": "error", "msg": "bad authentification"});
 		return;
 	}
+	if (!req.body.liker || req.token.id != req.body.liker) {
+		res.status(403).send({"status": "error", "msg": "access refused"});
+		return;
+	}
 	likes.new(req.body.liker, req.body.liked)
 	.then((result) => {
 		res.send(result);
@@ -31,7 +35,13 @@ router.delete('/', urlencodedParser, (req, res) => {
 		return;
 	}
 
-	likes.delete
+	likes.delete(req.body.liker, req.body.liked)
+	.then((result) => {
+		res.status(200).send({"status": "success", "msg": "unlike success !"});
+	})
+	.catch((err) => {
+		res.status(409).send({"status": "error", "msg": "unlike failed !"});
+	})
 
 
 })
