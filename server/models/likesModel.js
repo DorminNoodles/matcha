@@ -14,7 +14,7 @@ exports.new = (liker, liked) => {
 			})
 			.then((res) => {
 				console.log('like add !');
-				resolve();
+				resolve({"status": "success", "msg": "like added !"});
 			})
 			.catch((err) => {
 				console.log(err);

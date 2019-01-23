@@ -48,8 +48,8 @@ async function db() {
         )');
         await connection.query('CREATE TABLE block (\
         	id INT AUTO_INCREMENT PRIMARY KEY,\
-        	user_id INT NOT NULL,\
-        	his_id INT NOT NULL\
+        	blocker INT NOT NULL,\
+        	blocked INT NOT NULL\
         	)');
         await connection.query('CREATE TABLE likes (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
