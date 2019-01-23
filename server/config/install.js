@@ -39,11 +39,7 @@ async function db() {
 			bio TEXT, \
 			age DATETIME, \
 			active DATETIME, \
-<<<<<<< HEAD
 			reg_date TIMESTAMP \
-=======
-			reg_date TIMESTAMP, \
->>>>>>> origin/master
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \

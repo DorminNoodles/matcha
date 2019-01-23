@@ -61,18 +61,15 @@ router.get('/forgot', urlencodedParser, (req, res) => {
 	user.recog(req.query.key);
 })
 
-<<<<<<< HEAD
 router.post('/settings', urlencodedParser, (req, res) => {
 	user.find(req.params.id)
 	.then(() => {
 		
 	})
-=======
+})
+
 router.put('/user/:id', urlencodedParser, (req, res) => {
 	console.log(req.params);
-
-
->>>>>>> origin/master
 })
 
 module.exports = router;

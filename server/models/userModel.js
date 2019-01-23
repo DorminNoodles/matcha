@@ -116,7 +116,7 @@ exports.checkLogin = (username, password) => {
 			console.log("hello");
 			bcrypt.compare(password, result[0].password).then((res) => {
 				if (res) {
-					resolve(response);
+					resolve(res);
 				}
 				else{
 					reject();

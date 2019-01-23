@@ -2,6 +2,7 @@
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel')
 const myEmitter = require('../emitter');
+const userSettings = require('../../models/userSettings');
 
 class User {
 	constructor(){
@@ -98,6 +99,25 @@ class User {
 
 	checkAuth(token) {
 
+	}
+
+	checkSettings(data) {
+		return new Promise((resolve, reject) => {
+			userSettings.changeUsername(data.username)
+			.then((res) => {
+				return userSettings.changeFirstname(data.firstname);
+			}).then((res) => {
+				return userSettings.changeLastname(data.lastname);
+			}).then((res) => {
+				return userSettings.changeOrientation(data.orientation);
+			}).then((res) => {
+				return userSettings.changeGender(data.gender);
+			}).then((res) => {
+				return userSettings.changeMail(data.mail);
+			}).then((res) => {
+				return userSettings.changeBio(data.bio);
+			})
+		})
 	}
 }
 
