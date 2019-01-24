@@ -20,7 +20,6 @@ exports.findGpsByAddress = (data) => {
 	return new Promise((resolve, reject) => {
 		geocoder.selectProvider("geonames", {"username":"dormin"});
 		geocoder.geocode(data, (err, response) => {
-			// console.log(response.geonames[0]);
 			if (response)
 				resolve({lng: response.geonames[0].lng, lat: response.geonames[0].lat});
 			else
