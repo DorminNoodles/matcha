@@ -90,8 +90,10 @@ exports.findUserByID = (id) => {
 			conn.end();
 			return (result);
 		}).then((result) => {
-			resolve(result);
-			return;
+			if (result[0])
+				resolve(result[0]);
+			else
+				reject();
 		}).catch((error) => {
 			console.log("findUserByName failed");
 			reject(error);
