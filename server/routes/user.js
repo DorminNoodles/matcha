@@ -58,7 +58,9 @@ router.get('/forgot', urlencodedParser, (req, res) => {
 
 router.put('/user/:id', urlencodedParser, (req, res) => {
 	console.log(req.params);
+})
 
+router.post('/confirm', urlencodedParser, (req, res) => {
 
 })
 

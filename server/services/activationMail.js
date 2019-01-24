@@ -1,5 +1,6 @@
 const emitter = require('../emitter');
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
 
 class ActivationMail {
 
@@ -10,7 +11,12 @@ class ActivationMail {
 
 	sendActivationMail(data) {
 		console.log(data);
-		
+
+		var token = jwt.sign({
+			"username": data.username,
+			"email": data.email
+		}, 'shhhhh');
+
 		nodemailer.createTestAccount(() => {
 			let transporter = nodemailer.createTransport({
 				host: 'smtp.gmail.com',
@@ -23,6 +29,7 @@ class ActivationMail {
 			});
 
 			var key = Math.floor(Math.random()*900000000) + 100000000;
+			console.log(token);
 		    let mailOptions = {
 				from: '"Jack & Michael 🔥" <matchaducancer@gmail.com>',
 				to: data.email,
@@ -38,7 +45,7 @@ class ActivationMail {
 								Welcome ' + data.firstname + '!\
 								<br />\
 								CLICK ON THE FOLLOWING LINK TO VALIDATE YOUR ACCOUNT: <br />\
-								<a href=http://localhost:3000/confirm?login='+ data.username +'&key='+ key +'>Confirm your Account</a>\
+								<a href=http://localhost:3000/confirm?login='+ data.username +'&key='+ token +'>Confirm your Account</a>\
 							</div>\
 							<footer style="margin-top:200px;margin-bottom:50px;">\
 								<hr />\
