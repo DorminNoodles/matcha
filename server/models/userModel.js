@@ -128,3 +128,26 @@ exports.checkLogin = (username, password) => {
 		})
 	})
 }
+
+exports.saveGps = (id, long, lat) => {
+	return new Promise((resolve, reject) => {
+		console.log("BORDELLLLLL");
+		console.log(id, long, lat);
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		})
+		.then ((conn) => {
+			return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
+		})
+		.then((res) => {
+			resolve('Gps saved');
+		})
+		.catch((err) => {
+			console.log("ERRRO");
+			reject(err);
+		})
+	})
+}

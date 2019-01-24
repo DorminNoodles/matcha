@@ -1,6 +1,6 @@
 "use strict";
 const checkInput = require('../services/checkInput');
-const userModel = require('../models/userModel')
+const userModel = require('../models/userModel');
 const myEmitter = require('../emitter');
 
 class User {
@@ -25,6 +25,14 @@ class User {
 			})
 			.then((res) => {
 				console.log('Firstname Checked');
+				return checkInput.lastname(data.lastname);
+			})
+			.then((res) => {
+				console.log('Lastname Checked');
+				return checkInput.location(data.location);
+			})
+			.then((res) => {
+				console.log('Location Checked');
 				return checkInput.email(data.email);
 			})
 			.then((res) => {
@@ -50,8 +58,12 @@ class User {
 			this.checkData(data)
 			.then((res) => {
 
-				myEmitter.emit('userRegistered', data);
-				resolve(userModel.saveUser(data));
+				// myEmitter.emit('userRegistered', data);
+				resolve(userModel.saveUser(data)
+						.then(() => {
+							myEmitter.emit('userRegistered', data);
+						})
+				);
 
 			})
 			.catch((err) => {

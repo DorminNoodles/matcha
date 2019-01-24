@@ -10,10 +10,6 @@ const checkInput = require('../services/checkInput');
 
 var eventEmitter = new events.EventEmitter();
 
-eventEmitter.on('pouet', function() {
-	console.log("test Event !");
-});
-
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		let userService = new UserService();
@@ -22,7 +18,10 @@ exports.new = (data) => {
 				password : data.password,
 				firstname : data.firstname,
 				lastname : data.lastname,
-				email : data.email
+				email : data.email,
+				orientation : data.orientation,
+				gender : data.gender,
+				location : data.location
 		})
 		.then((res) => {
 			console.log(res);
