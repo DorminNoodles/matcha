@@ -7,19 +7,28 @@ const block = require('../controllers/block');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 router.post('/', urlencodedParser, (req, res) => {
+	console.log(req.token);
 	if (!req.token) {
 		res.status(401).send({"status": "error", "msg": "bad authentification"});
 		return;
 	}
-	if (!req.body.liker || req.token.id != req.body.liker) {
+	if (!req.body.blocker || req.token.id != req.body.blocker) {
 		res.status(403).send({"status": "error", "msg": "access refused"});
 		return;
 	}
-	likes.new(req.body.liker, req.body.liked)
+	block.new(req.body.blocker, req.body.blocked)
 	.then((result) => {
 		res.send(result);
 	})
 	.catch((err) => {
+		console.log("wtf");
 		res.send(err);
 	});
 })
+
+router.get('/', urlencodedParser, (req, res) => {
+
+})
+
+
+module.exports = router;
