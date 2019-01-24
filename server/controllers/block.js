@@ -1,18 +1,26 @@
+const blockModel = require('../models/blockModel');
+const userModel = require('../models/userModel');
 
-
-exports.new = (liker, liked) => {
+exports.new = (blocker, blocked) => {
 	return new Promise((resolve, reject) => {
-		likesModel.getLike(liker, liked)
+		console.log("hellooooooo");
+		blockModel.get(blocked)
 		.then(() => {
-			reject({"status": "error", "msg": "like already exist."});
+			reject({"status": "error", "msg": "block already exist."});
 		})
 		.catch((err) => {
-			likesModel.new(liker, liked)
+			console.log(blocked);
+			userModel.findUserByID(blocked)
+			.then((res) => {
+				console.log("Ouech");
+				console.log(res);
+				return blockModel.new(blocker, blocked);
+			})
 			.then(() => {
-				resolve({"status": "success", "msg": "like Added !"});
+				resolve({"status": "success", "msg": "user blocked !"});
 			})
 			.catch((err) => {
-				reject('error when adding like');
+				reject('error when adding block');
 			})
 		})
 	});
