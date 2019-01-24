@@ -17,7 +17,7 @@ const geoloc = require('./services/geoloc');
 
 
 // geoloc.getGps();
-emitter.on('userRegistered', geoloc.getGps);
+// emitter.on('userRegistered', geoloc.getGps);
 
 io.on('connection', (socket) => {
 	console.log('Un client est connecté !');
