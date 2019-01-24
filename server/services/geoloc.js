@@ -2,6 +2,8 @@
 const axios = require('axios');
 const geoip = require("geoip-lite");
 const geocoder = require("geocoder");
+const userModel = require('../models/userModel');
+
 
 exports.findLocationByIp = () => {
 	return new Promise((resolve, reject) => {
@@ -26,5 +28,39 @@ exports.findGpsByAddress = (data) => {
 				reject(err);
 
 		});
+	})
+}
+
+exports.getGps = (data) => {
+	return new Promise((resolve, reject) => {
+		// console.log("hello &&&&&*&&&");
+		console.log(data);
+		if (data.location) {
+			this.findGpsByAddress(data.location)
+			.then((result) => {
+				console.log("FIND BY GPS ADRRESSE");
+				console.log(data.username);
+				userModel.findUserByUsername(data.username)
+				.then((res) => {
+					console.log("findUSERBYUSERNAME : ");
+					console.log(res);
+					userModel.saveGps(res.id, result.lng, result.lat)
+					.then(() => {
+						resolve();
+					})
+					.catch(() => {
+						reject();
+					})
+				})
+				.catch(() => {
+					console.log("findUSERBYUSERNAME : ");
+					reject();
+				})
+			})
+			.catch((err) => {
+				reject();
+			})
+		}
+		resolve();
 	})
 }
