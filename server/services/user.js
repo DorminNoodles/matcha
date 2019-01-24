@@ -57,8 +57,6 @@ class User {
 			}
 			this.checkData(data)
 			.then((res) => {
-
-				// myEmitter.emit('userRegistered', data);
 				resolve(userModel.saveUser(data)
 						.then(() => {
 							myEmitter.emit('userRegistered', data);

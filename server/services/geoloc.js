@@ -33,7 +33,6 @@ exports.findGpsByAddress = (data) => {
 
 exports.getGps = (data) => {
 	return new Promise((resolve, reject) => {
-		// console.log("hello &&&&&*&&&");
 		console.log(data);
 		if (data.location) {
 			this.findGpsByAddress(data.location)
