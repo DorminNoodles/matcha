@@ -4,15 +4,17 @@ const userModel = require('../models/userModel');
 exports.new = (blocker, blocked) => {
 	return new Promise((resolve, reject) => {
 		console.log("hellooooooo");
-		blockModel.get(blocker, blocked)
+		blockModel.get(blocked)
 		.then(() => {
 			reject({"status": "error", "msg": "block already exist."});
 		})
 		.catch((err) => {
+			console.log(blocked);
 			userModel.findUserByID(blocked)
 			.then((res) => {
+				console.log("Ouech");
 				console.log(res);
-				return blockModel.new(blocker, blocked)
+				return blockModel.new(blocker, blocked);
 			})
 			.then(() => {
 				resolve({"status": "success", "msg": "user blocked !"});

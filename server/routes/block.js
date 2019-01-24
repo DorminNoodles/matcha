@@ -12,11 +12,11 @@ router.post('/', urlencodedParser, (req, res) => {
 		res.status(401).send({"status": "error", "msg": "bad authentification"});
 		return;
 	}
-	if (!req.body.blocker || req.token.id != req.body.blocker) {
-		res.status(403).send({"status": "error", "msg": "access refused"});
-		return;
-	}
-	block.new(req.body.blocker, req.body.blocked)
+	// if (req.token.id != req.body.blocker) {
+	// 	res.status(403).send({"status": "error", "msg": "access refused"});
+	// 	return;
+	// }
+	block.new(req.token.id, req.body.blocked)
 	.then((result) => {
 		res.send(result);
 	})
