@@ -120,3 +120,17 @@ exports.recog = (data) => {
 		})
 	})
 }
+
+exports.activate = (token) => {
+	return new Promise((resolve, reject) => {
+		let decoded = jwt.verify(token, 'shhhhh');
+		console.log(decoded);
+		userModel.activateUser(decoded.username, decoded.email)
+		.then((res) => {
+			resolve(res);
+		})
+		.catch((err) => {
+			reject(err);
+		})
+	})
+}
