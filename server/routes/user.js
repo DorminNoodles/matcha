@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 const user = require('../controllers/user');
+const UserSettings = require('../services/user');
 
 const router = express.Router();
 
@@ -57,9 +58,23 @@ router.get('/forgot', urlencodedParser, (req, res) => {
 })
 
 router.post('/settings', urlencodedParser, (req, res) => {
-	user.find(req.params.id)
-	.then(() => {
-		
+	const data = req.body;
+	user.find(data)
+	.then((res) => {
+		console.log("<!--------");
+		console.log(res);
+		console.log("--------!>");
+		let userSettings = new UserSettings();
+		userSettings.checkSettings(data)
+		.then(() => {
+
+		})
+		.catch(() => {
+
+		})
+	}).catch((error) => {
+		console.log("NOPE");
+		res.send("error");
 	})
 })
 

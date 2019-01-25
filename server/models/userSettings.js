@@ -4,20 +4,25 @@ const check = require('../services/checkInput');
 exports.changeUsername = (id, username) => {
 	return new Promise((resolve, reject) => {
 		check.username(username)
+		.then((res) => {
+			return check.usernameAlreadyTaken(username)
+		})
 		.then(() => {
-			check.usernameAlreadyTaken(username)
+			return mysql.createConnection({
+					host: 'localhost',
+					user: 'root',
+					password: 'qwerty',
+					database: 'matcha'
+				}).then((conn) => {
+					var result = conn.query('UPDATE users SET username=\''+ username +'\' WHERE id=\''+ id +'\'');
+					conn.end();
+				}).catch((error) => {
+					reject(error);
+				})
 		}).then(() => {
-			mysql.createConnection({
-				host: 'localhost',
-				user: 'root',
-				password: 'qwerty',
-				database: 'matcha'
-			})
-		}).then((conn) => {
-			var result = conn.query('UPDATE users SET username=\''+ username +'\' WHERE id=\''+ id +'\'');
-			conn.end();
 			resolve();
-		}).catch((error) => {
+		})
+		.catch((error) => {
 			reject(error);
 		})
 	})
@@ -32,6 +37,8 @@ exports.changeFirstname = (id, firstname) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET firstname=\''+ firstname +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -47,6 +54,8 @@ exports.changeLastname = (id, lastname) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET lastname=\''+ lastname +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -62,6 +71,8 @@ exports.changeOrientation = (id, gender) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET gender=\''+ gender +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -99,6 +110,8 @@ exports.changeBio = (id, bio) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET bio=\''+ bio +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -114,6 +127,8 @@ exports.changeGender = (id, gender) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET gender=\''+ gender +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -129,6 +144,8 @@ exports.changeOrientation = (id, orientation) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET orientation=\''+ orientation +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -144,6 +161,8 @@ exports.changeLocation = (id, location) => {
 			database: 'matcha'
 		}).then((conn) => {
 			var result = conn.query('UPDATE users SET location=\''+ location +'\' WHERE id=\''+ id +'\'');
+			conn.end();
+			resolve();
 		}).catch((error) => {
 			reject(error);
 		})
@@ -158,7 +177,18 @@ exports.changePassword = (id, password, newPass, newPassConfirm) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			
+			var result = ('SELECT password FROM users WHERE id=\''+ id +'\'');
+			conn.end();
+		}).then((result) => {
+			if (result.localeCompare(password) == 0) {
+				check.password(newPass);
+				if (newPass.localeCompare(newPassConfirm) == 0) {
+					var renewPass = ('UPDATE users SET password=\''+ newPass +'\'');
+					resolve();
+				}
+			}
+		}).catch((error) => {
+			reject(error);
 		})
 	})
 }

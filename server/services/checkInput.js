@@ -1,9 +1,9 @@
-const userModel = require('../models/userModel.js');
+const userModel = require('../models/userModel');
 
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
-		const usernameRegex = RegExp(/^[a-zA-Z0-9]*$/);
-		if (username && usernameRegex.test(username))
+		const usernameRegex = RegExp(/^[a-zA-Z0-9]{3,21}$/);
+		if (usernameRegex.test(username))
 			resolve(username);
 		else
 			reject("Username too short");
@@ -12,6 +12,9 @@ exports.username = (username) => {
 
 exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
+		console.log("<!--UAT--");
+		console.log(username);
+		console.log("--UAT--!>");
 		userModel.findUserByUsername(username)
 		.then(() => {
 			reject({"status": "error", "msg": "username already taken !"});
@@ -58,9 +61,11 @@ exports.lastname = (lastname) => {
 
 exports.email = (email) => {
 	return new Promise((resolve, reject) => {
-		var reg = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-		if (email && email.match(reg))
+		var reg = RegExp(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/);
+		console.log(reg.test(email));
+		if (reg.test(email)) {
 			resolve(email);
+		}
 		else
 			reject("Email not conform");
 	})

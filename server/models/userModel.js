@@ -5,20 +5,21 @@ const myEmitter = require('../emitter');
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
-		console.log("findUserByUsername");
 		mysql.createConnection({
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			console.log("findUserByUsername");
 			var result = conn.query('SELECT username, id, email FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {
-			console.log("***************");
+			console.log("<- AUTH ---");
+			console.log(username);
+
 			console.log(result);
+			console.log("-- AUTH -->");
 			if (result[0])
 				resolve(result[0]);
 			else {
@@ -90,8 +91,10 @@ exports.findUserByID = (id) => {
 			conn.end();
 			return (result);
 		}).then((result) => {
-			resolve(result);
-			return;
+			if (result[0])
+				resolve(result[0]);
+			else
+				reject();
 		}).catch((error) => {
 			console.log("findUserByName failed");
 			reject(error);

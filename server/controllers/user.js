@@ -34,16 +34,28 @@ exports.new = (data) => {
 	})
 };
 
+// exports.find = (data) => {
+// 	return new Promise((resolve, reject) => {
+// 		let user = new userService();
+// 		user.authenticate(data.username, data.password)
+// 		.then(() => {
+// 			resolve();
+// 		})
+// 		.catch(() => {
+// 			console.log("PABLITO");
+// 			reject();
+//     	})
+// 	})
+// }
+
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
-		let user = new userService();
-		user.authenticate(data.username, data.password)
-		.then(() => {
-			resolve();
+		userModel.findUserByID(data.id)
+		.then((res) => {
+			resolve(res);
+		}).catch((error) => {
+			reject(error);
 		})
-		.catch(() => {
-			reject();
-    	})
 	})
 }
 

@@ -2,7 +2,7 @@
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel')
 const myEmitter = require('../emitter');
-const userSettings = require('../../models/userSettings');
+const userSettings = require('../models/userSettings');
 
 class User {
 	constructor(){
@@ -89,6 +89,17 @@ class User {
 
 	checkSettings(data) {
 		return new Promise((resolve, reject) => {
+			console.log("<!--------");
+			console.log("CHECK SETTINGS!");
+			console.log(data.username);
+			console.log(data.firstname);
+			console.log(data.lastname);
+			console.log(data.orientation);
+			console.log(data.gender);
+			console.log(data.email);
+			console.log(data.bio);
+			console.log(data.username);
+			console.log("--------!>");
 			userSettings.changeUsername(data.username)
 			.then((res) => {
 				return userSettings.changeFirstname(data.firstname);
@@ -99,9 +110,11 @@ class User {
 			}).then((res) => {
 				return userSettings.changeGender(data.gender);
 			}).then((res) => {
-				return userSettings.changeMail(data.mail);
+				return userSettings.changeMail(data.email);
 			}).then((res) => {
 				return userSettings.changeBio(data.bio);
+			}).catch((err) => {
+				reject(err);
 			})
 		})
 	}
