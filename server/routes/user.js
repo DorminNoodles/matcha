@@ -60,7 +60,24 @@ router.put('/user/:id', urlencodedParser, (req, res) => {
 	console.log(req.params);
 })
 
-router.post('/confirm', urlencodedParser, (req, res) => {
+router.get('/confirm', urlencodedParser, (req, res) => {
+
+	console.log(req.query.key);
+
+	if (req.query.key) {
+		user.activate(req.query.key)
+		.then(() => {
+			res.status(200).send({"status": "success", "msg": "User Activate"});
+		})
+		.catch(() => {
+			res.status(500).send({"status": "error", "msg": "error"});
+		})
+		// let decoded = jwt.verify(req.query.key, 'shhhhh');
+		// console.log(decoded);
+	}
+	else {
+		res.status(400).send({"status": "error", "msg": "bad request"});
+	}
 
 })
 
