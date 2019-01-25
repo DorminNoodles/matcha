@@ -63,8 +63,9 @@ class ActivationMail {
 		});
 	}
 
-	sendNewPass(data, key) {
+	sendNewPass(data, token) {
 		console.log(data);
+
 		nodemailer.createTestAccount(() => {
     		let transporter = nodemailer.createTransport({
         		host: 'smtp.gmail.com',
@@ -90,7 +91,7 @@ class ActivationMail {
         						Forgot your password?\
 								<br />\
            						No worries, here is a new one:<br />\
-           						<a href=http://localhost:3000/api/user/forgot?key='+ key +'>RESET MY PASSWORD</a>\
+           						<a href=http://localhost:3000/api/user/password?token='+ token +'>RESET MY PASSWORD</a>\
            					</div>\
         					<footer style="margin-top:200px;margin-bottom:50px;">\
             					<hr />\
