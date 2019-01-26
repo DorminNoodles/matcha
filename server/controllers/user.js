@@ -1,5 +1,6 @@
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
 
@@ -92,7 +93,6 @@ exports.forgot = (data) => {
 				username: res.username,
 				email: res.email
 			}, 'shhhhh');
-			console.log(token);
 			myEmitter.emit('forgotPass', {
 				username: res.username,
 				email: res.email
@@ -105,17 +105,32 @@ exports.forgot = (data) => {
 	})
 }
 
-exports.recog = (data) => {
+exports.updatePassword = (token, pwd, confirmPwd) => {
 	return new Promise((resolve, reject) => {
-		var decoded = jwt.decode(data, {complete: true});
-		console.log(decoded.header);
-		console.log(decoded.payload);
-		console.log(decoded);
-		userModel.findUserByEmail(decoded.payload.email)
-		.then((res) => {
-			resolve();
+		console.log("YES");
+		console.log(pwd);
+		console.log(confirmPwd);
+		if (pwd != confirmPwd){
+			reject({"status": "error"});
+			return;
+		}
+		console.log("HASH");
+		console.log(pwd);
+		bcrypt.hash(pwd, 10)
+		.then((hash) => {
+			var decoded = jwt.verify(token, {complete: true});
+			// console.log(decoded);
+			console.log("HASH");
+			user.changePwd(decoded.email, decoded.username, pwd)
+			.then((res) => {
+				resolve(res);
+			})
+			.catch((err) => {
+				reject(err);
+			})
 		})
 		.catch((err) => {
+			console.log("HASH");
 			reject(err);
 		})
 	})

@@ -43,7 +43,7 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
 	.then(() => {
-		res.send('hello');
+		res.status(200).send({"status": "success"});
 	})
 	.catch((err) => {
 		res.send("error");
@@ -51,9 +51,15 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 	})
 })
 
-router.get('/forgot', urlencodedParser, (req, res) => {
-	console.log(req.query.key);
-	user.recog(req.query.key);
+router.put('/password', urlencodedParser, (req, res) => {
+	console.log(req.body);
+	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
+	.then((res) => {
+		res.status(200).send({"status": "success"});
+	})
+	.catch((err) => {
+		res.status(400).send({"status": "error"});
+	})
 })
 
 router.put('/user/:id', urlencodedParser, (req, res) => {
@@ -72,8 +78,6 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 		.catch(() => {
 			res.status(500).send({"status": "error", "msg": "error"});
 		})
-		// let decoded = jwt.verify(req.query.key, 'shhhhh');
-		// console.log(decoded);
 	}
 	else {
 		res.status(400).send({"status": "error", "msg": "bad request"});
