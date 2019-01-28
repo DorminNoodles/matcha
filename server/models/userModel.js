@@ -11,15 +11,10 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username, id, email FROM users WHERE username=?', [username]);
+			var result = conn.query('SELECT * FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {
-			console.log("<- AUTH ---");
-			console.log(username);
-
-			console.log(result);
-			console.log("-- AUTH -->");
 			if (result[0])
 				resolve(result[0]);
 			else {
@@ -92,7 +87,7 @@ exports.findUserByID = (id) => {
 			return (result);
 		}).then((result) => {
 			if (result[0])
-				resolve(result[0]);
+				resolve(result);
 			else
 				reject();
 		}).catch((error) => {
@@ -128,6 +123,29 @@ exports.checkLogin = (username, password) => {
 			})
 		}).catch((error) => {
 			reject(error);
+		})
+	})
+}
+
+exports.saveGps = (id, long, lat) => {
+	return new Promise((resolve, reject) => {
+		console.log("BORDELLLLLL");
+		console.log(id, long, lat);
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		})
+		.then ((conn) => {
+			return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
+		})
+		.then((res) => {
+			resolve('Gps saved');
+		})
+		.catch((err) => {
+			console.log("ERRRO");
+			reject(err);
 		})
 	})
 }

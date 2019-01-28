@@ -34,8 +34,11 @@ async function db() {
 			email VARCHAR(255) NOT NULL,\
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) NOT NULL,\
+			location VARCHAR(255) NOT NULL,\
 			mailValidation INT DEFAULT 0,\
 			score INT DEFAULT 0, \
+			latitude INT DEFAULT 0, \
+			longitude INT DEFAULT 0, \
 			bio TEXT, \
 			age DATETIME, \
 			active DATETIME, \
@@ -48,8 +51,8 @@ async function db() {
         )');
         await connection.query('CREATE TABLE block (\
         	id INT AUTO_INCREMENT PRIMARY KEY,\
-        	user_id INT NOT NULL,\
-        	his_id INT NOT NULL\
+        	blocker INT NOT NULL,\
+        	blocked INT NOT NULL\
         	)');
         await connection.query('CREATE TABLE likes (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\

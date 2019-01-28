@@ -61,16 +61,13 @@ router.post('/settings', urlencodedParser, (req, res) => {
 	const data = req.body;
 	user.find(data)
 	.then((res) => {
-		console.log("<!--------");
-		console.log(res);
-		console.log("--------!>");
 		let userSettings = new UserSettings();
-		userSettings.checkSettings(data)
+		userSettings.checkSettings(res.id, data)
 		.then(() => {
-
+			console.log("> Profile modified.");
 		})
 		.catch(() => {
-
+			console.log("NOPE");
 		})
 	}).catch((error) => {
 		console.log("NOPE");

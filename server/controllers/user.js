@@ -10,10 +10,6 @@ const checkInput = require('../services/checkInput');
 
 var eventEmitter = new events.EventEmitter();
 
-eventEmitter.on('pouet', function() {
-	console.log("test Event !");
-});
-
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		let userService = new UserService();
@@ -22,7 +18,10 @@ exports.new = (data) => {
 				password : data.password,
 				firstname : data.firstname,
 				lastname : data.lastname,
-				email : data.email
+				email : data.email,
+				orientation : data.orientation,
+				gender : data.gender,
+				location : data.location
 		})
 		.then((res) => {
 			console.log(res);
@@ -50,7 +49,7 @@ exports.new = (data) => {
 
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByID(data.id)
+		userModel.findUserByUsername(data.username)
 		.then((res) => {
 			resolve(res);
 		}).catch((error) => {
@@ -132,3 +131,20 @@ exports.recog = (data) => {
 		})
 	})
 }
+
+exports.checkEmailAvailability = (id, email) => {
+	return new Promise((resolve, reject) => {
+		checkInput.email(email)
+		.then((res) => {
+			return findUserByID(id);
+		}).then((data) => {
+			if (data.email == email)
+				resolve();
+			return checkInput.emailAlreadyTaken(email);
+		}).then((res) => {
+			resolve();
+		}).catch((error) => {
+			reject();
+		})
+	})
+} 

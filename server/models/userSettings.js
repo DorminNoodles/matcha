@@ -1,32 +1,38 @@
 const mysql = require('promise-mysql');
 const check = require('../services/checkInput');
 
-exports.changeUsername = (id, username) => {
-	return new Promise((resolve, reject) => {
-		check.username(username)
-		.then((res) => {
-			return check.usernameAlreadyTaken(username)
-		})
-		.then(() => {
-			return mysql.createConnection({
-					host: 'localhost',
-					user: 'root',
-					password: 'qwerty',
-					database: 'matcha'
-				}).then((conn) => {
-					var result = conn.query('UPDATE users SET username=\''+ username +'\' WHERE id=\''+ id +'\'');
-					conn.end();
-				}).catch((error) => {
-					reject(error);
-				})
-		}).then(() => {
-			resolve();
-		})
-		.catch((error) => {
-			reject(error);
-		})
-	})
-}
+// exports.changeUsername = (id, username) => {
+// 	return new Promise((resolve, reject) => {
+// 		check.username(username)
+// 		.then((res) => {
+// 			check.usernameAlreadyTaken(username)
+// 			.then((res) => {
+// 				return check.usernameAlreadyTaken(username);
+// 			}).catch((error) => {
+// 				if (res == username)
+// 					resolve();
+// 			})
+// 		})
+// 		.then(() => {
+// 			return mysql.createConnection({
+// 					host: 'localhost',
+// 					user: 'root',
+// 					password: 'qwerty',
+// 					database: 'matcha'
+// 				}).then((conn) => {
+// 					var result = conn.query('UPDATE users SET username=\''+ username +'\' WHERE id=\''+ id +'\'');
+// 					conn.end();
+// 				}).catch((error) => {
+// 					reject(error);
+// 				})
+// 		}).then(() => {
+// 			resolve();
+// 		})
+// 		.catch((error) => {
+// 			reject(error);
+// 		})
+// 	})
+// }
 
 exports.changeFirstname = (id, firstname) => {
 	return new Promise((resolve, reject) => {
@@ -81,22 +87,20 @@ exports.changeOrientation = (id, gender) => {
 
 exports.changeMail = (id, email) => {
 	return new Promise((resolve, reject) => {
-		check.email(email)
-		.then(() => {
-			check.emailAlreadyTaken(email)
-		}).then(() => {
-			mysql.createConnection({
-				host: 'localhost',
-				user: 'root',
-				password: 'qwerty',
-				database: 'matcha'
-			})
-		}).then((conn) => {
-			var result = conn.query('UPDATE users SET email=\''+ email +'\' WHERE id=\''+ id +'\'');
-			conn.end();
-			resolve();
-		}).catch((error) => {
-			reject(error);
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		})
+		.then((conn) => {
+			return conn.query('UPDATE users SET email=? WHERE id=?', [email, id])
+		})
+		.then((res) => {
+			resolve(res);
+		})
+		.catch((err) => {
+			reject(err);
 		})
 	})
 }

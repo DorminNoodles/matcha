@@ -42,8 +42,6 @@ router.delete('/', urlencodedParser, (req, res) => {
 	.catch((err) => {
 		res.status(409).send({"status": "error", "msg": "unlike failed !"});
 	})
-
-
 })
 
 module.exports = router;

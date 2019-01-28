@@ -1,6 +1,6 @@
 "use strict";
 const checkInput = require('../services/checkInput');
-const userModel = require('../models/userModel')
+const userModel = require('../models/userModel');
 const myEmitter = require('../emitter');
 const userSettings = require('../models/userSettings');
 
@@ -26,6 +26,14 @@ class User {
 			})
 			.then((res) => {
 				console.log('Firstname Checked');
+				return checkInput.lastname(data.lastname);
+			})
+			.then((res) => {
+				console.log('Lastname Checked');
+				return checkInput.location(data.location);
+			})
+			.then((res) => {
+				console.log('Location Checked');
 				return checkInput.email(data.email);
 			})
 			.then((res) => {
@@ -50,9 +58,11 @@ class User {
 			}
 			this.checkData(data)
 			.then((res) => {
-
-				myEmitter.emit('userRegistered', data);
-				resolve(userModel.saveUser(data));
+				resolve(userModel.saveUser(data)
+						.then(() => {
+							myEmitter.emit('userRegistered', data);
+						})
+				);
 
 			})
 			.catch((err) => {
@@ -87,32 +97,36 @@ class User {
 
 	}
 
-	checkSettings(data) {
+	checkSettings(id, data) {
 		return new Promise((resolve, reject) => {
 			console.log("<!--------");
 			console.log("CHECK SETTINGS!");
-			console.log(data.username);
-			console.log(data.firstname);
-			console.log(data.lastname);
-			console.log(data.orientation);
-			console.log(data.gender);
-			console.log(data.email);
-			console.log(data.bio);
-			console.log(data.username);
+			console.log(id);
+			console.log(data);
 			console.log("--------!>");
-			userSettings.changeUsername(data.username)
+			// userSettings.changeUsername(id, data.username)
+			// .then((res) => {
+			// 	console.log("> Username checked.")
+				// return 
+			userSettings.changeFirstname(id, data.firstname)
 			.then((res) => {
-				return userSettings.changeFirstname(data.firstname);
+				console.log("> Firstname checked.")
+				return userSettings.changeLastname(id, data.lastname);
 			}).then((res) => {
-				return userSettings.changeLastname(data.lastname);
+				console.log("> Lastname checked.")
+				return userSettings.changeOrientation(id, data.orientation);
 			}).then((res) => {
-				return userSettings.changeOrientation(data.orientation);
+				console.log("> Orientation checked.")
+				return userSettings.changeGender(id, data.gender);
 			}).then((res) => {
-				return userSettings.changeGender(data.gender);
+				console.log("> Gender checked.")
+				return userSettings.changeMail(id, data.email);
 			}).then((res) => {
-				return userSettings.changeMail(data.email);
+				console.log("> Mail checked.")
+				return userSettings.changeBio(id, data.bio);
 			}).then((res) => {
-				return userSettings.changeBio(data.bio);
+				console.log("> Bio checked.");
+				resolve();
 			}).catch((err) => {
 				reject(err);
 			})

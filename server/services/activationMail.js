@@ -10,7 +10,7 @@ class ActivationMail {
 
 	sendActivationMail(data) {
 		console.log(data);
-
+		
 		nodemailer.createTestAccount(() => {
 			let transporter = nodemailer.createTransport({
 				host: 'smtp.gmail.com',
