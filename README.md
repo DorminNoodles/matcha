@@ -11,3 +11,5 @@ get - user/:id
 post - authenticate
 
 put - user/:id
+
+get - user/confirm (activation)

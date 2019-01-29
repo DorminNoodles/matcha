@@ -1,5 +1,6 @@
 const mysql = require('promise-mysql');
 const check = require('../services/checkInput');
+const mailAvailable = require('../controllers/user');
 
 // exports.changeUsername = (id, username) => {
 // 	return new Promise((resolve, reject) => {
