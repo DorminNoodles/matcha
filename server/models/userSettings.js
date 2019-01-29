@@ -88,11 +88,14 @@ exports.changeOrientation = (id, gender) => {
 
 exports.changeMail = (id, email) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
+		mailAvailable.checkEmailAvailability(id, email)
+		.then((result) => {
+			return mysql.createConnection({
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
 			database: 'matcha'
+			})
 		})
 		.then((conn) => {
 			return conn.query('UPDATE users SET email=? WHERE id=?', [email, id])

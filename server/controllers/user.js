@@ -166,13 +166,11 @@ exports.activate = (token) => {
 	})
 }
 
-2
-
 exports.checkEmailAvailability = (id, email) => {
 	return new Promise((resolve, reject) => {
 		checkInput.email(email)
 		.then((res) => {
-			return findUserByID(id);
+			return userModel.findUserByID(id);
 		}).then((data) => {
 			if (data.email == email)
 				resolve();

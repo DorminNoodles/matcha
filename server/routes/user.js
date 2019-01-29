@@ -73,10 +73,10 @@ router.post('/settings', urlencodedParser, (req, res) => {
 			console.log("> Profile modified.");
 		})
 		.catch(() => {
-			console.log("NOPE");
+			console.log("NOPE 1");
 		})
 	}).catch((error) => {
-		console.log("NOPE");
+		console.log("NOPE 2");
 		res.send("error");
 	})
 })
