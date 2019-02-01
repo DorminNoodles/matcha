@@ -45,7 +45,7 @@ class ActivationMail {
 								Welcome ' + data.firstname + '!\
 								<br />\
 								CLICK ON THE FOLLOWING LINK TO VALIDATE YOUR ACCOUNT: <br />\
-								<a href=http://localhost:3000/api/user/confirm?login='+ data.username +'&key='+ token +'>Confirm your Account</a>\
+								<a href=http://localhost:3001/connexion?login=‘+ data.username +‘&key=‘+ token +‘>Confirm your Account</a>\
 							</div>\
 							<footer style="margin-top:200px;margin-bottom:50px;">\
 								<hr />\
@@ -54,7 +54,7 @@ class ActivationMail {
 							</body>\
 						</html>'
 			};
-		    transporter.sendMail(mailOptions, (error, info) => {
+			transporter.sendMail(mailOptions, (error, info) => {
 				if (error) {
 				    return console.log(error);
 				}

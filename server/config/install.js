@@ -27,10 +27,10 @@ async function db() {
 		await connection.query('DROP TABLE IF EXISTS chat');
 		await connection.query('CREATE TABLE users (\
 			id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-			username VARCHAR(255) NOT NULL,	\
-			password VARCHAR(255) NOT NULL,	\
-			firstname VARCHAR(255) NOT NULL,	\
-			lastname VARCHAR(255) NOT NULL,	\
+			username VARCHAR(255) NOT NULL,\
+			password VARCHAR(255) NOT NULL,\
+			firstname VARCHAR(255) NOT NULL,\
+			lastname VARCHAR(255) NOT NULL,\
 			email VARCHAR(255) NOT NULL,\
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) NOT NULL,\
