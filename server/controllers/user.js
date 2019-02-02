@@ -8,6 +8,7 @@ const events = require('events');
 
 const userModel = require('../models/userModel');
 const checkInput = require('../services/checkInput');
+const userSettings = require('../models/userSettings');
 
 var eventEmitter = new events.EventEmitter();
 
@@ -181,4 +182,19 @@ exports.checkEmailAvailability = (id, email) => {
 			reject();
 		})
 	})
-} 
+}
+
+exports.updatePassSettings = (token, password, newPass, newPassConfirm) => {
+	return new Promise((resolve, reject) => {
+		var decoded = jwt.decode(token, {complete: true});
+		console.log(decoded.header);
+		console.log(decoded.payload.id);
+		userSettings.changePassword(decoded.payload.id, password, newPass, newPassConfirm)
+		.then((res) => {
+			resolve();
+		})
+		.catch((err) => {
+			reject(err);
+		})
+	})
+}

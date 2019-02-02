@@ -71,9 +71,11 @@ exports.email = (email) => {
 
 exports.location = (location) => {
 	return new Promise((resolve, reject) => {
-		// const locationRegex = RegExp(/^[0-9]{5,5}$/);
-		// locationRegex.test(location) ? resolve(location) : reject(new Error('fail'));
-		resolve(location);
+		var reg = RegExp(/^[0-9]{5,5}$/);
+		if (reg.test(location))
+			resolve(location);
+		else
+			reject("ZIP Code Error");
 	})
 }
 

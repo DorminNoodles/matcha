@@ -75,13 +75,20 @@ router.post('/settings', urlencodedParser, (req, res) => {
 		.catch(() => {
 		})
 	}).catch((error) => {
-		res.send("error");
+		res.send("error ici");
 	})
 })
 
-// router.post('/settings', urlencodedParser, (req, res) => {
-// 	const data = req.body;
-// })
+router.post('/settingsPass', urlencodedParser, (req, res) => {
+	const data = req.body;
+	user.updatePassSettings(req.body.token, req.body.password, req.body.newPass,req.body.newPassConfirm)
+	.then((res) => {
+		res.status(200).send({"status": "success"});
+	})
+	.catch((err) => {
+		res.status(400).send({"status": "error, psk ca march po"});
+	})
+})
 
 router.put('/user/:id', urlencodedParser, (req, res) => {
 	console.log(req.params);

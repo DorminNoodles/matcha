@@ -61,9 +61,9 @@ exports.saveUser = (data) => {
 			})
 		})
 		.then ((conn) => {
-			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation)\
+			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, location)\
 					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
-					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "')");
+					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "', '" + data.location + "')");
 		})
 		.then((res) => {
 			resolve('User saved');

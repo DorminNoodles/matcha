@@ -45,7 +45,7 @@ class ActivationMail {
 								Welcome ' + data.firstname + '!\
 								<br />\
 								CLICK ON THE FOLLOWING LINK TO VALIDATE YOUR ACCOUNT: <br />\
-								<a href=http://localhost:3001/connexion?login=‘+ data.username +‘&key=‘+ token +‘>Confirm your Account</a>\
+								<a href=http://localhost:3001/connexion?login='+ data.username +'&key='+ token +'>Confirm your Account</a>\
 							</div>\
 							<footer style="margin-top:200px;margin-bottom:50px;">\
 								<hr />\
