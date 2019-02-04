@@ -15,7 +15,7 @@ class ActivationMail {
 		var token = jwt.sign({
 			"username": data.username,
 			"email": data.email
-		}, 'shhhhh');
+		}, 'shhhhhhh');
 
 		nodemailer.createTestAccount(() => {
 			let transporter = nodemailer.createTransport({

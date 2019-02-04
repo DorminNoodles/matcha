@@ -82,7 +82,7 @@ class User {
 					id: data.id,
 					username: data.username,
 					email: data.email
-				}, 'shhhhhhh');
+				}, 'shhhhhhhhh');
 				resolve(token);
 				return;
 			})

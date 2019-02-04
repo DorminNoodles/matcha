@@ -52,13 +52,14 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
-	console.log(req.body);
 	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
-	.then((res) => {
+	.then((result) => {
+		// console.log("ROUTE UH");
 		res.status(200).send({"status": "success"});
 	})
 	.catch((err) => {
-		res.status(400).send({"status": "error"});
+		// console.log("ROUTE HELLO");
+		res.status(400).send({"status": "error", "msg": err.msg});
 	})
 })
 

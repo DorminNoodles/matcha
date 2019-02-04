@@ -36,7 +36,7 @@ exports.find = (data) => {
 				id: data.id,
 				username: data.username,
 				email: data.email
-			}, 'shhhhh');
+			}, 'shhhhhhh');
 			resolve(token);
 		}).catch((err) => {
 			reject(err);
@@ -54,7 +54,7 @@ exports.authenticate = (data) => {
 				id: data.id,
 				username: data.username,
 				email: data.email
-			}, 'shhhhh');
+			}, 'shhhhhhh');
 			resolve(token);
 		}).catch((err) => {
 			reject(err);
