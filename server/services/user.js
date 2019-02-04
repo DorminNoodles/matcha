@@ -37,7 +37,7 @@ class User {
 				return checkInput.email(data.email);
 			})
 			.then((res) => {
-				return checkInput.emailAlreadyTaken(data.username);
+				return checkInput.emailAlreadyTaken(data.email);
 			})
 			.then((res) => {
 				console.log('Email Checked');

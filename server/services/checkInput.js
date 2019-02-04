@@ -46,13 +46,21 @@ exports.password = (password) => {
 
 exports.firstname = (firstname) => {
 	return new Promise((resolve, reject) => {
-		firstname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(firstname) : reject(Error('fail'));
+		const firstnameRegex = RegExp(/^\S*(?=\S*[A-Za-z])(?=\S{3,})/);
+		if (firstnameRegex.test(firstname))
+			resolve(firstname);
+		else
+			reject("Firstname too small");
 	})
 }
 
-exports.lastname = (lastname) => {
+exports.lastname = (firstname) => {
 	return new Promise((resolve, reject) => {
-		lastname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(lastname) : reject(Error('fail'));
+		const lastnameRegex = RegExp(/^\S*(?=\S*[A-Za-z])(?=\S{3,})/);
+		if (lastnameRegex.test(lastname))
+			resolve(lastname);
+		else
+			reject("Firstname too small");
 	})
 }
 

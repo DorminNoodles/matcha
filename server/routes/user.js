@@ -20,7 +20,6 @@ router.post('/register', urlencodedParser, (req, res) => {
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-	console.log("fuck");
 	console.log(req.body.username);
 	console.log(req.body.password);
 	user.authenticate(req.body)
@@ -32,8 +31,6 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 		});
 		console.log('connected !');
 	}).catch((error) => {
-		console.log('error');
-		console.log(error);
 		res.send({
 			status: 'error',
 			message: error
@@ -80,14 +77,18 @@ router.post('/settings', urlencodedParser, (req, res) => {
 })
 
 router.post('/settingsPass', urlencodedParser, (req, res) => {
-	const data = req.body;
-	user.updatePassSettings(req.body.token, req.body.password, req.body.newPass,req.body.newPassConfirm)
-	.then((res) => {
-		res.status(200).send({"status": "success"});
-	})
-	.catch((err) => {
-		res.status(400).send({"status": "error, psk ca march po"});
-	})
+	if (req.token) {
+		user.updatePassSettings(req.token.id, req.body.password, req.body.newPass,req.body.newPassConfirm)
+		.then((res) => {
+			res.status(200).send({"status": "success"});
+		})
+		.catch((err) => {
+			res.status(400).send({"status": "error, psk ca march po"});
+		})
+	}
+	else {
+			res.status(403).send({"status": "error: not connected"});
+	}
 })
 
 router.put('/user/:id', urlencodedParser, (req, res) => {

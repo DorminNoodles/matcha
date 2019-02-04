@@ -62,23 +62,20 @@ exports.find = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("hello authenticate");
 		checkInput.username(data.username)
 		.then(() => {
-			return checkInput.password(data.password)
+			return checkInput.password(data.password);
 		})
 		.then(() => {
 			console.log("hello authenticate");
 			return userModel.findUserByUsername(data.username);
 		})
 		.then((result) => {
-			console.log("hello authenticate*****");
 			console.log("<- AUTH ---");
 			console.log(data);
 			console.log("--- AUTH ->");
 			userModel.checkLogin(data.username, data.password)
 			.then(() => {
-				console.log("HUMMM");
 				console.log(result);
 				var token = jwt.sign({
 					id: result.id,
@@ -87,11 +84,9 @@ exports.authenticate = (data) => {
 				}, 'shhhhh');
 				resolve(token);
 			}).catch((error) => {
-				console.log(error);
 				reject(error);
 			})
 		}).catch((err) => {
-			console.log("error");
 			reject(err);
 		})
 	})
@@ -184,16 +179,15 @@ exports.checkEmailAvailability = (id, email) => {
 	})
 }
 
-exports.updatePassSettings = (token, password, newPass, newPassConfirm) => {
+exports.updatePassSettings = (id, password, newPass, newPassConfirm) => {
 	return new Promise((resolve, reject) => {
-		var decoded = jwt.decode(token, {complete: true});
-		console.log(decoded.header);
-		console.log(decoded.payload.id);
-		userSettings.changePassword(decoded.payload.id, password, newPass, newPassConfirm)
+		userSettings.changePassword(id, password, newPass, newPassConfirm)
 		.then((res) => {
+			console.log("RES RES");
 			resolve();
 		})
 		.catch((err) => {
+			console.log("REJ REJ");
 			reject(err);
 		})
 	})

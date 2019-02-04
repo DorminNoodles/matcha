@@ -1,4 +1,5 @@
 const mysql = require('promise-mysql');
+const bcrypt = require('bcrypt');
 const check = require('../services/checkInput');
 const mailAvailable = require('../controllers/user');
 
@@ -177,7 +178,7 @@ exports.changeLocation = (id, location) => {
 	})
 }
 
-exports.changePassword = (id, password, newPass, newPassConfirm) => {
+exports.getPassFromID = (id) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			host: 'localhost',
@@ -185,16 +186,45 @@ exports.changePassword = (id, password, newPass, newPassConfirm) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = ('SELECT password FROM users WHERE id=\''+ id +'\'');
+			return conn.query('SELECT password FROM users WHERE id=\''+ id +'\'');
 			conn.end();
-		}).then((result) => {
-			if (result.localeCompare(password) == 0) {
-				check.password(newPass);
-				if (newPass.localeCompare(newPassConfirm) == 0) {
-					var renewPass = ('UPDATE users SET password=\''+ newPass +'\'');
-					resolve();
+		}).then((res) => {
+			resolve(res[0].password);
+		}).catch((error) => {
+			reject(error);
+		})
+	})
+}
+
+exports.changePassword = (id, password, newPass, newPassConfirm) => {
+	return new Promise((resolve, reject) => {
+		this.getPassFromID(id)
+		.then((result) => {
+			bcrypt.compare(password, result)
+			.then((res) => {
+				if (res == true) {
+					check.password(newPass);
+					if (newPass.localeCompare(newPassConfirm) == 0) {
+						bcrypt.hash(newPass, 10)
+						.then((hash) => {
+							pass = hash;
+							return mysql.createConnection({
+								host: 'localhost',
+								user: 'root',
+								password: 'qwerty',
+								database: 'matcha'
+							})
+						}).then((conn) => {
+							return conn.query('UPDATE users SET password=\''+ pass +'\' WHERE id=\''+ id +'\'');
+							resolve();
+						})
+					}
 				}
-			}
+				else
+					reject(error);
+			}).catch((error) => {
+				reject(error);
+			})
 		}).catch((error) => {
 			reject(error);
 		})

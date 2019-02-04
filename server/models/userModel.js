@@ -99,7 +99,6 @@ exports.findUserByID = (id) => {
 }
 
 exports.checkLogin = (username, password) => {
-	console.log("hello");
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			host:'localhost',
@@ -110,7 +109,6 @@ exports.checkLogin = (username, password) => {
 			let result = conn.query('SELECT password FROM users WHERE username=?', [username]);
 			return result;
 		}).then((result) => {
-			console.log("hello");
 			bcrypt.compare(password, result[0].password)
 			.then((res) => {
 				if (res)
