@@ -14,7 +14,7 @@ router.post('/register', urlencodedParser, (req, res) => {
 		res.status(200).send({"status": "success", "msg": "user registered !"});
 	})
 	.catch((err) => {
-		res.send(err);
+		res.status(500).send({"status": "error", "msg": err});
 	});
 })
 
@@ -24,7 +24,7 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 	console.log(req.body.password);
 	user.authenticate(req.body)
 	.then((resolve) => {
-		res.send({
+		res.status(200).send({
 			status: 'ok',
 			message: 'connected !',
 			token: resolve
@@ -33,10 +33,7 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 	}).catch((error) => {
 		console.log('error');
 		console.log(error);
-		res.send({
-			status: 'error',
-			message: error
-		});
+		res.status(500).send({"status": "error", "msg": "error"});
 	})
 })
 
@@ -46,7 +43,7 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 		res.status(200).send({"status": "success"});
 	})
 	.catch((err) => {
-		res.send("error");
+		res.status(500).send({"status": "error", "msg": "error"});
 		console.log(err);
 	})
 })
@@ -63,9 +60,6 @@ router.put('/password', urlencodedParser, (req, res) => {
 	})
 })
 
-router.put('/user/:id', urlencodedParser, (req, res) => {
-	console.log(req.params);
-})
 
 router.get('/confirm', urlencodedParser, (req, res) => {
 
