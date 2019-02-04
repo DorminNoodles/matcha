@@ -43,7 +43,7 @@ class User {
 				resolve(data);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log("ERROR REGISTERED: ", err);
 				reject(err);
 			})
 		})
@@ -58,14 +58,13 @@ class User {
 			this.checkData(data)
 			.then((res) => {
 				resolve(userModel.saveUser(data)
-						.then(() => {
-							myEmitter.emit('userRegistered', data);
-						})
+					.then(() => {
+						myEmitter.emit('userRegistered', data);
+					})
 				);
-
 			})
 			.catch((err) => {
-				console.log("checkData error");
+				console.log("checkData error: ", err);
 				reject(err);
 			})
 		})

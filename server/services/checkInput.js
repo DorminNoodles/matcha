@@ -14,7 +14,7 @@ exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByUsername(username)
 		.then(() => {
-			reject({"status": "error", "msg": "username already taken !"});
+			reject("username already taken !");
 		})
 		.catch((err) => {
 			resolve();
@@ -46,13 +46,13 @@ exports.password = (password) => {
 
 exports.firstname = (firstname) => {
 	return new Promise((resolve, reject) => {
-		firstname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(firstname) : reject(Error('fail'));
+		firstname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(firstname) : reject('Firstname error');
 	})
 }
 
 exports.lastname = (lastname) => {
 	return new Promise((resolve, reject) => {
-		lastname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(lastname) : reject(Error('fail'));
+		lastname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(lastname) : reject('Lastname error');
 	})
 }
 

@@ -29,6 +29,7 @@ exports.new = (data) => {
 			resolve();
 		})
 		.catch((err) => {
+			console.log("error in new: ", err);
 			reject(err);
 		})
 	})
