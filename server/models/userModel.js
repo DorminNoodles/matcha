@@ -165,35 +165,42 @@ exports.activateUser = (username, email) => {
 			database:'matcha'
 		})
 		.then((conn) => {
-			// console.log("PUTAIN DE MERDE");
-			return conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
+			console.log("PUTAIN DE MERDE");
+			let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
+			conn.end();
+			return query;
 		})
 		.then((res) => {
 			console.log(res);
 			resolve({"status": "success", "msg": "UserActivated !"});
 		})
 		.catch((err) => {
+			console.log("ERROR ++++++++++++++++++++++++");
 			reject(err);
 		})
 	})
 }
 
 exports.changePwd = (email, username, pwd) => {
-	mysql.createConnection({
-		host:'localhost',
-		user:'root',
-		password:'qwerty',
-		database:'matcha'
-	})
-	.then((conn) => {
-		// console.log("PUTAIN DE MERDE");
-		return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [true, email, username]);
-	})
-	.then((res) => {
-		console.log(res);
-		resolve({"status": "success", "msg": "Password changed!"});
-	})
-	.catch((err) => {
-		reject(err);
-	})
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			host:'localhost',
+			user:'root',
+			password:'qwerty',
+			database:'matcha'
+		})
+		.then((conn) => {
+			console.log("PUTAIN DE MERDE");
+			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+		})
+		.then((res) => {
+			// console.log("Yoooooo !");
+			// console.log(res);
+			resolve({"status": "success", "msg": "Password changed!"});
+		})
+		.catch((err) => {
+			console.log("Error !");
+			reject({status: "error", msg: "error db !"});
+		})
+	});
 }
