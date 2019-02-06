@@ -14,6 +14,7 @@ const emitter = require('./emitter');
 const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
+const photos = require('./services/photos');
 
 // geoloc.getGps();
 // emitter.on('userRegistered', geoloc.getGps);
