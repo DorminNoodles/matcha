@@ -54,7 +54,7 @@ exports.firstname = (firstname) => {
 	})
 }
 
-exports.lastname = (firstname) => {
+exports.lastname = (lastname) => {
 	return new Promise((resolve, reject) => {
 		const lastnameRegex = RegExp(/^\S*(?=\S*[A-Za-z])(?=\S{3,})/);
 		if (lastnameRegex.test(lastname))

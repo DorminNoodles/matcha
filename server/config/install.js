@@ -40,7 +40,7 @@ async function db() {
 			latitude INT DEFAULT 0, \
 			longitude INT DEFAULT 0, \
 			bio TEXT, \
-			age DATETIME, \
+			age DATE, \
 			active DATETIME, \
 			reg_date TIMESTAMP \
 		)');

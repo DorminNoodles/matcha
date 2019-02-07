@@ -23,7 +23,8 @@ exports.new = (data) => {
 				email : data.email,
 				orientation : data.orientation,
 				gender : data.gender,
-				location : data.location
+				location : data.location,
+				age : data.age
 		})
 		.then((res) => {
 			console.log(res);

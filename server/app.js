@@ -14,6 +14,7 @@ const emitter = require('./emitter');
 const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
+const search = require('./routes/search');
 
 // geoloc.getGps();
 // emitter.on('userRegistered', geoloc.getGps);
@@ -38,6 +39,7 @@ app.use('/api/messages', messages);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
 app.use('/api/block', block);
+app.use('/api/search', search);
 
 //Mettre app.use(checkToken)
 //Mettre les routes protegées
