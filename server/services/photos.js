@@ -45,10 +45,6 @@ class Photos {
 				if (err) throw err
 					console.log('Successfully renamed - AKA moved!')
 			})
-			console.log("############################");
-			console.log(avatar);
-			console.log(res);
-
 		})
 	}
 

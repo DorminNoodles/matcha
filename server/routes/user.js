@@ -93,9 +93,17 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 })
 
 router.get('/avatar', urlencodedParser, (req, res) => {
-	var img = require('fs').readFileSync(user.getAvatar(req.query.id));
-	res.writeHead(200, {'Content-Type': 'image/jpeg' });
-	res.end(img, 'binary');
+
+	user.getAvatar(req.query.id)
+	.then((filename) => {
+		var img = require('fs').readFileSync(filename);
+		res.writeHead(200, {'Content-Type': 'image/jpeg' });
+		res.end(img, 'binary');
+	})
+	.catch((err) => {
+		console.log(err);
+		res.status(500).send(err);
+	})
 })
 
 module.exports = router;

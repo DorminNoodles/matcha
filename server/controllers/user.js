@@ -153,5 +153,13 @@ exports.activate = (token) => {
 }
 
 exports.getAvatar = (id) => {
-		return ('pictures/user' + id + '/avatar' + '.jpg');
+	return new Promise((resolve, reject) => {
+		userModel.findUserByID(id)
+		.then(() => {
+			resolve('pictures/user' + id + '/avatar' + '.jpg');
+		})
+		.catch(() => {
+			reject({"status": "error", "msg": "id invalid"});
+		})
+	})
 }
