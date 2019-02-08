@@ -4,6 +4,8 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+// const multer = require('multer');
+
 const user = require('./routes/user');
 const users = require('./routes/users');
 const messages = require('./routes/messages');
@@ -19,6 +21,8 @@ const photos = require('./services/photos');
 // geoloc.getGps();
 // emitter.on('userRegistered', geoloc.getGps);
 
+// const upload = multer({storage: storage});
+
 io.on('connection', (socket) => {
 	console.log('Un client est connecté !');
 	setTimeout(function(){
@@ -28,7 +32,6 @@ io.on('connection', (socket) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
 
 /*MIDDLEWARE*/
 app.use(jwtToken);
@@ -40,8 +43,8 @@ app.use('/api/users', users);
 app.use('/api/likes', likes);
 app.use('/api/block', block);
 
+
 //Mettre app.use(checkToken)
 //Mettre les routes protegées
-
 
 server.listen(3000);

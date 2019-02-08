@@ -13,6 +13,7 @@ var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
+		// console.log(data.avatar.name);
 		let userService = new UserService();
 		userService.createUser({
 				username : data.username,
@@ -22,7 +23,8 @@ exports.new = (data) => {
 				email : data.email,
 				orientation : data.orientation,
 				gender : data.gender,
-				location : data.location
+				location : data.location,
+				avatar : data.avatar.name
 		})
 		.then((res) => {
 			console.log(res);
@@ -148,4 +150,8 @@ exports.activate = (token) => {
 			reject(err);
 		})
 	})
+}
+
+exports.getAvatar = (id) => {
+		return ('pictures/user' + id + '/avatar' + '.jpg');
 }

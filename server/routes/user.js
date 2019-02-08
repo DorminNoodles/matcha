@@ -3,19 +3,34 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 const user = require('../controllers/user');
+const multer = require('multer');
 
 const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
-router.post('/register', urlencodedParser, (req, res) => {
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	    cb(null, 'uploads/')
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+	}
+})
+
+var upload = multer({ storage: storage });
+
+router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) => {
+	req.body.avatar = {
+		"name": req.file.filename
+	}
 	user.new(req.body)
 	.then((result) => {
 		res.status(200).send({"status": "success", "msg": "user registered !"});
 	})
 	.catch((err) => {
 		res.status(500).send({"status": "error", "msg": err});
-	});
+	})
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
@@ -51,11 +66,9 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 router.put('/password', urlencodedParser, (req, res) => {
 	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
 	.then((result) => {
-		// console.log("ROUTE UH");
 		res.status(200).send({"status": "success"});
 	})
 	.catch((err) => {
-		// console.log("ROUTE HELLO");
 		res.status(400).send({"status": "error", "msg": err.msg});
 	})
 })
@@ -77,7 +90,12 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 	else {
 		res.status(400).send({"status": "error", "msg": "bad request"});
 	}
+})
 
+router.get('/avatar', urlencodedParser, (req, res) => {
+	var img = require('fs').readFileSync(user.getAvatar(req.query.id));
+	res.writeHead(200, {'Content-Type': 'image/jpeg' });
+	res.end(img, 'binary');
 })
 
 module.exports = router;

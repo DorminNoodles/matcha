@@ -5,25 +5,25 @@ const userModel = require('../models/userModel');
 class Photos {
 
 	constructor() {
-		emitter.on('userRegistered', this.createUserFolder);
+
 	}
 
 	createUserFolder(data) {
 		return new Promise((resolve, reject) => {
 
-			// mkdirp("/pouet/pouet/pouet");
 			userModel.findUserByUsername(data.username)
 			.then((res) => {
 				console.log(res.id);
-				mkdirp('pictures/user1', (err) => {
-					console.log("error mkdirp");
-					reject();
+				mkdirp('pictures/user' + res.id, (err) => {
+					if (err)
+						reject({'status': 'error', 'msg': 'Photo UserFolder not created !'});
+					else
+						resolve()
 				});
-				resolve();
-				console.log("Hello >>> ", res);
 			})
 			.catch(() => {
 				console.log("error");
+				reject();
 			})
 
 		})
@@ -33,7 +33,25 @@ class Photos {
 		// });
 	}
 
+	move(username, avatar) {
+		userModel.findUserByUsername(username)
+		.then((res) => {
+			var fs = require('fs')
+
+			var oldPath = 'uploads/' + avatar;
+			var newPath = 'pictures/user' + res.id + '/avatar.jpg';
+
+			fs.rename(oldPath, newPath, function (err) {
+				if (err) throw err
+					console.log('Successfully renamed - AKA moved!')
+			})
+			console.log("############################");
+			console.log(avatar);
+			console.log(res);
+
+		})
+	}
+
 }
 
-
-module.exports = new Photos();
+module.exports = Photos;
