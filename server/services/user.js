@@ -2,6 +2,8 @@
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
 const myEmitter = require('../emitter');
+const Photos = require('../services/Photos');
+
 
 class User {
 	constructor(){
@@ -51,17 +53,24 @@ class User {
 
 	createUser(data) {
 		return new Promise((resolve, reject) => {
+			let photos = new Photos();
 			if (!data) {
 				reject({"status": "error", "msg": "No Data !"});
 				return;
 			}
 			this.checkData(data)
 			.then((res) => {
-				resolve(userModel.saveUser(data)
-					.then(() => {
-						myEmitter.emit('userRegistered', data);
-					})
-				);
+				console.log("datas checked !");
+				return userModel.saveUser(data);
+			}).then((userData) => {
+				console.log("userData", userData);
+				return photos.createUserFolder(data);
+			}).then(() => {
+				console.log(data);
+				return photos.move(data.username, data.avatar);
+			}).then(() => {
+				myEmitter.emit('userRegistered', data);
+				resolve({'status': 'success', 'msg' : 'user created'});
 			})
 			.catch((err) => {
 				console.log("checkData error: ", err);
