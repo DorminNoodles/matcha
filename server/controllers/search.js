@@ -2,9 +2,8 @@ const searchModel = require('../models/searchModel');
 
 exports.getPeople = (data) => {
 	return new Promise((resolve, reject) => {
-
 		if (data.tri === "score") {
-			searchModel.getPeopleByScore()
+			searchModel.getPeopleByScore(data)
 			.then((res) => {
 				resolve(res);
 			}).catch(() => {
@@ -12,8 +11,9 @@ exports.getPeople = (data) => {
 			})
 		}
 		else if (data.tri === "age") {
-			searchModel.getPeopleByAge()
+			searchModel.getAge(data)
 			.then((res) => {
+				console.log(res);
 				resolve(res);
 			}).catch(() => {
 				reject();
@@ -27,17 +27,5 @@ exports.getPeople = (data) => {
 				reject();
 			})
 		}
-
-
-		// searchModel.getOrientation(id)
-		// .then((res) => {
-		// 	var amin = searchModel.getMinAge(ageMin);
-		// 	var amax = searchModel.getMaxAge(ageMax);
-		// 	return searchModel.getProfiles(res, amin, amax);
-		// }).then((result) => {
-		// 	resolve(result);
-		// }).catch((error) => {
-		// 	reject(error);
-		// })
 	})
 }
