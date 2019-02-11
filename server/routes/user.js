@@ -21,6 +21,9 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) => {
+	if (!req.file)
+		res.status(400).send({"status": "error", "msg": "missing avatar"});
+
 	req.body.avatar = {
 		"name": req.file.filename
 	}
@@ -29,6 +32,7 @@ router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) =
 		res.status(200).send({"status": "success", "msg": "user registered !"});
 	})
 	.catch((err) => {
+		console.log("here");
 		res.status(500).send({"status": "error", "msg": err});
 	})
 })

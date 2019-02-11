@@ -69,7 +69,7 @@ class User {
 				console.log(data);
 				return userModel.findUserByUsername(data.username);
 			}).then((userData) => {
-				return photos.move(userData.id, data.avatar);
+				return Photos.move(userData.id, data.avatar);
 			}).then(() => {
 				myEmitter.emit('userRegistered', data);
 				resolve({'status': 'success', 'msg' : 'user created'});

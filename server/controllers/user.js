@@ -155,7 +155,7 @@ exports.getAvatar = (id) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByID(id)
 		.then(() => {
-			resolve('pictures/user' + id + '/avatar' + '.jpg');
+			resolve('public/pictures/user' + id + '/avatar' + '.jpg');
 		})
 		.catch(() => {
 			reject({"status": "error", "msg": "id invalid"});

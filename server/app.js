@@ -26,7 +26,6 @@ io.on('connection', (socket) => {
 	}, 3000);
 });
 app.use(express.static('public'));
-app.use(express.static('pictures'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

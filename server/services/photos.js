@@ -15,7 +15,7 @@ class Photos {
 			userModel.findUserByUsername(data.username)
 			.then((res) => {
 				console.log(res.id);
-				mkdirp('pictures/user' + res.id, (err) => {
+				mkdirp('public/pictures/user' + res.id, (err) => {
 					if (err)
 						reject({'status': 'error', 'msg': 'Photo UserFolder not created !'});
 					else
@@ -31,7 +31,7 @@ class Photos {
 
 	static move(id, filename) {
 		var oldPath = 'uploads/' + filename;
-		var newPath = 'pictures/user' + id + '/' + filename;
+		var newPath = 'public/pictures/user' + id + '/' + filename;
 
 		fs.rename(oldPath, newPath, function (err) {
 			if (err) throw err
@@ -40,7 +40,7 @@ class Photos {
 	}
 
 	static countPhotos(id, callback) {
-		fs.readdir('./pictures/user' + id, (err, files) => {
+		fs.readdir('./public/pictures/user' + id, (err, files) => {
 			if (err)
 				return (0);
 

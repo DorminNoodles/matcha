@@ -18,6 +18,7 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage });
 
+// send token + photo file
 router.post('/', upload.single('photo'), urlencodedParser, (req, res) => {
 	if (!req.file)
 		res.status(400).send({"status": "error", "msg" : "No photo"});
@@ -35,6 +36,8 @@ router.post('/', upload.single('photo'), urlencodedParser, (req, res) => {
 	}
 })
 
+// send token get photo-1549917933804.jpg
+//acces with localhost:3000/pictures/user6/avatar-1549917933804.jpg
 router.get('/', urlencodedParser, (req, res) => {
 	if (req.token) {
 		photos.get(req.token.id)
@@ -50,6 +53,7 @@ router.get('/', urlencodedParser, (req, res) => {
 	}
 })
 
+//send token + filename (photo-39384364726478728.jpg)
 router.delete('/', urlencodedParser, (req, res) => {
 	if (req.token && req.query.filename) {
 		photos.delete(req.token.id, req.query.filename)
