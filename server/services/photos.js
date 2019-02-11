@@ -1,6 +1,7 @@
 const emitter = require('../emitter');
 const mkdirp = require('mkdirp');
 const userModel = require('../models/userModel');
+const fs = require('fs');
 
 class Photos {
 
@@ -18,36 +19,47 @@ class Photos {
 					if (err)
 						reject({'status': 'error', 'msg': 'Photo UserFolder not created !'});
 					else
-						resolve()
+						resolve();
 				});
 			})
 			.catch(() => {
 				console.log("error");
 				reject();
 			})
-
 		})
-		// mkdirp('/pictures/user' , function (err) {
-		//     if (err) console.error(err)
-		//     else console.log('pow!')
-		// });
 	}
 
-	move(username, avatar) {
-		userModel.findUserByUsername(username)
-		.then((res) => {
-			var fs = require('fs')
+	static move(id, filename) {
+		var oldPath = 'uploads/' + filename;
+		var newPath = 'pictures/user' + id + '/' + filename;
 
-			var oldPath = 'uploads/' + avatar;
-			var newPath = 'pictures/user' + res.id + '/avatar.jpg';
+		fs.rename(oldPath, newPath, function (err) {
+			if (err) throw err
+				console.log('Successfully renamed - AKA moved!')
+		})
+	}
 
-			fs.rename(oldPath, newPath, function (err) {
-				if (err) throw err
-					console.log('Successfully renamed - AKA moved!')
+	static countPhotos(id, callback) {
+		fs.readdir('./pictures/user' + id, (err, files) => {
+			if (err)
+				return (0);
+
+			console.log(files.length);
+			callback(files.length);
+		});
+	}
+
+	static removeTMP(filename) {
+		fs.unlink('uploads/' + filename);
+	}
+
+	static get(id) {
+		fs.readdir('./pictures/user' + id, (err, files) => {
+			files.forEach((el) => {
+				console.log(el);
 			})
 		})
 	}
-
 }
 
 module.exports = Photos;

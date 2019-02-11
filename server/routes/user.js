@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 
 const user = require('../controllers/user');
-const multer = require('multer');
 
 const router = express.Router();
 
@@ -93,7 +93,6 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 })
 
 router.get('/avatar', urlencodedParser, (req, res) => {
-
 	user.getAvatar(req.query.id)
 	.then((filename) => {
 		var img = require('fs').readFileSync(filename);

@@ -13,7 +13,6 @@ var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		// console.log(data.avatar.name);
 		let userService = new UserService();
 		userService.createUser({
 				username : data.username,

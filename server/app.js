@@ -12,16 +12,12 @@ const messages = require('./routes/messages');
 const likes = require('./routes/likes');
 const like = require('./routes/like');
 const block = require('./routes/block');
+const photos = require('./routes/photos');
 const emitter = require('./emitter');
 const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
-const photos = require('./services/photos');
 
-// geoloc.getGps();
-// emitter.on('userRegistered', geoloc.getGps);
-
-// const upload = multer({storage: storage});
 
 io.on('connection', (socket) => {
 	console.log('Un client est connecté !');
@@ -29,6 +25,8 @@ io.on('connection', (socket) => {
 		socket.emit('message', 'Vous êtes bien connecté !');
 	}, 3000);
 });
+app.use(express.static('public'));
+app.use(express.static('pictures'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -42,7 +40,7 @@ app.use('/api/messages', messages);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
 app.use('/api/block', block);
-
+app.use('/api/photos', photos);
 
 //Mettre app.use(checkToken)
 //Mettre les routes protegées

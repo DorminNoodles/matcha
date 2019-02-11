@@ -67,7 +67,9 @@ class User {
 				return photos.createUserFolder(data);
 			}).then(() => {
 				console.log(data);
-				return photos.move(data.username, data.avatar);
+				return userModel.findUserByUsername(data.username);
+			}).then((userData) => {
+				return photos.move(userData.id, data.avatar);
 			}).then(() => {
 				myEmitter.emit('userRegistered', data);
 				resolve({'status': 'success', 'msg' : 'user created'});
