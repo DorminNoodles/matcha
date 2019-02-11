@@ -26,9 +26,21 @@ exports.get = (id) => {
 		let result = []
 		fs.readdir('./pictures/user' + id, (err, files) => {
 			files.forEach((el) => {
-				result.push(el);
+				result.push('pictures/user' + id + '/' + el);
 			})
 			resolve({...result});
+		})
+	})
+}
+
+exports.delete = (id, filename) => {
+	return new Promise((resolve, reject) => {
+		const fs = require('fs');
+		fs.unlink('./pictures/user' + id + '/' + filename, (err) => {
+			if (err)
+				reject({"status": "error", "msg" : "file not deleted check filename"});
+			else
+				resolve({"status": "success", "msg" : "file deleted"});
 		})
 	})
 }

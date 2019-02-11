@@ -41,7 +41,25 @@ router.get('/', urlencodedParser, (req, res) => {
 		.then((result) => {
 			res.status(200).send(result);
 		})
-		// res.status(200).send("");
+		.catch((err) => {
+			res.status(500).send({"status": "error", "msg" : "error server"});
+		})
+	}
+	else {
+		res.status(400).send({"status": "error", "msg" : "not connected"});
+	}
+})
+
+router.delete('/', urlencodedParser, (req, res) => {
+	if (req.token && req.query.filename) {
+		photos.delete(req.token.id, req.query.filename)
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).send(err);
+		})
 	}
 	else {
 		res.status(400).send({"status": "error", "msg" : "not connected"});

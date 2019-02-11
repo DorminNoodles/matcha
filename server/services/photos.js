@@ -52,14 +52,6 @@ class Photos {
 	static removeTMP(filename) {
 		fs.unlink('uploads/' + filename);
 	}
-
-	static get(id) {
-		fs.readdir('./pictures/user' + id, (err, files) => {
-			files.forEach((el) => {
-				console.log(el);
-			})
-		})
-	}
 }
 
 module.exports = Photos;
