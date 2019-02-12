@@ -6,14 +6,23 @@
     </head>
 
     <body>
-        <h1>Communication avec socket.io !</h1>
+		<input type="text" name="name" id="uniqueID" value="value" />
 
+        <h1>Communication avec socket.io !</h1>
+		<p id="demo"></p>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io.connect('http://localhost:3000');
+            let socket = io.connect('http://localhost:3000');
 			socket.on('message', function(message) {
-				alert('Le serveur a un message pour vous : ' + message);
+				var node = document.createElement("p");
+				var textnode = document.createTextNode('Le serveur a un message pour vous : ' + message);
+				node.appendChild(textnode);
+				document.getElementById("demo").appendChild(node);
+				// document.write('Le serveur a un message pour vous : ' + message + '<br/>');
 			})
+				var nameValue = document.getElementById("uniqueID").value;
+				console.log(nameValue);
+				setTimeout(resolve, 200);
         </script>
     </body>
 </html>

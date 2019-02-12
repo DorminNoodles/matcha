@@ -4,7 +4,6 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-// const multer = require('multer');
 
 const user = require('./routes/user');
 const users = require('./routes/users');
@@ -19,12 +18,8 @@ const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
 
 
-io.on('connection', (socket) => {
-	console.log('Un client est connecté !');
-	setTimeout(function(){
-		socket.emit('message', 'Vous êtes bien connecté !');
-	}, 3000);
-});
+// the following two will emit to all the sockets connected to `/`
+
 app.use(express.static('public'));
 
 app.use(bodyParser.json());
@@ -41,7 +36,25 @@ app.use('/api/likes', likes);
 app.use('/api/block', block);
 app.use('/api/photos', photos);
 
-//Mettre app.use(checkToken)
-//Mettre les routes protegées
+app.get('/', (req, res) => {
+	console.log(req.token)
+	if (1) {
+		io.on('connection', (socket) => {
+			socket.join('salon1');
+			console.log(socket.id);
+			console.log('Un client est connecté !');
+			// setTimeout(function(){
+			// 	socket.emit('message', 'Vous êtes bien connecté !');
+			// }, 2500);
+		});
+		setTimeout(function(){
+			io.to("salon1").emit('message', 'Vous êtes bien connecté au slaon 1 !');
+		}, 2000);
+
+		res.sendFile(__dirname + '/socketTest.html');
+	}
+	else
+		res.send("error");
+});
 
 server.listen(3000);
