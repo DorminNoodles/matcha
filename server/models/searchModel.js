@@ -20,28 +20,6 @@ exports.getOrientation = (id) => {
 	})
 }
 
-exports.getMinAge = (minimum) => {
-	return new Promise((resolve, reject) => {
-		var today = query('SELECT \'GETDATE()\', CONVERT (date, GETDATE())');
-		var min = query("DATEADD(YEAR, -?, today", [minimum]);
-		return(min);
-		resolve(min);
-	}).catch((error) => {
-		reject(error);
-	})
-}
-
-exports.getMaxAge = (maximum) => {
-	return new Promise((resolve, reject) => {
-		var today = query('SELECT \'GETDATE()\', CONVERT (date, GETDATE())');
-		var max = query("DATEADD(YEAR, ?, today", [maximum]);
-		return(max);
-		resolve(max);
-	}).catch((error) => {
-		reject(error);
-	})
-}
-
 exports.getProfiles = (orientation, min, max) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
@@ -113,9 +91,6 @@ exports.getPeopleByScore = (data) => {
 
 exports.getPeopleByAge = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("peopleByAge");
-		var ageMax = data.limitAgeMax;
-		var ageMin = data.limitAgeMin;
 		return mysql.createConnection({
 					host:'localhost',
 					user:'root',
@@ -123,8 +98,8 @@ exports.getPeopleByAge = (data) => {
 					database:'matcha'
 		})
 		.then((conn) => {
-			return conn.query("SELECT * FROM users WHERE YEAR(age) BETWEEN ", []);
-			// resolve();
+			return conn.query("SELECT id, username, firstname, age, location FROM users WHERE age BETWEEN ? AND ? ORDER BY age ASC", [data.limitAgeMin, data.limitAgeMax]);
+			resolve(); 
 		})
 		.then((res) => {
 			console.log(res);
@@ -135,41 +110,22 @@ exports.getPeopleByAge = (data) => {
 	})	
 }
 
-exports.getAge = (data) => {
-	userModel.findUserByID(data.id)
-	.then((res) => {
-		return mysql.createConnection({
-			host:'localhost',
-			user:'root',
-			password:'qwerty',
-			database:'matcha'
-		})
-	}).then((conn) => {
-		return conn.query('SELECT YEAR(CURRENT_TIMESTAMP) - YEAR(age)\
-			- (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(age, 5)) as age FROM users WHERE id=1;');
-	}).then((row) => {
-		console.log(row[0].age);
-		return row;
-	})
-}
-
-// exports.getAgeFromUser = (id) => {
+// exports.getAge = (data) => {
 // 	return new Promise((resolve, reject) => {
-// 		mysql.createConnection({
+// 		console.log(data);
+// 		return mysql.createConnection({
 // 			host:'localhost',
 // 			user:'root',
 // 			password:'qwerty',
 // 			database:'matcha'
+// 		}).then((conn) => {
+// 			return conn.query('SELECT YEAR(CURRENT_TIMESTAMP) - YEAR(age)\
+// 				- (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(age, 5)) as age FROM users WHERE id=?;', [data.id]);
+// 		}).then((row) => {
+// 			console.log(row[0].age);
+// 			return row;
 // 		})
-// 		.then((conn) => {
-// 			return conn.query('SELECT * FROM users WHERE ((MONTH(age) -1) * 31 + (DAY(age) -1)) % (31 * 12)\
-//        							BETWEEN ((MONTH('2013-11-20') - 1) * 31 + (DAY('2013-11-20') - 1)) % (31 * 12)\
-//            						AND ((MONTH('2013-12-10') - 1)* 31 + (DAY('2013-12-10') + 371)) % (31 * 12)');
-// 		}).then((res) => {
-// 			console.log("Age: " + res);
-// 			resolve();
-// 		}).catch((err) => {
-// 			reject(err);
-// 		})
+// 	}).catch((error) => {
+// 		reject(error);
 // 	})
 // }

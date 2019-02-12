@@ -11,7 +11,7 @@ exports.getPeople = (data) => {
 			})
 		}
 		else if (data.tri === "age") {
-			searchModel.getAge(data)
+			searchModel.getPeopleByAge(data)
 			.then((res) => {
 				console.log(res);
 				resolve(res);
