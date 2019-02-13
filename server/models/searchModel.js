@@ -8,32 +8,13 @@ exports.getOrientation = (id) => {
 			user:'root',
 			password:'qwerty',
 			database:'matcha'
-		})
-		.then((conn) => {
+		}).then((conn) => {
 			return conn.query("SELECT orientation FROM users WHERE id =?", [id]);
 		}).then((res) => {
-			console.log("Orientation: " + res);
-			resolve();
+			resolve(res[0].orientation);
 		}).catch((err) => {
 			reject(err);
 		})
-	})
-}
-
-exports.getProfiles = (orientation, min, max) => {
-	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			host:'localhost',
-			user:'root',
-			password:'qwerty',
-			database:'matcha'
-		})
-		.then((conn) => {
-			return conn.query("SELECT * FROM users WHERE age BETWEEN ? AND ?", [min, max]);
-			resolve();
-		})
-	}).catch((error) => {
-		reject(error);
 	})
 }
 
@@ -53,55 +34,51 @@ exports.getPeopleByRange = (data) => {
 					password:'qwerty',
 					database:'matcha'
 				})
-		})
-		.then((conn) => {
-			return conn.query("SELECT * FROM users WHERE longitude BETWEEN ? AND ?", [1.0, 3.0]);
-			// resolve();
-		})
-		.then((res) => {
+		}).then((conn) => {
+			return conn.query("SELECT id, username, firstname, age, location FROM users WHERE longitude BETWEEN ? AND ?", [1.0, 3.0]);
+		}).then((res) => {
+			resolve();
 			console.log(res);
 		})
 	}).catch((error) => {
-		console.log(error);
 		reject(error);
 	})	
 }
 
-exports.getPeopleByScore = (data) => {
-	return new Promise((resolve, reject) => {
-		console.log("peopleByScore");
-		return mysql.createConnection({
-					host:'localhost',
-					user:'root',
-					password:'qwerty',
-					database:'matcha'
-		})
-		.then((conn) => {
-			return conn.query("SELECT * FROM users WHERE score=?", [score]);
-			// resolve();
-		})
-		.then((res) => {
-			console.log(res);
-		})
-	}).catch((error) => {
-		console.log(error);
-		reject(error);
-	})	
-}
-
-exports.getPeopleByAge = (data) => {
+exports.getPeopleByScore = (data, orientation) => {
 	return new Promise((resolve, reject) => {
 		return mysql.createConnection({
 					host:'localhost',
 					user:'root',
 					password:'qwerty',
 					database:'matcha'
+		}).then((conn) => {
+			if(orientation == "male" || orientation == "female")
+				return conn.query("SELECT id, username, firstname, age, location FROM users WHERE (id!=? AND gender=? AND score=?) ORDER BY score DESC", [data.id, orientation, score]);
+			else
+				return conn.query("SELECT id, username, firstname, age, location FROM users WHERE (id!=? AND score=?) ORDER BY score DESC", [data.id, orientation, score]);
+		}).then((res) => {
+			resolve(res);
 		})
-		.then((conn) => {
-			return conn.query("SELECT id, username, firstname, age, location FROM users WHERE age BETWEEN ? AND ? ORDER BY age ASC", [data.limitAgeMin, data.limitAgeMax]);
+	}).catch((error) => {
+		reject(error);
+	})	
+}
+
+exports.getPeopleByAge = (data, orientation) => {
+	return new Promise((resolve, reject) => {
+		return mysql.createConnection({
+					host:'localhost',
+					user:'root',
+					password:'qwerty',
+					database:'matcha'
+		}).then((conn) => {
+			if(orientation == "male" || orientation == "female")
+				return conn.query("SELECT id, username, firstname, age, location FROM users WHERE (id<>? AND gender=? AND age BETWEEN ? AND ?) ORDER BY age ASC", [data.id, orientation, data.limitAgeMin, data.limitAgeMax]);
+			else
+				return conn.query("SELECT id, username, firstname, age, location FROM users WHERE (id<>? AND age BETWEEN ? AND ?) ORDER BY age ASC", [data.id, data.limitAgeMin, data.limitAgeMax]);
 			resolve(); 
-		})
-		.then((res) => {
+		}).then((res) => {
 			console.log(res);
 		})
 	}).catch((error) => {
