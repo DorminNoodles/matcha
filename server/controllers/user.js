@@ -24,13 +24,15 @@ exports.new = (data) => {
 				orientation : data.orientation,
 				gender : data.gender,
 				location : data.location,
-				age : data.age
+				age : data.age,
+				avatar : data.avatar.name
 		})
 		.then((res) => {
 			console.log(res);
 			resolve();
 		})
 		.catch((err) => {
+			console.log("error in new: ", err);
 			reject(err);
 		})
 	})
@@ -82,7 +84,7 @@ exports.authenticate = (data) => {
 					id: result.id,
 					username: result.username,
 					email: result.email
-				}, 'shhhhh');
+				}, 'shhhhhhh');
 				resolve(token);
 			}).catch((error) => {
 				reject(error);
@@ -101,7 +103,7 @@ exports.forgot = (data) => {
 				id: res.id,
 				username: res.username,
 				email: res.email
-			}, 'shhhhh');
+			}, 'shhhhhhh');
 			myEmitter.emit('forgotPass', {
 				username: res.username,
 				email: res.email
@@ -116,34 +118,29 @@ exports.forgot = (data) => {
 
 exports.updatePassword = (token, pwd, confirmPwd) => {
 	return new Promise((resolve, reject) => {
-		var decoded = jwt.decode(data, {complete: true});
-		console.log(decoded.header);
-		console.log(decoded.payload);
-		userModel.findUserByEmail(decoded.payload.email)
-		console.log("YES");
-		console.log(pwd);
-		console.log(confirmPwd);
+		let passCrypted;
 		if (pwd != confirmPwd){
-			reject({"status": "error"});
+			reject({"status": "error password difference"});
 			return;
 		}
-		console.log("HASH");
-		console.log(pwd);
+		console.log("test :p");
 		bcrypt.hash(pwd, 10)
 		.then((hash) => {
-			var decoded = jwt.verify(token, {complete: true});
-			// console.log(decoded);
-			console.log("HASH");
-			user.changePwd(decoded.email, decoded.username, pwd)
-			.then((res) => {
-				resolve(res);
-			})
-			.catch((err) => {
-				reject(err);
-			})
+			passCrypted = hash;
+			console.log("OK_1");
+			return jwt.verify(token, "shhhhhhh");
+		})
+		.then((decoded) => {
+			console.log("OK_2");
+			console.log("HERE+++++++");
+			return userModel.changePwd(decoded.email, decoded.username, passCrypted)
+		})
+		.then((res) => {
+			console.log("GOOD");
+			resolve();
 		})
 		.catch((err) => {
-			console.log("HASH");
+			console.log("LAST CATCH ***********");
 			reject(err);
 		})
 	})
@@ -151,7 +148,7 @@ exports.updatePassword = (token, pwd, confirmPwd) => {
 
 exports.activate = (token) => {
 	return new Promise((resolve, reject) => {
-		let decoded = jwt.verify(token, 'shhhhh');
+		let decoded = jwt.verify(token, 'shhhhhhh');
 		console.log(decoded);
 		userModel.activateUser(decoded.username, decoded.email)
 		.then((res) => {
@@ -190,6 +187,18 @@ exports.updatePassSettings = (id, password, newPass, newPassConfirm) => {
 		.catch((err) => {
 			console.log("REJ REJ");
 			reject(err);
+		})
+	})
+}
+
+exports.getAvatar = (id) => {
+	return new Promise((resolve, reject) => {
+		userModel.findUserByID(id)
+		.then(() => {
+			resolve('public/pictures/user' + id + '/avatar' + '.jpg');
+		})
+		.catch(() => {
+			reject({"status": "error", "msg": "id invalid"});
 		})
 	})
 }
