@@ -7,22 +7,43 @@
 
     <body>
 		<input type="text" name="name" id="uniqueID" value="value" />
+		<button onclick="func()">Click</button>
 
         <h1>Communication avec socket.io !</h1>
 		<p id="demo"></p>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            let socket = io.connect('http://localhost:3000');
-			socket.on('message', function(message) {
-				var node = document.createElement("p");
-				var textnode = document.createTextNode('Le serveur a un message pour vous : ' + message);
-				node.appendChild(textnode);
-				document.getElementById("demo").appendChild(node);
-				// document.write('Le serveur a un message pour vous : ' + message + '<br/>');
+			const urlParams = new URLSearchParams(window.location.search);
+			myID = urlParams.get('id');
+			console.log(myID);
+			console.log("connection");
+			var socket = io();
+			socket.on('from server' + myID, (msg) => {
+				console.log(msg);
 			})
-				var nameValue = document.getElementById("uniqueID").value;
-				console.log(nameValue);
-				setTimeout(resolve, 200);
+
+			function func() {
+				//console.log(document.getElementById("uniqueID").value);
+				socket.emit('chat message',
+					{
+						token: { id: 3},
+						data: document.getElementById("uniqueID").value
+					});
+			}
+            // let socket = io.connect('http://localhost:3000');
+			// const urlParams = new URLSearchParams(window.location.search);
+			// myID = urlParams.get('id');
+			// console.log(myID);
+			// // socket.join("game1");
+			// socket.on('message', function(message) {
+			// 	var node = document.createElement("p");
+			// 	var textnode = document.createTextNode('Le serveur a un message pour vous : ' + message);
+			// 	node.appendChild(textnode);
+			// 	document.getElementById("demo").appendChild(node);
+			// 	// document.write('Le serveur a un message pour vous : ' + message + '<br/>');
+			// })
+			// var nameValue = document.getElementById("uniqueID").value;
+			// console.log(nameValue);
         </script>
     </body>
 </html>

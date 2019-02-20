@@ -23,10 +23,29 @@ exports.new = (data) => {
 					body: data.body
 			});
 		})
+		.then(() => {
+			return messagesModel.new({
+					from: data.from_id,
+					to: data.to_id,
+					body: data.body
+			});
+		})
 		.catch((err) => {
 			reject(err)
 		})
 		resolve('message ok');
+	})
+}
+
+exports.getFromChat = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("ouech");
+	})
+}
+
+exports.sendToChat = (data) => {
+	return new Promise((resolve, reject) => {
+
 	})
 }
 
