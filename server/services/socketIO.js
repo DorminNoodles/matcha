@@ -18,11 +18,14 @@ module.exports = (server) => {
 			socketUsers[data.token] = socket.id;
 		})
 
+
+	/*disconnect send userDisconnect with userId*/
 		socket.on('disconnect', () => {
 			console.log('disconnect : ', socket.id);
-			for (let key in socketUsers) {
-	    		if (socketUsers.hasOwnProperty(key) && socketUsers[key] == socket.id) {
-					delete socketUsers[key];
+			for (let userId in socketUsers) {
+	    		if (socketUsers.hasOwnProperty(userId) && socketUsers[userId] == socket.id) {
+					io.emit('userDisconnected', userId);
+					delete socketUsers[userId];
 				}
 			}
 			console.log(socketUsers);
