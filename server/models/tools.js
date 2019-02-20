@@ -1,4 +1,5 @@
 const mysql = require('promise-mysql');
+const checkTags = require('../services/checkInput');
 
 exports.checkOnline = (id) => {
     return new Promise((resolve, reject) => {
@@ -26,7 +27,7 @@ exports.check = (table, user_id, his_id) => {
             password: 'qwerty',
             database: 'matcha'
         }).then((conn) => {
-            conn.query("SELECT * FROM " + table + " WHERE user_id=? AND his_id=?", [user_id, his_id]);
+            return conn.query("SELECT * FROM " + table + " WHERE user_id=? AND his_id=?", [user_id, his_id]);
         }).then((res) => {
             if (res.length != 0) {
                 resolve();
@@ -52,10 +53,10 @@ exports.notif = (msg, user_id, his_id) => {
                 user: 'root',
                 password: 'qwerty',
                 database: 'matcha'
+            })
         }).then((conn) => {
-            if (block == 0) {
-                conn.query('INSERT INTO notifs (user_id, his_id, notif) VALUES (?, ?, ?)', [user_id, his_id, msg]);
-            }
+            if (block == 0)
+                return conn.query('INSERT INTO notifs (user_id, his_id, notif) VALUES (?, ?, ?)', [user_id, his_id, msg]);
         }).then((ans) => {
             resolve();
         })
@@ -64,7 +65,7 @@ exports.notif = (msg, user_id, his_id) => {
     })
 }
 
-exports.getvisits = (user_id) => {
+exports.getVisits = (user_id) => {
     return new Promise((resolve, reject) => {
         mysql.createConnection({
             host: 'localhost',
@@ -72,11 +73,32 @@ exports.getvisits = (user_id) => {
             password: 'qwerty',
             database: 'matcha'
         }).then((conn) => {
-            conn.query('SELECT * FROM visits WHERE his_id = ?', [user_id]);
+            return conn.query('SELECT * FROM visits WHERE his_id = ?', [user_id]);
         }).then((res) => {
-            resolve();
-	    })
-	}).catch((error) => {
+            resolve(res);
+            return res;
+        })
+    }).catch((error) => {
+        reject(error);
+    })
+}
+
+exports.createTag = (tag, id) => {
+    return new Promise((resolve, reject) => {
+        checkTags.tag(tag)
+        .then((res) => {
+            mysql.createConnection({
+                host: 'localhost',
+                user: 'root',
+                password: 'qwerty',
+                database: 'matcha'
+            })
+        }).then((conn) => {
+            return conn.query('INSERT INTO tags (user_id, tag) VALUES (?, ?)', [id, tag]);
+        }).then((ret) => {
+            resolve(ret);
+        })
+    }).catch((error) => {
         reject(error);
     })
 }

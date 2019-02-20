@@ -93,3 +93,13 @@ exports.message = (text) => {
 		resolve(text);
 	})
 }
+
+exports.tag = (text) => {
+	return new Promise((resolve, reject) => {
+		var reg = RegExp(/^[a-zA-Z0-9]{3,30}$/);
+		if (reg.test(text))
+			resolve(text);
+		else
+		reject("Not a tag");
+	})
+}
