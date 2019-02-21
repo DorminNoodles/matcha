@@ -1,5 +1,4 @@
 const messagesModel = require('../models/messagesModel');
-// const jwtToken = require('../middlewares/jwtToken');
 const user = require('../services/user');
 const jwtToken = require('../services/jwtToken');
 const userModel = require('../models/userModel');
@@ -18,16 +17,9 @@ exports.new = (data) => {
 		})
 		.then(() => {
 			return messagesModel.new({
-					from: data.from_id,
-					to: data.to_id,
-					body: data.body
-			});
-		})
-		.then(() => {
-			return messagesModel.new({
-					from: data.from_id,
-					to: data.to_id,
-					body: data.body
+				from: data.from_id,
+				to: data.to_id,
+				body: data.body
 			});
 		})
 		.catch((err) => {

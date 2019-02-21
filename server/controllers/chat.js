@@ -5,7 +5,6 @@ const io = require('socket.io')(server);
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("hello");
 		matchs.checkMatch(data.liker, data.liked)
 		.then((res) => {
 			console.log("OK");

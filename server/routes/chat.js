@@ -40,7 +40,6 @@ router.post('/connection', urlencodedParser, (req, res) => {
 	chat.chatSubscribe(req.body.userID)
 
 
-
 	res.send("chut");
 })
 
