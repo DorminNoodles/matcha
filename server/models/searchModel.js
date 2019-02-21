@@ -87,6 +87,33 @@ exports.getPeopleByAge = (data, orientation) => {
 	})	
 }
 
+exports.getPeopleByTag = (data, orientation) => {
+	return new Promise((resolve, reject) => {
+		return mysql.createConnection({
+			host:'localhost',
+			user:'root',
+			password:'qwerty',
+			database:'matcha'
+		}).then((conn) => {
+			allTags = data.tags.join(' OR tags.tag=');
+			console.log(allTags);
+			allTags = allTags.replace(/['']+/g, '');
+			console.log(allTags);
+			if(orientation == "male" || orientation == "female") {
+				// let sql = `SELECT id, username, firstname, age, location FROM users INNER JOIN users.id = tags.user_id WHERE (id<>? AND gender=? AND tags.tag=$(`;
+				// return conn.query(sql + data.tags.join(' OR tags.tag='));
+				return conn.query("SELECT id, username, firstname, age, location FROM users INNER JOIN users.id = tags.user_id WHERE (id<>? AND gender=? AND tags.tag=?))", [data.id, orientation, allTags.replace(/['']+/g, '')]);
+			}
+			else {
+				return conn.query("SELECT id, username, firstname, age, location FROM users INNER JOIN users.id = tags.user_id WHERE (id<>? AND tags.tag=?))", [data.id, allTags.replace(/['']+/g, '')]);
+			}
+
+		})
+	}).catch((error) => {
+		console.log(error);
+		reject(error);
+	})
+}
 // exports.getAge = (data) => {
 // 	return new Promise((resolve, reject) => {
 // 		console.log(data);

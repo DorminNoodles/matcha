@@ -102,3 +102,20 @@ exports.createTag = (tag, id) => {
         reject(error);
     })
 }
+
+exports.deleteTag = (tag, id) => {
+    return new Promise((resolve, reject)=> {
+        mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'qwerty',
+            database: 'matcha'
+        }).then((conn) => {
+            return conn.query('DELETE FROM tags * WHERE tag=? AND user_id=?', [tag, id]);
+        }).then((res) => {
+            resolve(res);
+        })
+    }).catch((error) => {
+        reject(error);
+    })
+}

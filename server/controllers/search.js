@@ -21,8 +21,16 @@ exports.getPeople = (data) => {
 					reject();
 				})
 			}
-			else {
+			else if (data.tri === "range") {
 				searchModel.getPeopleByRange(data, lookingfor)
+				.then((res) => {
+					resolve(res);
+				}).catch(() => {
+					reject();
+				})
+			}
+			else {
+				searchModel.getPeopleByTag(data, lookingfor)
 				.then((res) => {
 					resolve(res);
 				}).catch(() => {

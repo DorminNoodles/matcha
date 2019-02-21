@@ -13,7 +13,8 @@ router.get('/', urlencodedParser, (req, res) => {
 		"limitAgeMin": req.query.limitAgeMin,
 		"limitAgeMax": req.query.limitAgeMax,
 		"range": req.query.range,
-		"order": req.query.order
+		"order": req.query.order,
+		"tags": req.query.tags
 	};
 
 	if (req.token) {
