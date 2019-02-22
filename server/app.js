@@ -16,6 +16,8 @@ const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
 const chat = require("./routes/chat");
+const score = require("./routes/score");
+const visit = require("./routes/visit");
 
 const socketIO = require("./services/socketIO")(server);
 
@@ -43,5 +45,7 @@ app.use('/api/likes', likes);
 app.use('/api/like', like);
 app.use('/api/block', block);
 app.use('/api/photos', photos);
+app.use('/api/score', score);
+app.use('/api/visit', visit);
 
 server.listen(3000);

@@ -20,16 +20,11 @@ module.exports = (server) => {
 					}
 				}
 			})
-
-			// console.log("send message : " + data.msg);	2
-			// console.log(data);
-			// console.log(socket.id);
-			// messagesModel.new({from : data.token.});
 		})
 
-		socket.on('auth', (data) => {
-			if (data.token && Object.prototype.toString.call(data.token) === "[object String]") {
-				jwt.verify(data.token, "shhhhhhh", (err, decoded) => {
+		socket.on('auth', (token) => {
+			if (token && Object.prototype.toString.call(token) === "[object String]") {
+				jwt.verify(token, "shhhhhhh", (err, decoded) => {
 					if (err) {
 						socket.emit('errorConnection', 'Wrong token');
 						return (err);
@@ -43,16 +38,6 @@ module.exports = (server) => {
 						}
 					}
 				})
-
-				// .then((res) => {
-				// 	console.log("helloooo");
-				// 	return ("ok");
-				// })
-				// .catch((err) => {
-				// 	return("Token error");
-				// })
-
-				// let token = jwt.verify(data.token, "shhhhhhh");
 			}
 		})
 

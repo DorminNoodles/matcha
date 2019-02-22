@@ -66,3 +66,27 @@ exports.getLike = (liker, liked) => {
 		})
 	})
 }
+
+exports.getLikes = (liked) => {
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		})
+		.then((conn) => {
+			return conn.query('SELECT COUNT (*) FROM likes WHERE liked=?', [liked]);
+		})
+		.then((res) => {
+			if (res[0])
+				resolve(res[0]);
+			else
+				reject('Likes not found.');
+		})
+		.catch((err) => {
+			console.log(err);
+			reject();
+		})
+	})
+}
