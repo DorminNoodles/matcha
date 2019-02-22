@@ -49,3 +49,8 @@ exports.delete = (liker, liked) => {
 		})
 	})
 }
+
+exports.get = (liker, liked) => {
+	let pouet = likesModel.getLike(liker,liked)
+	consol.log("Ericson");
+}
