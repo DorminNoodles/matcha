@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const likesModel = require('../models/likesModel');
+const dotenv = require('dotenv').config();
 
 const router = express.Router();
 

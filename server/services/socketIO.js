@@ -1,6 +1,7 @@
 const socketio = require('socket.io');
 const messagesModel = require('../models/messagesModel');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
 
 let socketUsers = {};
 
@@ -8,7 +9,7 @@ module.exports = (server) => {
 	const io = require('socket.io')(server);
 	io.on('connection', (socket) => {
 		socket.on('fromClient', (data) => {
-			jwt.verify(data.token, "shhhhhhh", (err, decoded) => {
+			jwt.verify(data.token, process.env.JWT_KEY, (err, decoded) => {
 				if (err) {
 					socket.emit('errorMessage', 'Wrong token');
 					return (err);
@@ -24,7 +25,7 @@ module.exports = (server) => {
 
 		socket.on('auth', (token) => {
 			if (token && Object.prototype.toString.call(token) === "[object String]") {
-				jwt.verify(token, "shhhhhhh", (err, decoded) => {
+				jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
 					if (err) {
 						socket.emit('errorConnection', 'Wrong token');
 						return (err);

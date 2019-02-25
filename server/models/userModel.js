@@ -13,7 +13,7 @@ exports.findUserByUsername = (username) => {
 			database: 'matcha'
 		}).then((conn) => {
 			console.log("findUserByUsername");
-			var result = conn.query('SELECT username, id, email FROM users WHERE username=?', [username]);
+			var result = conn.query('SELECT username, id, mailValidation, email FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {
@@ -156,7 +156,6 @@ exports.saveGps = (id, long, lat) => {
 
 exports.activateUser = (username, email) => {
 	return new Promise((resolve, reject) => {
-		// console.log(email, username);
 		console.log("hello");
 		mysql.createConnection({
 			host:'localhost',
@@ -194,8 +193,6 @@ exports.changePwd = (email, username, pwd) => {
 			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
 		})
 		.then((res) => {
-			// console.log("Yoooooo !");
-			// console.log(res);
 			resolve({"status": "success", "msg": "Password changed!"});
 		})
 		.catch((err) => {

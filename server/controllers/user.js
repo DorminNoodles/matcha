@@ -61,6 +61,10 @@ exports.authenticate = (data) => {
 			return userModel.findUserByUsername(data.username);
 		})
 		.then((result) => {
+			if (!data.mailValidation) {
+				reject({"status": "error", "msg": "mail not validate"});
+				return;
+			}
 			console.log("hello authenticate*****");
 			console.log("<- AUTH ---");
 			console.log(data);
@@ -73,7 +77,7 @@ exports.authenticate = (data) => {
 					id: result.id,
 					username: result.username,
 					email: result.email
-				}, 'shhhhhhh');
+				}, process.env.JWT_KEY);
 				resolve(token);
 			}).catch((error) => {
 				console.log(error);
@@ -94,7 +98,7 @@ exports.forgot = (data) => {
 				id: res.id,
 				username: res.username,
 				email: res.email
-			}, 'shhhhhhh');
+			}, process.env.JWT_KEY);
 			myEmitter.emit('forgotPass', {
 				username: res.username,
 				email: res.email
@@ -119,7 +123,7 @@ exports.updatePassword = (token, pwd, confirmPwd) => {
 		.then((hash) => {
 			passCrypted = hash;
 			console.log("OK_1");
-			return jwt.verify(token, "shhhhhhh");
+			return jwt.verify(token, process.env.JWT_KEY);
 		})
 		.then((decoded) => {
 			console.log("OK_2");
@@ -139,7 +143,7 @@ exports.updatePassword = (token, pwd, confirmPwd) => {
 
 exports.activate = (token) => {
 	return new Promise((resolve, reject) => {
-		let decoded = jwt.verify(token, 'shhhhhhh');
+		let decoded = jwt.verify(token, process.env.JWT_KEY);
 		console.log(decoded);
 		userModel.activateUser(decoded.username, decoded.email)
 		.then((res) => {

@@ -1,6 +1,7 @@
 const emitter = require('../emitter');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
 
 class ActivationMail {
 
@@ -15,7 +16,7 @@ class ActivationMail {
 		var token = jwt.sign({
 			"username": data.username,
 			"email": data.email
-		}, 'shhhhhhh');
+		}, process.env.JWT_KEY);
 
 		nodemailer.createTestAccount(() => {
 			let transporter = nodemailer.createTransport({

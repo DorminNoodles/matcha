@@ -1,8 +1,9 @@
 "use strict";
+const dotenv = require('dotenv').config();
 const checkInput = require('../services/checkInput');
 const userModel = require('../models/userModel');
+const Photos = require('../services/photos');
 const myEmitter = require('../emitter');
-const Photos = require('../services/Photos');
 
 
 class User {
@@ -83,16 +84,17 @@ class User {
 
 	authenticate(username, password) {
 		return new Promise((resolve, reject) => {
-
 			userModel.findUserByName(username)
 			.then((data) => {
+				// if (data)
+				console.log("HELLO BORDEL");
 				console.log(data);
 				console.log(data.username);
 				let token = jwt.sign({
 					id: data.id,
 					username: data.username,
 					email: data.email
-				}, 'shhhhhhhhh');
+				}, process.env.JWT_KEY);
 				resolve(token);
 				return;
 			})
