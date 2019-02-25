@@ -65,24 +65,6 @@ exports.notif = (msg, user_id, his_id) => {
     })
 }
 
-exports.getVisits = (user_id) => {
-    return new Promise((resolve, reject) => {
-        mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'qwerty',
-            database: 'matcha'
-        }).then((conn) => {
-            return conn.query('SELECT * FROM visits WHERE his_id = ?', [user_id]);
-        }).then((res) => {
-            resolve(res);
-            return res;
-        })
-    }).catch((error) => {
-        reject(error);
-    })
-}
-
 exports.createTag = (tag, id) => {
     return new Promise((resolve, reject) => {
         checkTags.tag(tag)

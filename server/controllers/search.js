@@ -15,7 +15,6 @@ exports.getPeople = (data) => {
 			else if (data.tri === "age") {
 				searchModel.getPeopleByAge(data, lookingfor)
 				.then((res) => {
-					console.log(res);
 					resolve(res);
 				}).catch(() => {
 					reject();
