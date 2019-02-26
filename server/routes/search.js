@@ -21,9 +21,11 @@ router.get('/', urlencodedParser, (req, res) => {
 		console.log(req.query);
 		// console.log(req.query.limitAgeMax);
 		user.getPeople(data)
-		.then((res) => {
+		.then((result) => {
+			console.log(result);
 			res.status(200).send({"status": "profiles found"});
 		}).catch((error) => {
+			console.log("NO");
 			res.send("error");
 		})
 	}

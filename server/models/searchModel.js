@@ -94,33 +94,23 @@ exports.getPeopleByTag = (data, orientation) => {
 			password:'qwerty',
 			database:'matcha'
 		}).then((conn) => {
-			console.log(data.tags);
 			if (this.countTags(data.tags) > 1) {
-				console.log("Many elements");
-				allTags = data.tags.join(' OR t.tag=');
-				console.log(allTags);
+				allTags = data.tags.join("' OR t.tag='");
 			} else {
-				console.log("One element");
 				allTags = data.tags;
 			}
 			if (orientation == "male" || orientation == "female") {
-				let sql = 'SELECT us.id, us.username, us.firstname, us.age, us.location FROM users us INNER JOIN tags t ON us.id = t.user_id WHERE (us.id<>\''+ data.id +'\' AND gender=\''+ orientation +'\' AND t.tag=' + allTags + ')';
+				let sql = "SELECT us.id, us.username, us.firstname, us.age, us.location FROM users us INNER JOIN tags t ON us.id = t.user_id WHERE (us.id<>\'"+ data.id +"\' AND gender=\'"+ orientation +"\' AND t.tag=\'"+ allTags +"\')";
 				return conn.query(sql);
-				// return conn.query("SELECT id, username, firstname, age, location FROM users INNER JOIN users.id = tags.user_id WHERE (id<>\''+ data.id +'\' AND gender=\''+ orientation +'\' AND tags.tag=?))", [allTags.replace(/'/g, "")]);
 			}
 			else {
-				// return conn.query("SELECT us.id, us.username, us.firstname, us.age, us.location FROM users us INNER JOIN tags t ON us.id = t.user_id WHERE (us.id<>? AND t.tag=?)", [data.id, allTags]);
-				let sql = 'SELECT us.id, us.username, us.firstname, us.age, us.location FROM users us INNER JOIN tags t ON us.id = t.user_id WHERE (us.id<>\''+ data.id +'\' AND t.tag=\''+ allTags +'\')';
+				let sql = "SELECT us.id, us.username, us.firstname, us.age, us.location FROM users us INNER JOIN tags t ON us.id = t.user_id WHERE (us.id<>\'"+ data.id +"\' AND t.tag=\'"+ allTags +"\')";
 				return conn.query(sql);
 			}
 		}).then((res) => {
-			console.log("------>");
-			console.log(res);
-			console.log("<------");
 			resolve(res);
 		})
 	}).catch((error) => {
-		console.log(error);
 		reject(error);
 	})
 }
