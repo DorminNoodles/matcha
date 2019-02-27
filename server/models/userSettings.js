@@ -3,39 +3,6 @@ const bcrypt = require('bcrypt');
 const check = require('../services/checkInput');
 const mailAvailable = require('../controllers/user');
 
-// exports.changeUsername = (id, username) => {
-// 	return new Promise((resolve, reject) => {
-// 		check.username(username)
-// 		.then((res) => {
-// 			check.usernameAlreadyTaken(username)
-// 			.then((res) => {
-// 				return check.usernameAlreadyTaken(username);
-// 			}).catch((error) => {
-// 				if (res == username)
-// 					resolve();
-// 			})
-// 		})
-// 		.then(() => {
-// 			return mysql.createConnection({
-// 					host: 'localhost',
-// 					user: 'root',
-// 					password: 'qwerty',
-// 					database: 'matcha'
-// 				}).then((conn) => {
-// 					var result = conn.query('UPDATE users SET username=\''+ username +'\' WHERE id=\''+ id +'\'');
-// 					conn.end();
-// 				}).catch((error) => {
-// 					reject(error);
-// 				})
-// 		}).then(() => {
-// 			resolve();
-// 		})
-// 		.catch((error) => {
-// 			reject(error);
-// 		})
-// 	})
-// }
-
 exports.changeFirstname = (id, firstname) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({

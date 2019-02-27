@@ -39,7 +39,7 @@ exports.check = (table, user_id, his_id) => {
             }
         })
     }).catch((error) => {
-        reject();
+        reject(error);
     })
 }
 

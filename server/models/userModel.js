@@ -116,8 +116,7 @@ exports.checkLogin = (username, password) => {
 				else
 					reject();
 			}).catch((error) => {
-				reject();
-				console.log(error);
+				reject(error);
 			})
 		}).catch((error) => {
 			reject(error);
@@ -127,7 +126,6 @@ exports.checkLogin = (username, password) => {
 
 exports.saveGps = (id, long, lat) => {
 	return new Promise((resolve, reject) => {
-		console.log("BORDELLLLLL");
 		console.log(id, long, lat);
 		mysql.createConnection({
 			host: 'localhost',
@@ -142,7 +140,6 @@ exports.saveGps = (id, long, lat) => {
 			resolve('Gps saved');
 		})
 		.catch((err) => {
-			console.log("ERRRO");
 			reject(err);
 		})
 	})
@@ -150,8 +147,6 @@ exports.saveGps = (id, long, lat) => {
 
 exports.activateUser = (username, email) => {
 	return new Promise((resolve, reject) => {
-		// console.log(email, username);
-		console.log("hello");
 		mysql.createConnection({
 			host:'localhost',
 			user:'root',
@@ -159,17 +154,14 @@ exports.activateUser = (username, email) => {
 			database:'matcha'
 		})
 		.then((conn) => {
-			console.log("PUTAIN DE MERDE");
 			let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
 			conn.end();
 			return query;
 		})
 		.then((res) => {
-			console.log(res);
 			resolve({"status": "success", "msg": "UserActivated !"});
 		})
 		.catch((err) => {
-			console.log("ERROR ++++++++++++++++++++++++");
 			reject(err);
 		})
 	})
@@ -184,16 +176,12 @@ exports.changePwd = (email, username, pwd) => {
 			database:'matcha'
 		})
 		.then((conn) => {
-			console.log("PUTAIN DE MERDE");
 			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
 		})
 		.then((res) => {
-			// console.log("Yoooooo !");
-			// console.log(res);
 			resolve({"status": "success", "msg": "Password changed!"});
 		})
 		.catch((err) => {
-			console.log("Error !");
 			reject({status: "error", msg: "error db !"});
 		})
 	});
