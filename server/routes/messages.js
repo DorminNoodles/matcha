@@ -39,4 +39,22 @@ router.get('/recent', urlencodedParser, (req, res) => {
 	})
 })
 
+// router.get('/chat', urlencodedParser, (req, res) => {
+// 	if (req.query.id == 42) {
+// 		io.on('connection', function(socket){
+// 			socket.removeAllListeners()
+// 			socket.on('chat message', (msg) => {
+// 				console.log(msg);
+// 				// io.emit('from server' + 42, msg);
+// 				// console.log("received on server : " + msg);
+// 				messages.getFromChat({id: req.query.id, msg: msg})
+// 				.then(() => {
+// 					console.log("ok");
+// 				})
+// 			})
+// 		});
+// 	}
+// 	res.sendFile(__dirname + '/socketTest.html');
+// })
+
 module.exports = router;

@@ -1,10 +1,8 @@
+"use strict";
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-
-// const multer = require('multer');
+const server = require('http').Server(app);
 
 const user = require('./routes/user');
 const users = require('./routes/users');
@@ -17,17 +15,22 @@ const emitter = require('./emitter');
 const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
-const search = require('./routes/search');
+const chat = require("./routes/chat");
+const score = require("./routes/score");
+const visit = require("./routes/visit");
 
+const socketIO = require("./services/socketIO")(server);
 
-io.on('connection', (socket) => {
-	console.log('Un client est connecté !');
-	setTimeout(function(){
-		socket.emit('message', 'Vous êtes bien connecté !');
-	}, 3000);
+// the following two will emit to all the sockets connected to `/`
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
 });
-app.use(express.static('public'));
 
+app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -39,11 +42,11 @@ app.use('/api/user', user);
 app.use('/api/messages', messages);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
+app.use('/api/like', like);
 app.use('/api/block', block);
 app.use('/api/search', search);
 app.use('/api/photos', photos);
-
-//Mettre app.use(checkToken)
-//Mettre les routes protegées
+app.use('/api/score', score);
+app.use('/api/visit', visit);
 
 server.listen(3000);

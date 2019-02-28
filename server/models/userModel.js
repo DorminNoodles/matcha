@@ -11,7 +11,8 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT * FROM users WHERE username=?', [username]);
+			console.log("findUserByUsername");
+			var result = conn.query('SELECT username, id, mailValidation, email FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {
