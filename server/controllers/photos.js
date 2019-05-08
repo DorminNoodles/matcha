@@ -1,5 +1,5 @@
 const express = require('express');
-const Photos = require('../services/Photos');
+const Photos = require('../services/photos');
 
 
 exports.new = (id, photo) => {

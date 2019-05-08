@@ -48,4 +48,9 @@ app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
 
+app.get('/', () => {
+    console.log('HELLO');
+})
+
+
 server.listen(3000);
