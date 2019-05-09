@@ -3,6 +3,7 @@ const mysql = require('promise-mysql');
 async function db() {
 	try {
 		let connection = await mysql.createConnection({
+			port: 3307,
 			host : 'localhost',
 			user : 'root',
 			password : 'qwerty'
@@ -11,6 +12,7 @@ async function db() {
 		await connection.query('CREATE DATABASE matcha');
 		await connection.end();
 		connection = await mysql.createConnection({
+			port: 3307,
 			host : 'localhost',
 			user : 'root',
 			password : 'qwerty',
