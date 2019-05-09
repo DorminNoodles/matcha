@@ -14,6 +14,7 @@ html, body, #root {
 
 a {
   color: #B33070 !important;
+  font-size: x-large;
 }
 
 #root {
@@ -51,4 +52,10 @@ a {
   position: absolute;
   width: calc(100% - 50px);
   height: calc(100% - 50px);
+  border-radius: 5px 0px 0px;
+  background: #B33070 !important;
+  color: white;
+}
+.header-link {
+  margin: 5px 0px;
 }

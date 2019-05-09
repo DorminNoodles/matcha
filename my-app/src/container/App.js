@@ -12,22 +12,22 @@ function App() {
           <nav id="side">
               <ul>
                 <li>
-                  <Link to="/"><i class="fas fa-home fa-2x"></i></Link>
+                  <Link to="/"><i class="fas fa-home fa-lg header-link"></i></Link>
                 </li>
                 <li>
-                  <Link to="/user/"><i class="fas fa-user fa-2x"></i></Link>
+                  <Link to="/user/"><i class="fas fa-user fa-lg header-link"></i></Link>
                 </li>
                 <li>
-                  <Link to="/research/"><i class="fas fa-heart fa-2x"></i></Link>
+                  <Link to="/research/"><i class="fas fa-heart fa-lg header-link"></i></Link>
                 </li>
                 <li>
-                  <Link to="/chat/"><i class="fas fa-comments fa-2x"></i></Link>
+                  <Link to="/chat/"><i class="fas fa-comments fa-lg header-link"></i></Link>
                 </li>
                 <li>
-                  <Link to="/signin/"><i class="fas fa-sign-in-alt fa-2x"></i></Link>
+                  <Link to="/signin/"><i class="fas fa-sign-in-alt fa-lg header-link"></i></Link>
                 </li>
                 <li>
-                  <Link to="/signout/"><i class="fas fa-sign-out-alt fa-2x"></i></Link>
+                  <Link to="/signout/"><i class="fas fa-sign-out-alt fa-lg header-link"></i></Link>
                 </li>
               </ul>
             </nav>
@@ -35,7 +35,7 @@ function App() {
             <nav id="header">
               <ul>
                 <li>
-                  <Link to="/"><i class="fas fa-cog fa-2x"></i></Link>
+                  <Link to="/"><i class="fas fa-cog fa-lg"></i></Link>
                 </li>
               </ul>
             </nav>
