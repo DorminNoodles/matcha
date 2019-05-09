@@ -9,7 +9,7 @@ function App() {
 
       <Router>
 
-          <nav >
+          <nav id="side">
               <ul>
                 <li>
                   <Link to="/"><i class="fas fa-home fa-2x"></i></Link>
@@ -31,52 +31,55 @@ function App() {
                 </li>
               </ul>
             </nav>
-    
-            <Route exact path="/" component = { Home } />
-            <Route path="/user" component = { User } />
-            <Route path="/research" component = { Research } />
-            <Route path="/chat" component = { Chat } />
-            <Route path="/signin" component = { Signin } />
-            <Route path="/signout" component = { Signout } />
+            
+            <nav id="header">
+              <ul>
+                <li>
+                  <Link to="/"><i class="fas fa-cog fa-2x"></i></Link>
+                </li>
+              </ul>
+            </nav>
+
+            <div id="main">
+              <Route exact path="/" component = { Home } />
+              <Route path="/user" component = { User } />
+              <Route path="/research" component = { Research } />
+              <Route path="/chat" component = { Chat } />
+              <Route path="/signin" component = { Signin } />
+              <Route path="/signout" component = { Signout } />
+            </div>
+   
         </Router>
 
-
+ 
      </React.Fragment>
   );
 }
 
 
 function Home() {
-  return <div class="tile">
-  home
-  </div>;
+  return ( <React.Fragment>home</React.Fragment>);
 }
 
 function Research() {
-  return <div class="tile">
-  like
-  </div>;
+  return ( <React.Fragment>Research</React.Fragment>);
 }
 
 function User() {
-  return <h2>user</h2>;
+  return ( <React.Fragment>User</React.Fragment>);
 }
 
 function Chat({ match }) {
-  return <h3>Chat</h3>;
+  return ( <React.Fragment>Chat</React.Fragment>);
 }
 
 
 function Signin() {
-  return <div class="tile">
-  Signin
-  </div>;
+  return ( <React.Fragment>Signin</React.Fragment>);
 }
 
 function Signout() {
-  return <div class="tile">
-  Signout
-  </div>;
+  return ( <React.Fragment>Signout</React.Fragment>);
 }
 
 export default App;
