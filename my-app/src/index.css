@@ -49,13 +49,27 @@ a {
   top: 50px;
   left: 50px;
   padding: 10px;
+  display: flex;
   position: absolute;
+  justify-content: center;
   width: calc(100% - 50px);
   height: calc(100% - 50px);
   border-radius: 5px 0px 0px;
   background: #B33070 !important;
   color: white;
 }
+
 .header-link {
   margin: 5px 0px;
+}
+
+.sliderAge {
+  width: 40vw;
+}
+
+#parameters {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
