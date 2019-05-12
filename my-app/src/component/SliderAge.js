@@ -1,6 +1,5 @@
 import React from 'react';
 import { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 
@@ -17,9 +16,13 @@ class SliderAge extends React.Component {
     }
   
     handle(props)  {
-      console.log(props)
-
       const { value, dragging, index, ...restProps } = props;
+
+      if (index === 0 && value !== this.state.min)
+        this.setState({ ...this.state, min : value });
+      else if (index === 1 && value !== this.state.max)
+        this.setState({ ...this.state, max : value });
+
       return (
         <Tooltip
           prefixCls="rc-slider-tooltip"
@@ -35,22 +38,23 @@ class SliderAge extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", height: "60px" };
+      const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", minHeight: "max-content" };
 
       return (
         <div style={wrapperStyle}>
-          <p>Show Ages</p>
-              <Range
-                id="slideAge"
-                min={18}
-                defaultValue={ [18, 25] }
-                handle={ this.handle }
-              />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ margin: "10px 0px"}}>Show Ages: </p>
+              <p>{this.state.min} - {this.state.max}</p>
+            </div>
+            <Range
+              min={18}
+              defaultValue={ [18, 25] }
+              handle={ this.handle }
+              pushable
+            />
         </div>
       );
     }
   }
   
-
- 
 export { SliderAge };

@@ -17,6 +17,11 @@ a {
   font-size: x-large;
 }
 
+.radio {
+  margin-left:unset !important;
+  margin-right: 5px;
+}
+
 #root {
   display: flex;
 }

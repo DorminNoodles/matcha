@@ -1,26 +1,25 @@
 import React from 'react';
 import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 
-const createSliderWithTooltip = Slider.createSliderWithTooltip;
-const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
 
 class SliderLocation extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {
-        min: '18',
-        max: '100'
-      };
+      this.state = { distance: '25'};
       this.handle = this.handle.bind(this);
     }
   
     handle(props)  {
-      console.log(props)
 
       const { value, dragging, index, ...restProps } = props;
+      
+      if (value !== this.state.distance)
+        this.setState({ distance : value });
+
       return (
         <Tooltip
           prefixCls="rc-slider-tooltip"
@@ -36,17 +35,19 @@ class SliderLocation extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", height: "60px" };
+      const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content" };
 
       return (
         <div style={wrapperStyle}>
-            <p>Distance</p>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ margin: "10px 0px"}}>Distance</p>
+              <p>{this.state.distance} km</p>
+            </div>
             <Slider
-            min={0}
-            max={300}
-            defaultValue={ 25 }
-            tipFormatter={value => `${value}km`}
-            handle={ this.handle }
+              min={5}
+              max={300}
+              defaultValue={ 25 }
+              handle={ this.handle }
             />
         </div>
       );

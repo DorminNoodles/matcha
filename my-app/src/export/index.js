@@ -6,6 +6,8 @@ import { Parameters } from "../container/Parameters";
 
 import { SliderAge } from "../component/SliderAge";
 import { SliderLocation } from "../component/SliderLocation";
+import { Gender } from "../component/Gender";
+import { SexualOrientation } from "../component/SexualOrientation";
 
 
 export { 
@@ -15,5 +17,7 @@ export {
     Chat,
     Parameters,
     SliderAge,
-    SliderLocation
+    SliderLocation,
+    Gender,
+    SexualOrientation
  };
