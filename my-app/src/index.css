@@ -99,3 +99,52 @@ a {
   width: 100%;
   height: 100%;
 }
+
+.ReactTags__tags{
+  background: white;
+  padding:5px;
+}
+
+.ReactTags__tag {
+  margin: 8px;
+  padding:5px;
+  background: white;
+  color: #B33070;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.ReactTags__remove {
+  color: #B33070 !important;
+}
+
+.ReactTags__selected {
+  display: flex;
+  flex-wrap: wrap;
+  background: #eeeeee;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.ReactTags__tagInput {
+  border-radius: 10px;
+  padding: 5px;
+  background:white;
+  margin: 8px;
+  padding: 5px;
+}
+
+.ReactTags__tagInputField {
+  height: 36px;
+}
+
+#info-user {
+  background: white;
+  color:  #B33070;
+  min-width: 200px;
+  max-width: 500px;
+  width: calc(100% - 150px);
+  border-radius: 7px;
+  padding: 17px;
+  margin: 10px;
+}

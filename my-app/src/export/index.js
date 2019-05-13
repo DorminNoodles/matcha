@@ -8,6 +8,7 @@ import { SliderAge } from "../component/SliderAge";
 import { SliderLocation } from "../component/SliderLocation";
 import { Gender } from "../component/Gender";
 import { SexualOrientation } from "../component/SexualOrientation";
+import { Tags } from "../component/Tags";
 
 
 export { 
@@ -19,5 +20,6 @@ export {
     SliderAge,
     SliderLocation,
     Gender,
-    SexualOrientation
+    SexualOrientation,
+    Tags
  };
