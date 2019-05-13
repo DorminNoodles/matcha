@@ -7,6 +7,7 @@ exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
 		console.log("findUserByUsername");
 		mysql.createConnection({
+			port: 3307,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -33,6 +34,7 @@ exports.findUserByUsername = (username) => {
 exports.findUserByEmail = (email) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
+			port: 3307,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -58,6 +60,7 @@ exports.saveUser = (data) => {
 		.then((hash) => {
 			data.password = hash;
 			return mysql.createConnection({
+				port: 3307,
 				host: 'localhost',
 				user: 'root',
 				password: 'qwerty',
@@ -81,6 +84,7 @@ exports.saveUser = (data) => {
 exports.findUserByID = (id) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
+			port: 3307,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -106,6 +110,7 @@ exports.checkLogin = (username, password) => {
 	console.log("hello");
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
+			port: 3307,
 			host:'localhost',
 			user:'root',
 			password:'qwerty',
@@ -136,6 +141,7 @@ exports.saveGps = (id, long, lat) => {
 		console.log("BORDELLLLLL");
 		console.log(id, long, lat);
 		mysql.createConnection({
+			port: 3307,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -158,6 +164,7 @@ exports.activateUser = (username, email) => {
 	return new Promise((resolve, reject) => {
 		console.log("hello");
 		mysql.createConnection({
+			port: 3307,
 			host:'localhost',
 			user:'root',
 			password:'qwerty',
@@ -183,6 +190,7 @@ exports.activateUser = (username, email) => {
 exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
+			port: 3307,
 			host:'localhost',
 			user:'root',
 			password:'qwerty',

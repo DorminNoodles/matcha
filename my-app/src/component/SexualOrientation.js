@@ -8,21 +8,23 @@ class SexualOrientation extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content" };
+      // const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content", minHeight: "-moz-max-content"  };
+      const wrapperStyle = { width: "calc(70vw - 50px)", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content", minHeight: "-moz-max-content" };
+
 
       return (
         <div style={wrapperStyle}>
         <p style={{ margin: "10px 0px"}}>Sexual Orientaion</p>
-        <div class="control" style={{ display: "table" }}>
-            <label class="radio">
+        <div className="control" style={{ display: "table" }}>
+            <label className="radio">
                 <input type="radio" name="heterosexual" style={{ marginRight: "5px" }}/>
                 heterosexual 
             </label>
-            <label class="radio">
+            <label className="radio">
                 <input type="radio" name="homosexual" style={{ marginRight: "5px" }}/>
                 homosexual
             </label>
-            <label class="radio">
+            <label className="radio">
                 <input type="radio" name="bisexual" style={{ marginRight: "5px" }}/>
                 bisexual
             </label>

@@ -7,6 +7,7 @@ const config = require('./assets/config.json')
 const mysql = require('promise-mysql')
 
 mysql.createConnection({
+			port: 3307,
     host : config.db.host,
     user : config.db.user,
     password : config.db.password,

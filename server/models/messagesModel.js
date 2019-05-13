@@ -4,6 +4,7 @@ exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("NEW MESSAGES");
 		mysql.createConnection({
+			port: 3307,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -35,6 +36,7 @@ exports.new = (data) => {
 exports.getRecentsMessages = (data) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
+			port: 3307,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',

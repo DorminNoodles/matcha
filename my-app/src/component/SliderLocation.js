@@ -14,7 +14,6 @@ class SliderLocation extends React.Component {
     }
   
     handle(props)  {
-
       const { value, dragging, index, ...restProps } = props;
       
       if (value !== this.state.distance)
@@ -35,7 +34,7 @@ class SliderLocation extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content" };
+      const wrapperStyle = { width: "calc(70vw - 50px)", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content", minHeight: "-moz-max-content" };
 
       return (
         <div style={wrapperStyle}>

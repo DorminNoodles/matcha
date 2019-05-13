@@ -1,4 +1,6 @@
 import React from 'react';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 import { Range } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
@@ -38,7 +40,8 @@ class SliderAge extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", minHeight: "max-content" };
+      const wrapperStyle = { width: "calc(70vw - 50px)", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content", minHeight: "-moz-max-content" };
+      // const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", minHeight: "max-content" };
 
       return (
         <div style={wrapperStyle}>

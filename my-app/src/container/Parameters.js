@@ -8,7 +8,7 @@ function Parameters() {
       <SexualOrientation/>
       <SliderAge/>
       <SliderLocation/>
-      <button class="button">Save</button>
+      <button className="button" style={{ margin: "10px" }}>Save</button>
     </div>
   );
 }

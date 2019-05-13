@@ -10,6 +10,7 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
   background: white;
   color:#B33070;
+  position: fixed;
 }
 
 a {
@@ -53,15 +54,19 @@ a {
 #main {
   top: 50px;
   left: 50px;
-  padding: 10px;
   display: flex;
   position: absolute;
+  overflow: scroll;
   justify-content: center;
-  width: calc(100% - 50px);
   height: calc(100% - 50px);
+  width: calc(100% - 50px);
   border-radius: 5px 0px 0px;
   background: #B33070 !important;
   color: white;
+}
+
+#main::-webkit-scrollbar { 
+  display: none; 
 }
 
 .header-link {
@@ -74,7 +79,23 @@ a {
 
 #parameters {
   width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-height: fit-content;
+}
+
+.rc-slider-track {
+  background:#f0c8dc !important;
+}
+
+.rc-slider-handle {
+  border: solid 2px white !important;
+}
+
+#user {
+  width: 100%;
+  height: 100%;
 }

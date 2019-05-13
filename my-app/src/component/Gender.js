@@ -8,17 +8,19 @@ class Gender extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", height: "60px", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content" };
+      const wrapperStyle = { width: "calc(70vw - 50px)", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content", minHeight: "-moz-max-content" };
+
+      // const wrapperStyle = { width: "calc(70vw - 50px)", height: "60px", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content" };
 
       return (
         <div style={wrapperStyle}>
         <p style={{ margin: "10px 0px"}}>Gender</p>
-        <div class="control">
-            <label class="radio">
+        <div className="control">
+            <label className="radio">
                 <input type="radio" name="gender" style={{ marginRight: "5px" }}/>
                 Male
             </label>
-            <label class="radio">
+            <label className="radio">
                 <input type="radio" name="gender" style={{ marginRight: "5px" }}/>
                 Female
             </label>
