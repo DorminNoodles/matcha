@@ -1,13 +1,13 @@
 import React from 'react';
-import { SliderAge, SliderLocation, Gender, SexualOrientation }  from '../export'
+import { SliderAge, SliderLocation, Gender, SexualOrientation } from '../export'
 
 function Parameters() {
   return (
-    <div id="parameters">
-      <Gender/>
-      <SexualOrientation/>
-      <SliderAge/>
-      <SliderLocation/>
+    <div id="parameters" className="center">
+      <Gender />
+      <SexualOrientation />
+      <SliderAge />
+      <SliderLocation />
       <button className="button" style={{ margin: "10px" }}>Save</button>
     </div>
   );

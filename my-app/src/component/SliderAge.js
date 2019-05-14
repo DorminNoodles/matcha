@@ -40,11 +40,8 @@ class SliderAge extends React.Component {
   
     render() {
 
-      const wrapperStyle = { width: "calc(70vw - 50px)", maxWidth: "400px", margin: "10px 0px", minHeight: "max-content", minHeight: "-moz-max-content" };
-      // const wrapperStyle = { width: "calc(70vw - 50px)", height: "80px", maxWidth: "400px", minHeight: "max-content" };
-
       return (
-        <div style={wrapperStyle}>
+        <div className="field-param">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <p style={{ margin: "10px 0px"}}>Show Ages: </p>
               <p>{this.state.min} - {this.state.max}</p>

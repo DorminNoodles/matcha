@@ -1,3 +1,17 @@
+@font-face {
+  font-family:"Honey Lemon";
+  src:    url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/honey_lemon-webfont.woff2') format('woff2'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/honey_lemon-webfont.woff') format('woff'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/Honey_Lemon.ttf') format('truetype');
+}
+
+@font-face {
+  font-family:"bakeapple";
+  src:    url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/bakeapple_demo-webfont.woff2') format('woff2'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/bakeapple_demo-webfont.woff') format('woff'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/Bakeapple\ DEMO.otf') format('truetype');
+}
+
 html, body, #root {
   height: 100%;
   width: 100%;
@@ -77,14 +91,25 @@ a {
   width: 40vw;
 }
 
-#parameters {
+.center {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  flex-direction: column;
   justify-content: center;
+}
+
+#parameters {
+  flex-direction: column;
   min-height: fit-content;
+}
+
+.field-param { 
+  width: calc(70vw - 50px);
+  max-width: 400px;
+  margin: 10px 0px; 
+  min-height: max-content; 
+  min-height: -moz-max-content;
 }
 
 .rc-slider-track {
