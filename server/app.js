@@ -21,6 +21,15 @@ const visit = require("./routes/visit");
 
 const socketIO = require("./services/socketIO")(server);
 
+const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
+
+app.use(cors()); //CORS MIDDLEWARE
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 // the following two will emit to all the sockets connected to `/`
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');

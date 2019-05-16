@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "bulma": "^0.7.4",
     "bulma-extensions": "^6.2.5",
     "bulma-tagsinput": "^2.0.0",
