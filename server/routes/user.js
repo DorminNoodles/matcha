@@ -29,7 +29,7 @@ router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) =
 		req.body.avatar = {
 			"name": req.file.filename
 		}
-		user.new(req.body.action)
+		user.new(req.body)
 		.then((result) => {
 			res.status(200).send({"status": "success", "msg": "user registered !"});
 		})

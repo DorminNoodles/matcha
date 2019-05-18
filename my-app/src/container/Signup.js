@@ -5,18 +5,28 @@ class Signup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fistname: "Lisa",
-            lastname: "TRAN",
             username: "Lisouiw",
+            password: "Coucou123!",
+            firstname: "Lisa",
+            lastname: "TRAN",
             email: "tran.lili.lili@gmail.com",
-            password: "Coucou123!"
+            orientation : "male",
+            gender : "femelle",
+            location : "",
         };
     }
 
     register = (e) => {
         const data = new FormData();
         data.append("avatar", this.state.data); // <-- use "avatar" instead of "file" here
-        data.append('action', JSON.stringify(this.state));
+        data.append("username", "Lisouiw");
+        data.append("password", "Coucou123");
+        data.append("firstname", "Lisa");
+        data.append("lastname", "TRAN");
+        data.append("email", "tran.lili.lili@gmail.com");
+        data.append("orientation", "male");
+        data.append("gender", "femelle");
+        data.append("location", "Paris");
 
         axios({
             method: 'post',
