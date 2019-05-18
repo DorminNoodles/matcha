@@ -1,32 +1,31 @@
 import React from 'react';
 import axios from 'axios';
+import profile from "../image/profile.png"
 
 class Signup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "Lisouiw",
-            password: "Coucou123!",
-            firstname: "Lisa",
-            lastname: "TRAN",
-            email: "tran.lili.lili@gmail.com",
-            orientation : "male",
-            gender : "femelle",
-            location : "",
+            image: profile,
+            info: {
+                username: "Lisouiw",
+                password: "Coucou123!",
+                firstname: "Lisa",
+                lastname: "TRAN",
+                email: "tran.lili.lili@gmail.com",
+                orientation: "male",
+                gender: "femelle",
+                location: "Paris"
+            }
         };
     }
 
-    register = (e) => {
-        const data = new FormData();
-        data.append("avatar", this.state.data); // <-- use "avatar" instead of "file" here
-        data.append("username", "Lisouiw");
-        data.append("password", "Coucou123");
-        data.append("firstname", "Lisa");
-        data.append("lastname", "TRAN");
-        data.append("email", "tran.lili.lili@gmail.com");
-        data.append("orientation", "male");
-        data.append("gender", "femelle");
-        data.append("location", "Paris");
+    register = () => {
+        let data = new FormData();
+        data.append("avatar", this.state.data);
+
+        for (let index in this.state.info)
+            data.append(index, this.state.info[index]);
 
         axios({
             method: 'post',
@@ -37,6 +36,11 @@ class Signup extends React.Component {
     }
 
     sendFile = (e) => {
+        reader.onloadend = (e) => {
+            this.setState({ ...this.state, image: reader.result })
+        }
+
+        reader.readAsDataURL(e.target.files[0]);
         this.setState({ ...this.state, data: e.target.files[0] }, () => { })
     };
 
@@ -48,11 +52,13 @@ class Signup extends React.Component {
                     <p>Matcha</p>
                     <div className="center" style={{ flexWrap: "wrap" }}>
                         <figure className="image is-128x128">
-                            <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="profil" />
+                            <img className="is-rounded"
+                                style={{ width: "128px", height: "128px" }}
+                                src={this.state.image} alt="profil" />
                         </figure>
                         <form encType="multipart/form-data">
 
-                            <input
+                            <input className="inputfile"
                                 onChange={this.sendFile}
                                 name="avatar"
                                 placeholder="Choose avatar"

@@ -32,10 +32,83 @@ a {
   font-size: x-large;
 }
 
+/* ################################################################### */
+
+.inputfile::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.inputfile::before {
+  width: 200px !important;
+  content: 'Choose your picture';
+  display: inline-block;
+  background: white;
+  border-radius: 3px;
+  padding: 5px 8px;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 10pt;
+  text-align: center;
+  color:black;
+}
+
+.inputfile:focus{
+  outline: none;
+}
+
+form > .inputfile {
+  width: 200px;
+  margin: 0.75rem 0px;
+} 
+
 .radio {
   margin-left:unset !important;
   margin-right: 5px;
 }
+
+/* ################################################################### */
+
+.ReactTags__tags{
+  background: white;
+  padding:5px;
+}
+
+.ReactTags__tag {
+  margin: 8px;
+  padding:5px;
+  background: white;
+  color: #B33070;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.ReactTags__remove {
+  color: #B33070 !important;
+}
+
+.ReactTags__selected {
+  display: flex;
+  flex-wrap: wrap;
+  background: #eeeeee;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.ReactTags__tagInput {
+  border-radius: 10px;
+  padding: 5px;
+  background:white;
+  margin: 8px;
+  padding: 5px;
+}
+
+.ReactTags__tagInputField {
+  height: 36px;
+}
+
+/* ################################################################### */
 
 #root {
   display: flex;
@@ -123,44 +196,6 @@ a {
 #user {
   width: 100%;
   height: 100%;
-}
-
-.ReactTags__tags{
-  background: white;
-  padding:5px;
-}
-
-.ReactTags__tag {
-  margin: 8px;
-  padding:5px;
-  background: white;
-  color: #B33070;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.ReactTags__remove {
-  color: #B33070 !important;
-}
-
-.ReactTags__selected {
-  display: flex;
-  flex-wrap: wrap;
-  background: #eeeeee;
-  border-radius: 2px;
-  padding: 10px;
-}
-
-.ReactTags__tagInput {
-  border-radius: 10px;
-  padding: 5px;
-  background:white;
-  margin: 8px;
-  padding: 5px;
-}
-
-.ReactTags__tagInputField {
-  height: 36px;
 }
 
 #info-user {
