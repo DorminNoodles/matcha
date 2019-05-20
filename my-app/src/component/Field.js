@@ -1,13 +1,15 @@
 import React from 'react';
 
-function Field() {
+function Field(props) {
+    let { position, icon, onChange, placeholder } = { ...props }
+    
     return (
-        <div class="field">
+        <div className="field">
 
-            <p class="control has-icons-left has-icons-right">
-                <input class="input" type="text" placeholder="Username" />
-                <span class="icon is-small is-left">
-                    <i class="fas fa-user"></i>
+            <p className={`control has-icons-${position}`}>
+                <input className="input" type="text" placeholder={placeholder} onChange={onChange}/>
+                <span className={`icon is-small is-${position}`}>
+                    <i className={icon}></i>
                 </span>
             </p>
         </div>
