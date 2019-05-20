@@ -1,6 +1,7 @@
 "use strict";
 const dotenv = require('dotenv').config();
 const checkInput = require('../services/checkInput');
+const geoloc = require('../services/geoloc');
 const userModel = require('../models/userModel');
 const Photos = require('../services/photos');
 const myEmitter = require('../emitter');
@@ -65,6 +66,8 @@ class User {
 				return userModel.saveUser(data);
 			}).then((userData) => {
 				console.log("userData", userData);
+				return geoloc.getGps(data);
+			}).then(() => {
 				return photos.createUserFolder(data);
 			}).then(() => {
 				console.log(data);
@@ -86,7 +89,6 @@ class User {
 		return new Promise((resolve, reject) => {
 			userModel.findUserByName(username)
 			.then((data) => {
-				// if (data)
 				console.log("HELLO BORDEL");
 				console.log(data);
 				console.log(data.username);

@@ -40,7 +40,7 @@ exports.password = (password) => {
 		if (passwordRegex.test(password))
 			resolve(password)
 		else
-			reject("fail password");
+			reject({"status": "error", "msg": "Bad Password !"});
 	})
 }
 

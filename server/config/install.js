@@ -3,6 +3,7 @@ const mysql = require('promise-mysql');
 async function db() {
 	try {
 		let connection = await mysql.createConnection({
+
 			port: process.env.PORT,
 			host: 'localhost',
 			user: 'root',
