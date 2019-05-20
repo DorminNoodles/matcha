@@ -34,7 +34,7 @@ router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) =
 			res.status(200).send({"status": "success", "msg": "user registered !"});
 		})
 		.catch((err) => {
-			res.status(500).send({"status": "error", "msg": err});
+			res.status(500).send({"status": "error", "key": err.key, "msg": err.msg});
 		})
 	}
 })
