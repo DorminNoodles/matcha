@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import profile from "../image/profile.png"
+import { Field } from "../export"
 
 class Signup extends React.Component {
     constructor(props) {
@@ -17,7 +18,14 @@ class Signup extends React.Component {
                 gender: "femelle",
                 location: "Paris"
             }
-        };
+        }
+        this.onChange = this.onChange.bind(this)
+    }
+
+    onChange = (index) => {
+        let key = (index.target.placeholder).toLowerCase();
+
+        this.setState({ ...this.state, info: { ...this.state.info, [key]: index.target.value } })
     }
 
     register = () => {
@@ -32,10 +40,17 @@ class Signup extends React.Component {
             url: 'http://localhost:3300/api/user/register',
             data,
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        }).then(response => { 
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error.message)
         });
     }
 
     sendFile = (e) => {
+        let reader = new FileReader();
+
         reader.onloadend = (e) => {
             this.setState({ ...this.state, image: reader.result })
         }
@@ -67,44 +82,12 @@ class Signup extends React.Component {
 
                         </form>
                     </div>
-                    <div className="field">
-                        <input className="input" type="text" placeholder="Fistname" />
-                    </div>
 
-
-                    <div className="field">
-                        <input className="input" type="text" placeholder="Lastname" />
-                    </div>
-
-                    <div className="field">
-                        <p className="control has-icons-left has-icons-right">
-                            <input className="input" type="text" placeholder="Username" />
-                            <span className="icon is-small is-left">
-                                <i className="fas fa-user"></i>
-                            </span>
-                        </p>
-                    </div>
-
-
-                    <div className="field">
-                        <p className="control has-icons-left has-icons-right">
-                            <input className="input" type="email" placeholder="Email" />
-                            <span className="icon is-small is-left">
-                                <i className="fas fa-envelope"></i>
-                            </span>
-                        </p>
-                    </div>
-
-
-                    <div className="field">
-                        <p className="control has-icons-left">
-                            <input className="input" type="password" placeholder="Password" />
-                            <span className="icon is-small is-left">
-                                <i className="fas fa-lock"></i>
-                            </span>
-                        </p>
-                    </div>
-
+                    <Field placeholder="Firstname" position="left" onChange={this.onChange} />
+                    <Field placeholder="Lastname" position="left" onChange={this.onChange} />
+                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} />
+                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} />
+                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} />
                     <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
 
                 </div>
