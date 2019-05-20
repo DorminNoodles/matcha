@@ -33,33 +33,58 @@ exports.findGpsByAddress = (data) => {
 
 exports.getGps = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log(data);
-		if (data.location) {
-			this.findGpsByAddress(data.location)
-			.then((result) => {
-				console.log("FIND BY GPS ADRRESSE");
-				console.log(data.username);
+
+		let coordGps = {
+			lng : 0,
+			lat : 0
+		};
+
+		this.findGpsByAddress(data.location)
+		.then((result) => {
+			console.log("FIND BY GPS ADRRESSE");
+
+			coordGps.lng = result.lng;
+			coordGps.lat = result.lat;
+
+			userModel.findUserByUsername(data.username)
+			.then((res) => {
+				console.log("findUSERBYUSERNAME : ");
+				console.log(res);
+
+				userModel.saveGps(res.id, coordGps.lng, coordGps.lat)
+				.then(() => {
+					console.log("geoloc save by address");
+					resolve();
+				})
+				.catch(() => {
+					reject({"status": "error", "msg": "Error database with gps coordinate !"});
+				})
+			})
+		})
+		.catch(() => {
+
+			this.findLocationByIp()
+			.then((res) => {
+
+				coordGps.lat = res.ll[0];
+				coordGps.lng = res.ll[1];
+
 				userModel.findUserByUsername(data.username)
 				.then((res) => {
 					console.log("findUSERBYUSERNAME : ");
 					console.log(res);
-					userModel.saveGps(res.id, result.lng, result.lat)
+
+					userModel.saveGps(res.id, coordGps.lng, coordGps.lat)
 					.then(() => {
+						console.log("geoloc save by ip");
 						resolve();
 					})
 					.catch(() => {
-						reject();
+						reject({"status": "error", "msg": "Error database with gps coordinate !"});
 					})
-				})
-				.catch(() => {
-					console.log("findUSERBYUSERNAME : ");
-					reject();
+
 				})
 			})
-			.catch((err) => {
-				reject();
-			})
-		}
-		resolve();
+		})
 	})
 }

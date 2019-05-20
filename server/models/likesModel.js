@@ -3,7 +3,7 @@ const mysql = require('promise-mysql');
 exports.new = (liker, liked) => {
 		return new Promise((resolve, reject) => {
 			mysql.createConnection({
-			port: 3307,
+			port: 3306,
 				host: 'localhost',
 				user: 'root',
 				password: 'qwerty',
@@ -27,7 +27,7 @@ exports.new = (liker, liked) => {
 exports.delete = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
-			port: 3307,
+			port: 3306,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -48,7 +48,7 @@ exports.delete = (liker, liked) => {
 exports.getLike = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
-			port: 3307,
+			port: 3306,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -73,7 +73,7 @@ exports.getLike = (liker, liked) => {
 exports.getLikes = (liked) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
-			port: 3307,
+			port: 3306,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',

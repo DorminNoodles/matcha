@@ -4,7 +4,7 @@ exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("NEW VISIT");
 		mysql.createConnection({
-			port: 3307,
+			port: 3306,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -35,7 +35,7 @@ exports.getVisits = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("hello");
 		mysql.createConnection({
-			port: 3307,
+			port: 3306,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
