@@ -1,5 +1,6 @@
 import React from 'react';
 import { Home, User, Research, Chat, Parameters, Signin, Signup, Signout } from '../export'
+import { Test } from './Test'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function Routers() {
@@ -30,6 +31,9 @@ function Routers() {
           <li>
             <Link to="/signup/"><i className="fas fa-user-plus"></i></Link>
           </li>
+          <li>
+            <Link to="/test/"><i className="fas fa-lemon"></i></Link>
+          </li>
         </ul>
       </nav>
 
@@ -50,6 +54,7 @@ function Routers() {
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />
         <Route path="/signout" component={Signout} />
+        <Route path="/test" component={Test} />
       </div>
 
     </Router>

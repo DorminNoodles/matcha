@@ -36,6 +36,8 @@ class Signup extends React.Component {
     }
 
     sendFile = (e) => {
+        let reader = new FileReader();
+
         reader.onloadend = (e) => {
             this.setState({ ...this.state, image: reader.result })
         }
