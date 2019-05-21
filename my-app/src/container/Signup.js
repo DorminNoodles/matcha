@@ -8,24 +8,51 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: profile,
+            // info: {
+            //     username: { value: "Lisouiw", error: "" },
+            //     password: { value: "Coucou123!", error: "" },
+            //     firstname: { value: "Lisa", error: "" },
+            //     lastname: { value: "TRAN", error: "" },
+            //     email: { value: "tran.lili.lili@gmail.com", error: "" },
+            //     orientation: { value: "male", error: "" },
+            //     gender: { value: "femelle", error: "" },
+            //     location: { value: "Paris", error: "" }
+            // }
             info: {
-                username: "Lisouiw",
-                password: "Coucou123!",
-                firstname: "Lisa",
-                lastname: "TRAN",
-                email: "tran.lili.lili@gmail.com",
-                orientation: "male",
-                gender: "femelle",
-                location: "Paris"
+                username: { value: "Lisouiw", error: "" },
+                password: { value: "Coucou123!", error: "" },
+                firstname: { value: "Lisa", error: "" },
+                lastname: { value: "TRAN", error: "" },
+                email: { value: "tran.lili.lili@gmail.com", error: "" },
+                orientation: { value: "male", error: "" },
+                gender: { value: "femelle", error: "" },
+                location: { value: "Paris", error: "" }
             }
         }
         this.onChange = this.onChange.bind(this)
+        this.check = this.check.bind(this)
     }
 
     onChange = (index) => {
         let key = (index.target.placeholder).toLowerCase();
+        let { state, state: { info } } = this
 
-        this.setState({ ...this.state, info: { ...this.state.info, [key]: index.target.value } })
+        this.setState({
+            ...state,
+            info: {
+                ...info,
+                [key]: {
+                    ...info[key],
+                    value: index.target.value
+                }
+            }
+        })
+    }
+
+    check = () => {
+        console.log(this.state.info)
+        console.log(this)
+        // return 1
     }
 
     register = () => {
@@ -33,19 +60,22 @@ class Signup extends React.Component {
         data.append("avatar", this.state.data);
 
         for (let index in this.state.info)
-            data.append(index, this.state.info[index]);
+            data.append(index, this.state.info[index].value);
 
-        axios({
-            method: 'post',
-            url: 'http://localhost:3300/api/user/register',
-            data,
-            config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        }).then(response => { 
-            console.log(response)
-        })
-        .catch(error => {
-            console.log(error.message)
-        });
+        if (this.check()) {
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:3300/api/user/register',
+                data,
+                config: { headers: { 'Content-Type': 'multipart/form-data' } }
+            }).then(response => {
+                console.log(response)
+            }).catch(error => {
+                console.log({ ...error })
+                console.log(error.response.data.msg)
+            });
+        }
     }
 
     sendFile = (e) => {
@@ -85,9 +115,11 @@ class Signup extends React.Component {
 
                     <Field placeholder="Firstname" position="left" onChange={this.onChange} />
                     <Field placeholder="Lastname" position="left" onChange={this.onChange} />
+                    <br></br>
                     <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} />
                     <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} />
                     <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} />
+                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} />
                     <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
 
                 </div>
