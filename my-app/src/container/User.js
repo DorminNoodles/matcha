@@ -5,8 +5,8 @@ function User() {
   return ( 
     <div id="user">
       <div style={{ flexWrap: "wrap", width: "100%", display: "flex", justifyContent: "center" }}>
-      <figure class="image is-128x128" style={{ margin: "10px 0px" }}>
-        <img class="is-rounded" src="https://www.wanimo.com/veterinaire/images/articles/chat/fibrosarcome-chat.jpg" alt="profil"/>
+      <figure className="image is-128x128" style={{ margin: "10px 0px" }}>
+        <img className="is-rounded" src="https://www.wanimo.com/veterinaire/images/articles/chat/fibrosarcome-chat.jpg" alt="profil"/>
       </figure>
       <div id="info-user">
         <div style={{ 
