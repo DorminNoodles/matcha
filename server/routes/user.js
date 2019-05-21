@@ -7,11 +7,11 @@ const user = require('../controllers/user');
 
 const router = express.Router();
 
-var urlencodedParser = bodyParser.urlencoded({extended : false})
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-	    cb(null, 'uploads/')
+		cb(null, 'uploads/')
 	},
 	filename: function (req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + '.jpg')
@@ -40,43 +40,40 @@ router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) =
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
-	console.log("fuck");
-	console.log(req.body.username);
-	console.log(req.body.password);
 	user.authenticate(req.body)
-	.then((resolve) => {
-		res.status(200).send({
-			status: 'ok',
-			message: 'connected !',
-			token: resolve
-		});
-		console.log('connected !');
-	}).catch((error) => {
-		console.log('error');
-		console.log(error);
-		res.status(500).send({"status": "error", "msg": "error"});
-	})
+		.then((resolve) => {
+			res.status(200).send({
+				status: 'ok',
+				message: 'connected !',
+				token: resolve
+			});
+			console.log('connected !');
+		}).catch((error) => {
+			console.log('error');
+			console.log(error);
+			res.status(500).send({ "status": "error", "msg": "error" });
+		})
 })
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-	.then(() => {
-		res.status(200).send({"status": "success"});
-	})
-	.catch((err) => {
-		res.status(500).send({"status": "error", "msg": "error"});
-		console.log(err);
-	})
+		.then(() => {
+			res.status(200).send({ "status": "success" });
+		})
+		.catch((err) => {
+			res.status(500).send({ "status": "error", "msg": "error" });
+			console.log(err);
+		})
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
 	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
-	.then((result) => {
-		res.status(200).send({"status": "success"});
-	})
-	.catch((err) => {
-		res.status(400).send({"status": "error", "msg": err.msg});
-	})
+		.then((result) => {
+			res.status(200).send({ "status": "success" });
+		})
+		.catch((err) => {
+			res.status(400).send({ "status": "error", "msg": err.msg });
+		})
 })
 
 
@@ -86,29 +83,29 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 
 	if (req.query.key) {
 		user.activate(req.query.key)
-		.then(() => {
-			res.status(200).send({"status": "success", "msg": "User Activate"});
-		})
-		.catch(() => {
-			res.status(500).send({"status": "error", "msg": "error"});
-		})
+			.then(() => {
+				res.status(200).send({ "status": "success", "msg": "User Activate" });
+			})
+			.catch(() => {
+				res.status(500).send({ "status": "error", "msg": "error" });
+			})
 	}
 	else {
-		res.status(400).send({"status": "error", "msg": "bad request"});
+		res.status(400).send({ "status": "error", "msg": "bad request" });
 	}
 })
 
 router.get('/avatar', urlencodedParser, (req, res) => {
 	user.getAvatar(req.query.id)
-	.then((filename) => {
-		var img = require('fs').readFileSync(filename);
-		res.writeHead(200, {'Content-Type': 'image/jpeg' });
-		res.end(img, 'binary');
-	})
-	.catch((err) => {
-		console.log(err);
-		res.status(500).send(err);
-	})
+		.then((filename) => {
+			var img = require('fs').readFileSync(filename);
+			res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+			res.end(img, 'binary');
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).send(err);
+		})
 })
 
 module.exports = router;
