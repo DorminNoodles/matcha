@@ -50,9 +50,14 @@ class Signup extends React.Component {
     }
 
     check = () => {
-        console.log(this.state.info)
-        console.log(this)
-        // return 1
+
+        let error = 0;
+
+        for (let index in this.state.info) {
+            console.log(index)
+            console.log(this.state.info[index].value)
+        }
+        return error
     }
 
     register = () => {
@@ -90,6 +95,8 @@ class Signup extends React.Component {
     };
 
     render() {
+        let { info } = this.state
+
         return (
             <div id="signup" className="center">
 
@@ -113,13 +120,13 @@ class Signup extends React.Component {
                         </form>
                     </div>
 
-                    <Field placeholder="Firstname" position="left" onChange={this.onChange} />
-                    <Field placeholder="Lastname" position="left" onChange={this.onChange} />
+                    <Field placeholder="Firstname" position="left" onChange={this.onChange} error={info.firstname} />
+                    <Field placeholder="Lastname" position="left" onChange={this.onChange} error={info.lastname} />
                     <br></br>
-                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} />
-                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} />
-                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} />
-                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} />
+                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username} />
+                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email} />
+                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password} />
+                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.firstname} />
                     <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
 
                 </div>
