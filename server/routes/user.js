@@ -41,18 +41,18 @@ router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) =
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
 	user.authenticate(req.body)
-		.then((resolve) => {
-			res.status(200).send({
-				status: 'ok',
-				message: 'connected !',
-				token: resolve
-			});
-			console.log('connected !');
-		}).catch((error) => {
-			console.log('error');
-			console.log(error);
-			res.status(500).send({ "status": "error", "msg": "error" });
-		})
+	.then((resolve) => {
+		res.status(200).send({
+			status: 'ok',
+			message: 'connected !',
+			token: resolve
+		});
+		console.log('connected !');
+	}).catch((error) => {
+		console.log('error');
+		console.log(error);
+		res.status(500).send(error);
+	})
 })
 
 router.post('/forgot', urlencodedParser, (req, res) => {
