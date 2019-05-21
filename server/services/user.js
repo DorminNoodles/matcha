@@ -57,7 +57,7 @@ class User {
 		return new Promise((resolve, reject) => {
 			let photos = new Photos();
 			if (!data) {
-				reject({"status": "error", "msg": "No Data !"});
+				reject({"status": "error", "key": "photo", "msg": "Photo No Data !"});
 				return;
 			}
 			this.checkData(data)
@@ -89,7 +89,6 @@ class User {
 		return new Promise((resolve, reject) => {
 			userModel.findUserByName(username)
 			.then((data) => {
-				console.log("HELLO BORDEL");
 				console.log(data);
 				console.log(data.username);
 				let token = jwt.sign({
@@ -101,7 +100,7 @@ class User {
 				return;
 			})
 			.catch(() => {
-				reject();
+				reject({"status": "error", "key": "auth", "msg": "Connexion error !"});
 			})
 		})
 	}

@@ -23,19 +23,19 @@ var upload = multer({ storage: storage });
 router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) => {
 
 	if (!req.file || !req.file.filename) {
-		res.status(400).send({ "status": "error", "msg": "missing avatar" });
+		res.status(400).send({"status": "error", "key": "avatar", "msg": "missing avatar"});
 	}
 	else {
 		req.body.avatar = {
 			"name": req.file.filename
 		}
 		user.new(req.body)
-			.then((result) => {
-				res.status(200).send({ "status": "success", "msg": "user registered !" });
-			})
-			.catch((err) => {
-				res.status(500).send({ "status": "error", "msg": err });
-			})
+		.then((result) => {
+			res.status(200).send({"status": "success", "msg": "user registered !"});
+		})
+		.catch((err) => {
+			res.status(500).send({"status": "error", "key": err.key, "msg": err.msg});
+		})
 	}
 })
 

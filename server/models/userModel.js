@@ -13,13 +13,10 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			console.log("findUserByUsername");
 			var result = conn.query('SELECT username, id, mailValidation, email FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {
-			console.log("***************");
-			console.log(result);
 			if (result[0])
 				resolve(result[0]);
 			else {
@@ -76,7 +73,7 @@ exports.saveUser = (data) => {
 			resolve('User saved');
 		})
 		.catch((err) => {
-			reject(err);
+			reject({"status": "error", "key": "database", "msg": "Connexion error !"});
 		})
 	})
 }
