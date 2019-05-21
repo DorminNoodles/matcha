@@ -209,11 +209,6 @@ form > .inputfile {
   margin: 10px;
 }
 
-.bubble{
-  background: white;
-  /* background: #B33070; */
-}
-
 .header-chat{
   width: 75%;
   height: 100px;
@@ -223,13 +218,21 @@ form > .inputfile {
   background: #B33070;
 }
 
-.rounded-100{
+.rounded-60{
   width: 60px;
   height: 60px;
   left:5px;
   position: absolute;
   overflow: hidden;
   border-radius: 50%;
+}
+
+.rounded-30{
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 10px;
 }
 
 #chat{
@@ -269,6 +272,49 @@ form > .inputfile {
 }
 
 #conversation-chat{
-  width: 75%;
+  top: 100px;
+  width: 100%;
+  padding: 10px;
+  position: relative;
+  background: white;
   height: calc(100% - 100px);
+}
+
+.conversation-left{
+  align-items: flex-end;
+  display: flex;
+}
+
+.bubble-left{
+  padding: 10px;
+  max-width: 70%;
+  flex-wrap: wrap;
+  word-break: break-all;
+  color:white;
+  width: fit-content;
+  border-radius: 20px;
+  background: #B33070;
+}
+
+.conversation-right{
+  align-items: flex-end;
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 10px;
+}
+
+.bubble-right{
+  padding: 10px;
+  max-width: 70%;
+  flex-wrap: wrap;
+  word-break: break-all;
+  color:#B33070;
+  width: fit-content;
+  border-radius: 20px;
+  background: #ececec;
+}
+
+#connversation-text{
+  bottom: 20px;
+  position: absolute;
 }
