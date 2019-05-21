@@ -66,7 +66,7 @@ class Tags extends React.Component {
                     inputFieldPosition="inline"
                     inline
                 />
-                <button class="button" style={{ float: "right", margin: "5px" }}>Save</button>
+                <button className="button" style={{ float: "right", margin: "5px" }}>Save</button>
             </div>
         )
     }

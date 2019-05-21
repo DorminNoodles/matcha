@@ -13,6 +13,9 @@ import { Gender } from "../component/Gender";
 import { SexualOrientation } from "../component/SexualOrientation";
 import { Tags } from "../component/Tags";
 import { Field } from "../component/Field";
+import { Bubble } from "../component/Bubble";
+import { ListChat } from "../component/Chat";
+import { Conversation } from "../component/Chat";
 
 
 export { 
@@ -29,5 +32,8 @@ export {
     Gender,
     SexualOrientation,
     Tags,
-    Field
+    Field,
+    Bubble,
+    ListChat,
+    Conversation
  };

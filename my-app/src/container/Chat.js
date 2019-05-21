@@ -1,7 +1,14 @@
 import React from 'react';
+import {  Conversation, ListChat } from '../export'
 
 function Chat() {
-  return (<React.Fragment>Chat</React.Fragment>);
+  return (
+    <div id="chat">
+      <ListChat/>
+      <Conversation/>
+      {/* <Bubble /> */}
+    </div>
+  );
 }
 
 export { Chat };
