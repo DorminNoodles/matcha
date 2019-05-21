@@ -54,7 +54,7 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 	}).catch((error) => {
 		console.log('error');
 		console.log(error);
-		res.status(500).send({"status": "error", "msg": "error"});
+		res.status(500).send(error);
 	})
 })
 

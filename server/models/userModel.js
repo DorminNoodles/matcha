@@ -23,13 +23,14 @@ exports.findUserByUsername = (username) => {
 				reject();
 			}
 		}).catch((error) => {
-			reject(error);
+			reject({"status": "error", "key": "findUserByUsername", "msg": "error !"});
 		})
 	})
 }
 
 exports.findUserByEmail = (email) => {
 	return new Promise((resolve, reject) => {
+
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',

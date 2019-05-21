@@ -51,7 +51,6 @@ exports.find = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("hello authenticate");
 		checkInput.username(data.username)
 		.then(() => {
 			return checkInput.password(data.password)
@@ -62,13 +61,9 @@ exports.authenticate = (data) => {
 		})
 		.then((result) => {
 			if (!data.mailValidation) {
-				reject({"status": "error", "msg": "mail not validate"});
+				reject({"status": "error", "key": "mailActivation", "msg": "mail not validate"});
 				return;
 			}
-			console.log("hello authenticate*****");
-			console.log("<- AUTH ---");
-			console.log(data);
-			console.log("--- AUTH ->");
 			userModel.checkLogin(data.username, data.password)
 			.then(() => {
 				console.log("HUMMM");
@@ -84,7 +79,7 @@ exports.authenticate = (data) => {
 				reject(error);
 			})
 		}).catch((err) => {
-			console.log("error");
+			console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
 			reject(err);
 		})
 	})
