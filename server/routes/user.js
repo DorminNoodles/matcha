@@ -23,7 +23,7 @@ var upload = multer({ storage: storage });
 router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) => {
 
 	if (!req.file || !req.file.filename) {
-		res.status(400).send({"status": "error", "msg": "missing avatar"});
+		res.status(400).send({"status": "error", "key": "avatar", "msg": "missing avatar"});
 	}
 	else {
 		req.body.avatar = {
