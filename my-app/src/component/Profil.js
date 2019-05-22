@@ -10,7 +10,7 @@ class Profil extends React.Component {
 
     return (
       <div className="profil">
-    
+
       </div>
     );
   }
