@@ -60,7 +60,7 @@ exports.authenticate = (data) => {
 			return userModel.findUserByUsername(data.username);
 		})
 		.then((result) => {
-			if (!data.mailValidation) {
+			if (!result.mailValidation) {
 				reject({"status": "error", "key": "mailActivation", "msg": "mail not validate"});
 				return;
 			}

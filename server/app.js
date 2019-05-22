@@ -18,6 +18,7 @@ const geoloc = require('./services/geoloc');
 const chat = require("./routes/chat");
 const score = require("./routes/score");
 const visit = require("./routes/visit");
+const tags = require("./routes/tags");
 
 const socketIO = require("./services/socketIO")(server);
 
@@ -56,6 +57,7 @@ app.use('/api/block', block);
 app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
+app.use('/api/tags', tags);
 
 app.get('/', () => {
     console.log("MAURICE");
