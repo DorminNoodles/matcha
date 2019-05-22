@@ -1,15 +1,29 @@
 @font-face {
-  font-family:"Honey Lemon";
-  src:    url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/honey_lemon-webfont.woff2') format('woff2'),
-          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/honey_lemon-webfont.woff') format('woff'),
-          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/Honey_Lemon.ttf') format('truetype');
+  font-family:"DomesticManners";
+  src:    url('./fonts/DomesticManners.woff2') format('woff2'),
+          url('./fonts/DomesticManners.woff') format('woff'),
+          url('./fonts/DomesticManners.otf') format('truetype');
 }
 
 @font-face {
-  font-family:"bakeapple";
-  src:    url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/bakeapple_demo-webfont.woff2') format('woff2'),
-          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/bakeapple_demo-webfont.woff') format('woff'),
-          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/Bakeapple\ DEMO.otf') format('truetype');
+  font-family:"Hurryup";
+  src:    url('./fonts/Hurryup.woff2') format('woff2'),
+          url('./fonts/Hurryup.woff') format('woff'),
+          url('./fonts/Hurryup.otf') format('truetype');
+}
+
+@font-face {
+  font-family:"JandlesRegular";
+  src:    url('./fonts/jandles.woff2') format('woff2'),
+          url('./fonts/jandles.woff') format('woff'),
+          url('./fonts/jandles.otf') format('truetype');
+}
+
+@font-face {
+  font-family:"LadylikeBB";
+  src:    url('./fonts/LadylikeBB.woff2') format('woff2'),
+          url('./fonts/LadylikeBB.woff') format('woff'),
+          url('./fonts/LadylikeBB.otf') format('truetype');
 }
 
 html, body, #root {
@@ -143,7 +157,7 @@ form > .inputfile {
   left: 50px;
   display: flex;
   position: absolute;
-  overflow: scroll;
+  /* overflow: scroll; */
   justify-content: center;
   height: calc(100% - 50px);
   width: calc(100% - 50px);
@@ -196,6 +210,7 @@ form > .inputfile {
 #user {
   width: 100%;
   height: 100%;
+  overflow: scroll;
 }
 
 #info-user {
@@ -274,7 +289,6 @@ form > .inputfile {
 #conversation-chat{
   top: 100px;
   width: 100%;
-  padding: 10px;
   position: relative;
   background: white;
   height: calc(100% - 100px);
@@ -317,4 +331,12 @@ form > .inputfile {
 #connversation-text{
   bottom: 20px;
   position: absolute;
+  padding: 20px;
+}
+
+#signin{
+  font-family: "LadylikeBB";
+  text-align: center;
+  margin: auto;
+  font-size: xx-large;
 }

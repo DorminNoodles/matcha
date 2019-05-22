@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, User, Research, Chat, Parameters, Signin, Signup, Signout } from '../export'
+import { Home, User, Match, Chat, Parameters, Signin, Signup, Signout } from '../export'
 import { Test } from './Test'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -17,7 +17,7 @@ function Routers() {
             <Link to="/user/"><i className="fas fa-user fa-lg header-link"></i></Link>
           </li>
           <li>
-            <Link to="/research/"><i className="fas fa-heart fa-lg header-link"></i></Link>
+            <Link to="/match/"><i className="fas fa-heart fa-lg header-link"></i></Link>
           </li>
           <li>
             <Link to="/chat/"><i className="fas fa-comments fa-lg header-link"></i></Link>
@@ -49,7 +49,7 @@ function Routers() {
         <Route path="/parameters" component={Parameters} />
         <Route exact path="/" component={Home} />
         <Route path="/user" component={User} />
-        <Route path="/research" component={Research} />
+        <Route path="/match" component={Match} />
         <Route path="/chat" component={Chat} />
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />

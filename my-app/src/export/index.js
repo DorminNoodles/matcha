@@ -1,6 +1,6 @@
 import { Home } from "../container/Home";
 import { User } from "../container/User";
-import { Research } from "../container/Research";
+import { Match } from "../container/Match";
 import { Chat } from "../container/Chat";
 import { Parameters } from "../container/Parameters";
 import { Signin } from "../container/Signin";
@@ -16,12 +16,13 @@ import { Field } from "../component/Field";
 import { Bubble } from "../component/Bubble";
 import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
+import { Profil } from "../component/Profil";
 
 
 export { 
     Home,
     User,
-    Research,
+    Match,
     Chat,
     Parameters,
     Signin,
@@ -35,5 +36,6 @@ export {
     Field,
     Bubble,
     ListChat,
-    Conversation
+    Conversation,
+    Profil
  };

@@ -14,12 +14,26 @@ function ConversationChat() {
     return (
         <React.Fragment>
             <div id="conversation-chat" >
-                <div>
+                <div style={{ height: "calc(100% - 150px)", overflow: "scroll" }}>
                     <Bubble />
                 </div>
             </div>
-            <div>
-                <textarea class="textarea" id="connversation-text" placeholder="e.g. Hello world"></textarea>
+            <div style={{
+                width: "75%",
+                margin: "auto",
+                height: "150px",
+                position: "sticky",
+                bottom: "0px"
+            }}>
+                <textarea className="textarea has-fixed-size" style={{ zIndex: "-1" }} id="connversation-text" placeholder="write a message..."></textarea>
+                <span style={{
+                    color: "#B33070",
+                    right: "22px",
+                    position: "absolute",
+                    bottom: "25px"
+                }}>
+                    <i class="fas fa-paper-plane"></i>
+                </span>
             </div>
         </React.Fragment>
     );
@@ -46,8 +60,6 @@ function MessageBox() {
         </div>
     );
 }
-
-
 
 function ListChat() {
     return (
