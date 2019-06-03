@@ -101,13 +101,18 @@ class Signup extends React.Component {
             <div id="signup" className="center">
 
                 <div style={{ maxWidth: "200px", display: "flex", flexDirection: "column" }}>
-                    <p>Matcha</p>
+               
                     <div className="center" style={{ flexWrap: "wrap" }}>
                         <figure className="image is-128x128">
                             <img className="is-rounded"
                                 style={{ width: "128px", height: "128px" }}
                                 src={this.state.image} alt="profil" />
                         </figure>
+                        <p style={{
+                        fontFamily: "LadylikeBB",
+                        fontSize: "xx-large",
+                        textAlign: "center"
+                    }}>Matcha</p>
                         <form encType="multipart/form-data">
 
                             <input className="inputfile"

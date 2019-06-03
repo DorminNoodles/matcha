@@ -2,12 +2,14 @@ import React from 'react';
 import { Routers } from './Routers';
 import 'bulma/css/bulma.css'
 import '../index.css'
+import { BrowserRouter } from "react-router-dom";
+
 
 function App() {
    return (
-      <React.Fragment>
+      <BrowserRouter>
          <Routers />
-      </React.Fragment>
+      </BrowserRouter>
    );
 }
 

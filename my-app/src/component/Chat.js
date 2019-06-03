@@ -14,7 +14,7 @@ function ConversationChat() {
     return (
         <React.Fragment>
             <div id="conversation-chat" >
-                <div style={{ height: "calc(100% - 150px)", overflow: "scroll" }}>
+                <div id="list-message">
                     <Bubble />
                 </div>
             </div>
@@ -32,7 +32,7 @@ function ConversationChat() {
                     position: "absolute",
                     bottom: "25px"
                 }}>
-                    <i class="fas fa-paper-plane"></i>
+                    <i className="fas fa-paper-plane"></i>
                 </span>
             </div>
         </React.Fragment>
