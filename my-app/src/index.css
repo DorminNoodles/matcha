@@ -384,3 +384,15 @@ form > .inputfile {
   justify-content: space-around;
   display: flex;
 }
+
+/* ################################################################### */
+
+.red-white{
+  background: #B33070 !important;
+  color:white !important;
+}
+
+.white-red{
+  background: white !important;
+  color:#B33070 !important;
+}
