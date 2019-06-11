@@ -6,7 +6,6 @@ const userModel = require('../models/userModel');
 const Photos = require('../services/photos');
 const myEmitter = require('../emitter');
 
-
 class User {
 	constructor(){
 		// setTimeout(function () {

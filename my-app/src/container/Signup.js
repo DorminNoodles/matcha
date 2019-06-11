@@ -109,14 +109,12 @@ class Signup extends React.Component {
                                 src={this.state.image} alt="profil" />
                         </figure>
                         <form encType="multipart/form-data">
-
                             <input className="inputfile"
                                 onChange={this.sendFile}
                                 name="avatar"
                                 placeholder="Choose avatar"
                                 type="file"
                             />
-
                         </form>
                     </div>
 
@@ -136,4 +134,4 @@ class Signup extends React.Component {
     }
 }
 
-export { Signup };   
+export { Signup };
