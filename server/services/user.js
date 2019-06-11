@@ -12,6 +12,7 @@ class User {
 		// 	console.log('1');
 		// }, 2000);
 	}
+
 	checkData(data) {
 		return new Promise((resolve, reject) => {
 			checkInput.username(data.username)
