@@ -78,3 +78,15 @@ exports.message = (text) => {
 		resolve(text);
 	})
 }
+
+exports.emailAlreadyTaken = (email) => {
+	return new Promise((resolve, reject) => {
+		userModel.findUserByEmail(email)
+		.then(() => {
+			reject({"status": "error", "key": "email", "msg": "Email already taken !"});
+		})
+		.catch((err) => {
+			resolve(email);
+		})
+	})
+}
