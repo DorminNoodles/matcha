@@ -1,36 +1,39 @@
 import React from 'react';
 import axios from 'axios';
 import profile from "../image/profile.png"
+import { check } from "../function/signup.js"
 import { Field } from "../export"
 
 class Signup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: profile,
+            image: { value: "", error: "" },
             // info: {
-            //     username: { value: "Lisouiw", error: "" },
-            //     password: { value: "Coucou123!", error: "" },
-            //     firstname: { value: "Lisa", error: "" },
-            //     lastname: { value: "TRAN", error: "" },
-            //     email: { value: "tran.lili.lili@gmail.com", error: "" },
-            //     orientation: { value: "male", error: "" },
-            //     gender: { value: "femelle", error: "" },
-            //     location: { value: "Paris", error: "" }
+            //     username: { value: "", error: "" },
+            //     password: { value: "", error: "" },
+            //     confirmation: { value: "", error: "" },
+            //     firstname: { value: "", error: "" },
+            //     lastname: { value: "", error: "" },
+            //     email: { value: "", error: "" },
+            //     orientation: { value: "", error: "" },
+            //     gender: { value: "", error: "" },
+            //     location: { value: "", error: "" }
             // }
             info: {
                 username: { value: "Lisouiw", error: "" },
                 password: { value: "Coucou123!", error: "" },
+                confirmation: { value: "Coucou123!", error: "" },
                 firstname: { value: "Lisa", error: "" },
                 lastname: { value: "TRAN", error: "" },
-                email: { value: "tran.lili.lili@gmail.com", error: "" },
+                email: { value: "244316eaa8@himail.online", error: "" },
                 orientation: { value: "male", error: "" },
                 gender: { value: "femelle", error: "" },
                 location: { value: "Paris", error: "" }
             }
         }
         this.onChange = this.onChange.bind(this)
-        this.check = this.check.bind(this)
+        this.register = this.register.bind(this)
     }
 
     onChange = (index) => {
@@ -49,29 +52,23 @@ class Signup extends React.Component {
         })
     }
 
-    check = () => {
-
-        let error = 0;
-
-        for (let index in this.state.info) {
-            console.log(index)
-            console.log(this.state.info[index].value)
-        }
-        return error
-    }
 
     register = () => {
+        let { info } = this.state
         let data = new FormData();
         data.append("avatar", this.state.data);
 
-        for (let index in this.state.info)
-            data.append(index, this.state.info[index].value);
+        for (let index in info)
+            data.append(index, info[index].value);
 
-        if (this.check()) {
+        let rsl = check(this.state);
+        if (typeof rsl === 'object')
+            this.setState(rsl)
+        else {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:3300/api/user/register',
+                url: 'http://localhost:3300/api/user',
                 data,
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }
             }).then(response => {
@@ -87,32 +84,33 @@ class Signup extends React.Component {
         let reader = new FileReader();
 
         reader.onloadend = (e) => {
-            this.setState({ ...this.state, image: reader.result })
+            this.setState({ ...this.state, image: { value: reader.result, error: "" } })
         }
 
         reader.readAsDataURL(e.target.files[0]);
         this.setState({ ...this.state, data: e.target.files[0] }, () => { })
     };
 
+
     render() {
-        let { info } = this.state
+        let { info, image } = this.state
 
         return (
             <div id="signup" className="center">
 
                 <div style={{ maxWidth: "200px", display: "flex", flexDirection: "column" }}>
-               
+
                     <div className="center" style={{ flexWrap: "wrap" }}>
                         <figure className="image is-128x128">
                             <img className="is-rounded"
                                 style={{ width: "128px", height: "128px" }}
-                                src={this.state.image} alt="profil" />
+                                src={image.value !== "" ? image.value : profile} alt="profil" />
                         </figure>
                         <p style={{
-                        fontFamily: "LadylikeBB",
-                        fontSize: "xx-large",
-                        textAlign: "center"
-                    }}>Matcha</p>
+                            fontFamily: "LadylikeBB",
+                            fontSize: "xx-large",
+                            textAlign: "center"
+                        }}>Matcha</p>
                         <form encType="multipart/form-data">
                             <input className="inputfile"
                                 onChange={this.sendFile}
@@ -123,13 +121,13 @@ class Signup extends React.Component {
                         </form>
                     </div>
 
-                    <Field placeholder="Firstname" position="left" onChange={this.onChange} error={info.firstname} />
-                    <Field placeholder="Lastname" position="left" onChange={this.onChange} error={info.lastname} />
+                    <Field placeholder="Firstname" position="left" onChange={this.onChange} error={info.firstname.error} />
+                    <Field placeholder="Lastname" position="left" onChange={this.onChange} error={info.lastname.error} />
                     <br></br>
-                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username} />
-                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email} />
-                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password} />
-                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.firstname} />
+                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username.error} />
+                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email.error} />
+                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password.error} />
+                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.confirmation.error} />
                     <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
 
                 </div>

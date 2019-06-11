@@ -397,3 +397,10 @@ form > .inputfile {
   background: white !important;
   color:#B33070 !important;
 }
+
+.error {
+  font-size: smaller;
+  color: red;
+  text-align: start;
+  font-weight: bolder;
+}
