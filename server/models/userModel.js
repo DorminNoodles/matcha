@@ -2,6 +2,50 @@ const mysql = require('promise-mysql');
 var sql = require('mysql');
 const bcrypt = require('bcrypt');
 const myEmitter = require('../emitter');
+// const checkInput = require('../services/checkInput');
+const inputModel = require('../models/inputModel');
+
+
+exports.checkData = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("CHECK DATA");
+		inputModel.username(data.username)
+		.then((res) => {
+			return inputModel.usernameAlreadyTaken(data.username);
+		})
+		.then((res) => {
+			console.log('Username Checked');
+			return inputModel.password(data.password);
+		})
+		.then((res) => {
+			console.log('Password Checked');
+			return inputModel.firstname(data.firstname);
+		})
+		.then((res) => {
+			console.log('Firstname Checked');
+			return inputModel.lastname(data.lastname);
+		})
+		.then((res) => {
+			console.log('Lastname Checked');
+			return inputModel.location(data.location);
+		})
+		.then((res) => {
+			console.log('Location Checked');
+			return inputModel.email(data.email);
+		})
+		.then((res) => {
+			return inputModel.emailAlreadyTaken(data.username);
+		})
+		.then((res) => {
+			console.log('Email Checked');
+			resolve(data);
+		})
+		.catch((err) => {
+			console.log("ERROR REGISTERED: ", err);
+			reject(err);
+		})
+	})
+}
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {

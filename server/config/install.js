@@ -49,7 +49,7 @@ async function db() {
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
-        	user_id INT, \
+        	users TEXT, \
         	tag VARCHAR(255) \
         )');
 		await connection.query('CREATE TABLE block (\

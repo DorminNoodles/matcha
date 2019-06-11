@@ -10,17 +10,17 @@ const router = express.Router();
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, 'uploads/')
+	destination: function (req, file, callback) {
+		callback(null, 'uploads/')
 	},
-	filename: function (req, file, cb) {
-		cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+	filename: function (req, file, callback) {
+		callback(null, file.fieldname + '-' + Date.now() + '.jpg')
 	}
 })
 
 var upload = multer({ storage: storage });
 
-router.post('/register', upload.single('avatar'), urlencodedParser, (req, res) => {
+router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 
 	if (!req.file || !req.file.filename) {
 		res.status(400).send({"status": "error", "key": "avatar", "msg": "missing avatar"});

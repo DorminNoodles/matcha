@@ -114,14 +114,12 @@ class Signup extends React.Component {
                         textAlign: "center"
                     }}>Matcha</p>
                         <form encType="multipart/form-data">
-
                             <input className="inputfile"
                                 onChange={this.sendFile}
                                 name="avatar"
                                 placeholder="Choose avatar"
                                 type="file"
                             />
-
                         </form>
                     </div>
 
@@ -141,4 +139,4 @@ class Signup extends React.Component {
     }
 }
 
-export { Signup };   
+export { Signup };

@@ -6,13 +6,13 @@ const userModel = require('../models/userModel');
 const Photos = require('../services/photos');
 const myEmitter = require('../emitter');
 
-
 class User {
 	constructor(){
 		// setTimeout(function () {
 		// 	console.log('1');
 		// }, 2000);
 	}
+
 	checkData(data) {
 		return new Promise((resolve, reject) => {
 			checkInput.username(data.username)
