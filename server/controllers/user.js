@@ -13,28 +13,55 @@ var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		let userService = new UserService();
-		userService.createUser({
-				username : data.username,
-				password : data.password,
-				firstname : data.firstname,
-				lastname : data.lastname,
-				email : data.email,
-				orientation : data.orientation,
-				gender : data.gender,
-				location : data.location,
-				avatar : data.avatar.name
-		})
+		// let userService = new UserService();
+		// userModel.createUser({
+		// 		username : data.username,
+		// 		password : data.password,
+		// 		firstname : data.firstname,
+		// 		lastname : data.lastname,
+		// 		email : data.email,
+		// 		orientation : data.orientation,
+		// 		gender : data.gender,
+		// 		location : data.location,
+		// 		avatar : data.avatar.name
+		// })
+		// .then((res) => {
+		// 	console.log(res);
+		// 	resolve();
+		// })
+		// .catch((err) => {
+		// 	console.log("error in new: ", err);
+		// 	reject(err);
+		// })
+		userModel.checkData(data)
+		// .then((res) => {
+		// 	console.log("OK");
+		// 	return userModel.createUser(data);
+		// })
 		.then((res) => {
-			console.log(res);
-			resolve();
+			console.log("OK2");
+			resolve(res);
 		})
 		.catch((err) => {
-			console.log("error in new: ", err);
+			console.log("false");
 			reject(err);
 		})
 	})
 };
+
+exports.createUser = (data) => {
+	return new Promise((resolve, reject) => {
+		userModel.checkData(data)
+		.then((res) => {
+			console.log("Hello");
+			resolve();
+		})
+		.catch((err) => {
+			console.log("Ouech");
+			reject();
+		})
+	});
+}
 
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
@@ -45,8 +72,8 @@ exports.find = (data) => {
 		})
 		.catch(() => {
 			reject();
-    	})
-	})
+		})
+	});
 }
 
 exports.authenticate = (data) => {
@@ -60,7 +87,7 @@ exports.authenticate = (data) => {
 			return userModel.findUserByUsername(data.username);
 		})
 		.then((result) => {
-			if (!data.mailValidation) {
+			if (!result.mailValidation) {
 				reject({"status": "error", "key": "mailActivation", "msg": "mail not validate"});
 				return;
 			}
