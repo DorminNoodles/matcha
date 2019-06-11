@@ -34,10 +34,11 @@ exports.new = (data) => {
 		// 	reject(err);
 		// })
 		userModel.checkData(data)
-		// .then((res) => {
-		// 	console.log("OK");
-		// 	return userModel.createUser(data);
-		// })
+		.then((res) => {
+			console.log("OK");
+			console.log(data);
+			return userModel.saveUser(data);
+		})
 		.then((res) => {
 			console.log("OK2");
 			resolve(res);
