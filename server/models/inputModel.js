@@ -45,7 +45,7 @@ exports.firstname = (firstname) => {
 
 exports.lastname = (lastname) => {
 	return new Promise((resolve, reject) => {
-		if (!lastname.match(/^[\p{L}\s.-]+$/))
+		if (!lastname.match(/^[A-zÀ-ÿ\-\. ]{2,23}$/))
 			reject({"status": "error", "key": "lastname", "msg": "Lastname bad Character !"});
 		else if (!lastname.match(/^.{1,32}$/))
 			reject({"status": "error", "key": "lastname", "msg": "Lastname bad size !"});
