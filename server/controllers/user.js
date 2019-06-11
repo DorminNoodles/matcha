@@ -8,31 +8,12 @@ const events = require('events');
 
 const userModel = require('../models/userModel');
 const checkInput = require('../services/checkInput');
+const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		// let userService = new UserService();
-		// userModel.createUser({
-		// 		username : data.username,
-		// 		password : data.password,
-		// 		firstname : data.firstname,
-		// 		lastname : data.lastname,
-		// 		email : data.email,
-		// 		orientation : data.orientation,
-		// 		gender : data.gender,
-		// 		location : data.location,
-		// 		avatar : data.avatar.name
-		// })
-		// .then((res) => {
-		// 	console.log(res);
-		// 	resolve();
-		// })
-		// .catch((err) => {
-		// 	console.log("error in new: ", err);
-		// 	reject(err);
-		// })
 		userModel.checkData(data)
 		.then((res) => {
 			console.log("OK");
@@ -41,10 +22,15 @@ exports.new = (data) => {
 		})
 		.then((res) => {
 			console.log("OK2");
+			// resolve(res);
+			return location.findGps(data);
+		})
+		.then((res) => {
+			console.log("OK3");
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log("false");
+			console.log("false here");
 			reject(err);
 		})
 	})
@@ -107,7 +93,7 @@ exports.authenticate = (data) => {
 				reject(error);
 			})
 		}).catch((err) => {
-			console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
+			// console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
 			reject(err);
 		})
 	})

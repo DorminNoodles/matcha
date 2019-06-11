@@ -17,7 +17,7 @@ exports.usernameAlreadyTaken = (username) => {
 			reject({"status": "error", "key": "username", "msg": "Username already taken !"});
 		})
 		.catch((err) => {
-			resolve();
+			resolve(username);
 		})
 	})
 }
