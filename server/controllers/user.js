@@ -27,6 +27,9 @@ exports.new = (data) => {
 		})
 		.then((res) => {
 			console.log("OK3");
+
+			myEmitter.emit('userRegistered', data);
+
 			resolve(res);
 		})
 		.catch((err) => {
