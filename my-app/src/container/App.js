@@ -5,12 +5,14 @@ import '../index.css'
 import { BrowserRouter } from "react-router-dom";
 
 
-function App() {
-   return (
-      <BrowserRouter>
-         <Routers />
-      </BrowserRouter>
-   );
+class App extends React.Component {
+   render() {
+      return (
+         <BrowserRouter>
+            <Routers />
+         </BrowserRouter>
+      );
+   }
 }
 
 export default App;

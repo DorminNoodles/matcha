@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from "../export"
-
+import { isEmpty } from "../function/utils.js"
 class Password extends React.Component {
     constructor(props) {
         super(props);
@@ -15,10 +15,9 @@ class Password extends React.Component {
         })
     }
 
-    forgot = (e) => {
-        console.log(e.target.value)
-        // if (typeof rsl === 'object')
-        //     this.setState(rsl)
+    forgot = () => {
+        if (isEmpty(this.state.value))
+            this.setState({ ...this.state, error: "Field is empty" })
         // else {
 
         //     axios({
@@ -40,8 +39,8 @@ class Password extends React.Component {
             <div id="signin">
                 <p style={{ fontFamily: "LadylikeBB", fontSize: "xx-large" }}>Matcha</p>
                 <br></br>
-                <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} />
-                <button className="button white-red" onClick={(e) => { this.forgot(e) }} >Send</button>
+                <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={this.state.error} />
+                <button className="button white-red" onClick={() => { this.forgot() }} >Send</button>
             </div>
         );
     }
