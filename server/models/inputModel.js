@@ -4,7 +4,7 @@ exports.username = (username) => {
 	return new Promise((resolve, reject) => {
 		const usernameRegex = RegExp(/^[a-zA-Z0-9]*$/);
 		if (username && usernameRegex.test(username))
-			resolve(username);
+			resolve();
 		else
 			reject({"status": "error", "key": "username", "msg": "Bad Username !"});
 	})
