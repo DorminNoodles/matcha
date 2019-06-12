@@ -19,76 +19,41 @@ exports.checkData = (data) => {
 			'lastname': '',
 			'location': '',
 			'email': '',
+			'avatar': '',
 			'gender': '',
 			'orientation': ''
 		};
 
 
-
+		// const a = inputModel.username(data);
+		// const b = inputModel.password(data);
 		Promise.all([
-			inputModel.username(data.username),
-			inputModel.password(data.password),
-			inputModel.firstname(data.firstname)
-		])
-		.then((res) => {
-			console.log("Hello <> ");
-		})
-		.catch((err) => {
-			console.log(err);
-			console.log("Error <>");
-		})
+			inputModel.username(data.username).catch( e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch( e => e),
+			inputModel.password(data.password).catch( e => e),
+			inputModel.firstname(data.firstname).catch( e => e),
+			inputModel.lastname(data.lastname).catch( e => e),
+			inputModel.email(data.email).catch( e => e),
+			inputModel.emailAlreadyTaken(data.email).catch( e => e),
+			inputModel.location(data.location).catch( e => e),
+			inputModel.avatar(data.avatar).catch( e => e)
+		]).then((res) => {
 
+			res.map((elem) => {
+				if (elem.status == 'error') {
+					error = true;
+					json[elem.key] = elem.msg;
+				}
+			});
+			console.log(json);
 
-		// inputModel.username(data.username)
-		// .then(()=> {
-		// 	console.log("Here 1");
-		// },
-		// 	() => {
-		// 		console.log('here 2');
-		// 	}
-		// )
-		// .catch((err) => {
-		// 	json.username = err;
-		// 	console.log(json)
-		// })
+			if (error)
+				reject(json);
+			else
+				resolve();
 
+		});
 
-
-
-		// .then((res) => {
-		// 	return inputModel.usernameAlreadyTaken(data.username);
-		// })
-		// .then((res) => {
-		// 	console.log('Username Checked');
-		// 	return inputModel.password(data.password);
-		// })
-		// .then((res) => {
-		// 	console.log('Password Checked');
-		// 	return inputModel.firstname(data.firstname);
-		// })
-		// .then((res) => {
-		// 	console.log('Firstname Checked');
-		// 	return inputModel.lastname(data.lastname);
-		// })
-		// .then((res) => {
-		// 	console.log('Lastname Checked');
-		// 	return inputModel.location(data.location);
-		// })
-		// .then((res) => {
-		// 	console.log('Location Checked');
-		// 	return inputModel.email(data.email);
-		// })
-		// .then((res) => {
-		// 	return inputModel.emailAlreadyTaken(data.username);
-		// })
-		// .then((res) => {
-		// 	console.log('Email Checked');
-		// 	resolve(data);
-		// })
-		// .catch((err) => {
-		// 	console.log("ERROR REGISTERED: ", err);
-		// 	reject(err);
-		// })
 	})
 }
 

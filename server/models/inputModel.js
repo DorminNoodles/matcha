@@ -4,7 +4,7 @@ exports.username = (username) => {
 	return new Promise((resolve, reject) => {
 		const usernameRegex = RegExp(/^[a-zA-Z0-9]*$/);
 		if (username && usernameRegex.test(username))
-			resolve();
+			resolve({"status": "success", "key": "username", "msg": ""});
 		else
 			reject({"status": "error", "key": "username", "msg": "Bad Username !"});
 	})
@@ -17,7 +17,7 @@ exports.usernameAlreadyTaken = (username) => {
 			reject({"status": "error", "key": "username", "msg": "Username already taken !"});
 		})
 		.catch((err) => {
-			resolve(username);
+			resolve({"status": "success", "key": "username", "msg": ""});
 		})
 	})
 }
@@ -76,6 +76,16 @@ exports.message = (text) => {
 	return new Promise((resolve, reject) => {
 		console.log("HELLLO");
 		resolve(text);
+	})
+}
+
+exports.avatar = (avatar) => {
+	return new Promise((resolve, reject) => {
+		if (!avatar.file || !avatar.name)
+			reject({"status": "error", "key": "avatar", "msg": "Avatar error !"})
+		else
+			resolve({"status": "success", "key": "username", "msg": ""});
+		// console.log("HELLLO");
 	})
 }
 

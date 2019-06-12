@@ -22,21 +22,34 @@ var upload = multer({ storage: storage });
 
 router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 
-	if (!req.file || !req.file.filename) {
-		res.status(400).send({"status": "error", "key": "avatar", "msg": "missing avatar"});
+
+	// req.body.file = req.file;
+
+	req.body.avatar = {
+		"name": '',
+		"file": ''
 	}
-	else {
+
+	if (req.file && req.file.filename) {
 		req.body.avatar = {
-			"name": req.file.filename
+			"name": req.file.filename,
+			"file": req.file
 		}
-		user.new(req.body)
-		.then((result) => {
-			res.status(200).send({"status": "success", "msg": "user registered !"});
-		})
-		.catch((err) => {
-			res.status(500).send({"status": "error", "key": err.key, "msg": err.msg});
-		})
 	}
+
+	// if (!req.file || !req.file.filename) {
+	// 	res.status(400).send({"status": "error", "key": "avatar", "msg": "missing avatar"});
+	// }
+	// else {
+	// }
+
+	user.new(req.body)
+	.then((result) => {
+		res.status(200).send({"status": "success", "msg": "user registered !"});
+	})
+	.catch((err) => {
+		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
+	})
 })
 
 router.post('/authenticate', urlencodedParser, (req, res) => {
