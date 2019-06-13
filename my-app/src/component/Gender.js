@@ -9,7 +9,6 @@ import React from 'react';
 //   render() {
 
 function Gender(props) {
-  console.log(props)
   return (
     <div className="field-param">
       <p style={{ margin: "10px 0px" }}>Gender</p>
@@ -19,7 +18,7 @@ function Gender(props) {
           Male
         </label>
         <label className="radio">
-          <input type="radio" name="gender" style={{ marginRight: "5px" }}  />
+          <input type="radio" name="gender" style={{ marginRight: "5px" }} onClick={() => props.onChange({ gender: "female" })}  />
           Female
         </label>
       </div>

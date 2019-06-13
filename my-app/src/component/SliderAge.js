@@ -7,54 +7,43 @@ import Slider from 'rc-slider';
 
 const Handle = Slider.Handle;
 
-class SliderAge extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        min: '18',
-        max: '100'
-      };
-      this.handle = this.handle.bind(this);
-    }
-  
-    handle(props)  {
-      const { value, dragging, index, ...restProps } = props;
+function SliderAge(props) {
 
-      if (index === 0 && value !== this.state.min)
-        this.setState({ ...this.state, min : value });
-      else if (index === 1 && value !== this.state.max)
-        this.setState({ ...this.state, max : value });
+  const handle = (props, { age, onChange }) => {
+    const { value, dragging, index, ...restProps } = props;
 
-      return (
-        <Tooltip
-          prefixCls="rc-slider-tooltip"
-          overlay={value}
-          visible={dragging}
-          placement="top"
-          key={index}
-        >
-          <Handle value={value} {...restProps} />
-        </Tooltip>
-      );
-    };
-  
-    render() {
+    if (index === 0 && value !== age.min) 
+      onChange({ desired: { min: value, max: age.max } });
+    else if (index === 1 && value !== age.max) 
+      onChange({ desired: { min: age.min, max: value } });
 
-      return (
-        <div className="field-param">
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ margin: "10px 0px"}}>Show Ages: </p>
-              <p>{this.state.min} - {this.state.max}</p>
-            </div>
-            <Range
-              min={18}
-              defaultValue={ [18, 25] }
-              handle={ this.handle }
-              pushable
-            />
-        </div>
-      );
-    }
-  }
-  
+    return (
+      <Tooltip
+        prefixCls="rc-slider-tooltip"
+        overlay={value}
+        visible={dragging}
+        placement="top"
+        key={index}
+      >
+        <Handle value={value} {...restProps} />
+      </Tooltip>
+    );
+  };
+
+  return (
+    <div className="field-param">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <p style={{ margin: "10px 0px" }}>Show Ages: </p>
+        <p>{props.age.min} - {props.age.max}</p>
+      </div>
+      <Range
+        min={18}
+        defaultValue={[18, 25]}
+        handle={(e) => handle(e, props)}
+        pushable
+      />
+    </div>
+  );
+}
+
 export { SliderAge };

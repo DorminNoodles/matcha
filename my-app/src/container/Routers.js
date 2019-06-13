@@ -50,7 +50,7 @@ class Routers extends React.Component {
             </li>
             <li>
 
-              <a href="#" onClick={() => this.logout(this)}><i className="fas fa-sign-out-alt fa-lg header-link"></i></a>
+              <a href="/" onClick={() => this.logout(this)}><i className="fas fa-sign-out-alt fa-lg header-link"></i></a>
 
             </li>
             <li>

@@ -5,8 +5,7 @@ class Parameters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        username: "",
+        username: "sssss",
         password: "",
         confirmation: "",
         firstname: "",
@@ -14,15 +13,17 @@ class Parameters extends React.Component {
         email: "",
         orientation: "",
         gender: "",
-        location: ""
-      }
+        location: "",
+        distance: 25,
+        age: 24,
+        desired: { min: 18, max: 25 },
     }
     this.onChange = this.onChange.bind(this)
   }
 
-  onChange = (e) => {
-    console.log(e)
 
+  onChange = (e) => {
+    this.setState({ ...this.state, ...e }, () => {})
   }
 
   render() {
@@ -30,9 +31,9 @@ class Parameters extends React.Component {
     return (
       <div id="parameters" className="center">
         <Gender onChange={this.onChange} />
-        <SexualOrientation />
-        <SliderAge />
-        <SliderLocation />
+        <SexualOrientation onChange={this.onChange} />
+        <SliderAge onChange={this.onChange} age={this.state.desired} />
+        <SliderLocation onChange={this.onChange} distance={this.state.distance} />
         <button className="button" style={{ margin: "10px" }}>Save</button>
       </div>
     );
