@@ -1,9 +1,10 @@
 import React from 'react';
 import { Home, User, Match, Chat, Parameters, Signin, Signup, Password } from '../export'
-import { Test } from './Test'
+import Test from './Test'
+import Test1 from '../context/Test.js'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import withUser from '../context/withUser.js';
 
-const ThemeContext = React.createContext('light');
 
 class Routers extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ class Routers extends React.Component {
               <Link to="/chat/" className={className} onClick={() => this.onClick(0)}><i className="fas fa-comments fa-lg header-link"></i></Link>
             </li>
             <li>
-              <Link to="/signin/" className={className} onClick={() => this.onClick(0)}><i className="fas fa-sign-in-alt fa-lg header-link"></i></Link>
+              <Link to="/signin/"context={this.props.context}  className={className} onClick={() => this.onClick(0)}><i className="fas fa-sign-in-alt fa-lg header-link"></i></Link>
             </li>
             <li>
 
@@ -56,10 +57,13 @@ class Routers extends React.Component {
 
             </li>
             <li>
-              <Link to="/signup/" className={className} onClick={() => this.onClick(0)}><i className="fas fa-user-plus"></i></Link>
+              <Link to="/signup/" context={this.props.context} className={className} onClick={() => this.onClick(0)}><i className="fas fa-user-plus"></i></Link>
             </li>
             <li>
               <Link to="/test/" className={className} onClick={() => this.onClick(0)}><i className="fas fa-lemon"></i></Link>
+            </li>
+            <li>
+              <Link to="/test1/" className={className} onClick={() => this.onClick(0)}><i className="fas fa-lemon"></i></Link>
             </li>
           </ul>
         </nav>
@@ -73,15 +77,18 @@ class Routers extends React.Component {
         </nav>
 
         <div id="main">
-          <Route path="/parameters" component={Parameters} />
+          <Route path="/parameters" component={Parameters}  />
           <Route exact path="/" component={Home} />
           <Route path="/user" component={User} />
           <Route path="/match" component={Match} />
           <Route path="/chat" component={Chat} />
-          <Route path="/signin" component={Signin} />
-          <Route path="/signup" component={Signup} />
+          <Route path="/signin"  
+          render={() => <Signin context={this.props.context} />} 
+          />
+          <Route path="/signup"  render={() => <Signup context={this.props.context} /> }/>
           <Route path="/password" component={Password} />
           <Route path="/test" component={Test} />
+          <Route path="/test1" component={Test1} />
         </div>
 
       </Router>
@@ -90,5 +97,5 @@ class Routers extends React.Component {
   }
 
 }
-Routers.contextType = ThemeContext
-export { Routers };
+
+export default withUser(Routers);

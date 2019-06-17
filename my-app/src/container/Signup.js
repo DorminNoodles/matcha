@@ -3,6 +3,7 @@ import axios from 'axios';
 import profile from "../image/profile.png"
 import { check } from "../function/signup.js"
 import { Field } from "../export"
+import withUser from '../context/withUser';
 
 class Signup extends React.Component {
     constructor(props) {
@@ -137,4 +138,4 @@ class Signup extends React.Component {
     }
 }
 
-export { Signup };
+export default withUser(Signup);

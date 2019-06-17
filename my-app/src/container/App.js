@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routers } from './Routers';
+import Routers from './Routers';
 import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";

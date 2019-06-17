@@ -1,5 +1,6 @@
 import React from 'react';
 import {  Conversation, ListChat } from '../export'
+import withUser from '../context/withUser.js';
 
 function Chat() {
   return (
@@ -11,4 +12,4 @@ function Chat() {
   );
 }
 
-export { Chat };
+export default withUser(Chat) ;
