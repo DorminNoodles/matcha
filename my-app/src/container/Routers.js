@@ -3,6 +3,8 @@ import { Home, User, Match, Chat, Parameters, Signin, Signup, Password } from '.
 import { Test } from './Test'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+const ThemeContext = React.createContext('light');
+
 class Routers extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ class Routers extends React.Component {
   onClick = (i) => {
     let { className } = this.state
 
-    if (className === "white-red" && i === 1) 
+    if (className === "white-red" && i === 1)
       this.setState({ className: "red-white" })
     else if (className === "red-white" && i === 0)
       this.setState({ className: "white-red" })
@@ -88,4 +90,5 @@ class Routers extends React.Component {
   }
 
 }
+Routers.contextType = ThemeContext
 export { Routers };
