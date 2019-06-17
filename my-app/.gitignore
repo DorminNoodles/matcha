@@ -25,4 +25,4 @@ yarn-error.log*
 
 package-lock.json
 ./my-app/package-lock.json
-./server/package-lock.jso
+./server/package-lock.json
