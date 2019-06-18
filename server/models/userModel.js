@@ -24,37 +24,7 @@ exports.checkData = (data) => {
 			'orientation': ''
 		};
 
-
-		// const a = inputModel.username(data);
-		// const b = inputModel.password(data);
 		Promise.all([
-<<<<<<< HEAD
-			inputModel.username(data.username),
-			inputModel.password(data.password),
-			inputModel.firstname(data.firstname)
-		])
-		.then((res) => {
-			console.log("Hello <> ");
-		})
-		.catch((err) => {
-			console.log(err);
-			console.log("Error <>");
-		})
-
-
-		// inputModel.username(data.username)
-		// .then(()=> {
-		// 	console.log("Here 1");
-		// },
-		// 	() => {
-		// 		console.log('here 2');
-		// 	}
-		// )
-		// .catch((err) => {
-		// 	json.username = err;
-		// 	console.log(json)
-		// })
-=======
 			inputModel.username(data.username).catch( e => e),
 			inputModel.usernameAlreadyTaken(data.username).catch( e => e),
 			inputModel.password(data.password).catch( e => e),
@@ -81,7 +51,6 @@ exports.checkData = (data) => {
 
 		});
 
->>>>>>> ce5d8b4a0e9dd9773278d958e5ba5250c7caaac1
 	})
 }
 
