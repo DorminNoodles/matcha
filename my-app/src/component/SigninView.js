@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Field } from "../export"
 import { BrowserRouter as Link } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
+import { withRouter } from "react-router";
 
 class SigninView extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class SigninView extends React.Component {
     }
     this.connect = this.connect.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.password = this.password.bind(this)
   }
   static contextType = UserProvider;
 
@@ -41,6 +43,10 @@ class SigninView extends React.Component {
     });
   }
 
+  password = () => {
+    this.props.history.push("/password")
+  }
+
   render() {
 
     return (
@@ -53,18 +59,10 @@ class SigninView extends React.Component {
         <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={this.state.error.password} />
         <br />
         <button className="button white-red" onClick={this.connect} >Connect to your account</button>
-
-        <nav>
-          <ul>
-            <li>
-              <Link to="/password" className="red-white" style={{ fontSize: "small" }}>Forget your password?</Link>
-            </li>
-          </ul>
-        </nav>
+        <button className="red-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</button>
       </div>
     )
   }
 }
 
-
-export default (SigninView);   
+export default withRouter(SigninView);   

@@ -9,6 +9,7 @@ import Signup from "../container/Signup";
 import { Password } from "../container/Password";
 import Header from "../container/Header";
 import HeaderSide from "../container/HeaderSide";
+import NotFound from "../container/NotFound";
 
 
 import { SliderAge } from "../component/SliderAge";
@@ -36,6 +37,7 @@ export {
     Password,
     Header,
     HeaderSide,
+    NotFound,
     SliderAge,
     SliderLocation,
     Gender,

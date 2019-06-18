@@ -1,14 +1,13 @@
 import React from 'react';
 import { SigninView, Password } from "../export"
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { withRouter } from "react-router";
 
 const Signin = (props) => {
-  
-  return(
-  <Router>
-    <Route exact path="/signin" component={SigninView} />
-    <Route path="/password" component={Password} />
-  </Router>
-)};
 
-export  default (Signin);   ;   
+  return (
+       <SigninView />
+  )
+};
+
+export default withRouter(Signin);;   

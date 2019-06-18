@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, User, Match, Chat, Parameters, Signin, Signup, Password, Header, HeaderSide } from '../export'
+import { Home, User, Match, Chat, Parameters, Signin, Signup, Password, Header, HeaderSide, NotFound } from '../export'
 import Test from './Test'
 import Test1 from '../context/Test.js'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
@@ -21,15 +21,16 @@ class Routers extends React.Component {
         <div id="main">
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/user" component={User} />
-            <Route path="/match" component={Match} />
-            <Route path="/chat" component={Chat} />
-            <Route path="/signin" component={Signin} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/password" component={Password} />
-            <Route path="/parameters" component={Parameters} />
-            <Route path="/test" component={Test} />
-            <Route path="/test1" component={Test1} />
+            <Route exact path="/user" component={User} />
+            <Route exact path="/match" component={Match} />
+            <Route exact path="/chat" component={Chat} />
+            <Route exact path="/signin" component={Signin} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/password" component={Password} />
+            <Route exact path="/parameters" component={Parameters} />
+            <Route exact path="/test" component={Test} />
+            <Route exact path="/test1" component={Test1} />
+            <Route component={NotFound} />
           </Switch>
         </div>
 
