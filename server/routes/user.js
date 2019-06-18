@@ -45,7 +45,8 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 		res.status(200).send({
 			status: 'ok',
 			message: 'connected !',
-			token: resolve
+			token: resolve.token,
+			user: resolve.user
 		});
 		console.log('connected !');
 	}).catch((error) => {

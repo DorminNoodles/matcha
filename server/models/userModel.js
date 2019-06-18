@@ -51,44 +51,6 @@ exports.checkData = (data) => {
 		// 	json.username = err;
 		// 	console.log(json)
 		// })
-
-
-
-
-		// .then((res) => {
-		// 	return inputModel.usernameAlreadyTaken(data.username);
-		// })
-		// .then((res) => {
-		// 	console.log('Username Checked');
-		// 	return inputModel.password(data.password);
-		// })
-		// .then((res) => {
-		// 	console.log('Password Checked');
-		// 	return inputModel.firstname(data.firstname);
-		// })
-		// .then((res) => {
-		// 	console.log('Firstname Checked');
-		// 	return inputModel.lastname(data.lastname);
-		// })
-		// .then((res) => {
-		// 	console.log('Lastname Checked');
-		// 	return inputModel.location(data.location);
-		// })
-		// .then((res) => {
-		// 	console.log('Location Checked');
-		// 	return inputModel.email(data.email);
-		// })
-		// .then((res) => {
-		// 	return inputModel.emailAlreadyTaken(data.username);
-		// })
-		// .then((res) => {
-		// 	console.log('Email Checked');
-		// 	resolve(data);
-		// })
-		// .catch((err) => {
-		// 	console.log("ERROR REGISTERED: ", err);
-		// 	reject(err);
-		// })
 	})
 }
 
@@ -102,7 +64,18 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username, id, mailValidation, email FROM users WHERE username=?', [username]);
+			var result = conn.query('SELECT \
+									username,\
+									id, \
+									mailValidation, \
+									email, \
+									gender, \
+									orientation, \
+									location, \
+									latitude, \
+									longitude, \
+									age \
+									FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {

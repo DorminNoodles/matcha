@@ -85,12 +85,27 @@ exports.authenticate = (data) => {
 			.then(() => {
 				console.log("HUMMM");
 				console.log(result);
-				var token = jwt.sign({
+				let datas = {};
+
+				 datas.token = jwt.sign({
 					id: result.id,
 					username: result.username,
 					email: result.email
 				}, process.env.JWT_KEY);
-				resolve(token);
+
+
+				datas.user = {
+					id: result.id,
+					username: result.username,
+					email: result.email,
+					gender: result.gender,
+					orientation: result.orientation,
+					location: result.location,
+					latitude: result.latitude,
+					longitude: result.longitude,
+					age: result.age
+				};
+				resolve(datas);
 			}).catch((error) => {
 				console.log(error);
 				reject(error);
