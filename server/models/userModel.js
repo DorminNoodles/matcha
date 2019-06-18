@@ -19,13 +19,16 @@ exports.checkData = (data) => {
 			'lastname': '',
 			'location': '',
 			'email': '',
+			'avatar': '',
 			'gender': '',
 			'orientation': ''
 		};
 
 
-
+		// const a = inputModel.username(data);
+		// const b = inputModel.password(data);
 		Promise.all([
+<<<<<<< HEAD
 			inputModel.username(data.username),
 			inputModel.password(data.password),
 			inputModel.firstname(data.firstname)
@@ -51,6 +54,34 @@ exports.checkData = (data) => {
 		// 	json.username = err;
 		// 	console.log(json)
 		// })
+=======
+			inputModel.username(data.username).catch( e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch( e => e),
+			inputModel.password(data.password).catch( e => e),
+			inputModel.firstname(data.firstname).catch( e => e),
+			inputModel.lastname(data.lastname).catch( e => e),
+			inputModel.email(data.email).catch( e => e),
+			inputModel.emailAlreadyTaken(data.email).catch( e => e),
+			inputModel.location(data.location).catch( e => e),
+			inputModel.avatar(data.avatar).catch( e => e)
+		]).then((res) => {
+
+			res.map((elem) => {
+				if (elem.status == 'error') {
+					error = true;
+					json[elem.key] = elem.msg;
+				}
+			});
+			console.log(json);
+
+			if (error)
+				reject(json);
+			else
+				resolve();
+
+		});
+
+>>>>>>> ce5d8b4a0e9dd9773278d958e5ba5250c7caaac1
 	})
 }
 

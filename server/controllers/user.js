@@ -33,7 +33,7 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log("false here");
+			console.log("false here > ", err);
 			reject(err);
 		})
 	})

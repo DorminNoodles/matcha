@@ -3,10 +3,14 @@ const userModel = require('../models/userModel.js');
 exports.username = (username) => {
 	return new Promise((resolve, reject) => {
 		const usernameRegex = RegExp(/^[a-zA-Z0-9]*$/);
-		if (username && usernameRegex.test(username))
-			resolve();
-		else
+		const sizeRegex = RegExp(/^[a-zA-Z0-9]{2,28}$/);
+
+		if (!username || !usernameRegex.test(username))
 			reject({"status": "error", "key": "username", "msg": "Bad Username !"});
+		else if (!sizeRegex.test(username))
+			reject({"status": "error", "key": "username", "msg": "Username length must be between 2 and 28 character !"});
+		else
+			resolve({"status": "success", "key": "username", "msg": ""});
 	})
 }
 
@@ -17,7 +21,7 @@ exports.usernameAlreadyTaken = (username) => {
 			reject({"status": "error", "key": "username", "msg": "Username already taken !"});
 		})
 		.catch((err) => {
-			resolve(username);
+			resolve({"status": "success", "key": "username", "msg": ""});
 		})
 	})
 }
@@ -76,6 +80,16 @@ exports.message = (text) => {
 	return new Promise((resolve, reject) => {
 		console.log("HELLLO");
 		resolve(text);
+	})
+}
+
+exports.avatar = (avatar) => {
+	return new Promise((resolve, reject) => {
+		if (!avatar.file || !avatar.name)
+			reject({"status": "error", "key": "avatar", "msg": "Avatar error !"})
+		else
+			resolve({"status": "success", "key": "username", "msg": ""});
+		// console.log("HELLLO");
 	})
 }
 
