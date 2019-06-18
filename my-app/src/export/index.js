@@ -1,4 +1,4 @@
-import { Home } from "../container/Home";
+import Home from "../container/Home";
 import { User } from "../container/User";
 import { Match } from "../container/Match";
 import Chat from "../container/Chat";
@@ -7,6 +7,8 @@ import Signin from "../container/Signin";
 import { Signout } from "../container/Signout";
 import Signup from "../container/Signup";
 import { Password } from "../container/Password";
+import Header from "../container/Header";
+import HeaderSide from "../container/HeaderSide";
 
 
 import { SliderAge } from "../component/SliderAge";
@@ -31,6 +33,9 @@ export {
     Signin,
     Signout,
     Signup,
+    Password,
+    Header,
+    HeaderSide,
     SliderAge,
     SliderLocation,
     Gender,
@@ -42,6 +47,5 @@ export {
     Conversation,
     Profil,
     Modal,
-    Password,
     SigninView,
  };

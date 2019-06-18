@@ -13,8 +13,8 @@ class Test extends React.Component {
 
         <p style={{ fontFamily: "LadylikeBB", fontSize: "xx-large" }}>Matcha</p>
         <br></br>
-        <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.context.function.onChange} />
-        <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.context.function.onChange} />
+        <Field placeholder="Username" position="left" icon="fas fa-user"/>
+        <Field placeholder="Password" position="left" icon="fas fa-lock"/>
         <br />
         <button className="button white-red" onClick={this.connect} >Connect to your account</button>
       </div>
@@ -22,4 +22,4 @@ class Test extends React.Component {
   };
 };
 
-export default AuthenticateUser(Test);
+export default (Test);

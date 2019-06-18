@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Field } from "../export"
 import { BrowserRouter as Link } from "react-router-dom";
-import withUser from '../context/withUser.js';
+import UserProvider from '../context/UserProvider';
 
 class SigninView extends React.Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class SigninView extends React.Component {
     this.connect = this.connect.bind(this)
     this.onChange = this.onChange.bind(this)
   }
+  static contextType = UserProvider;
 
   onChange = (e) => {
     let index = e.target.placeholder.toLowerCase();
@@ -26,18 +27,17 @@ class SigninView extends React.Component {
   }
 
   connect = () => {
-    console.log(this)
     axios({
       method: 'post',
       url: 'http://localhost:3300/api/user/authenticate',
       data: this.state,
       config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {
-      console.log(this)
-      this.props.context.function.onChange({  username: "Lisouiw", token:"cououcd", firstname: "Lisa"})
-      console.log(response)
+      this.context.onChange({
+        username: "Lisouiw", token: "mdrr", firstname: "Lisa", password: ""
+      })
+      this.props.history.push("/home")
     }).catch(error => {
-      console.log(error)
     });
   }
 
@@ -45,7 +45,7 @@ class SigninView extends React.Component {
 
     return (
 
-      <div id="signin">
+      <div id="signin" >
 
         <p style={{ fontFamily: "LadylikeBB", fontSize: "xx-large" }}>Matcha</p>
         <br></br>
@@ -63,9 +63,8 @@ class SigninView extends React.Component {
         </nav>
       </div>
     )
-
   }
 }
 
 
-export default withUser(SigninView);   
+export default (SigninView);   

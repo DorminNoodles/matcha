@@ -1,7 +1,10 @@
 import React from 'react';
 
-function Home() {
-  return ( <React.Fragment>home</React.Fragment>);
+class Home extends React.Component {
+
+  render(){
+    return ( <React.Fragment>home</React.Fragment>);
+  }
 }
 
-export { Home };
+export default Home ;

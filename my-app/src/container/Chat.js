@@ -12,4 +12,4 @@ function Chat() {
   );
 }
 
-export default withUser(Chat) ;
+export default (Chat) ;
