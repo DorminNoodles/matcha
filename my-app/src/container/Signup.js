@@ -10,17 +10,6 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: { value: "", error: "" },
-            // info: {
-            //     username: { value: "", error: "" },
-            //     password: { value: "", error: "" },
-            //     confirmation: { value: "", error: "" },
-            //     firstname: { value: "", error: "" },
-            //     lastname: { value: "", error: "" },
-            //     email: { value: "", error: "" },
-            //     orientation: { value: "", error: "" },
-            //     gender: { value: "", error: "" },
-            //     location: { value: "", error: "" }
-            // }
             info: {
                 username: { value: "Lisouiw", error: "" },
                 password: { value: "Coucou123!", error: "" },
@@ -54,7 +43,6 @@ class Signup extends React.Component {
             }
         })
     }
-
 
     register = () => {
         let { info } = this.state

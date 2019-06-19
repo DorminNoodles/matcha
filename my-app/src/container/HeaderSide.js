@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
-
 import { withRouter } from "react-router";
 
 class HeaderSide extends React.Component {
@@ -9,44 +8,45 @@ class HeaderSide extends React.Component {
 
     logout = () => {
         this.context.logout();
-        this.props.history.push('/home');
+        this.props.history.push('/');
     }
-    render() {
 
-        let className = "white-red"
+    render() {
+        let { header } = this.context
+
         return (
-            <nav id="side" className={className}>
+            <nav id="side" className={header}>
                 <ul>
                     <li>
-                        <Link to="/" className={className}><i className="fas fa-home fa-lg header-link"></i></Link>
+                        <Link to="/" className={header}><i className="fas fa-home fa-lg header-link"></i></Link>
                     </li>
 
                     {
-                        this.context.token && this.context.token !== "" ?
+                        this.context.user.token && this.context.user.token !== "" ?
                             <React.Fragment>
 
                                 <li>
-                                    <Link to="/user/" className={className} ><i className="fas fa-user fa-lg header-link"></i></Link>
+                                    <Link to="/user" className={header} ><i className="fas fa-user fa-lg header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <Link to="/match/" className={className} ><i className="fas fa-heart fa-lg header-link"></i></Link>
+                                    <Link to="/match" className={header} ><i className="fas fa-heart fa-lg header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <Link to="/chat/" className={className}><i className="fas fa-comments fa-lg header-link"></i></Link>
+                                    <Link to="/chat" className={header}><i className="fas fa-comments fa-lg header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <a onClick={this.logout} ><i className="fas fa-sign-out-alt fa-lg header-link"></i></a>
+                                    <a  onClick={this.logout} ><i className="fas fa-sign-out-alt fa-lg header-link"></i></a>
                                 </li>
                             </React.Fragment>
                             :
 
                             <li>
-                                <Link to="/signin/" className={className}><i className="fas fa-sign-in-alt fa-lg header-link"></i></Link>
+                                <Link to="/signin" className={this.context.header}><i className="fas fa-sign-in-alt fa-lg header-link"></i></Link>
                             </li>
                     }
 
                     <li>
-                        <Link to="/signup/" className={className}><i className="fas fa-user-plus"></i></Link>
+                        <Link to="/signup" className={this.context.header}><i className="fas fa-user-plus"></i></Link>
                     </li>
                 </ul>
             </nav>

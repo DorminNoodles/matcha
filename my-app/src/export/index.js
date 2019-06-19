@@ -23,7 +23,6 @@ import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
 import { Profil } from "../component/Profil";
 import { Modal } from "../component/Modal";
-import SigninView from "../component/SigninView";
 
 export { 
     Home,
@@ -49,5 +48,4 @@ export {
     Conversation,
     Profil,
     Modal,
-    SigninView,
  };

@@ -1,12 +1,9 @@
 // NavBar.jsx
 import React from 'react';
 import { Field } from "../export"
-import AuthenticateUser, { withUser } from '../context/AuthenticateUser.js';
 
 class Test extends React.Component {
-  // static contextType = AuthCtx;
   render() {
-    console.log(this)
 
     return (
       <div id="signin">

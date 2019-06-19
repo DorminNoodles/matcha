@@ -3,31 +3,37 @@ import Routers from './Routers';
 import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";
+import { withRouter } from "react-router";
 import UserProvider from "../context/UserProvider"
 
 class App extends React.Component {
    constructor(props) {
       super(props)
       this.state = {
-         username: "",
-         firstname: "",
-         lastname: "",
-         email: "",
-         orientation: "",
-         gender: "",
-         location: "",
-         distance: "",
-         age: "",
-         profil: "",
-         token: ""
+         user: {
+            username: "",
+            firstname: "",
+            lastname: "",
+            email: "",
+            orientation: "",
+            gender: "",
+            location: "",
+            distance: "",
+            age: "",
+            profil: "",
+            token: ""
+         },
+         header: "white-red"
       }
       this.logout = this.logout.bind(this)
+      this.onChange = this.onChange.bind(this)
 
    }
 
    async componentWillMount() {
-      let data = this.getObject("user");
-      this.setState({ ...data }, () => {
+      let user = this.getObject("user");
+      let header = this.getObject("header");
+      this.setState({ ...this.state, user, header }, () => {
          console.log("restore ", this.state)
       })
    }
@@ -42,25 +48,28 @@ class App extends React.Component {
       return JSON.parse(retrievedObject);
    }
 
-   onChange = (e) => {
-      this.setState({ ...this.state, ...e }, () => {
-         this.setObject("user", this.state)
+   onChange = (index, e) => {
+      this.setState({ ...this.state, [index]: e }, () => {
+         this.setObject(index, e)
       })
    }
 
    logout = () => {
       this.setState({
-         username: "",
-         firstname: "",
-         lastname: "",
-         email: "",
-         orientation: "",
-         gender: "",
-         location: "",
-         distance: "",
-         age: "",
-         profil: "",
-         token: ""
+         ...this.state,
+         user: {
+            username: "",
+            firstname: "",
+            lastname: "",
+            email: "",
+            orientation: "",
+            gender: "",
+            location: "",
+            distance: "",
+            age: "",
+            profil: "",
+            token: ""
+         }
       }, () => {
          this.setObject("user", this.state)
       })
@@ -83,4 +92,4 @@ class App extends React.Component {
    }
 }
 
-export default App;
+export default (App);

@@ -404,3 +404,7 @@ form > .inputfile {
   text-align: start;
   font-weight: bolder;
 }
+
+.pointer{
+  cursor: pointer;
+}

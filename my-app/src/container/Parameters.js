@@ -1,5 +1,6 @@
 import React from 'react';
 import { SliderAge, SliderLocation, Gender, SexualOrientation } from '../export'
+import UserProvider from '../context/UserProvider';
 
 class Parameters extends React.Component {
   constructor(props) {
@@ -19,6 +20,17 @@ class Parameters extends React.Component {
         desired: { min: 18, max: 25 },
     }
     this.onChange = this.onChange.bind(this)
+  }
+  static contextType = UserProvider;
+
+  componentWillReceiveProps() {
+    if (this.context.header !== "white-red")
+      this.context.onChange("header", "white-red")
+  }
+
+  componentDidMount() {
+    if (this.context.header !== "white-red")
+      this.context.onChange("header", "white-red")
   }
 
 
