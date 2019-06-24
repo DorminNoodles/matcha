@@ -32,8 +32,10 @@ class App extends React.Component {
 
    async componentWillMount() {
       let user = this.getObject("user");
-      let header = this.getObject("header");
-      this.setState({ ...this.state, user, header }, () => {
+      let header = this.getObject("header") 
+
+      header = header === null ? "white-red": "red-white"
+      this.setState({ ...this.state, user: {...this.state.user, ...user}, header }, () => {
          console.log("restore ", this.state)
       })
    }

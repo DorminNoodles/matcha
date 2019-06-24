@@ -12,7 +12,7 @@ class HeaderSide extends React.Component {
     }
 
     render() {
-        let { header } = this.context
+        let { header, user } = this.context
 
         return (
             <nav id="side" className={header}>
@@ -22,7 +22,7 @@ class HeaderSide extends React.Component {
                     </li>
 
                     {
-                        this.context.user.token && this.context.user.token !== "" ?
+                            user.token && user.token !== "" ?
                             <React.Fragment>
 
                                 <li>
