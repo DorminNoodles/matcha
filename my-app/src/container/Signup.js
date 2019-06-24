@@ -87,43 +87,45 @@ class Signup extends React.Component {
         let { info, image } = this.state
 
         return (
-                        <div id="signup" className="center">
+            <div id="signup" className="center" style={{ overflow: "scroll" }} >
 
-                            <div style={{ maxWidth: "200px", display: "flex", flexDirection: "column" }}>
+                <div style={{
+                    maxWidth: "200px", display: "flex", flexDirection: "column", height: "inherit",margin: "20px"
+                }}>
 
-                                <div className="center" style={{ flexWrap: "wrap" }}>
-                                    <figure className="image is-128x128">
-                                        <img className="is-rounded"
-                                            style={{ width: "128px", height: "128px" }}
-                                            src={image.value !== "" ? image.value : profile} alt="profil" />
-                                    </figure>
-                                    <p style={{
-                                        fontFamily: "LadylikeBB",
-                                        fontSize: "xx-large",
-                                        textAlign: "center"
-                                    }}>Matcha</p>
-                                    <form encType="multipart/form-data">
-                                        <input className="inputfile"
-                                            onChange={this.sendFile}
-                                            name="avatar"
-                                            placeholder="Choose avatar"
-                                            type="file"
-                                        />
-                                    </form>
-                                </div>
+                    <div className="center" style={{ flexWrap: "wrap" }}>
+                        <figure className="image is-128x128">
+                            <img className="is-rounded"
+                                style={{ width: "128px", height: "128px" }}
+                                src={image.value !== "" ? image.value : profile} alt="profil" />
+                        </figure>
+                        <p style={{
+                            fontFamily: "LadylikeBB",
+                            fontSize: "xx-large",
+                            textAlign: "center"
+                        }}>Matcha</p>
+                        <form encType="multipart/form-data">
+                            <input className="inputfile"
+                                onChange={this.sendFile}
+                                name="avatar"
+                                placeholder="Choose avatar"
+                                type="file"
+                            />
+                        </form>
+                    </div>
 
-                                <Field placeholder="Firstname" position="left" onChange={this.onChange} error={info.firstname.error} />
-                                <Field placeholder="Lastname" position="left" onChange={this.onChange} error={info.lastname.error} />
-                                <br></br>
-                                <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username.error} />
-                                <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email.error} />
-                                <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password.error} />
-                                <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.confirmation.error} />
-                                <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
+                    <Field placeholder="Firstname" position="left" onChange={this.onChange} error={info.firstname.error} />
+                    <Field placeholder="Lastname" position="left" onChange={this.onChange} error={info.lastname.error} />
+                    <br></br>
+                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username.error} />
+                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email.error} />
+                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password.error} />
+                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.confirmation.error} />
+                    <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
 
-                            </div>
+                </div>
 
-                        </div>
+            </div>
         );
     }
 }

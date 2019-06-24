@@ -9,7 +9,7 @@ class Routers extends React.Component {
   static contextType = UserProvider;
 
   render() {
-    let { token } = this.context.user
+    let { token } = this.context && this.context.user  ? this.context.user: 0
     return (
       <Router>
 
