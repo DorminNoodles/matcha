@@ -28,6 +28,16 @@ class Signup extends React.Component {
 
     static contextType = UserProvider;
 
+    componentWillReceiveProps(history, props) {
+        if (this.context.header !== "white-red")
+            this.context.onChange("header", "white-red")
+    }
+
+    componentDidMount() {
+        if (this.context.header !== "white-red")
+            this.context.onChange("header", "white-red")
+    }
+
     onChange = (index) => {
         let key = (index.target.placeholder).toLowerCase();
         let { state, state: { info } } = this
@@ -90,7 +100,7 @@ class Signup extends React.Component {
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
 
                 <div style={{
-                    maxWidth: "200px", display: "flex", flexDirection: "column", height: "inherit",margin: "20px"
+                    maxWidth: "200px", display: "flex", flexDirection: "column", height: "initial", margin: "20px"
                 }}>
 
                     <div className="center" style={{ flexWrap: "wrap" }}>

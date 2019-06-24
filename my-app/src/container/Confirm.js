@@ -4,7 +4,7 @@ import { Field } from "../export"
 import UserProvider from '../context/UserProvider';
 import { withRouter } from "react-router";
 
-class Signin extends Component {
+class Confirm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,12 +31,6 @@ componentDidMount() {
         this.context.onChange("header", "white-red")
 }
 
-  onChange = (e) => {
-    let index = e.target.placeholder.toLowerCase();
-
-    this.setState({ ...this.state, [index]: e.target.value })
-  }
-
   connect = () => {
     axios({
       method: 'post',
@@ -52,25 +46,16 @@ componentDidMount() {
     });
   }
 
-  password = () => {
-    this.props.history.push("/password")
-  }
-
   render() {
 
+    let message = 0 ? "con" : "firm"
     return (
 
-      <div id="signin" >
-        <p style={{ fontFamily: "LadylikeBB", fontSize: "xx-large" }}>Matcha</p>
-        <br></br>
-        <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={this.state.error.username} />
-        <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={this.state.error.password} />
-        <br />
-        <button className="button white-red" onClick={this.connect} >Connect to your account</button>
-        <div  className="link-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>
+      <div id="confirm" >
+        <p>{message}</p>
       </div>
     )
   }
 }
 
-export default withRouter(Signin);;   
+export default withRouter(Confirm);;   

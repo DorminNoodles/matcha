@@ -9,41 +9,48 @@ const inputModel = require('../models/inputModel');
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
-		inputModel.username(data.username)
-		.then((res) => {
-			return inputModel.usernameAlreadyTaken(data.username);
-		})
-		.then((res) => {
-			console.log('Username Checked');
-			return inputModel.password(data.password);
-		})
-		.then((res) => {
-			console.log('Password Checked');
-			return inputModel.firstname(data.firstname);
-		})
-		.then((res) => {
-			console.log('Firstname Checked');
-			return inputModel.lastname(data.lastname);
-		})
-		.then((res) => {
-			console.log('Lastname Checked');
-			return inputModel.location(data.location);
-		})
-		.then((res) => {
-			console.log('Location Checked');
-			return inputModel.email(data.email);
-		})
-		.then((res) => {
-			return inputModel.emailAlreadyTaken(data.username);
-		})
-		.then((res) => {
-			console.log('Email Checked');
-			resolve(data);
-		})
-		.catch((err) => {
-			console.log("ERROR REGISTERED: ", err);
-			reject(err);
-		})
+
+		let error = false;
+		let json = {
+			'username': '',
+			'password': '',
+			'confirmPwd': '',
+			'firstname': '',
+			'lastname': '',
+			'location': '',
+			'email': '',
+			'avatar': '',
+			'gender': '',
+			'orientation': ''
+		};
+
+		Promise.all([
+			inputModel.username(data.username).catch( e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch( e => e),
+			inputModel.password(data.password).catch( e => e),
+			inputModel.firstname(data.firstname).catch( e => e),
+			inputModel.lastname(data.lastname).catch( e => e),
+			inputModel.email(data.email).catch( e => e),
+			inputModel.emailAlreadyTaken(data.email).catch( e => e),
+			inputModel.location(data.location).catch( e => e),
+			inputModel.avatar(data.avatar).catch( e => e)
+		]).then((res) => {
+
+			res.map((elem) => {
+				if (elem.status == 'error') {
+					error = true;
+					json[elem.key] = elem.msg;
+				}
+			});
+			console.log(json);
+
+			if (error)
+				reject(json);
+			else
+				resolve();
+
+		});
+
 	})
 }
 
@@ -57,7 +64,18 @@ exports.findUserByUsername = (username) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username, id, mailValidation, email FROM users WHERE username=?', [username]);
+			var result = conn.query('SELECT \
+									username,\
+									id, \
+									mailValidation, \
+									email, \
+									gender, \
+									orientation, \
+									location, \
+									latitude, \
+									longitude, \
+									age \
+									FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
 		}).then((result) => {

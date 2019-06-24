@@ -20,6 +20,7 @@ class Routers extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/user" component={User} />
+            <Route exact path="/user/confirm" component={Parameters} />
             <Route exact path="/match" component={Match} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/signin" component={Signin} />

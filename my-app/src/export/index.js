@@ -1,5 +1,6 @@
 import Home from "../container/Home";
 import { User } from "../container/User";
+import Confirm from "../container/Confirm";
 import { Match } from "../container/Match";
 import Chat from "../container/Chat";
 import { Parameters } from "../container/Parameters";
@@ -27,6 +28,7 @@ import { Modal } from "../component/Modal";
 export { 
     Home,
     User,
+    Confirm,
     Match,
     Chat,
     Parameters,

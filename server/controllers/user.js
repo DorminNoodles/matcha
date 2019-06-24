@@ -8,31 +8,12 @@ const events = require('events');
 
 const userModel = require('../models/userModel');
 const checkInput = require('../services/checkInput');
+const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		// let userService = new UserService();
-		// userModel.createUser({
-		// 		username : data.username,
-		// 		password : data.password,
-		// 		firstname : data.firstname,
-		// 		lastname : data.lastname,
-		// 		email : data.email,
-		// 		orientation : data.orientation,
-		// 		gender : data.gender,
-		// 		location : data.location,
-		// 		avatar : data.avatar.name
-		// })
-		// .then((res) => {
-		// 	console.log(res);
-		// 	resolve();
-		// })
-		// .catch((err) => {
-		// 	console.log("error in new: ", err);
-		// 	reject(err);
-		// })
 		userModel.checkData(data)
 		.then((res) => {
 			console.log("OK");
@@ -41,10 +22,18 @@ exports.new = (data) => {
 		})
 		.then((res) => {
 			console.log("OK2");
+			// resolve(res);
+			return location.findGps(data);
+		})
+		.then((res) => {
+			console.log("OK3");
+
+			myEmitter.emit('userRegistered', data);
+
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log("false");
+			console.log("false here > ", err);
 			reject(err);
 		})
 	})
@@ -96,18 +85,33 @@ exports.authenticate = (data) => {
 			.then(() => {
 				console.log("HUMMM");
 				console.log(result);
-				var token = jwt.sign({
+				let datas = {};
+
+				 datas.token = jwt.sign({
 					id: result.id,
 					username: result.username,
 					email: result.email
 				}, process.env.JWT_KEY);
-				resolve(token);
+
+
+				datas.user = {
+					id: result.id,
+					username: result.username,
+					email: result.email,
+					gender: result.gender,
+					orientation: result.orientation,
+					location: result.location,
+					latitude: result.latitude,
+					longitude: result.longitude,
+					age: result.age
+				};
+				resolve(datas);
 			}).catch((error) => {
 				console.log(error);
 				reject(error);
 			})
 		}).catch((err) => {
-			console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
+			// console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
 			reject(err);
 		})
 	})
