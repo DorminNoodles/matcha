@@ -15,33 +15,32 @@ class Confirm extends Component {
         password: ""
       }
     }
-    this.connect = this.connect.bind(this)
-    this.onChange = this.onChange.bind(this)
-    this.password = this.password.bind(this)
+    this.check = this.connect.bind(this)
   }
   static contextType = UserProvider;
 
   componentWillReceiveProps(history, props) {
     if (this.context.header !== "white-red")
-        this.context.onChange("header", "white-red")
-}
+      this.context.onChange("header", "white-red")
+  }
 
-componentDidMount() {
+  componentDidMount() {
     if (this.context.header !== "white-red")
-        this.context.onChange("header", "white-red")
-}
+      this.context.onChange("header", "white-red")
+    this.connect();
+  }
 
-  connect = () => {
+  check = () => {
     axios({
-      method: 'post',
-      url: 'http://localhost:3300/api/user/authenticate',
-      data: this.state,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+      method: 'GET',
+      url: 'http://localhost:3300/api/user/confirm',
+      params: {
+        username: "Lisouiw",
+        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikxpc291aXciLCJlbWFpbCI6ImQ1ZDc5YmRhOTVAaGltYWlsLm9ubGluZSIsImlhdCI6MTU2MTQxMDIxMH0.yq_yxSZggIU_yojopa4aStKhvqmZqTpkwHvY_sM7SFE"
+      }
+      // config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {
-      this.context.onChange("user", {
-        username: "Lisouiw", token: "mdrr",
-      })
-      this.props.history.push("/")
+      console.log(response)
     }).catch(error => {
     });
   }
