@@ -398,13 +398,23 @@ form > .inputfile {
   color:#B33070 !important;
 }
 
+.link-white{
+  cursor: pointer;
+  color: white;
+  background:#B33070;
+}
+
+.link-white:hover {
+  color: #ffd3e9
+}
+
+.link-white:focus {
+  outline: none;
+}
+
 .error {
   font-size: smaller;
   color: red;
   text-align: start;
   font-weight: bolder;
-}
-
-.pointer{
-  cursor: pointer;
 }

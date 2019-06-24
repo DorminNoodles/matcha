@@ -57,7 +57,7 @@ class Signin extends Component {
         <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={this.state.error.password} />
         <br />
         <button className="button white-red" onClick={this.connect} >Connect to your account</button>
-        <div  className="red-white pointer" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>
+        <div  className="link-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>
       </div>
     )
   }
