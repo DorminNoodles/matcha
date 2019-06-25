@@ -24,6 +24,7 @@ import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
 import { Profil } from "../component/Profil";
 import { Modal } from "../component/Modal";
+import { ForgotPassword, NewPassword } from "../component/Password";
 
 export { 
     Home,
@@ -50,4 +51,6 @@ export {
     Conversation,
     Profil,
     Modal,
+    ForgotPassword,
+    NewPassword
  };

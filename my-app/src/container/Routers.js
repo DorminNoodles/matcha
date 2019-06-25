@@ -21,11 +21,11 @@ class Routers extends React.Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/user" component={User} />
             <Route exact path="/user/confirm" component={Confirm} />
+            <Route exact path="/user/password" component={Password} />
             <Route exact path="/match" component={Match} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/password" component={Password} />
             <Route exact path="/parameters" component={Parameters} />
             <Route exact path="/test" component={Test} />
             <Route component={NotFound} />

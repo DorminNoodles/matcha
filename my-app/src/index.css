@@ -418,3 +418,10 @@ form > .inputfile {
   text-align: start;
   font-weight: bolder;
 }
+
+.success {
+  font-size: smaller;
+  color:#7fff7f;
+  text-align: start;
+  font-weight: bolder;
+}

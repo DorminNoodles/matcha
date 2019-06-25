@@ -20,7 +20,8 @@ class Signup extends React.Component {
                 orientation: { value: "male", error: "" },
                 gender: { value: "femelle", error: "" },
                 location: { value: "Paris", error: "" }
-            }
+                
+            },
         }
         this.onChange = this.onChange.bind(this)
         this.register = this.register.bind(this)
@@ -129,8 +130,8 @@ class Signup extends React.Component {
                     <br></br>
                     <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username.error} />
                     <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email.error} />
-                    <Field placeholder="Password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password.error} />
-                    <Field placeholder="Confirmation" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.confirmation.error} />
+                    <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password.error} />
+                    <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.confirmation.error} />
                     <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
 
                 </div>
