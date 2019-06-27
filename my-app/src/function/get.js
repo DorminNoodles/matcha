@@ -16,4 +16,3 @@ export function confirm({ login, key }) {
         return ("Confirmation attempt failed")
     });
 }
-

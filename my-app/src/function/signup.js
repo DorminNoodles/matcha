@@ -4,7 +4,7 @@ export const check = (obj) => {
 
     let error = 0;
     if (isEmpty(obj.image.value)) {
-        obj.image.error = "empty"
+        obj.image.error = "Please choose your profile picture"
         error = 1;
     }
     for (let index in obj.info) {

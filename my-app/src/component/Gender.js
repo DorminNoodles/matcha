@@ -1,13 +1,5 @@
 import React from 'react';
 
-// class Gender extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = { distance: '25' };
-//   }
-
-//   render() {
-
 function Gender(props) {
   return (
     <div className="field-param">
