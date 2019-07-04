@@ -15,7 +15,7 @@ export const check = (obj) => {
         }
     }
 
-
+    
     if (obj.info.confirmation.value !== obj.info.password.value) {
         obj.info.password.error = ""
         obj.info.confirmation.error = "Your password and confirmation password do not match"
