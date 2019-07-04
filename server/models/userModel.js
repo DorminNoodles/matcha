@@ -5,7 +5,6 @@ const myEmitter = require('../emitter');
 // const checkInput = require('../services/checkInput');
 const inputModel = require('../models/inputModel');
 
-
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
@@ -21,7 +20,12 @@ exports.checkData = (data) => {
 			'email': '',
 			'avatar': '',
 			'gender': '',
-			'orientation': ''
+			'orientation': '',
+			'age': '',
+			'age_min': '',
+			'age_max': '',
+			'distance': '',
+			'bio': '',
 		};
 
 		Promise.all([
@@ -33,22 +37,23 @@ exports.checkData = (data) => {
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
-			inputModel.avatar(data.avatar).catch(e => e)
+			inputModel.avatar(data.avatar).catch(e => e),
+			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
+			// inputModel.bio(data.bio).catch(e => e),
+			// inputModel.age(data.age).catch(e => e),
 		]).then((res) => {
-
 			res.map((elem) => {
-				if (elem.status == 'error') {
+				if (elem.status === 'success' && elem.key)
+					json[elem.key] = elem.msg;
+				else if (elem.status === 'error') {
 					error = true;
 					json[elem.key] = elem.msg;
 				}
 			});
-			console.log(json);
-
 			if (error)
 				reject(json);
 			else
 				resolve();
-
 		});
 
 	})
@@ -125,9 +130,10 @@ exports.saveUser = (data) => {
 				})
 			})
 			.then((conn) => {
-				return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation)\
+				return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, age_min, age_max, distance, bio, age)\
 					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
-					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "')");
+					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "',\
+					'" + data.age_min + "', '" + data.age_max + "', '" + data.distance + "', '" + data.bio + "', '" + data.age + "')");
 			})
 			.then((res) => {
 				resolve('User saved');
@@ -176,13 +182,12 @@ exports.checkLogin = (username, password) => {
 			let result = conn.query('SELECT password FROM users WHERE username=?', [username]);
 			return result;
 		}).then((result) => {
-			console.log("hello");
 			bcrypt.compare(password, result[0].password)
 				.then((res) => {
 					if (res)
 						resolve(res);
 					else
-						reject();
+						reject({ "status": "error", "key": "password", "msg": "Wrong password" });
 				}).catch((error) => {
 					reject();
 					console.log(error);
