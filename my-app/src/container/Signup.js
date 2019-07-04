@@ -1,6 +1,6 @@
 import React from 'react';
 import { check } from "../function/signup.js"
-import { ProfileImg, FirstPage, SecondPage } from "../component/Signup.js"
+import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/Signup.js"
 import UserProvider from '../context/UserProvider';
 import { register } from "../function/post"
 
@@ -92,23 +92,21 @@ class Signup extends React.Component {
 
     render() {
         let { info, image, page } = this.state
+        let signPage;
+
+        if (page === 1)
+            signPage = <FirstPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
+        else if (page === 2)
+            signPage = <SecondPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
+        else 
+            signPage = <ThirdPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
-
-                <div style={{
-                   display: "flex", flexDirection: "column", height: "initial", margin: "20px"
-                }}>
-
+                <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
                     <ProfileImg image={image} sendFile={this.sendFile} />
-                    {
-                        page === 1 ?
-                            <FirstPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} /> :
-                            <SecondPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
-                    }
-
+                    {signPage}
                 </div>
-
             </div>
         );
     }

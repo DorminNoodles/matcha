@@ -58,9 +58,28 @@ function SecondPage({ register, info, onChange, changePage }) {
             <br />
             <SliderAge onChange={onChange} age={info.desired.value} />
             <SliderLocation onChange={onChange} distance={info.distance.value} />
-            <br/>
+            <br />
+            <button className="button center" onClick={() => changePage(3)}>Continue</button>
+            <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(1) }}>
+                <i className="fas fa-arrow-circle-left fa-lg"></i>
+            </span>
+        </div>
+
+    )
+}
+
+function ThirdPage({ register, info, onChange, changePage }) {
+    return (
+
+        <div className="">
+            <Gender onChange={onChange} />
+            <SexualOrientation onChange={onChange} />
+            <br />
+            <SliderAge onChange={onChange} age={info.desired.value} />
+            <SliderLocation onChange={onChange} distance={info.distance.value} />
+            <br />
             <button className="button center" onClick={register} >Create an account</button>
-            <span className="pointer center" style={{marginTop:"10px"}} onClick={() => { changePage(1) }}>
+            <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(2) }}>
                 <i className="fas fa-arrow-circle-left fa-lg"></i>
             </span>
 
@@ -69,4 +88,4 @@ function SecondPage({ register, info, onChange, changePage }) {
     )
 }
 
-export { ProfileImg, FirstPage, SecondPage }
+export { ProfileImg, FirstPage, SecondPage, ThirdPage }
