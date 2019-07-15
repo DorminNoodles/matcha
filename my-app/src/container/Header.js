@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Route, Link } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 
 class Header extends React.Component {
@@ -10,6 +10,7 @@ class Header extends React.Component {
 
         return (
             <nav id="header" className={header}>
+                <Route />
                 <ul>
                     <li>
                         <Link to="/parameters" className={header}><i className="fas fa-cog fa-lg"></i></Link>

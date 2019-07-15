@@ -36,7 +36,7 @@ export function password(password, confirmPassword, token) {
 }
 
 export function register(data) {
-    axios({
+    return axios({
         method: 'post',
         url: 'http://localhost:3300/api/user',
         data,
@@ -45,5 +45,6 @@ export function register(data) {
         console.log(response)
     }).catch(error => {
         console.log({ ...error })
+        console.log(error.response.data.msg)
     });
 }

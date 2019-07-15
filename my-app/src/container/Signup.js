@@ -1,10 +1,8 @@
 import React from 'react';
-import axios from 'axios';
-import profile from "../image/profile.png"
 import { check } from "../function/signup.js"
-import { register } from "../function/post"
-import { Field } from "../export"
+import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/Signup.js"
 import UserProvider from '../context/UserProvider';
+import { register } from "../function/post"
 
 class Signup extends React.Component {
     constructor(props) {
@@ -18,12 +16,18 @@ class Signup extends React.Component {
                 firstname: { value: "", error: "" },
                 lastname: { value: "", error: "" },
                 email: { value: "", error: "" },
-                orientation: { value: "", error: "" },
-                gender: { value: "", error: "" },
-                location: { value: "", error: "" }
+                orientation: { value: "male", error: "" },
+                gender: { value: "femelle", error: "" },
+                age: { value: "", error: "" },
+                bio: { value: "", error: "" },
+                location: { value: "Paris", error: "" },
+                desired: { value: { min: 18, max: 25 }, error: "" },
+                distance: { value: 25, error: "" },
             },
+            page: 1
         }
         this.onChange = this.onChange.bind(this)
+        this.changePage = this.changePage.bind(this)
         this.register = this.register.bind(this)
     }
 
@@ -40,24 +44,29 @@ class Signup extends React.Component {
     }
 
     onChange = (index) => {
-        let key = (index.target.placeholder).toLowerCase();
         let { state, state: { info } } = this
-
+        let key = !(index.target) ? Object.keys(index) : (index.target.placeholder).toLowerCase();
+        let value = !(index.target) ? Object.values(index)[0] : index.target.value;
         this.setState({
             ...state,
             info: {
                 ...info,
                 [key]: {
                     ...info[key],
-                    value: index.target.value
+                    value: value
                 }
             }
         })
     }
 
+    changePage = (page) => {
+        this.setState({ ...this.state, page })
+    }
+
     register = () => {
         let { info } = this.state
         let data = new FormData();
+
         data.append("avatar", this.state.data);
         console.log(!this.state.data)
         if ((!this.state.data))
@@ -71,8 +80,7 @@ class Signup extends React.Component {
 
         if (typeof rsl === 'object')
             this.setState(rsl)
-        else
-            register(data)
+        else { register(data); }
     }
 
     sendFile = (e) => {
@@ -89,48 +97,22 @@ class Signup extends React.Component {
 
 
     render() {
-        let { info, image } = this.state
+        let { info, image, page } = this.state
+        let signPage;
+
+        if (page === 1)
+            signPage = <FirstPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
+        else if (page === 2)
+            signPage = <SecondPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
+        else 
+            signPage = <ThirdPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
-
-                <div style={{
-                    maxWidth: "200px", display: "flex", flexDirection: "column", height: "initial", margin: "20px"
-                }}>
-
-                    <div className="center" style={{ flexWrap: "wrap" }}>
-                        <figure className="image is-128x128">
-                            <img className="is-rounded"
-                                style={{ width: "128px", height: "128px" }}
-                                src={image.value !== "" ? image.value : profile} alt="profil" />
-                        </figure>
-                        <p style={{
-                            fontFamily: "LadylikeBB",
-                            fontSize: "xx-large",
-                            textAlign: "center"
-                        }}>Matcha</p>
-                        <form encType="multipart/form-data">
-                            <input className="inputfile"
-                                onChange={this.sendFile}
-                                name="avatar"
-                                placeholder="Choose avatar"
-                                type="file"
-                            />
-                        </form>
-                    </div>
-                    <p className="error">{this.state.image.error}</p>
-
-                    <Field placeholder="Firstname" position="left" onChange={this.onChange} error={info.firstname.error} />
-                    <Field placeholder="Lastname" position="left" onChange={this.onChange} error={info.lastname.error} />
-                    <br></br>
-                    <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={info.username.error} />
-                    <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={this.onChange} error={info.email.error} />
-                    <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.password.error} />
-                    <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={info.confirmation.error} />
-                    <button className="button" onClick={(e) => { this.register(e) }} >Create an account</button>
-
+                <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
+                    <ProfileImg image={image} sendFile={this.sendFile} />
+                    {signPage}
                 </div>
-
             </div>
         );
     }

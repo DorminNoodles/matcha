@@ -165,7 +165,7 @@ form > .inputfile {
   left: 50px;
   display: flex;
   position: absolute;
-  /* overflow: scroll; */
+  overflow: scroll;
   justify-content: center;
   height: calc(100% - 50px);
   width: calc(100% - 50px);
@@ -412,6 +412,21 @@ form > .inputfile {
   outline: none;
 }
 
+.link-red{
+  cursor: pointer;
+  color: #B33070;
+  background:white;
+  border: none
+}
+
+.link-white:hover {
+  color: #ffd3e9
+}
+
+.link-white:focus {
+  outline: none;
+}
+
 .error {
   font-size: smaller;
   color: red;
@@ -424,4 +439,8 @@ form > .inputfile {
   color:#7fff7f;
   text-align: start;
   font-weight: bolder;
+}
+
+.pointer{
+  cursor: pointer;
 }

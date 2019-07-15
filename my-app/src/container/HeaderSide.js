@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Route, Link } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 import { withRouter } from "react-router";
 
@@ -16,13 +16,15 @@ class HeaderSide extends React.Component {
 
         return (
             <nav id="side" className={header}>
-                <ul>
+                <Route />
+
+                <ul style={{ display: "contents" }}>
                     <li>
                         <Link to="/" className={header}><i className="fas fa-home fa-lg header-link"></i></Link>
                     </li>
 
                     {
-                            user.token && user.token !== "" ?
+                        user.token && user.token !== "" ?
                             <React.Fragment>
 
                                 <li>
@@ -35,7 +37,9 @@ class HeaderSide extends React.Component {
                                     <Link to="/chat" className={header}><i className="fas fa-comments fa-lg header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <a  onClick={this.logout} ><i className="fas fa-sign-out-alt fa-lg header-link"></i></a>
+                                    <button className={header} style={{ border: "none" }} onClick={this.logout} > <a className={header}><i className="fas fa-sign-out-alt fa-lg header-link"></i>
+                                    </a>
+                                    </button>
                                 </li>
                             </React.Fragment>
                             :

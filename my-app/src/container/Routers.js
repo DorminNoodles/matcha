@@ -1,7 +1,7 @@
 import React from 'react';
 import { Home, User, Match, Chat, Parameters, Signin, Signup, Password, Header, HeaderSide, NotFound, Confirm } from '../export'
 import Test from './Test'
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 
 class Routers extends React.Component {

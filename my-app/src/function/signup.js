@@ -4,7 +4,7 @@ export const check = (obj) => {
 
     let error = 0;
     if (isEmpty(obj.image.value)) {
-        obj.image.error = "empty"
+        obj.image.error = "Please choose your profile picture"
         error = 1;
     }
 
@@ -16,7 +16,7 @@ export const check = (obj) => {
         }
     }
 
-
+    
     if (obj.info.confirmation.value !== obj.info.password.value) {
         obj.info.password.error = ""
         obj.info.confirmation.error = "Your password and confirmation password do not match"
