@@ -5,8 +5,10 @@ exports.username = (username) => {
 		const usernameRegex = RegExp(/^[a-zA-Z0-9]*$/);
 		const sizeRegex = RegExp(/^[a-zA-Z0-9]{2,28}$/);
 
-		if (!username || !usernameRegex.test(username))
-			reject({"status": "error", "key": "username", "msg": "Bad Username !"});
+		if (!username || username === '')
+			reject({"status": "error", "key": "username", "msg": "Username Empty !"});
+		else if (!usernameRegex.test(username))
+			reject({"status": "error", "key": "username", "msg": "Username Bad Character!"});
 		else if (!sizeRegex.test(username))
 			reject({"status": "error", "key": "username", "msg": "Username length must be between 2 and 28 character !"});
 		else
