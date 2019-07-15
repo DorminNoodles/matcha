@@ -34,3 +34,16 @@ export function password(password, confirmPassword, token) {
         return "not ok";
     });
 }
+
+export function register(data) {
+    axios({
+        method: 'post',
+        url: 'http://localhost:3300/api/user',
+        data,
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    }).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log({ ...error })
+    });
+}

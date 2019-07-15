@@ -7,6 +7,7 @@ export const check = (obj) => {
         obj.image.error = "empty"
         error = 1;
     }
+
     for (let index in obj.info) {
 
         if (isEmpty(obj.info[index].value)) {
