@@ -6,7 +6,7 @@ exports.username = (username) => {
 		if (username && usernameRegex.test(username))
 			resolve(username);
 		else
-			reject("Username too short");
+			reject({"status": "error", "key": "username", "msg": "Bad Username !"});
 	})
 }
 
@@ -14,7 +14,7 @@ exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByUsername(username)
 		.then(() => {
-			reject("username already taken !");
+			reject({"status": "error", "key": "username", "msg": "Username already taken !"});
 		})
 		.catch((err) => {
 			resolve();
@@ -26,7 +26,7 @@ exports.emailAlreadyTaken = (email) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByEmail(email)
 		.then(() => {
-			reject("Email taken");
+			reject({"status": "error", "key": "email", "msg": "Email already taken !"});
 		})
 		.catch((err) => {
 			resolve();
@@ -40,19 +40,19 @@ exports.password = (password) => {
 		if (passwordRegex.test(password))
 			resolve(password)
 		else
-			reject("fail password");
+			reject({"status": "error", "key": "password", "msg": "Bad Password !"});
 	})
 }
 
 exports.firstname = (firstname) => {
 	return new Promise((resolve, reject) => {
-		firstname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(firstname) : reject('Firstname error');
+		firstname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(firstname) : reject({"status": "error", "key": "firstname", "msg": "Bad Firstname !"});
 	})
 }
 
 exports.lastname = (lastname) => {
 	return new Promise((resolve, reject) => {
-		lastname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(lastname) : reject('Lastname error');
+		lastname.match(/^\S*(?=\S*[A-Za-z])(?=\S{2,})/) ? resolve(lastname) : reject({"status": "error", "key": "lastname", "msg": "Bad Lastname !"});
 	})
 }
 
@@ -62,7 +62,7 @@ exports.email = (email) => {
 		if (email && email.match(reg))
 			resolve(email);
 		else
-			reject("Email not conform");
+			reject({"status": "error", "key": "email", "msg": "Bad email !"});
 	})
 }
 

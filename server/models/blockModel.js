@@ -4,6 +4,7 @@ exports.new = (blocker, blocked) => {
 	return new Promise((resolve, reject) => {
 		console.log("hello");
 		mysql.createConnection({
+			port: process.env.PORT,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',
@@ -26,6 +27,7 @@ exports.new = (blocker, blocked) => {
 exports.get = (blocker, blocked) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
+			port: process.env.PORT,
 			host: 'localhost',
 			user: 'root',
 			password: 'qwerty',

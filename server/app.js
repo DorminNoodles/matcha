@@ -18,9 +18,19 @@ const geoloc = require('./services/geoloc');
 const chat = require("./routes/chat");
 const score = require("./routes/score");
 const visit = require("./routes/visit");
+const tags = require("./routes/tags");
 
 const socketIO = require("./services/socketIO")(server);
 
+const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
+
+app.use(cors()); //CORS MIDDLEWARE
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 // the following two will emit to all the sockets connected to `/`
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -47,5 +57,10 @@ app.use('/api/block', block);
 app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
+app.use('/api/tags', tags);
 
-server.listen(3000);
+app.get('/', () => {
+    console.log("MAURICE");
+});
+
+server.listen(3300);

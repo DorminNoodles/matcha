@@ -8,33 +8,50 @@ const events = require('events');
 
 const userModel = require('../models/userModel');
 const checkInput = require('../services/checkInput');
+const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		let userService = new UserService();
-		userService.createUser({
-				username : data.username,
-				password : data.password,
-				firstname : data.firstname,
-				lastname : data.lastname,
-				email : data.email,
-				orientation : data.orientation,
-				gender : data.gender,
-				location : data.location,
-				avatar : data.avatar.name
+		userModel.checkData(data)
+		.then((res) => {
+			console.log("OK");
+			console.log(data);
+			return userModel.saveUser(data);
 		})
 		.then((res) => {
-			console.log(res);
-			resolve();
+			console.log("OK2");
+			// resolve(res);
+			return location.findGps(data);
+		})
+		.then((res) => {
+			console.log("OK3");
+
+			myEmitter.emit('userRegistered', data);
+
+			resolve(res);
 		})
 		.catch((err) => {
-			console.log("error in new: ", err);
+			console.log("false here > ", err);
 			reject(err);
 		})
 	})
 };
+
+exports.createUser = (data) => {
+	return new Promise((resolve, reject) => {
+		userModel.checkData(data)
+		.then((res) => {
+			console.log("Hello");
+			resolve();
+		})
+		.catch((err) => {
+			console.log("Ouech");
+			reject();
+		})
+	});
+}
 
 exports.find = (data) => {
 	return new Promise((resolve, reject) => {
@@ -45,13 +62,12 @@ exports.find = (data) => {
 		})
 		.catch(() => {
 			reject();
-    	})
-	})
+		})
+	});
 }
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("hello authenticate");
 		checkInput.username(data.username)
 		.then(() => {
 			return checkInput.password(data.password)
@@ -61,30 +77,41 @@ exports.authenticate = (data) => {
 			return userModel.findUserByUsername(data.username);
 		})
 		.then((result) => {
-			if (!data.mailValidation) {
-				reject({"status": "error", "msg": "mail not validate"});
+			if (!result.mailValidation) {
+				reject({"status": "error", "key": "mailActivation", "msg": "mail not validate"});
 				return;
 			}
-			console.log("hello authenticate*****");
-			console.log("<- AUTH ---");
-			console.log(data);
-			console.log("--- AUTH ->");
 			userModel.checkLogin(data.username, data.password)
 			.then(() => {
 				console.log("HUMMM");
 				console.log(result);
-				var token = jwt.sign({
+				let datas = {};
+
+				 datas.token = jwt.sign({
 					id: result.id,
 					username: result.username,
 					email: result.email
 				}, process.env.JWT_KEY);
-				resolve(token);
+
+
+				datas.user = {
+					id: result.id,
+					username: result.username,
+					email: result.email,
+					gender: result.gender,
+					orientation: result.orientation,
+					location: result.location,
+					latitude: result.latitude,
+					longitude: result.longitude,
+					age: result.age
+				};
+				resolve(datas);
 			}).catch((error) => {
 				console.log(error);
 				reject(error);
 			})
 		}).catch((err) => {
-			console.log("error");
+			// console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
 			reject(err);
 		})
 	})

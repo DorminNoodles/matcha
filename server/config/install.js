@@ -3,18 +3,21 @@ const mysql = require('promise-mysql');
 async function db() {
 	try {
 		let connection = await mysql.createConnection({
-			host : 'localhost',
-			user : 'root',
-			password : 'qwerty'
+
+			port: process.env.PORT,
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty'
 		})
 		await connection.query('DROP DATABASE IF EXISTS matcha');
 		await connection.query('CREATE DATABASE matcha');
 		await connection.end();
 		connection = await mysql.createConnection({
-			host : 'localhost',
-			user : 'root',
-			password : 'qwerty',
-			database : 'matcha'
+			port: process.env.PORT,
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
 		})
 		console.log("> CONNECTED.");
 		await connection.query('DROP TABLE IF EXISTS users');
@@ -46,31 +49,31 @@ async function db() {
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
-        	user_id INT, \
+        	users TEXT, \
         	tag VARCHAR(255) \
         )');
-        await connection.query('CREATE TABLE block (\
+		await connection.query('CREATE TABLE block (\
         	id INT AUTO_INCREMENT PRIMARY KEY,\
         	blocker INT NOT NULL,\
         	blocked INT NOT NULL\
         	)');
-        await connection.query('CREATE TABLE likes (\
+		await connection.query('CREATE TABLE likes (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
         	liker INT NOT NULL,\
         	liked INT NOT NULL\
         	)');
-        await connection.query('CREATE TABLE report (\
+		await connection.query('CREATE TABLE report (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
         	user_id INT NOT NULL, \
         	his_id INT NOT NULL \
         )');
-        await connection.query('CREATE TABLE visits (\
+		await connection.query('CREATE TABLE visits (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
         	user_id INT NOT NULL, \
         	his_id INT NOT NULL, \
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
         )');
-    	await connection.query('CREATE TABLE notifs (\
+		await connection.query('CREATE TABLE notifs (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
         	user_id INT NOT NULL, \
         	his_id INT NOT NULL, \
@@ -78,7 +81,7 @@ async function db() {
         	seen INT NOT NULL DEFAULT 0, \
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
         )');
-    	await connection.query('CREATE TABLE chat (\
+		await connection.query('CREATE TABLE chat (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
 			from_id INT NOT NULL, \
 			to_id INT NOT NULL, \

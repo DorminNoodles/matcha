@@ -1,0 +1,274 @@
+@font-face {
+  font-family:"Honey Lemon";
+  src:    url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/honey_lemon-webfont.woff2') format('woff2'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/honey_lemon-webfont.woff') format('woff'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/honey_lemon/Honey_Lemon.ttf') format('truetype');
+}
+
+@font-face {
+  font-family:"bakeapple";
+  src:    url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/bakeapple_demo-webfont.woff2') format('woff2'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/bakeapple_demo-webfont.woff') format('woff'),
+          url('/sgoinfre/goinfre/Perso/ltran/matcha/my-app/src/fonts/bakeapple/Bakeapple\ DEMO.otf') format('truetype');
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: white;
+  color:#B33070;
+  position: fixed;
+}
+
+a {
+  color: #B33070 !important;
+  font-size: x-large;
+}
+
+/* ################################################################### */
+
+.inputfile::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.inputfile::before {
+  width: 200px !important;
+  content: 'Choose your picture';
+  display: inline-block;
+  background: white;
+  border-radius: 3px;
+  padding: 5px 8px;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 10pt;
+  text-align: center;
+  color:black;
+}
+
+.inputfile:focus{
+  outline: none;
+}
+
+form > .inputfile {
+  width: 200px;
+  margin: 0.75rem 0px;
+} 
+
+.radio {
+  margin-left:unset !important;
+  margin-right: 5px;
+}
+
+/* ################################################################### */
+
+.ReactTags__tags{
+  background: white;
+  padding:5px;
+}
+
+.ReactTags__tag {
+  margin: 8px;
+  padding:5px;
+  background: white;
+  color: #B33070;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.ReactTags__remove {
+  color: #B33070 !important;
+}
+
+.ReactTags__selected {
+  display: flex;
+  flex-wrap: wrap;
+  background: #eeeeee;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.ReactTags__tagInput {
+  border-radius: 10px;
+  padding: 5px;
+  background:white;
+  margin: 8px;
+  padding: 5px;
+}
+
+.ReactTags__tagInputField {
+  height: 36px;
+}
+
+/* ################################################################### */
+
+#root {
+  display: flex;
+}
+
+#header > ul {
+  position: absolute;
+  right: 10px;
+}
+
+#side {
+  position: absolute;
+  top: 50px;
+  width: 50px;
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#header {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  padding: 10px 0px;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#main {
+  top: 50px;
+  left: 50px;
+  display: flex;
+  position: absolute;
+  overflow: scroll;
+  justify-content: center;
+  height: calc(100% - 50px);
+  width: calc(100% - 50px);
+  border-radius: 5px 0px 0px;
+  background: #B33070 !important;
+  color: white;
+}
+
+#main::-webkit-scrollbar { 
+  display: none; 
+}
+
+.header-link {
+  margin: 5px 0px;
+}
+
+.sliderAge {
+  width: 40vw;
+}
+
+.center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#parameters {
+  flex-direction: column;
+  min-height: fit-content;
+}
+
+.field-param { 
+  width: calc(70vw - 50px);
+  max-width: 400px;
+  margin: 10px 0px; 
+  min-height: max-content; 
+  min-height: -moz-max-content;
+}
+
+.rc-slider-track {
+  background:#f0c8dc !important;
+}
+
+.rc-slider-handle {
+  border: solid 2px white !important;
+}
+
+#user {
+  width: 100%;
+  height: 100%;
+}
+
+#info-user {
+  background: white;
+  color:  #B33070;
+  min-width: 200px;
+  max-width: 500px;
+  width: calc(100% - 150px);
+  border-radius: 7px;
+  padding: 17px;
+  margin: 10px;
+}
+
+.bubble{
+  background: white;
+  /* background: #B33070; */
+}
+
+.header-chat{
+  width: 75%;
+  height: 100px;
+  color:white;
+  font-size: larger;
+  position: absolute;
+  background: #B33070;
+}
+
+.rounded-100{
+  width: 60px;
+  height: 60px;
+  left:5px;
+  position: absolute;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+#chat{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: white;
+}
+
+#list-chat {
+  width: 25%;
+  height:100%;
+  min-width: 75px;
+  background:white;
+  border: 1px solid #cdcdcd;
+}
+
+#conversation {
+  width: 75%;
+  height:100%;
+  background:white;
+  border: 1px solid #B33070;
+  border-width: 1px 0px;
+}
+
+.message-box {
+  height: 100px;
+  background: #ececec;
+  color: #B33070;
+  border-bottom: 1px solid #cdcdcd;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#conversation-chat{
+  width: 75%;
+  height: calc(100% - 100px);
+}

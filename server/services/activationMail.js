@@ -6,12 +6,14 @@ const dotenv = require('dotenv').config();
 class ActivationMail {
 
 	constructor() {
-		emitter.on('userRegistered', this.sendActivationMail) ;
+		emitter.on('userRegistered', this.sendActivationMail);
 		emitter.on('forgotPass', this.sendNewPass);
 	}
 
 	sendActivationMail(data) {
-		console.log(data);
+		console.log("les datas => ", data);
+
+		console.log("SEND ACTIVATION MAIL");
 
 		var token = jwt.sign({
 			"username": data.username,
@@ -60,6 +62,7 @@ class ActivationMail {
 				    return console.log(error);
 				}
 				console.log('Message sent: %s', info.messageId);
+				console.log('Message sent to: %s', data.email);
 			});
 		});
 	}

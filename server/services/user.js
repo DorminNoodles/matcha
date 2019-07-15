@@ -1,10 +1,10 @@
 "use strict";
 const dotenv = require('dotenv').config();
 const checkInput = require('../services/checkInput');
+const geoloc = require('../services/geoloc');
 const userModel = require('../models/userModel');
 const Photos = require('../services/photos');
 const myEmitter = require('../emitter');
-
 
 class User {
 	constructor(){
@@ -12,6 +12,7 @@ class User {
 		// 	console.log('1');
 		// }, 2000);
 	}
+
 	checkData(data) {
 		return new Promise((resolve, reject) => {
 			checkInput.username(data.username)
@@ -56,7 +57,7 @@ class User {
 		return new Promise((resolve, reject) => {
 			let photos = new Photos();
 			if (!data) {
-				reject({"status": "error", "msg": "No Data !"});
+				reject({"status": "error", "key": "photo", "msg": "Photo No Data !"});
 				return;
 			}
 			this.checkData(data)
@@ -65,6 +66,8 @@ class User {
 				return userModel.saveUser(data);
 			}).then((userData) => {
 				console.log("userData", userData);
+				return geoloc.getGps(data);
+			}).then(() => {
 				return photos.createUserFolder(data);
 			}).then(() => {
 				console.log(data);
@@ -86,8 +89,6 @@ class User {
 		return new Promise((resolve, reject) => {
 			userModel.findUserByName(username)
 			.then((data) => {
-				// if (data)
-				console.log("HELLO BORDEL");
 				console.log(data);
 				console.log(data.username);
 				let token = jwt.sign({
@@ -99,7 +100,7 @@ class User {
 				return;
 			})
 			.catch(() => {
-				reject();
+				reject({"status": "error", "key": "auth", "msg": "Connexion error !"});
 			})
 		})
 	}
