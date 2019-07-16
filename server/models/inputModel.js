@@ -74,6 +74,7 @@ exports.location = (location) => {
 	return new Promise((resolve, reject) => {
 		// const locationRegex = RegExp(/^[0-9]{5,5}$/);
 		// locationRegex.test(location) ? resolve(location) : reject(new Error('fail'));
+		console.log(location);
 		resolve(location);
 	})
 }
