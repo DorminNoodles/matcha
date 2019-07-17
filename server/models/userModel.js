@@ -198,8 +198,6 @@ exports.checkLogin = (username, password) => {
 
 exports.saveGps = (id, long, lat) => {
 	return new Promise((resolve, reject) => {
-		console.log("BORDELLLLLL");
-		console.log(id, long, lat);
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',
@@ -231,7 +229,6 @@ exports.activateUser = (username, email) => {
 			database:'matcha'
 		})
 		.then((conn) => {
-			console.log("PUTAIN DE MERDE");
 			let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
 			conn.end();
 			return query;

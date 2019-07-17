@@ -13,7 +13,7 @@ exports.connection = () => {
 			resolve(conn);
 		})
 		.catch((err) =>{
-			reject({"status": "error", "key": "database", "msg": "Database connection error"});
+			reject({"status": "error", "key": "database", "msg": "Database connection error", "code": 503});
 		})
 	})
 }

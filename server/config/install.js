@@ -43,9 +43,10 @@ async function db() {
 			latitude DOUBLE DEFAULT 0, \
 			longitude DOUBLE DEFAULT 0, \
 			bio TEXT, \
-			age DATETIME, \
+			age INT, \
 			active DATETIME, \
-			reg_date TIMESTAMP \
+			reg_date TIMESTAMP, \
+			compatibility INT DEFAULT 63 \
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \

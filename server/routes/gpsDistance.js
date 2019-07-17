@@ -8,8 +8,6 @@ const geolib = require('geolib');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 
-
-
 router.get('/', urlencodedParser, (req, res) => {
 
 	if (!req.query.fromLat || !req.query.fromLong || !req.query.toLat || !req.query.toLong) {

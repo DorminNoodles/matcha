@@ -37,12 +37,6 @@ router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 		}
 	}
 
-	// if (!req.file || !req.file.filename) {
-	// 	res.status(400).send({"status": "error", "key": "avatar", "msg": "missing avatar"});
-	// }
-	// else {
-	// }
-
 	user.new(req.body)
 	.then((result) => {
 		res.status(200).send({"status": "success", "msg": "user registered !"});

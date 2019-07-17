@@ -10,11 +10,20 @@ var urlencodedParser = bodyParser.urlencoded({extended : false})
 router.get('/', urlencodedParser, (req, res) => {
 
 	console.log(req.query);
+	console.log(req.token);
 
-	users.getUsers().then((data) => {
+	if (!req.token) {
+		res.status(401).send({"status": "error", "key": "token", "msg": "token missing"});
+		return;
+	}
+
+	users.getUsers(req.query, req.token.id)
+	.then((data) => {
 		res.send(data);
 	})
-
+	.catch((err) => {
+		res.status(err.code).send(err);
+	})
 })
 
 module.exports = router;
