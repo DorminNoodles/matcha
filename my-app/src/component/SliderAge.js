@@ -7,7 +7,7 @@ import Slider from 'rc-slider';
 
 const Handle = Slider.Handle;
 
-function SliderAge(props) {
+function SliderAgeRange(props) {
 
   const handle = (props, { age, onChange }) => {
     const { value, dragging, index, ...restProps } = props;
@@ -46,4 +46,41 @@ function SliderAge(props) {
   );
 }
 
-export { SliderAge };
+function SliderAge(props) {
+  
+  const handle = (props, {age, onChange}) => {
+    const { value, dragging, index, ...restProps } = props;
+
+    if (value !== age)
+      onChange({ age: value });
+
+    return (
+      <Tooltip
+        prefixCls="rc-slider-tooltip"
+        overlay={value}
+        visible={dragging}
+        placement="top"
+        key={index}
+      >
+        <Handle value={value} {...restProps} />
+      </Tooltip>
+    );
+  };
+
+  return (
+    <div className="field-param">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <p style={{ margin: "10px 0px" }}>Your Age</p>
+        <p>{props.age} years</p>
+      </div>
+      <Slider
+        min={18}
+        max={100}
+        defaultValue={18}
+        handle={(e) => handle(e, props)}
+      />
+    </div>
+  );
+}
+
+export { SliderAge, SliderAgeRange };

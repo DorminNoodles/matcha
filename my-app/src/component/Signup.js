@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
-import { SliderAge, SliderLocation, Gender, SexualOrientation } from '../export'
+import { SliderAge, SliderLocation, Gender, SexualOrientation,SliderAgeRange } from '../export'
 import DatePicker from 'react-date-picker';
 
 function ProfileImg({ image, sendFile }) {
@@ -57,7 +57,7 @@ function SecondPage({ info, onChange, changePage }) {
             <Gender onChange={onChange} />
             <SexualOrientation onChange={onChange} />
             <br />
-            <SliderAge onChange={onChange} age={info.desired.value} />
+            <SliderAgeRange onChange={onChange} age={info.desired.value} />
             <SliderLocation onChange={onChange} distance={info.distance.value} />
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
@@ -69,20 +69,16 @@ function SecondPage({ info, onChange, changePage }) {
     )
 }
 
-function ThirdPage({ register, info, onChangeDate, onChange, changePage }) {
+function ThirdPage({ register, info, onChange, changePage }) {
     return (
 
         <div className="">
 
             <div className="control">
-                <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => onChange}></textarea>
+                <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => { onChange({ "bio": e.target.value }) }}></textarea>
             </div>
             <br />
-
-            <DatePicker
-                onChange={onChangeDate}
-            // value={this.state.date}
-            />
+            <SliderAge onChange={onChange} age={info.age.value} />
             <br />
 
             <button className="button center" onClick={register} >Create an account</button>

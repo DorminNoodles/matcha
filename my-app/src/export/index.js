@@ -14,6 +14,7 @@ import NotFound from "../container/NotFound";
 
 
 import { SliderAge } from "../component/SliderAge";
+import { SliderAgeRange } from "../component/SliderAge";
 import { SliderLocation } from "../component/SliderLocation";
 import { Gender } from "../component/Gender";
 import { SexualOrientation } from "../component/SexualOrientation";
@@ -41,6 +42,7 @@ export {
     HeaderSide,
     NotFound,
     SliderAge,
+    SliderAgeRange,
     SliderLocation,
     Gender,
     SexualOrientation,

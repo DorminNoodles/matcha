@@ -3,10 +3,8 @@ import { isEmpty } from "./utils.js"
 export const check = (obj) => {
 
     let error = 0;
-    if (isEmpty(obj.image.value)) {
-        obj.image.error = "Please choose your profile picture"
+    if (obj.image.error !== "")
         error = 1;
-    }
 
     for (let index in obj.info) {
 

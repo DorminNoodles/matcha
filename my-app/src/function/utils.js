@@ -1,4 +1,10 @@
 export const isEmpty = (str) => {
-    let tmp = str.trim();
-    return (tmp === undefined || !tmp || 0 === tmp.length);
+
+    if ((typeof str) === "string")
+        str = str.trim()
+         
+    if (!(str === undefined || !str || 0 === str.length))
+        return (0)
+    else 
+        return (1);
 }
