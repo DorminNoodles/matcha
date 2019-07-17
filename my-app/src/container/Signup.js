@@ -16,8 +16,8 @@ class Signup extends React.Component {
                 firstname: { value: "", error: "" },
                 lastname: { value: "", error: "" },
                 email: { value: "", error: "" },
-                orientation: { value: "male", error: "" },
-                gender: { value: "femelle", error: "" },
+                orientation: { value: "", error: "" },
+                gender: { value: "", error: "" },
                 age: { value: "", error: "" },
                 bio: { value: "", error: "" },
                 location: { value: "Paris", error: "" },
@@ -44,6 +44,7 @@ class Signup extends React.Component {
     }
 
     onChange = (index) => {
+
         let { state, state: { info } } = this
         let key = !(index.target) ? Object.keys(index) : (index.target.placeholder).toLowerCase();
         let value = !(index.target) ? Object.values(index)[0] : index.target.value;
@@ -59,28 +60,51 @@ class Signup extends React.Component {
         })
     }
 
+    onChangeDate = (index) => {
+
+        console.log(index)
+
+
+        // let { state, state: { info } } = this
+        // let key = !(index.target) ? Object.keys(index) : (index.target.placeholder).toLowerCase();
+        // let value = !(index.target) ? Object.values(index)[0] : index.target.value;
+        // this.setState({
+        //     ...state,
+        //     info: {
+        //         ...info,
+        //         [key]: {
+        //             ...info[key],
+        //             value: value
+        //         }
+        //     }
+        // })
+    }
+
+
     changePage = (page) => {
         this.setState({ ...this.state, page })
     }
 
     register = () => {
-        let { info } = this.state
-        let data = new FormData();
 
-        data.append("avatar", this.state.data);
-        console.log(!this.state.data)
-        if ((!this.state.data))
-            this.setState({ ...this.state, image: { value: "", error: "Please choose your profile picture" } },
-             () => {console.log(this.state)} )
+        console.log(this.state)
+        // let { info } = this.state
+        // let data = new FormData();
 
-        for (let index in info)
-            data.append(index, info[index].value);
+        // data.append("avatar", this.state.data);
+        // console.log(!this.state.data)
+        // if ((!this.state.data))
+        //     this.setState({ ...this.state, image: { value: "", error: "Please choose your profile picture" } },
+        //      () => {console.log(this.state)} )
 
-        let rsl = check(this.state);
+        // for (let index in info)
+        //     data.append(index, info[index].value);
 
-        if (typeof rsl === 'object')
-            this.setState(rsl)
-        else { register(data); }
+        // let rsl = check(this.state);
+
+        // if (typeof rsl === 'object')
+        //     this.setState(rsl)
+        // else { register(data); }
     }
 
     sendFile = (e) => {
@@ -105,7 +129,7 @@ class Signup extends React.Component {
         else if (page === 2)
             signPage = <SecondPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
         else 
-            signPage = <ThirdPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
+            signPage = <ThirdPage register={this.register} info={info} onChangeDate={this.onChangeDate} changePage={this.changePage} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >

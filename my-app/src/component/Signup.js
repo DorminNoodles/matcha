@@ -2,6 +2,7 @@ import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderLocation, Gender, SexualOrientation } from '../export'
+import DatePicker from 'react-date-picker';
 
 function ProfileImg({ image, sendFile }) {
     return (
@@ -49,7 +50,7 @@ function FirstPage({ info, onChange, changePage }) {
     )
 }
 
-function SecondPage({ register, info, onChange, changePage }) {
+function SecondPage({ info, onChange, changePage }) {
     return (
 
         <div className="">
@@ -68,16 +69,22 @@ function SecondPage({ register, info, onChange, changePage }) {
     )
 }
 
-function ThirdPage({ register, info, onChange, changePage }) {
+function ThirdPage({ register, info, onChangeDate, onChange, changePage }) {
     return (
 
         <div className="">
-            <Gender onChange={onChange} />
-            <SexualOrientation onChange={onChange} />
+
+            <div className="control">
+                <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => onChange}></textarea>
+            </div>
             <br />
-            <SliderAge onChange={onChange} age={info.desired.value} />
-            <SliderLocation onChange={onChange} distance={info.distance.value} />
+
+            <DatePicker
+                onChange={onChangeDate}
+            // value={this.state.date}
+            />
             <br />
+
             <button className="button center" onClick={register} >Create an account</button>
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(2) }}>
                 <i className="fas fa-arrow-circle-left fa-lg"></i>
