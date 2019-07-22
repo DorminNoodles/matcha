@@ -1,5 +1,4 @@
 import React from 'react';
-import { WithContext as ReactTags } from 'react-tag-input';
 
 const KeyCodes = {
     comma: 188,
@@ -57,7 +56,7 @@ class Tags extends React.Component {
         const { tags, suggestions } = this.state;
         return (
             <div>
-                <ReactTags tags={tags}
+                {/* <ReactTags tags={tags}
                     suggestions={suggestions}
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
@@ -66,7 +65,11 @@ class Tags extends React.Component {
                     inputFieldPosition="inline"
                     inline
                 />
-                <button className="button" style={{ float: "right", margin: "5px" }}>Save</button>
+                <button className="button" style={{ float: "right", margin: "5px" }}>Save</button> */}
+                <br></br>
+                <p style={{ fontStyle: "italic", fontWeight: "700" }}>
+                    #fille #sushi #pasteque #argent
+                </p>
             </div>
         )
     }

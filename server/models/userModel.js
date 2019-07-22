@@ -5,7 +5,6 @@ const myEmitter = require('../emitter');
 // const checkInput = require('../services/checkInput');
 const inputModel = require('../models/inputModel');
 
-
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
@@ -21,34 +20,40 @@ exports.checkData = (data) => {
 			'email': '',
 			'avatar': '',
 			'gender': '',
-			'orientation': ''
+			'orientation': '',
+			'age': '',
+			'age_min': '',
+			'age_max': '',
+			'distance': '',
+			'bio': '',
 		};
 
 		Promise.all([
-			inputModel.username(data.username).catch( e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch( e => e),
-			inputModel.password(data.password).catch( e => e),
-			inputModel.firstname(data.firstname).catch( e => e),
-			inputModel.lastname(data.lastname).catch( e => e),
-			inputModel.email(data.email).catch( e => e),
-			inputModel.emailAlreadyTaken(data.email).catch( e => e),
-			inputModel.location(data.location).catch( e => e),
-			inputModel.avatar(data.avatar).catch( e => e)
+			inputModel.username(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.password(data.password).catch(e => e),
+			inputModel.firstname(data.firstname).catch(e => e),
+			inputModel.lastname(data.lastname).catch(e => e),
+			inputModel.email(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+			inputModel.location(data.location).catch(e => e),
+			inputModel.avatar(data.avatar).catch(e => e),
+			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
+			// inputModel.bio(data.bio).catch(e => e),
+			// inputModel.age(data.age).catch(e => e),
 		]).then((res) => {
-
 			res.map((elem) => {
-				if (elem.status == 'error') {
+				if (elem.status === 'success' && elem.key)
+					json[elem.key] = elem.msg;
+				else if (elem.status === 'error') {
 					error = true;
 					json[elem.key] = elem.msg;
 				}
 			});
-			console.log(json);
-
 			if (error)
 				reject(json);
 			else
 				resolve();
-
 		});
 
 	})
@@ -79,13 +84,10 @@ exports.findUserByUsername = (username) => {
 			conn.end();
 			return result;
 		}).then((result) => {
-			if (result[0])
-				resolve(result[0]);
-			else {
-				reject();
-			}
+			if (result[0]) { resolve(result[0]); }
+			else { reject({ "status": "error", "key": "user", "msg": "User does not exist" }); }
 		}).catch((error) => {
-			reject({"status": "error", "key": "findUserByUsername", "msg": "error !"});
+			reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 		})
 	})
 }
@@ -100,7 +102,7 @@ exports.findUserByEmail = (email) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT username, id, email FROM users WHERE email=\''+ email +'\'');
+			var result = conn.query('SELECT username, id, email FROM users WHERE email=\'' + email + '\'');
 			conn.end();
 			return result;
 		}).then((result) => {
@@ -117,17 +119,18 @@ exports.findUserByEmail = (email) => {
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
 		bcrypt.hash(data.password, 10)
-		.then((hash) => {
-			data.password = hash;
-			return mysql.createConnection({
-				port: process.env.PORT,
-				host: 'localhost',
-				user: 'root',
-				password: 'qwerty',
-				database: 'matcha'
+			.then((hash) => {
+				data.password = hash;
+				return mysql.createConnection({
+					port: process.env.PORT,
+					host: 'localhost',
+					user: 'root',
+					password: 'qwerty',
+					database: 'matcha'
+				})
 			})
-		})
-		.then ((conn) => {
+	})
+		.then((conn) => {
 			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, location)\
 					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
 					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "', '" + data.location + "')");
@@ -136,9 +139,8 @@ exports.saveUser = (data) => {
 			resolve('User saved');
 		})
 		.catch((err) => {
-			reject({"status": "error", "key": "database", "msg": "Connexion error !"});
+			reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
 		})
-	})
 }
 
 exports.findUserByID = (id) => {
@@ -150,7 +152,7 @@ exports.findUserByID = (id) => {
 			password: 'qwerty',
 			database: 'matcha'
 		}).then((conn) => {
-			var result = conn.query('SELECT * FROM users WHERE id=\''+ id +'\'');
+			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
 			conn.end();
 			return (result);
 		}).then((result) => {
@@ -171,25 +173,24 @@ exports.checkLogin = (username, password) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			port: process.env.PORT,
-			host:'localhost',
-			user:'root',
-			password:'qwerty',
-			database:'matcha'
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
 		}).then((conn) => {
 			let result = conn.query('SELECT password FROM users WHERE username=?', [username]);
 			return result;
 		}).then((result) => {
-			console.log("hello");
 			bcrypt.compare(password, result[0].password)
-			.then((res) => {
-				if (res)
-					resolve(res);
-				else
+				.then((res) => {
+					if (res)
+						resolve(res);
+					else
+						reject({ "status": "error", "key": "password", "msg": "Wrong password" });
+				}).catch((error) => {
 					reject();
-			}).catch((error) => {
-				reject();
-				console.log(error);
-			})
+					console.log(error);
+				})
 		}).catch((error) => {
 			reject(error);
 		})
@@ -207,16 +208,16 @@ exports.saveGps = (id, long, lat) => {
 			password: 'qwerty',
 			database: 'matcha'
 		})
-		.then ((conn) => {
-			return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
-		})
-		.then((res) => {
-			resolve('Gps saved');
-		})
-		.catch((err) => {
-			console.log("ERRRO");
-			reject(err);
-		})
+			.then((conn) => {
+				return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
+			})
+			.then((res) => {
+				resolve('Gps saved');
+			})
+			.catch((err) => {
+				console.log("ERRRO");
+				reject(err);
+			})
 	})
 }
 
@@ -225,25 +226,25 @@ exports.activateUser = (username, email) => {
 		console.log("hello");
 		mysql.createConnection({
 			port: process.env.PORT,
-			host:'localhost',
-			user:'root',
-			password:'qwerty',
-			database:'matcha'
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
 		})
-		.then((conn) => {
-			console.log("PUTAIN DE MERDE");
-			let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
-			conn.end();
-			return query;
-		})
-		.then((res) => {
-			console.log(res);
-			resolve({"status": "success", "msg": "UserActivated !"});
-		})
-		.catch((err) => {
-			console.log("ERROR ++++++++++++++++++++++++");
-			reject(err);
-		})
+			.then((conn) => {
+				console.log("PUTAIN DE MERDE");
+				let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
+				conn.end();
+				return query;
+			})
+			.then((res) => {
+				console.log(res);
+				resolve({ "status": "success", "msg": "UserActivated !" });
+			})
+			.catch((err) => {
+				console.log("ERROR ++++++++++++++++++++++++");
+				reject(err);
+			})
 	})
 }
 
@@ -251,21 +252,21 @@ exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			port: process.env.PORT,
-			host:'localhost',
-			user:'root',
-			password:'qwerty',
-			database:'matcha'
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
 		})
-		.then((conn) => {
-			console.log("PUTAIN DE MERDE");
-			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
-		})
-		.then((res) => {
-			resolve({"status": "success", "msg": "Password changed!"});
-		})
-		.catch((err) => {
-			console.log("Error !");
-			reject({status: "error", msg: "error db !"});
-		})
+			.then((conn) => {
+				console.log("PUTAIN DE MERDE");
+				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+			})
+			.then((res) => {
+				resolve({ "status": "success", "msg": "Password changed!" });
+			})
+			.catch((err) => {
+				console.log("Error !");
+				reject({ status: "error", msg: "error db !" });
+			})
 	});
 }

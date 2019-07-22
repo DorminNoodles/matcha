@@ -6,18 +6,13 @@ import Slider from 'rc-slider';
 
 const Handle = Slider.Handle;
 
-class SliderLocation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { distance: '25' };
-    this.handle = this.handle.bind(this);
-  }
-
-  handle(props) {
+function SliderLocation(props) {
+  
+  const handle = (props, {distance, onChange}) => {
     const { value, dragging, index, ...restProps } = props;
 
-    if (value !== this.state.distance)
-      this.setState({ distance: value });
+    if (value !== distance)
+      onChange({ distance: value });
 
     return (
       <Tooltip
@@ -32,25 +27,20 @@ class SliderLocation extends React.Component {
     );
   };
 
-  render() {
-
-    return (
-      <div className="field-param">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <p style={{ margin: "10px 0px" }}>Distance</p>
-          <p>{this.state.distance} km</p>
-        </div>
-        <Slider
-          min={5}
-          max={300}
-          defaultValue={25}
-          handle={this.handle}
-        />
+  return (
+    <div className="field-param">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <p style={{ margin: "10px 0px" }}>Distance</p>
+        <p>{props.distance} km</p>
       </div>
-    );
-  }
+      <Slider
+        min={5}
+        max={300}
+        defaultValue={25}
+        handle={(e) => handle(e, props)}
+      />
+    </div>
+  );
 }
-
-
 
 export { SliderLocation };
