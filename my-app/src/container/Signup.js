@@ -76,9 +76,11 @@ class Signup extends React.Component {
             data.append(index, info[index].value);
 
         let rsl = check(this.state);
-
         if (typeof rsl === 'object') { this.setState(rsl) }
-        else { register(data); }
+        else { register(data);
+            
+            console.log(this.state)
+        }
     }
 
     sendFile = (e) => {

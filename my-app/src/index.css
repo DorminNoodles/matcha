@@ -427,6 +427,14 @@ form > .inputfile {
   outline: none;
 }
 
+.error-text {
+  font-size: smaller;
+  color: #ff9d9d;
+  text-align: start;
+  font-weight: bolder;
+  text-shadow:  -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+
 .error {
   font-size: smaller;
   color: red;

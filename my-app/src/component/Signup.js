@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
-import { SliderAge, SliderLocation, Gender, SexualOrientation,SliderAgeRange } from '../export'
+import { SliderAge, SliderLocation, Gender, SexualOrientation, SliderAgeRange } from '../export'
 import DatePicker from 'react-date-picker';
 
 function ProfileImg({ image, sendFile }) {
@@ -34,16 +34,17 @@ function ProfileImg({ image, sendFile }) {
 }
 
 function FirstPage({ info, onChange, changePage }) {
+    let {firstname, lastname, username, email, password, confirmation} = info
     return (
 
         <React.Fragment>
-            <Field placeholder="Firstname" position="left" onChange={onChange} error={info.firstname.error} />
-            <Field placeholder="Lastname" position="left" onChange={onChange} error={info.lastname.error} />
+            <Field placeholder="Firstname" position="left" {...onChange} error={firstname.error} value={firstname.value} />
+            <Field placeholder="Lastname" position="left" onChange={onChange} error={lastname.error}  value={lastname.value}/>
             <br></br>
-            <Field placeholder="Username" position="left" icon="fas fa-user" onChange={onChange} error={info.username.error} />
-            <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={onChange} error={info.email.error} />
-            <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={info.password.error} />
-            <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={info.confirmation.error} />
+            <Field placeholder="Username" position="left" icon="fas fa-user" onChange={onChange} error={username.error} value={username.value}/>
+            <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={onChange} error={email.error} value={email.value}/>
+            <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={password.error} value={password.value} />
+            <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={confirmation.error} value={confirmation.value} />
             <button className="button" onClick={() => changePage(2)}>Continue</button>
         </React.Fragment>
 
@@ -54,7 +55,9 @@ function SecondPage({ info, onChange, changePage }) {
     return (
 
         <div className="">
-            <Gender onChange={onChange} />
+            <Gender onChange={onChange} age={info.gender.error} />
+            <p className="error-text">{info.gender.error}</p>
+
             <SexualOrientation onChange={onChange} />
             <br />
             <SliderAgeRange onChange={onChange} age={info.desired.value} />
@@ -77,6 +80,8 @@ function ThirdPage({ register, info, onChange, changePage }) {
             <div className="control">
                 <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => { onChange({ "bio": e.target.value }) }}></textarea>
             </div>
+            <p className="error-text">{info.bio.error}</p>
+
             <br />
             <SliderAge onChange={onChange} age={info.age.value} />
             <br />

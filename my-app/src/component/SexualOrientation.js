@@ -14,7 +14,7 @@ function SexualOrientation(props) {
           homosexual
             </label>
         <label className="radio">
-          <input type="radio" name="sexual" style={{ marginRight: "5px" }} onClick={() => props.onChange({ orientation: "bisexual" })} />
+          <input type="radio" name="sexual" style={{ marginRight: "5px" }} onClick={() => props.onChange({ orientation: "bisexual" })} defaultChecked/>
           bisexual
             </label>
       </div>

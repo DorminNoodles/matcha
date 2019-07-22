@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-function Field({ position, icon, onChange, placeholder, error, success ,type}) {
+function Field({ position, icon, onChange, placeholder, error, success ,type, value}) {
 
     return (
         <div className="field">
@@ -11,7 +11,7 @@ function Field({ position, icon, onChange, placeholder, error, success ,type}) {
                 <span className={`icon is-small is-${position}`}>
                     <i className={icon}></i>
                 </span>
-                <input className="input" type={type} placeholder={placeholder} onChange={onChange} />
+                <input className="input" type={type} placeholder={placeholder} onChange={onChange} value={value} />
                 {
                     error &&
                     <span className={`icon is-small is-right`}>
@@ -25,7 +25,7 @@ function Field({ position, icon, onChange, placeholder, error, success ,type}) {
                     </span>
                 }
             </p>
-            <p className="error">{error}</p>
+            <p className="error-text">{error}</p>
             <p className="success">{success}</p>
         </div>
     )
