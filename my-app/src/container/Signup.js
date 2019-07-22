@@ -33,7 +33,7 @@ class Signup extends React.Component {
 
     static contextType = UserProvider;
 
-    componentWillReceiveProps(history, props) {
+    componentWillReceiveProps() {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
     }
@@ -60,9 +60,7 @@ class Signup extends React.Component {
         })
     }
 
-    changePage = (page) => {
-        this.setState({ ...this.state, page })
-    }
+    changePage = (page) => { this.setState({ ...this.state, page }) }
 
     register = () => {
 
@@ -80,11 +78,14 @@ class Signup extends React.Component {
         if (typeof rsl === 'object') { this.setState(rsl) }
         else {
             register(data, this.state.info).then(({ res, err }) => {
-                this.setState({
-                    ...this.state,
-                    info: { ...res },
-                    error: err
-                })
+                if (err !== "") {
+                    this.setState({
+                        ...this.state,
+                        info: { ...res },
+                        error: err
+                    })
+                }
+                else { this.props.history.push("/") }
             })
         }
     }
@@ -95,6 +96,7 @@ class Signup extends React.Component {
         reader.onloadend = (e) => {
             this.setState({ ...this.state, image: { value: reader.result, error: "" } })
         }
+        
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0]);
             this.setState({ ...this.state, data: e.target.files[0] }, () => { })

@@ -78,7 +78,7 @@ function ThirdPage({ register, info, onChange, changePage, error }) {
         <div className="">
 
             <div className="control">
-                <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => { onChange({ "bio": e.target.value }) }}></textarea>
+                <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => { onChange({ "bio": e.target.value }) }} value={info.bio.value}></textarea>
             </div>
             <p className="error-text">{info.bio.error}</p>
 

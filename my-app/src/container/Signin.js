@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Field } from "../export"
+import { connect } from "../function/post"
 import UserProvider from '../context/UserProvider';
 import { withRouter } from "react-router";
 
@@ -23,13 +24,13 @@ class Signin extends Component {
 
   componentWillReceiveProps(history, props) {
     if (this.context.header !== "white-red")
-        this.context.onChange("header", "white-red")
-}
+      this.context.onChange("header", "white-red")
+  }
 
-componentDidMount() {
+  componentDidMount() {
     if (this.context.header !== "white-red")
-        this.context.onChange("header", "white-red")
-}
+      this.context.onChange("header", "white-red")
+  }
 
   onChange = (e) => {
     let index = e.target.placeholder.toLowerCase();
@@ -38,18 +39,14 @@ componentDidMount() {
   }
 
   connect = () => {
-    axios({
-      method: 'post',
-      url: 'http://localhost:3300/api/user/authenticate',
-      data: this.state,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then(response => {
-      this.context.onChange("user", {
-        username: "Lisouiw", token: "mdrr",
-      })
-      this.props.history.push("/")
-    }).catch(error => {
-    });
+    connect(this.state.username, this.state.password).then(({ res, data }) => {
+      if (res === 1) {
+        this.context.onChange("user", { token: data.token, ...data.user })
+        this.props.history.push("/")
+      } else {
+
+      }
+    })
   }
 
   password = () => {
@@ -67,7 +64,7 @@ componentDidMount() {
         <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={this.state.error.password} />
         <br />
         <button className="button white-red" onClick={this.connect} >Connect to your account</button>
-        <div  className="link-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>
+        <div className="link-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>
       </div>
     )
   }
