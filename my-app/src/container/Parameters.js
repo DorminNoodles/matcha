@@ -1,5 +1,5 @@
 import React from 'react';
-import { SliderAge, SliderLocation, Gender, SexualOrientation } from '../export'
+import { SliderAgeRange, SliderLocation, Gender, SexualOrientation } from '../export'
 import UserProvider from '../context/UserProvider';
 
 class Parameters extends React.Component {
@@ -44,7 +44,7 @@ class Parameters extends React.Component {
       <div id="parameters" className="center">
         <Gender onChange={this.onChange} />
         <SexualOrientation onChange={this.onChange} />
-        <SliderAge onChange={this.onChange} age={this.state.desired} />
+        <SliderAgeRange onChange={this.onChange} age={this.state.desired} />
         <SliderLocation onChange={this.onChange} distance={this.state.distance} />
         <button className="button" style={{ margin: "10px" }}>Save</button>
       </div>
