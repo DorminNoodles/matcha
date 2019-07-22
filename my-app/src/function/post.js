@@ -35,15 +35,23 @@ export function password(password, confirmPassword, token) {
     });
 }
 
-export function register(data) {
+export function register(data, info) {
+
     return axios({
         method: 'post',
         url: 'http://localhost:3300/api/user',
         data,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then(response => {
-        console.log(response)
-    }).catch(error => {
-        console.log({ ...error })
+    }).then(() => {
+        return (info)
+    }).catch((error) => {
+        var err = JSON.parse(error.request.response).data
+
+        for (var value in err) {
+            if (info[value])
+                info[value].error = err[value]
+        }
+
+        return ({ res: info, err: "Please complete your profile" })
     });
 }

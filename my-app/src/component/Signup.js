@@ -38,7 +38,7 @@ function FirstPage({ info, onChange, changePage }) {
     return (
 
         <React.Fragment>
-            <Field placeholder="Firstname" position="left" {...onChange} error={firstname.error} value={firstname.value} />
+            <Field placeholder="Firstname" position="left" onChange={onChange} error={firstname.error} value={firstname.value} />
             <Field placeholder="Lastname" position="left" onChange={onChange} error={lastname.error}  value={lastname.value}/>
             <br></br>
             <Field placeholder="Username" position="left" icon="fas fa-user" onChange={onChange} error={username.error} value={username.value}/>
@@ -72,7 +72,7 @@ function SecondPage({ info, onChange, changePage }) {
     )
 }
 
-function ThirdPage({ register, info, onChange, changePage }) {
+function ThirdPage({ register, info, onChange, changePage, error }) {
     return (
 
         <div className="">
@@ -87,6 +87,8 @@ function ThirdPage({ register, info, onChange, changePage }) {
             <br />
 
             <button className="button center" onClick={register} >Create an account</button>
+            <p className="error-text center">{error}</p>
+
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(2) }}>
                 <i className="fas fa-arrow-circle-left fa-lg"></i>
             </span>

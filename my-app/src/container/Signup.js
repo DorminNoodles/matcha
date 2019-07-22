@@ -23,7 +23,8 @@ class Signup extends React.Component {
                 desired: { value: { min: 18, max: 25 }, error: "" },
                 distance: { value: 25, error: "" },
             },
-            page: 1
+            page: 1,
+            error: ""
         }
         this.onChange = this.onChange.bind(this)
         this.changePage = this.changePage.bind(this)
@@ -77,9 +78,14 @@ class Signup extends React.Component {
 
         let rsl = check(this.state);
         if (typeof rsl === 'object') { this.setState(rsl) }
-        else { register(data);
-            
-            console.log(this.state)
+        else {
+            register(data, this.state.info).then(({ res, err }) => {
+                this.setState({
+                    ...this.state,
+                    info: { ...res },
+                    error: err
+                })
+            })
         }
     }
 
@@ -97,7 +103,7 @@ class Signup extends React.Component {
 
 
     render() {
-        let { info, image, page } = this.state
+        let { info, image, page, error } = this.state
         let signPage;
 
         if (page === 1)
@@ -105,7 +111,7 @@ class Signup extends React.Component {
         else if (page === 2)
             signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} />
         else
-            signPage = <ThirdPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} />
+            signPage = <ThirdPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
