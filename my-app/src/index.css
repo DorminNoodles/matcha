@@ -452,3 +452,16 @@ form > .inputfile {
 .pointer{
   cursor: pointer;
 }
+
+#list-notif{
+  width: 20%;
+  min-width: 250px;
+  right: 0;
+  border-radius: 22px;
+  position: absolute;
+  margin: 5px;
+}
+
+.notif{
+
+}

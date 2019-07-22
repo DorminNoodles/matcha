@@ -11,7 +11,7 @@ import { Password } from "../container/Password";
 import Header from "../container/Header";
 import HeaderSide from "../container/HeaderSide";
 import NotFound from "../container/NotFound";
-
+import Notification from "../container/Notification";
 
 import { SliderAge } from "../component/SliderAge";
 import { SliderAgeRange } from "../component/SliderAge";
@@ -54,5 +54,6 @@ export {
     Profil,
     Modal,
     ForgotPassword,
-    NewPassword
+    NewPassword,
+    Notification
  };

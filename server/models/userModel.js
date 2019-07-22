@@ -129,19 +129,18 @@ exports.saveUser = (data) => {
 					database: 'matcha'
 				})
 			})
-			.then((conn) => {
-				return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, age_min, age_max, distance, bio, age)\
-					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
-					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "',\
-					'" + data.age_min + "', '" + data.age_max + "', '" + data.distance + "', '" + data.bio + "', '" + data.age + "')");
-			})
-			.then((res) => {
-				resolve('User saved');
-			})
-			.catch((err) => {
-				reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
-			})
 	})
+		.then((conn) => {
+			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, location)\
+					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
+					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "', '" + data.location + "')");
+		})
+		.then((res) => {
+			resolve('User saved');
+		})
+		.catch((err) => {
+			reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
+		})
 }
 
 exports.findUserByID = (id) => {

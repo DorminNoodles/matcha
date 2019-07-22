@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, User, Match, Chat, Parameters, Signin, Signup, Password, Header, HeaderSide, NotFound, Confirm } from '../export'
+import { Home, User, Match, Chat, Parameters, Signin, Signup, Password, Header, HeaderSide, NotFound, Confirm , Notification} from '../export'
 import Test from './Test'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
@@ -17,6 +17,8 @@ class Routers extends React.Component {
         <HeaderSide />
 
         <div id="main">
+          <Notification/>
+
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/user" component={User} />

@@ -19,6 +19,7 @@ const chat = require("./routes/chat");
 const score = require("./routes/score");
 const visit = require("./routes/visit");
 const tags = require("./routes/tags");
+const gpsDistance = require("./routes/gpsDistance");
 
 const socketIO = require("./services/socketIO")(server);
 
@@ -58,9 +59,23 @@ app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
 app.use('/api/tags', tags);
+app.use('/api/gpsDistance', gpsDistance);
+
+
+
+// test
+
+const geolib = require('geolib');
+
 
 app.get('/', () => {
-    console.log("MAURICE");
+	let test = geolib.getDistance(
+		{ latitude: 48.8534, longitude : 2.3522219},
+		{ latitude: 43.300000, longitude : 5.400000}
+	);
+
+	console.log(test);
+	console.log("MAURICE");
 });
 
 server.listen(3300);

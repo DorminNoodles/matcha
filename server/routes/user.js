@@ -71,23 +71,23 @@ router.post('/authenticate', urlencodedParser, (req, res) => {
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-		.then(() => {
-			res.status(200).send({ "status": "success" });
-		})
-		.catch((err) => {
-			res.status(500).send({ "status": "error", "msg": "error" });
-			console.log(err);
-		})
+	.then(() => {
+		res.status(200).send({ "status": "success" });
+	})
+	.catch((err) => {
+		res.status(500).send({ "status": "error", "msg": "error" });
+		console.log(err);
+	})
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
 	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
-		.then((result) => {
-			res.status(200).send({ "status": "success" });
-		})
-		.catch((err) => {
-			res.status(400).send({ "status": "error", "msg": err.msg });
-		})
+	.then((result) => {
+		res.status(200).send({ "status": "success" });
+	})
+	.catch((err) => {
+		res.status(400).send({ "status": "error", "msg": err.msg });
+	})
 })
 
 

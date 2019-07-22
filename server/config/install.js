@@ -40,8 +40,8 @@ async function db() {
 			location VARCHAR(255) NOT NULL,\
 			mailValidation INT DEFAULT 0,\
 			score INT DEFAULT 0, \
-			latitude INT DEFAULT 0, \
-			longitude INT DEFAULT 0, \
+			latitude DOUBLE DEFAULT 0, \
+			longitude DOUBLE DEFAULT 0, \
 			bio TEXT, \
 			age DATETIME, \
 			active DATETIME, \
