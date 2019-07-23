@@ -2,12 +2,12 @@ import React from 'react';
 import { Tags } from '../export'
 
 
-function UserProfil({ onChange }) {
+function UserProfil({ onChange, info }) {
     return (
         <React.Fragment>
 
-            <span style={{ display: "flex", fontWeight: "bold" }}><p>Lisa TRAN (
-            <span style={{ fontStyle: "italic", fontWeight: 600 }}>Lisouiw</span>), 20</p>
+            <span style={{ display: "flex", fontWeight: "bold" }}>
+                <p>{info.firstname} {info.lastname} (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</p>
             </span>
 
             <br />
@@ -17,15 +17,7 @@ function UserProfil({ onChange }) {
             </div>
             <br />
 
-            <p>
-                Je suis une gentille fille. Très gentille!
-                Je suis une gentille fille. Très gentille!
-                Je suis une gentille fille. Très gentille!
-                Je suis une gentille fille. Très gentille!
-                Je suis une gentille fille. Très gentille!
-                Je suis une gentille fille. Très gentille!
-                Je suis une gentille fille. Très gentille!
-          </p>
+            <p>{info.bio}</p>
 
             <Tags />
             <br />

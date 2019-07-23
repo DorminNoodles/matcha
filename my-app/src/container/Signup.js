@@ -3,6 +3,7 @@ import { check } from "../function/signup.js"
 import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/Signup.js"
 import UserProvider from '../context/UserProvider';
 import { register } from "../function/post"
+import { getUser } from '../function/get'
 
 class Signup extends React.Component {
     constructor(props) {
@@ -45,18 +46,14 @@ class Signup extends React.Component {
         this.changePage = this.changePage.bind(this)
         this.register = this.register.bind(this)
         this.modify = this.modify.bind(this)
+        this.initInfo = this.initInfo.bind(this)
     }
 
     static contextType = UserProvider;
 
 
     componentWillMount() {
-        let info = Object.assign({ ...this.state.info })
-
-        for (var i in this.context.user)
-            info[i] = { value: this.context.user[i], error: "" }
-
-        this.setState({ ...this.state, info })
+        this.initInfo(this.context.user)
     }
 
     componentWillReceiveProps(next) {
@@ -64,7 +61,11 @@ class Signup extends React.Component {
             this.context.onChange("header", "white-red")
 
         if (next.location.pathname === "/parameters")
-            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", function: this.modify } })
+            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", function: this.modify } },
+                () => {
+                    getUser(this.context.user.token)
+                        .then((res) => { this.initInfo(res) })
+                })
         else
             this.setState({ ...this.state, status: { value: "signup", text: "Create an account", function: this.register } })
     }
@@ -72,6 +73,15 @@ class Signup extends React.Component {
     componentDidMount() {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+    }
+
+    initInfo(nw) {
+        let info = Object.assign({ ...nw })
+
+        for (var i in nw)
+            info[i] = { value: nw[i], error: "" }
+
+        this.setState({ ...this.state, info })
     }
 
     onChange = (index) => {
