@@ -9,6 +9,20 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: { value: "", error: "" },
+            // info: {
+            //     username: { value: "Dormin", error: "" },
+            //     password: { value: "Root123", error: "" },
+            //     confirmation: { value: "Root123", error: "" },
+            //     firstname: { value: "Loic", error: "" },
+            //     lastname: { value: "Chety", error: "" },
+            //     email: { value: "03b237b339@himail.online", error: "" },
+            //     orientation: { value: "bisexual", error: "" },
+            //     gender: { value: "male", error: "" },
+            //     age: { value: 18, error: "" },
+            //     bio: { value: "je suis s", error: "" },
+            //     desired: { value: { min: 18, max: 25 }, error: "" },
+            //     distance: { value: 25, error: "" },
+            // },
             info: {
                 username: { value: "", error: "" },
                 password: { value: "", error: "" },
@@ -66,6 +80,7 @@ class Signup extends React.Component {
 
         let { info } = this.state
         let data = new FormData();
+        console.log(this.state)
 
         data.append("avatar", this.state.data);
         if (!(this.state.data))
@@ -75,8 +90,10 @@ class Signup extends React.Component {
             data.append(index, info[index].value);
 
         let rsl = check(this.state);
+
         if (typeof rsl === 'object') { this.setState(rsl) }
         else {
+            console.log(this.state.info)
             register(data, this.state.info).then(({ res, err }) => {
                 if (err !== "") {
                     this.setState({
@@ -88,6 +105,7 @@ class Signup extends React.Component {
                 else { this.props.history.push("/") }
             })
         }
+
     }
 
     sendFile = (e) => {

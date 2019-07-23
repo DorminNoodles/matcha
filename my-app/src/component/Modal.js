@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Modal({ modal, onChange }) {
+function ModalPhoto({ modal, onChange }) {
 
     return (
 
@@ -20,4 +20,4 @@ function Modal({ modal, onChange }) {
     )
 }
 
-export { Modal };
+export { ModalPhoto };

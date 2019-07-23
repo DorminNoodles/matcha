@@ -24,7 +24,7 @@ import { Bubble } from "../component/Bubble";
 import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
 import { Profil } from "../component/Profil";
-import { Modal } from "../component/Modal";
+import { ModalPhoto } from "../component/Modal";
 import { ForgotPassword, NewPassword } from "../component/Password";
 
 export { 
@@ -52,7 +52,7 @@ export {
     ListChat,
     Conversation,
     Profil,
-    Modal,
+    ModalPhoto,
     ForgotPassword,
     NewPassword,
     Notification
