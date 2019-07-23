@@ -69,13 +69,7 @@ const geolib = require('geolib');
 
 
 app.get('/', () => {
-	let test = geolib.getDistance(
-		{ latitude: 48.8534, longitude : 2.3522219},
-		{ latitude: 43.300000, longitude : 5.400000}
-	);
 
-	console.log(test);
-	console.log("MAURICE");
 });
 
 server.listen(3300);
