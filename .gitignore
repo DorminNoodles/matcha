@@ -21,6 +21,7 @@
 .env.production.local
 .env
 ./server/.env
+./my-app/.env
 
 npm-debug.log*
 yarn-debug.log*
