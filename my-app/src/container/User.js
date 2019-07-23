@@ -60,7 +60,7 @@ class User extends React.Component {
             <button className="button red-white">Bloquer</button>
             <button className="button red-white">Report</button>
           </div>
-        </div>
+     </div>
       </div>
     );
   }

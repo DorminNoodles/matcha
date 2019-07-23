@@ -17,7 +17,7 @@ class Routers extends React.Component {
         <HeaderSide />
 
         <div id="main">
-          <Notification/>
+          {/* <Notification/> */}
 
           <Switch>
             <Route exact path="/" component={Home} />
