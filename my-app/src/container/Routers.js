@@ -28,7 +28,7 @@ class Routers extends React.Component {
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/parameters" component={Parameters} />
+            <Route exact path="/parameters" component={Signup} />
             <Route exact path="/test" component={Test} />
             <Route component={NotFound} />
           </Switch>

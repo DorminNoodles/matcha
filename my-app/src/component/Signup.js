@@ -34,15 +34,15 @@ function ProfileImg({ image, sendFile }) {
 }
 
 function FirstPage({ info, onChange, changePage }) {
-    let {firstname, lastname, username, email, password, confirmation} = info
+    let { firstname, lastname, username, email, password, confirmation } = info
     return (
 
         <React.Fragment>
             <Field placeholder="Firstname" position="left" onChange={onChange} error={firstname.error} value={firstname.value} />
-            <Field placeholder="Lastname" position="left" onChange={onChange} error={lastname.error}  value={lastname.value}/>
+            <Field placeholder="Lastname" position="left" onChange={onChange} error={lastname.error} value={lastname.value} />
             <br></br>
-            <Field placeholder="Username" position="left" icon="fas fa-user" onChange={onChange} error={username.error} value={username.value}/>
-            <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={onChange} error={email.error} value={email.value}/>
+            <Field placeholder="Username" position="left" icon="fas fa-user" onChange={onChange} error={username.error} value={username.value} />
+            <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={onChange} error={email.error} value={email.value} />
             <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={password.error} value={password.value} />
             <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={confirmation.error} value={confirmation.value} />
             <button className="button" onClick={() => changePage(2)}>Continue</button>
@@ -55,10 +55,10 @@ function SecondPage({ info, onChange, changePage }) {
     return (
 
         <div className="">
-            <Gender onChange={onChange} age={info.gender.error} />
+            <Gender onChange={onChange} gender={info.gender.value} />
             <p className="error-text">{info.gender.error}</p>
 
-            <SexualOrientation onChange={onChange} />
+            <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
             <SliderAgeRange onChange={onChange} age={info.desired.value} />
             <SliderLocation onChange={onChange} distance={info.distance.value} />
@@ -72,7 +72,7 @@ function SecondPage({ info, onChange, changePage }) {
     )
 }
 
-function ThirdPage({ register, info, onChange, changePage, error }) {
+function ThirdPage({  info, onChange, changePage, error, button }) {
     return (
 
         <div className="">
@@ -86,7 +86,7 @@ function ThirdPage({ register, info, onChange, changePage, error }) {
             <SliderAge onChange={onChange} age={info.age.value} />
             <br />
 
-            <button className="button center" onClick={register} >Create an account</button>
+            <button className="button center" onClick={button.function}>{button.text}</button>
             <p className="error-text center">{error}</p>
 
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(2) }}>

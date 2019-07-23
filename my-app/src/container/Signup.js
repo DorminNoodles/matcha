@@ -9,47 +9,64 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: { value: "", error: "" },
-            // info: {
-            //     username: { value: "Dormin", error: "" },
-            //     password: { value: "Root123", error: "" },
-            //     confirmation: { value: "Root123", error: "" },
-            //     firstname: { value: "Loic", error: "" },
-            //     lastname: { value: "Chety", error: "" },
-            //     email: { value: "03b237b339@himail.online", error: "" },
-            //     orientation: { value: "bisexual", error: "" },
-            //     gender: { value: "male", error: "" },
-            //     age: { value: 18, error: "" },
-            //     bio: { value: "je suis s", error: "" },
-            //     desired: { value: { min: 18, max: 25 }, error: "" },
-            //     distance: { value: 25, error: "" },
-            // },
             info: {
-                username: { value: "", error: "" },
-                password: { value: "", error: "" },
-                confirmation: { value: "", error: "" },
-                firstname: { value: "", error: "" },
-                lastname: { value: "", error: "" },
-                email: { value: "", error: "" },
+                username: { value: "Dormin", error: "" },
+                password: { value: "Root123", error: "" },
+                confirmation: { value: "Root123", error: "" },
+                firstname: { value: "Loic", error: "" },
+                lastname: { value: "Chety", error: "" },
+                email: { value: "03b237b339@himail.online", error: "" },
                 orientation: { value: "bisexual", error: "" },
-                gender: { value: "", error: "" },
+                gender: { value: "male", error: "" },
                 age: { value: 18, error: "" },
-                bio: { value: "", error: "" },
+                bio: { value: "je suis s", error: "" },
                 desired: { value: { min: 18, max: 25 }, error: "" },
                 distance: { value: 25, error: "" },
             },
+            // info: {
+            //     username: { value: "", error: "" },
+            //     password: { value: "", error: "" },
+            //     confirmation: { value: "", error: "" },
+            //     firstname: { value: "", error: "" },
+            //     lastname: { value: "", error: "" },
+            //     email: { value: "", error: "" },
+            //     orientation: { value: "bisexual", error: "" },
+            //     gender: { value: "", error: "" },
+            //     age: { value: 18, error: "" },
+            //     bio: { value: "", error: "" },
+            //     desired: { value: { min: 18, max: 25 }, error: "" },
+            //     distance: { value: 25, error: "" },
+            // },
             page: 1,
+            status: { value: "signup", function: this.register },
             error: ""
         }
         this.onChange = this.onChange.bind(this)
         this.changePage = this.changePage.bind(this)
         this.register = this.register.bind(this)
+        this.modify = this.modify.bind(this)
     }
 
     static contextType = UserProvider;
 
-    componentWillReceiveProps() {
+
+    componentWillMount() {
+        let info = Object.assign({ ...this.state.info })
+
+        for (var i in this.context.user)
+            info[i] = { value: this.context.user[i], error: "" }
+
+        this.setState({ ...this.state, info })
+    }
+
+    componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+
+        if (next.location.pathname === "/parameters")
+            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", function: this.modify } })
+        else
+            this.setState({ ...this.state, status: { value: "signup", text: "Create an account", function: this.register } })
     }
 
     componentDidMount() {
@@ -80,7 +97,6 @@ class Signup extends React.Component {
 
         let { info } = this.state
         let data = new FormData();
-        console.log(this.state)
 
         data.append("avatar", this.state.data);
         if (!(this.state.data))
@@ -93,8 +109,8 @@ class Signup extends React.Component {
 
         if (typeof rsl === 'object') { this.setState(rsl) }
         else {
-            console.log(this.state.info)
             register(data, this.state.info).then(({ res, err }) => {
+
                 if (err !== "") {
                     this.setState({
                         ...this.state,
@@ -102,10 +118,14 @@ class Signup extends React.Component {
                         error: err
                     })
                 }
-                else { this.props.history.push("/") }
+                else
+                    this.props.history.push("/")
+
             })
         }
+    }
 
+    modify = () => {
     }
 
     sendFile = (e) => {
@@ -114,7 +134,7 @@ class Signup extends React.Component {
         reader.onloadend = (e) => {
             this.setState({ ...this.state, image: { value: reader.result, error: "" } })
         }
-        
+
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0]);
             this.setState({ ...this.state, data: e.target.files[0] }, () => { })
@@ -123,7 +143,7 @@ class Signup extends React.Component {
 
 
     render() {
-        let { info, image, page, error } = this.state
+        let { info, image, page, error, status } = this.state
         let signPage;
 
         if (page === 1)
@@ -131,7 +151,7 @@ class Signup extends React.Component {
         else if (page === 2)
             signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} />
         else
-            signPage = <ThirdPage register={this.register} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
+            signPage = <ThirdPage button={status} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >

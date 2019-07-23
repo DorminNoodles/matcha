@@ -3,7 +3,7 @@ const tagsModel = require('../models/tagsModel.js');
 exports.new = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 
-		tagsModel.patch(tag, ['1', '2'])
+		tagsModel.new(tag, userId)
 		.then((result) => {
 			console.log("hello : ", result.tag);
 			resolve();
@@ -12,12 +12,6 @@ exports.new = (tag, userId) => {
 			reject();
 		})
 
-		// .then(() => {
-		// 	resolve({"status": "success", "msg": "Tags saved !"});
-		// })
-		// .catch((err) => {
-		// 	reject(err);
-		// })
 	});
 }
 

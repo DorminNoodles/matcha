@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ModalPhoto({ modal, onChange }) {
+function ModalPhoto({ index, modal, onChange }) {
 
     return (
 
@@ -15,9 +15,23 @@ function ModalPhoto({ modal, onChange }) {
                     <i className="fas fa-chevron-right"></i>
                 </span>
             </div>
-            <button className="modal-close is-large" onClick={() => { onChange("modal") }} aria-label="close"></button>
+            <button className="modal-close is-large" onClick={() => { onChange({ [index]: "modal" }) }} aria-label="close"></button>
         </div>
     )
 }
 
-export { ModalPhoto };
+function Modal( { index, modal, onChange, children } ) {
+
+    return (
+
+        <div className={modal}>
+            <div className="modal-background"></div>
+            <div className="modal-content" style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
+                {children}
+            </div>
+            <button className="modal-close is-large" onClick={() => { onChange({ [index]: "modal" }) }} aria-label="close"></button>
+        </div>
+    )
+}
+
+export { ModalPhoto, Modal };

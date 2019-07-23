@@ -24,8 +24,9 @@ import { Bubble } from "../component/Bubble";
 import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
 import { Profil } from "../component/Profil";
-import { ModalPhoto } from "../component/Modal";
+import { ModalPhoto, Modal } from "../component/Modal";
 import { ForgotPassword, NewPassword } from "../component/Password";
+import { UserProfil } from "../component/User";
 
 export { 
     Home,
@@ -41,6 +42,7 @@ export {
     Header,
     HeaderSide,
     NotFound,
+    Notification,
     SliderAge,
     SliderAgeRange,
     SliderLocation,
@@ -52,8 +54,9 @@ export {
     ListChat,
     Conversation,
     Profil,
+    Modal,
     ModalPhoto,
     ForgotPassword,
     NewPassword,
-    Notification
+    UserProfil
  };

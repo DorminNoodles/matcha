@@ -8,6 +8,7 @@ const tags = require('../controllers/tags');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 router.post('/', urlencodedParser, (req, res) => {
+	
 	if (!req.token) {
 		res.status(401).send({"status": "error", "key": "auth", "msg": "bad authentification"});
 		return;
