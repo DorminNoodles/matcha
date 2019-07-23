@@ -16,24 +16,16 @@ exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		userModel.checkData(data)
 		.then((res) => {
-			console.log("OK");
-			console.log(data);
 			return userModel.saveUser(data);
 		})
 		.then((res) => {
-			console.log("OK2");
-			// resolve(res);
 			return location.findGps(data);
 		})
 		.then((res) => {
-			console.log("OK3");
-
 			myEmitter.emit('userRegistered', data);
-
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log("false here > ", err);
 			reject(err);
 		})
 	})
@@ -49,6 +41,19 @@ exports.createUser = (data) => {
 		.catch((err) => {
 			console.log("Ouech");
 			reject();
+		})
+	});
+}
+
+exports.get = (userId) => {
+	return new Promise((resolve, reject) => {
+		userModel.findUserById(userId)
+		.then((user) => {
+			user.password = '';
+			resolve(user);
+		})
+		.catch((err) => {
+			reject(err);
 		})
 	});
 }
@@ -184,7 +189,7 @@ exports.activate = (token) => {
 
 exports.getAvatar = (id) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByID(id)
+		userModel.findUserById(id)
 		.then(() => {
 			resolve('public/pictures/user' + id + '/avatar' + '.jpg');
 		})

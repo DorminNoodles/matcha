@@ -43,9 +43,9 @@ exports.sendToChat = (data) => {
 
 exports.getRecentsMessages = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByID(data.from)
+		userModel.findUserById(data.from)
 		.then((res) => {
-			return userModel.findUserByID(data.to);
+			return userModel.findUserById(data.to);
 		})
 		.then((res) => {
 			console.log("data");

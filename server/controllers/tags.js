@@ -11,7 +11,6 @@ exports.new = (tag, userId) => {
 		.catch(() => {
 			reject();
 		})
-
 	});
 }
 

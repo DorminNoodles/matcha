@@ -2,8 +2,9 @@ const mysql = require('promise-mysql');
 var sql = require('mysql');
 const bcrypt = require('bcrypt');
 const myEmitter = require('../emitter');
-// const checkInput = require('../services/checkInput');
 const inputModel = require('../models/inputModel');
+
+const database = require('../controllers/database');
 
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
@@ -143,8 +144,9 @@ exports.saveUser = (data) => {
 		})
 }
 
-exports.findUserByID = (id) => {
+exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
+		console.log('here', id);
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',

@@ -10,7 +10,7 @@ exports.new = (blocker, blocked) => {
 		})
 		.catch((err) => {
 			console.log(blocked);
-			userModel.findUserByID(blocked)
+			userModel.findUserById(blocked)
 			.then((res) => {
 				console.log("Ouech");
 				console.log(res);
