@@ -11,13 +11,6 @@ exports.new = (tag, userId) => {
 		.catch(() => {
 			reject();
 		})
-
-		// .then(() => {
-		// 	resolve({"status": "success", "msg": "Tags saved !"});
-		// })
-		// .catch((err) => {
-		// 	reject(err);
-		// })
 	});
 }
 
