@@ -384,6 +384,7 @@ form > .inputfile {
   position: absolute;
   justify-content: space-around;
   display: flex;
+  background: #00000040;
 }
 
 /* ################################################################### */

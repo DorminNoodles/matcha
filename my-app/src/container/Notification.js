@@ -18,8 +18,6 @@ class Notification extends React.Component {
         return (
             <div id="list-notif">
                 {NotifMessage()}
-                {NotifMessage()}
-                {NotifMessage()}
             </div>
         )
     }

@@ -64,8 +64,8 @@ class Tags extends React.Component {
                     delimiters={delimiters}
                     inputFieldPosition="inline"
                     inline
-                />
-                <button className="button" style={{ float: "right", margin: "5px" }}>Save</button> */}
+                /> */}
+                <button className="button" style={{ float: "right", margin: "5px" }}>Save</button>
                 <br></br>
                 <p style={{ fontStyle: "italic", fontWeight: "700" }}>
                     #fille #sushi #pasteque #argent

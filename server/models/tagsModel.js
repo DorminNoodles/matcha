@@ -4,7 +4,7 @@ exports.new = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 		.then((conn) => {
-			conn.query('INSERT INTO tags (`user_id`, `tag`) VALUES (?, ?)', [userId, tag])
+			conn.query('INSERT INTO tags (`id`, `tag`) VALUES (?, ?)', [userId, tag])
 			.then((res) => {
 				console.log("OK >>>>>>>>>>>>>> ", res);
 				resolve({"status": "success", "key": "tagSaved", "msg": "Tag saved !"});
