@@ -12,13 +12,13 @@ import Header from "../container/Header";
 import HeaderSide from "../container/HeaderSide";
 import NotFound from "../container/NotFound";
 import Notification from "../container/Notification";
+import Tags from "../container/Tags";
 
 import { SliderAge } from "../component/SliderAge";
 import { SliderAgeRange } from "../component/SliderAge";
 import { SliderLocation } from "../component/SliderLocation";
 import { Gender } from "../component/Gender";
 import { SexualOrientation } from "../component/SexualOrientation";
-import { Tags } from "../component/Tags";
 import { Field } from "../component/Field";
 import { Bubble } from "../component/Bubble";
 import { ListChat } from "../component/Chat";
@@ -27,6 +27,8 @@ import { Profil } from "../component/Profil";
 import { ModalPhoto, Modal } from "../component/Modal";
 import { ForgotPassword, NewPassword } from "../component/Password";
 import { UserProfil } from "../component/User";
+import { BubbleTag } from "../component/Tags";
+import { ModifyTag } from "../component/Tags";
 
 export { 
     Home,
@@ -43,12 +45,12 @@ export {
     HeaderSide,
     NotFound,
     Notification,
+    Tags,
     SliderAge,
     SliderAgeRange,
     SliderLocation,
     Gender,
     SexualOrientation,
-    Tags,
     Field,
     Bubble,
     ListChat,
@@ -58,5 +60,7 @@ export {
     ModalPhoto,
     ForgotPassword,
     NewPassword,
-    UserProfil
+    UserProfil,
+    BubbleTag,
+    ModifyTag
  };

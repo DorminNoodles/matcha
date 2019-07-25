@@ -1,7 +1,5 @@
 import React from 'react';
 import { Field } from '../export/index'
-import { addTag } from '../function/post'
-import UserProvider from '../context/UserProvider';
 
 function BubbleTag({ value, onDelete, pos }) {
     return (
@@ -15,54 +13,36 @@ function BubbleTag({ value, onDelete, pos }) {
             <span style={{ padding: "0px 5px" }} onClick={() => onDelete(pos)}>
                 <i className="fas fa-times" />
             </span>
-        </div >
+        </div>
     )
 }
 
-class Tags extends React.Component {
-    constructor(props) {
-        super(props);
+function ModifyTag({ tagModify, tags, action, fct }) {
 
-        this.state = {
-            tags: [
-                { id: 1, name: "Apples" },
-                { id: 2, name: "Pears" }
-            ]
-        }
-        this.handleKeyDown = this.handleKeyDown.bind(this)
-        this.onDelete = this.onDelete.bind(this)
-    }
-    static contextType = UserProvider;
+    let { onChange, onDelete } = fct
+    return (
+        <React.Fragment>
+            {
+                tagModify ? <React.Fragment >
 
-    onDelete(key) {
-        console.log(this.state.tags.slice(key, key + 1))
-    }
+                    <div style={{ display: "flex", padding: "15px 0px" }}>
+                        {Object.keys(tags).map((value, id) => {
+                            return (<BubbleTag key={id} pos={id} value={tags[value].name} onDelete={onDelete} />)
+                        })}
+                    </div>
+                    <Field icon="fas fa-tag" position="left" style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
+                    <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>Close</button>
+                </React.Fragment>
+                    :
+                    <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>
+                        <p>Tag</p>
+                        <span style={{ padding: "0px 5px" }}>
+                            <i className="fas fa-tags"></i>
+                        </span>
+                    </button>
+            }
+        </React.Fragment>
+    )
+}
 
-    handleKeyDown(props) {
-        if (props.keyCode === 13)
-            addTag(props.target.value, this.context.user.id, this.context.user.token)
-    }
-
-    render() {
-        const { tags } = this.state;
-        let action = { onKeyDown: this.handleKeyDown }
-
-        return (
-            <React.Fragment>
-
-                <div style={{ display: "flex", padding: "15px 0px" }}>
-                    {Object.keys(tags).map((value, id) => {
-                        return (<BubbleTag key={id} pos={id} value={tags[value].name} onDelete={this.onDelete} />)
-                    })}
-                </div>
-
-
-                <Field icon="fas fa-tag" position="left" style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
-                <button className="button red-white center">Close</button>
-            </React.Fragment>
-        )
-    }
-};
-
-
-export { Tags, BubbleTag };
+export { BubbleTag, ModifyTag };
