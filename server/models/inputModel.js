@@ -94,7 +94,6 @@ exports.avatar = (avatar) => {
 			reject({ "status": "error", "key": "avatar", "msg": "Avatar error !" })
 		else
 			resolve({ "status": "success" });
-		// console.log("HELLLO");
 	})
 }
 
@@ -107,5 +106,14 @@ exports.emailAlreadyTaken = (email) => {
 			.catch((err) => {
 				resolve({ "status": "success", "key": "email", "msg": '' });
 			})
+	})
+}
+
+exports.orientation = (orientation) => {
+	return new Promise((resolve, reject) => {
+		if (!orientation || !orientation)
+		reject({ "status": "error", "key": "orientation", "msg": "Orientation error !" })
+		else
+		resolve({ "status": "success" });
 	})
 }

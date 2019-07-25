@@ -43,6 +43,16 @@ router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 	})
 })
 
+router.put('/', urlencodedParser, (req, res) => {
+	user.update(req.body)
+	.then((res) => {
+		console.log(req.body);
+	})
+	.catch((err) => {
+		console.log(err);
+	})
+})
+
 router.post('/authenticate', urlencodedParser, (req, res) => {
 	user.authenticate(req.body)
 	.then((resolve) => {

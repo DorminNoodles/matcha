@@ -120,28 +120,41 @@ exports.findUserByEmail = (email) => {
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
 		bcrypt.hash(data.password, 10)
-			.then((hash) => {
-				data.password = hash;
-				return mysql.createConnection({
-					port: process.env.PORT,
-					host: 'localhost',
-					user: 'root',
-					password: 'qwerty',
-					database: 'matcha'
-				})
-			})
-	})
+		.then((hash) => {
+			data.password = hash;
+			return database.connection();
+		})
 		.then((conn) => {
-			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, location)\
-					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
-					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "', '" + data.location + "')");
+			console.log('FUCK YOU');
+			console.log(data);
+
+			let userData = {
+				username: data.username,
+				firstname: data.firstname,
+				lastname: data.lastname,
+				location: data.location,
+				password: data.password,
+				gender: data.gender,
+				email: data.email,
+				orientation: data.orientation,
+				age_min: data.age_min,
+				age_max: data.age_max,
+				username: data.username,
+				distance: data.distance,
+				age: data.age,
+				bio: data.bio,
+			}
+			return conn.query("INSERT INTO users SET ?", userData);
 		})
 		.then((res) => {
+			console.log('ta rem');
 			resolve('User saved');
 		})
 		.catch((err) => {
+			console.log(err);
 			reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
 		})
+	})
 }
 
 exports.findUserById = (id) => {
@@ -271,4 +284,10 @@ exports.changePwd = (email, username, pwd) => {
 				reject({ status: "error", msg: "error db !" });
 			})
 	});
+}
+
+exports.update = (id, data) => {
+	return new Promise((resolve, reject) => {
+
+	})
 }
