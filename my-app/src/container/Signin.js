@@ -60,8 +60,8 @@ class Signin extends Component {
       <div id="signin" >
         <p style={{ fontFamily: "LadylikeBB", fontSize: "xx-large" }}>Matcha</p>
         <br></br>
-        <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={this.state.error.username} />
-        <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={this.state.error.password} />
+        <Field placeholder="Username" position="left" icon="fas fa-user" action={{ onChange: this.onChange }} error={this.state.error.username} />
+        <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: this.onChange }}error={this.state.error.password} />
         <br />
         <button className="button white-red" onClick={this.connect} >Connect to your account</button>
         <div className="link-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>

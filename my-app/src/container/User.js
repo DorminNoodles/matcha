@@ -1,8 +1,9 @@
 import React from 'react';
-import { UserProfil, Field } from '../export'
-import { getUser } from '../function/get'
 import UserProvider from '../context/UserProvider';
-import { Modal, ModalPhoto } from '../export'
+import { UserProfil, Field, Modal, ModalPhoto } from '../export'
+import { getUser } from '../function/get'
+import queryString from 'query-string'
+
 
 class User extends React.Component {
   state = {
@@ -12,7 +13,11 @@ class User extends React.Component {
   static contextType = UserProvider;
 
   componentWillMount() {
-    getUser(this.context.user.token)
+
+    let params = queryString.parse(this.props.location.search)
+    let token = !params.id ? this.context.user.token : params.id
+
+    getUser(token)
       .then((res) => { this.setState({ ...this.state, ...res.data }) })
   }
 
@@ -31,13 +36,13 @@ class User extends React.Component {
   }
 
   render() {
-
+    let params = queryString.parse(this.props.location.search)
+    let id = !params.id ? 0 :params.id 
     return (
       <div id="user">
 
-
         <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} />
+          <UserProfil info={this.state} onChange={this.onChange} id={id}/>
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
 
           <Modal index="modalInfo" modal={this.state.modalInfo} onChange={this.onChange}>

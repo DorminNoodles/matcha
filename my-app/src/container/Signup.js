@@ -51,11 +51,6 @@ class Signup extends React.Component {
 
     static contextType = UserProvider;
 
-
-    componentWillMount() {
-        this.initInfo(this.context.user)
-    }
-
     componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
@@ -71,17 +66,19 @@ class Signup extends React.Component {
     }
 
     componentDidMount() {
+        this.initInfo(this.context.user)
+
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
     }
 
     initInfo(nw) {
-        let info = Object.assign({ ...nw })
+        let info = Object.assign({ ...this.state.info })
 
         for (var i in nw)
             info[i] = { value: nw[i], error: "" }
 
-        this.setState({ ...this.state, info })
+        this.setState({ ...this.state, info }, () => {console.log(this.state)})
     }
 
     onChange = (index) => {

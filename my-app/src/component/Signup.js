@@ -2,7 +2,6 @@ import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderLocation, Gender, SexualOrientation, SliderAgeRange } from '../export'
-import DatePicker from 'react-date-picker';
 
 function ProfileImg({ image, sendFile }) {
     return (
@@ -38,13 +37,13 @@ function FirstPage({ info, onChange, changePage }) {
     return (
 
         <React.Fragment>
-            <Field placeholder="Firstname" position="left" onChange={onChange} error={firstname.error} value={firstname.value} />
-            <Field placeholder="Lastname" position="left" onChange={onChange} error={lastname.error} value={lastname.value} />
+            <Field placeholder="Firstname" position="left" action={{ onChange: onChange }} error={firstname.error} value={firstname.value} />
+            <Field placeholder="Lastname" position="left" action={{ onChange: onChange }} error={lastname.error} value={lastname.value} />
             <br></br>
-            <Field placeholder="Username" position="left" icon="fas fa-user" onChange={onChange} error={username.error} value={username.value} />
-            <Field placeholder="Email" position="left" icon="fas fa-envelope" onChange={onChange} error={email.error} value={email.value} />
-            <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={password.error} value={password.value} />
-            <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" onChange={onChange} error={confirmation.error} value={confirmation.value} />
+            <Field placeholder="Username" position="left" icon="fas fa-user" action={{ onChange: onChange }}error={username.error} value={username.value} />
+            <Field placeholder="Email" position="left" icon="fas fa-envelope" action={{ onChange: onChange }} error={email.error} value={email.value} />
+            <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={password.error} value={password.value} />
+            <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={confirmation.error} value={confirmation.value} />
             <button className="button" onClick={() => changePage(2)}>Continue</button>
         </React.Fragment>
 
@@ -72,7 +71,7 @@ function SecondPage({ info, onChange, changePage }) {
     )
 }
 
-function ThirdPage({  info, onChange, changePage, error, button }) {
+function ThirdPage({ info, onChange, changePage, error, button }) {
     return (
 
         <div className="">

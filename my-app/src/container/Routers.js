@@ -24,6 +24,7 @@ class Routers extends React.Component {
             <Route exact path="/user" component={User} />
             <Route exact path="/user/confirm" component={Confirm} />
             <Route exact path="/user/password" component={Password} />
+            <Route exact path="/user/:id" render={(props) => <User {...props} />} />
             <Route exact path="/match" component={Match} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/signin" component={Signin} />

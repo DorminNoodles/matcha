@@ -2,7 +2,7 @@ import React from 'react';
 import { Tags } from '../export'
 
 
-function UserProfil({ onChange, info }) {
+function UserProfil({ onChange, info, id }) {
     return (
         <React.Fragment>
 
@@ -19,14 +19,16 @@ function UserProfil({ onChange, info }) {
 
             <p>{info.bio}</p>
 
-            <Tags />
+            <Tags id={id}/>
             <br />
 
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <button className="button red-white">Bloquer</button>
-                <button className="button red-white">Report</button>
-
-            </div>
+            {
+                id > 0 ?
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <button className="button red-white">Bloquer</button>
+                        <button className="button red-white">Report</button>
+                    </div> : <React.Fragment></React.Fragment>
+            }
         </React.Fragment>
     )
 }
