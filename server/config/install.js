@@ -47,6 +47,9 @@ async function db() {
 			active DATETIME, \
 			reg_date TIMESTAMP, \
 			compatibility INT DEFAULT 63 \
+			distance INT DEFAULT 25, \
+			age_min INT DEFAULT 18, \
+			age_max INT DEFAULT 25 \
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \

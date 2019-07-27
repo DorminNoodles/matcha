@@ -27,18 +27,18 @@ const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
 app.use(cors()); //CORS MIDDLEWARE
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 // the following two will emit to all the sockets connected to `/`
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	next();
 });
 
 app.use(express.static('public'));
@@ -54,7 +54,6 @@ app.use('/api/messages', messages);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
 app.use('/api/like', like);
-app.use('/api/block', block);
 app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
@@ -64,18 +63,5 @@ app.use('/api/gpsDistance', gpsDistance);
 
 
 // test
-
-const geolib = require('geolib');
-
-
-app.get('/', () => {
-	let test = geolib.getDistance(
-		{ latitude: 48.8534, longitude : 2.3522219},
-		{ latitude: 43.300000, longitude : 5.400000}
-	);
-
-	console.log(test);
-	console.log("MAURICE");
-});
 
 server.listen(3300);

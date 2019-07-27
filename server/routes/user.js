@@ -22,9 +22,6 @@ var upload = multer({ storage: storage });
 
 router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 
-
-	// req.body.file = req.file;
-
 	req.body.avatar = {
 		"name": '',
 		"file": ''
@@ -105,15 +102,34 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 
 router.get('/avatar', urlencodedParser, (req, res) => {
 	user.getAvatar(req.query.id)
-		.then((filename) => {
-			var img = require('fs').readFileSync(filename);
-			res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-			res.end(img, 'binary');
+	.then((filename) => {
+		var img = require('fs').readFileSync(filename);
+		res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+		res.end(img, 'binary');
+	})
+	.catch((err) => {
+		console.log(err);
+		res.status(500).send(err);
+	})
+})
+
+router.get('/', urlencodedParser, (req, res) => {
+	if (!req.token){
+		res.status(401).send({ "status": "error", "msg": "User Unauthorized" });
+		return;
+
+	}
+	// console.log(!req.params.userId);
+	if (!req.params.userId) {
+		user.get(req.token.id)
+		.then((user) => {
+			console.log(user);
+			res.status(200).send({...user});
 		})
-		.catch((err) => {
-			console.log(err);
-			res.status(500).send(err);
+		.catch(() => {
+			res.status(400).send({ "status": "error", "msg": "" });
 		})
+	}
 })
 
 module.exports = router;

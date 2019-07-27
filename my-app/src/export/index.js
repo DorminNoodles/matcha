@@ -1,13 +1,20 @@
-import { Home } from "../container/Home";
+import Home from "../container/Home";
 import { User } from "../container/User";
-import { Research } from "../container/Research";
-import { Chat } from "../container/Chat";
+import Confirm from "../container/Confirm";
+import { Match } from "../container/Match";
+import Chat from "../container/Chat";
 import { Parameters } from "../container/Parameters";
-import { Signin } from "../container/Signin";
+import Signin from "../container/Signin";
 import { Signout } from "../container/Signout";
-import { Signup } from "../container/Signup";
+import Signup from "../container/Signup";
+import { Password } from "../container/Password";
+import Header from "../container/Header";
+import HeaderSide from "../container/HeaderSide";
+import NotFound from "../container/NotFound";
+import Notification from "../container/Notification";
 
 import { SliderAge } from "../component/SliderAge";
+import { SliderAgeRange } from "../component/SliderAge";
 import { SliderLocation } from "../component/SliderLocation";
 import { Gender } from "../component/Gender";
 import { SexualOrientation } from "../component/SexualOrientation";
@@ -16,18 +23,28 @@ import { Field } from "../component/Field";
 import { Bubble } from "../component/Bubble";
 import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
-
+import { Profil } from "../component/Profil";
+import { ModalPhoto, Modal } from "../component/Modal";
+import { ForgotPassword, NewPassword } from "../component/Password";
+import { UserProfil } from "../component/User";
 
 export { 
     Home,
     User,
-    Research,
+    Confirm,
+    Match,
     Chat,
     Parameters,
     Signin,
     Signout,
     Signup,
+    Password,
+    Header,
+    HeaderSide,
+    NotFound,
+    Notification,
     SliderAge,
+    SliderAgeRange,
     SliderLocation,
     Gender,
     SexualOrientation,
@@ -35,5 +52,11 @@ export {
     Field,
     Bubble,
     ListChat,
-    Conversation
+    Conversation,
+    Profil,
+    Modal,
+    ModalPhoto,
+    ForgotPassword,
+    NewPassword,
+    UserProfil
  };

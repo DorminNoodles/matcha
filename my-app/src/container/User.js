@@ -1,38 +1,47 @@
 import React from 'react';
-import { Tags }  from '../export'
+import { UserProfil, Field } from '../export'
+import UserProvider from '../context/UserProvider';
+import { Modal, ModalPhoto } from '../export'
 
-function User() {
-  return ( 
-    <div id="user">
-      <div style={{ flexWrap: "wrap", width: "100%", display: "flex", justifyContent: "center" }}>
-      <figure className="image is-128x128" style={{ margin: "10px 0px" }}>
-        <img className="is-rounded" src="https://www.wanimo.com/veterinaire/images/articles/chat/fibrosarcome-chat.jpg" alt="profil"/>
-      </figure>
-      <div id="info-user">
-        <div style={{ 
-          display: "flex",
-          justifyContent: "space-between",
-          textAlign: "end"
-         }}>
-          <div style={{ textAlign: "start"}}>
-            <p>Login: Lisouiw</p>
-            <p>Fistname: Lisa</p>
-            <p>Lastname: TRAN</p>
-            <p>Age: 20yo</p>
-          </div>
-          <div>
-            <p>Gender: Female</p>
-            <p>Preference: Heterosexual</p>
-            <p>Lastname: TRAN</p>
-            <p>Age: 20yo</p>
-          </div>
+class User extends React.Component {
+  state = {
+    modal: "modal",
+    modalInfo: "modal"
+  }
+  static contextType = UserProvider;
+
+  componentWillReceiveProps() {
+    if (this.context.header !== "red-white")
+      this.context.onChange("header", "red-white")
+  }
+
+  componentDidMount() {
+    if (this.context.header !== "red-white")
+      this.context.onChange("header", "red-white")
+  }
+
+  onChange = (obj) => {
+    this.setState({ ...this.state, ...obj }, () => { console.log(this.state) })
+  }
+
+  render() {
+
+    return (
+      <div id="user">
+
+
+        <div id="info-user">
+          <UserProfil {...this.state} onChange={this.onChange} />
+          <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
+          
+          <Modal index="modalInfo" modal={this.state.modalInfo} onChange={this.onChange}>
+            <Field />
+          </Modal>
+
         </div>
-        <p>My Bio</p>
-        <Tags/>
       </div>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export { User };
