@@ -20,10 +20,10 @@ exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByUsername(username)
 			.then(() => {
-				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
+				reject({ "status": "error", "key": "usernameAlreadyTaken", "msg": "Username already taken !" });
 			})
 			.catch((err) => {
-				resolve({ "status": "success", "key": "username", "msg": '' });
+				resolve({ "status": "success", "key": "usernameAlreadyTaken", "msg": '' });
 			})
 	})
 }

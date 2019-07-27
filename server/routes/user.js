@@ -33,7 +33,6 @@ router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 			"file": req.file
 		}
 	}
-
 	user.new(req.body)
 	.then((result) => {
 		res.status(200).send({"status": "success", "msg": "user registered !"});
@@ -129,7 +128,6 @@ router.get('/', urlencodedParser, (req, res) => {
 		return;
 
 	}
-	// console.log(!req.params.userId);
 	if (!req.params.userId) {
 		user.get(req.token.id)
 		.then((user) => {

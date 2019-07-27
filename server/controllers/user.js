@@ -14,9 +14,25 @@ var eventEmitter = new events.EventEmitter();
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
+		console.log("Hey I");
 		userModel.checkData(data)
 		.then((res) => {
-			return userModel.saveUser(data);
+			return userModel.saveUser({
+				username: data.username,
+				firstname: data.firstname,
+				lastname: data.lastname,
+				location: data.location,
+				password: data.password,
+				gender: data.gender,
+				email: data.email,
+				orientation: data.orientation,
+				age_min: data.age_min,
+				age_max: data.age_max,
+				username: data.username,
+				distance: data.distance,
+				age: data.age,
+				bio: data.bio
+			});
 		})
 		.then((res) => {
 			return location.findGps(data);
@@ -26,6 +42,7 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
+			console.log('out');
 			reject(err);
 		})
 	})

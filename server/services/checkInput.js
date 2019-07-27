@@ -80,3 +80,34 @@ exports.message = (text) => {
 		resolve(text);
 	})
 }
+
+exports.avatar = (avatar) => {
+	return new Promise((resolve, reject) => {
+		if (!avatar.file || !avatar.name)
+			reject({ "status": "error", "key": "avatar", "msg": "Avatar error !" })
+		else
+			resolve({ "status": "success" });
+	})
+}
+
+exports.gender = (text) => {
+	return new Promise((resolve, reject) => {
+
+		console.log('DEBRIEF');
+		if (!text)
+			reject({"status": "error", "key": "gender", "msg": "gender error"})
+		else
+			resolve(text);
+	})
+}
+
+exports.orientation = (text) => {
+	return new Promise((resolve, reject) => {
+
+		console.log('DEBRIEF');
+		if (!text)
+			reject({"status": "error", "key": "orientation", "msg": "orientation error"})
+		else
+			resolve(text);
+	})
+}
