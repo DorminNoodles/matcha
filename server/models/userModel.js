@@ -201,8 +201,6 @@ exports.checkLogin = (username, password) => {
 
 exports.saveGps = (id, long, lat) => {
 	return new Promise((resolve, reject) => {
-		console.log("BORDELLLLLL");
-		console.log(id, long, lat);
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',

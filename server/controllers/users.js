@@ -1,19 +1,51 @@
+const usersModel = require('../models/usersModel');
+const userModel = require('../models/userModel');
 
 
 
-exports.getUsers = () => {
+checkDistance = (distance) => {
+	let defaultDistance = 25;
+
+	distance = parseInt(distance, 10);
+	distance = (isNaN(distance) || !distance) ? defaultDistance : distance;
+	return distance;
+}
+
+checkAge = (ageMin, ageMax) => {
+	let ageMinDefault = 18;
+	let ageMaxDefault = 160;
+	ageMin = isNaN(parseInt(ageMin)) ? ageMinDefault : parseInt(ageMin);
+	ageMax = isNaN(parseInt(ageMax)) ? ageMaxDefault : parseInt(ageMax);
+	return [ageMin, ageMax];
+}
+
+
+exports.getUsers = (query, userId) => {
 	return new Promise((resolve, reject) => {
-		resolve({
-			0: {
-				id: 2,
-				username: 'Galinette',
-				photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Gal_Gadot_%26_Chris_Pine_%2827976790524%29_%28cropped%29.jpg/480px-Gal_Gadot_%26_Chris_Pine_%2827976790524%29_%28cropped%29.jpg'
-			},
-			1: {
-				id: 4,
-				username: 'Kevine',
-				photo: 'https://vignette.wikia.nocookie.net/marvelstudios/images/e/ef/46925E6800000578-5104735-Auburn_beauty_Karen_Gillan_poses_in_a_semi_sheer_lace_blouse_as_-a-113_1511350796748.jpg/revision/latest/scale-to-width-down/310?cb=20180430193817&path-prefix=fr'
-			}
-		});
+
+
+		let params = {
+			'distance': checkDistance(query.distance) * 0.0085,
+			'ageMin': checkAge(query.ageMin, 0)[0],
+			'ageMax': checkAge(0, query.ageMax)[1]
+		}
+
+		console.log('hack_2');
+		console.log('hack_2', params);
+
+		userModel.findUserByID(userId)
+		.then((res) => {
+			// console.log('findUser by id', res);
+			return usersModel.get({...params, originLat: res.latitude, originLong: res.longitude});
+		})
+		.then((res) => {
+			console.log('then ', res);
+			resolve()
+		})
+		.catch((err) => {
+			console.log('reject');
+			reject(err);
+		})
+
 	})
 }

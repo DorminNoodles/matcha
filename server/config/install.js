@@ -43,9 +43,10 @@ async function db() {
 			latitude DOUBLE DEFAULT 0, \
 			longitude DOUBLE DEFAULT 0, \
 			bio TEXT, \
-			age DATETIME, \
+			age INT, \
 			active DATETIME, \
 			reg_date TIMESTAMP, \
+			compatibility INT DEFAULT 63 \
 			distance INT DEFAULT 25, \
 			age_min INT DEFAULT 18, \
 			age_max INT DEFAULT 25 \
