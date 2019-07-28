@@ -153,13 +153,8 @@ exports.saveUser = (data) => {
 exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
 		console.log('here', id);
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
+		database.connection()
+		.then((conn) => {
 			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
 			conn.end();
 			return (result);

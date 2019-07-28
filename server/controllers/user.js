@@ -7,22 +7,10 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
+const inputModel = require('../models/inputModel');
 const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
-
-
-
-// exports.new = (data) => {
-// 	return new Promise((resolve, reject) => {
-//
-// 		console.log('new user !');
-//
-// 		resolve();
-//
-// 	})
-// }
-
 
 const avatarUpload = (data) => {
 	return new Promise((resolve, reject) => {
@@ -36,14 +24,10 @@ const avatarUpload = (data) => {
 }
 
 
-
-
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("Hey I");
 		console.log("Hey I", data.age);
-
-
 
 		userModel.checkData(data)
 		.then((res) => {
@@ -127,9 +111,9 @@ exports.find = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		checkInput.username(data.username)
+		inputModel.username(data.username)
 		.then(() => {
-			return checkInput.password(data.password)
+			return inputModel.password(data.password)
 		})
 		.then(() => {
 			console.log("hello authenticate");
