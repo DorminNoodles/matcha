@@ -155,11 +155,39 @@ exports.age = (age) => {
 	return new Promise((resolve, reject) => {
 		const regex = RegExp(/^[0-9]*$/);
 
-		if (!age){
+		if (!age)
 			reject({ "status": "error", "key": "age", "msg": "Age missing !" })
-		}
 		else if (!regex.test(age))
 			reject({ "status": "error", "key": "age", "msg": "Age bad character !" })
+		else
+			resolve({ "status": "success" });
+	})
+}
+
+exports.ageRange = (ageMin, ageMax) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[0-9]*$/);
+
+		if (!ageMin || !ageMax)
+			reject({ "status": "error", "key": "ageRange", "msg": "Age range missing !" });
+		else if (!regex.test(ageMax) || !regex.test(ageMin))
+			reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
+		else if (agMin < 18)
+			reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+		else
+			resolve({ "status": "success" });
+
+	})
+}
+
+exports.distance = (distance) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[0-9]*$/);
+
+		if (!distance)
+			reject({ "status": "error", "key": "distance", "msg": "Distance missing !" });
+		else if (!regex.test(distance))
+			reject({ "status": "error", "key": "distance", "msg": "Distance bad characters !" });
 		else
 			resolve({ "status": "success" });
 	})

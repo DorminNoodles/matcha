@@ -41,24 +41,24 @@ exports.checkData = (data) => {
 			inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
-			// inputModel.orientation(data.orientation).catch(e => e),
-			// inputModel.avatar(data.avatar).catch(e => e),
-			// inputModel.bio(data.bio).catch(e => e),
+			inputModel.orientation(data.orientation).catch(e => e),
+			inputModel.avatar(data.avatar).catch(e => e),
+			inputModel.bio(data.bio).catch(e => e),
+			inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
+			inputModel.distance(data.distance).catch(e => e),
+			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
 			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
 		]).then((res) => {
 			console.log('HEY&&&&&&&&&&&&');
 			// console.log(res)
 			res.forEach((elem) => {
-				if (elem.status === 'error') {
-					// console.log(elem.key);
+				if (elem.status && elem.status === 'error') {
 					json[elem.key] = elem.msg;
 					error = true;
 				}
 			})
 
 			console.log(json);
-
-
 
 			if (error)
 				reject(json);
@@ -67,7 +67,6 @@ exports.checkData = (data) => {
 		}).catch((err) => {
 			console.log(err);
 			reject(err);
-			// console.log('probleme');
 		})
 
 		console.log("ENDOOOO");
@@ -150,8 +149,6 @@ exports.saveUser = (data) => {
 		})
 		.catch((err) => {
 			console.log('catch >', err);
-			// reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
-			// reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
 			reject(err);
 		})
 	})
