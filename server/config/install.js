@@ -46,7 +46,7 @@ async function db() {
 			age INT, \
 			active DATETIME, \
 			reg_date TIMESTAMP, \
-			compatibility INT DEFAULT 63 \
+			compatibility INT DEFAULT 63, \
 			distance INT DEFAULT 25, \
 			age_min INT DEFAULT 18, \
 			age_max INT DEFAULT 25 \
