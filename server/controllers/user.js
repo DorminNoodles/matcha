@@ -7,18 +7,70 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
-const checkInput = require('../services/checkInput');
 const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
+
+
+// exports.new = (data) => {
+// 	return new Promise((resolve, reject) => {
+//
+// 		console.log('new user !');
+//
+// 		resolve();
+//
+// 	})
+// }
+
+
+const avatarUpload = (data) => {
+	return new Promise((resolve, reject) => {
+		data.avatar.mv('uploads/avatar_' + data.username + '_' + data.avatar.name, (err) => {
+			if (err)
+				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
+			else
+				resolve({status: "success"});
+		})
+	})
+}
+
+
+
+
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
+		console.log("Hey I");
+		console.log("Hey I", data.age);
+
+
+
 		userModel.checkData(data)
 		.then((res) => {
-			return userModel.saveUser(data);
+			console.log('check data > ', res);
+			return avatarUpload(data);
 		})
 		.then((res) => {
+			console.log('avatar upload > ', res);
+			return userModel.saveUser({
+				username: data.username,
+				firstname: data.firstname,
+				lastname: data.lastname,
+				location: data.location,
+				password: data.password,
+				gender: data.gender,
+				email: data.email,
+				orientation: data.orientation,
+				age_min: data.age_min,
+				age_max: data.age_max,
+				username: data.username,
+				distance: data.distance,
+				age: data.age,
+				bio: data.bio
+			});
+		})
+		.then((res) => {
+			console.log('save user > ', res);
 			return location.findGps(data);
 		})
 		.then((res) => {
@@ -26,6 +78,8 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
+			console.log('out > ', err);
+			console.log('user controller check data error !!');
 			reject(err);
 		})
 	})

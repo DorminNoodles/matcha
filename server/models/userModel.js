@@ -9,10 +9,12 @@ const database = require('../controllers/database');
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
+		console.log("data ->> ", data);
 
 		let error = false;
 		let json = {
 			'username': '',
+			'usernameAlreadyTaken': '',
 			'password': '',
 			'confirmPwd': '',
 			'firstname': '',
@@ -26,7 +28,6 @@ exports.checkData = (data) => {
 			'age_min': '',
 			'age_max': '',
 			'distance': '',
-			'bio': '',
 		};
 
 		Promise.all([
@@ -38,31 +39,42 @@ exports.checkData = (data) => {
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
+			inputModel.gender(data.gender).catch(e => e),
+			inputModel.age(data.age).catch(e => e),
+			inputModel.orientation(data.orientation).catch(e => e),
 			inputModel.avatar(data.avatar).catch(e => e),
+			inputModel.bio(data.bio).catch(e => e),
+			inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
+			inputModel.distance(data.distance).catch(e => e),
 			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
-			// inputModel.bio(data.bio).catch(e => e),
-			// inputModel.age(data.age).catch(e => e),
+			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
 		]).then((res) => {
-			res.map((elem) => {
-				if (elem.status === 'success' && elem.key)
+			console.log('HEY&&&&&&&&&&&&');
+			// console.log(res)
+			res.forEach((elem) => {
+				if (elem.status && elem.status === 'error') {
 					json[elem.key] = elem.msg;
-				else if (elem.status === 'error') {
 					error = true;
-					json[elem.key] = elem.msg;
 				}
-			});
+			})
+
+			console.log(json);
+
 			if (error)
 				reject(json);
 			else
-				resolve();
-		});
+				resolve({status: "success", key: "checkData"});
+		}).catch((err) => {
+			console.log(err);
+			reject(err);
+		})
 
+		console.log("ENDOOOO");
 	})
 }
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
-		console.log("findUserByUsername");
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',
@@ -119,29 +131,27 @@ exports.findUserByEmail = (email) => {
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
+		console.log('Here');
+
 		bcrypt.hash(data.password, 10)
-			.then((hash) => {
-				data.password = hash;
-				return mysql.createConnection({
-					port: process.env.PORT,
-					host: 'localhost',
-					user: 'root',
-					password: 'qwerty',
-					database: 'matcha'
-				})
-			})
-	})
+		.then((hash) => {
+			console.log('hash password > ', hash);
+			data.password = hash;
+			return database.connection();
+		})
 		.then((conn) => {
-			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, location)\
-					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
-					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "', '" + data.location + "')");
+			console.log('database connection >', conn);
+			return conn.query("INSERT INTO users SET ?", data);
 		})
 		.then((res) => {
+			console.log('query database > ', res);
 			resolve('User saved');
 		})
 		.catch((err) => {
-			reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
+			console.log('catch >', err);
+			reject(err);
 		})
+	})
 }
 
 exports.findUserById = (id) => {
@@ -269,4 +279,10 @@ exports.changePwd = (email, username, pwd) => {
 				reject({ status: "error", msg: "error db !" });
 			})
 	});
+}
+
+exports.update = (id, data) => {
+	return new Promise((resolve, reject) => {
+
+	})
 }
