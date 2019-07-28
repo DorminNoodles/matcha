@@ -1,8 +1,11 @@
 "use strict";
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const app = express();
 const server = require('http').Server(app);
+
+
 
 const user = require('./routes/user');
 const users = require('./routes/users');
@@ -26,6 +29,7 @@ const socketIO = require("./services/socketIO")(server);
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
 app.use(cors()); //CORS MIDDLEWARE
+app.use(fileUpload());//upload files
 
 // app.use(function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -63,5 +67,21 @@ app.use('/api/gpsDistance', gpsDistance);
 
 
 // test
+
+
+app.get('/test', (req, res) => {
+
+	for (let i = 0; i < 200; i++) {
+		for (let j = 0; j < 4000000; j++) {
+
+		}
+	}
+
+	setTimeout(() => {
+		console.log("Hey");
+		res.send('ok');
+	}, 10);
+
+});
 
 server.listen(3300);

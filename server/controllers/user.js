@@ -7,15 +7,39 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
-const checkInput = require('../services/checkInput');
 const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
+
+
+// exports.new = (data) => {
+// 	return new Promise((resolve, reject) => {
+//
+// 		console.log('new user !');
+//
+// 		resolve();
+//
+// 	})
+// }
+
+
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("Hey I");
+
+
+
 		userModel.checkData(data)
+		.then((res) => {
+			data.avatar.mv('uploads/pouet.jpg', (err) => {
+				if (err)
+					reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
+				else
+					resolve();
+			})
+			// uploads/filename.jpg
+		})
 		.then((res) => {
 			return userModel.saveUser({
 				username: data.username,
@@ -43,6 +67,7 @@ exports.new = (data) => {
 		})
 		.catch((err) => {
 			console.log('out');
+			console.log('user controller check data error !!');
 			reject(err);
 		})
 	})

@@ -30,7 +30,6 @@ exports.checkData = (data) => {
 			'distance': '',
 		};
 
-		console.log("CHECK DATA 8888888");
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
 			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
@@ -40,27 +39,36 @@ exports.checkData = (data) => {
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
+			inputModel.gender(data.gender).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
-			// inputModel.avatar(data.avatar).catch(e => e),
-			// inputModel.gender(data.gender).catch(e => e),
-			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
+			inputModel.avatar(data.avatar).catch(e => e),
 			// inputModel.bio(data.bio).catch(e => e),
 			// inputModel.age(data.age).catch(e => e),
+			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
 		]).then((res) => {
 			console.log('HEY&&&&&&&&&&&&');
+			// console.log(res)
 			res.forEach((elem) => {
 				if (elem.status === 'error') {
+					// console.log(elem.key);
 					json[elem.key] = elem.msg;
 					error = true;
 				}
 			})
-			console.log('fucking json > ', json);
-			if (error)
-				reject(json);
-			else
-				resolve();
+
+			console.log(json);
+
+			console.log('after foreach');
+
+
+
+			// if (error)
+				// reject(json);
+			// else
+				// resolve();
 		}).catch(() => {
-			console.log('probleme');
+			reject({key: "bite"});
+			// console.log('probleme');
 		})
 
 		console.log("ENDOOOO");
@@ -69,7 +77,6 @@ exports.checkData = (data) => {
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
-		console.log("findUserByUsername");
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',
@@ -127,23 +134,25 @@ exports.findUserByEmail = (email) => {
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log('Here');
-		bcrypt.hash(data.password, 10)
-		.then((hash) => {
-			data.password = hash;
-			return database.connection();
-		})
-		.then((conn) => {
-			console.log('>>>> ', data);
-			return conn.query("INSERT INTO users SET ?", data);
-		})
-		.then((res) => {
-			console.log('ta rem');
-			resolve('User saved');
-		})
-		.catch((err) => {
-			console.log(err);
-			reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
-		})
+		reject();
+
+		// bcrypt.hash(data.password, 10)
+		// .then((hash) => {
+		// 	data.password = hash;
+		// 	return database.connection();
+		// })
+		// .then((conn) => {
+		// 	console.log('>>>> ', data);
+		// 	return conn.query("INSERT INTO users SET ?", data);
+		// })
+		// .then((res) => {
+		// 	console.log('ta rem');
+		// 	resolve('User saved');
+		// })
+		// .catch((err) => {
+		// 	console.log(err);
+		// 	reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
+		// })
 	})
 }
 

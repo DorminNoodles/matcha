@@ -2,7 +2,7 @@ const messagesModel = require('../models/messagesModel');
 const user = require('../services/user');
 const jwtToken = require('../services/jwtToken');
 const userModel = require('../models/userModel');
-const checkInput = require('../services/checkInput');
+const inputModel = require('../models/inputModel');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
@@ -13,7 +13,7 @@ exports.new = (data) => {
 		})
 		.then((res) => {
 			data.to_id = res.id;
-			return checkInput.message(data.body);
+			return inputModel.message(data.body);
 		})
 		.then(() => {
 			return messagesModel.new({

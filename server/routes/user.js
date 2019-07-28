@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
 
 const user = require('../controllers/user');
 
@@ -9,30 +8,14 @@ const router = express.Router();
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-var storage = multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, 'uploads/')
-	},
-	filename: function (req, file, callback) {
-		callback(null, file.fieldname + '-' + Date.now() + '.jpg')
-	}
-})
 
-var upload = multer({ storage: storage });
 
-router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
+router.post('/', urlencodedParser, (req, res) => {
+	console.log("new user route");
 
-	req.body.avatar = {
-		"name": '',
-		"file": ''
-	}
+	if (req.files && req.files.avatar)
+		req.body.avatar = req.files.avatar;
 
-	if (req.file && req.file.filename) {
-		req.body.avatar = {
-			"name": req.file.filename,
-			"file": req.file
-		}
-	}
 	user.new(req.body)
 	.then((result) => {
 		res.status(200).send({"status": "success", "msg": "user registered !"});
@@ -41,6 +24,31 @@ router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
 	})
 })
+
+// router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
+//
+// 	console.log("Here post user !!!!!!!@@@@@@@");
+// 	req.body.avatar = {
+// 		"name": '',
+// 		"file": ''
+// 	}
+//
+// 	if (req.file && req.file.filename) {
+// 		req.body.avatar = {
+// 			"name": req.file.filename,
+// 			"file": req.file
+// 		}
+// 	}
+// 	user.new(req.body)
+// 	.then((result) => {
+// 		console.log('routes res success')
+// 		res.status(200).send({"status": "success", "msg": "user registered !"});
+// 	})
+// 	.catch((err) => {
+// 		console.log('routes res error')
+// 		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
+// 	})
+// })
 
 router.put('/', urlencodedParser, (req, res) => {
 	user.update(req.body)
