@@ -24,23 +24,34 @@ var eventEmitter = new events.EventEmitter();
 // }
 
 
+const avatarUpload = (data) => {
+	return new Promise((resolve, reject) => {
+		data.avatar.mv('uploads/avatar_' + data.username + '_' + data.avatar.name, (err) => {
+			if (err)
+				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
+			else
+				resolve({status: "success"});
+		})
+	})
+}
+
+
+
+
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("Hey I");
+		console.log("Hey I", data.age);
 
 
 
 		userModel.checkData(data)
 		.then((res) => {
-			data.avatar.mv('uploads/pouet.jpg', (err) => {
-				if (err)
-					reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
-				else
-					resolve();
-			})
-			// uploads/filename.jpg
+			console.log('check data > ', res);
+			return avatarUpload(data);
 		})
 		.then((res) => {
+			console.log('avatar upload > ', res);
 			return userModel.saveUser({
 				username: data.username,
 				firstname: data.firstname,
@@ -59,6 +70,7 @@ exports.new = (data) => {
 			});
 		})
 		.then((res) => {
+			console.log('save user > ', res);
 			return location.findGps(data);
 		})
 		.then((res) => {
@@ -66,7 +78,7 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log('out');
+			console.log('out > ', err);
 			console.log('user controller check data error !!');
 			reject(err);
 		})

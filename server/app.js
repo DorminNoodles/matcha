@@ -29,7 +29,9 @@ const socketIO = require("./services/socketIO")(server);
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
 app.use(cors()); //CORS MIDDLEWARE
-app.use(fileUpload());//upload files
+app.use(fileUpload({
+	limits: { fileSize: 50 * 1024 * 1024 },
+}));//upload files
 
 // app.use(function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");

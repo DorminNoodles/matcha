@@ -147,7 +147,7 @@ exports.bio = (bio) => {
 		else if (!regex.test(bio))
 			reject({ "status": "error", "key": "bio", "msg": "Bio bad character !" })
 		else
-			resolve();
+			resolve({ "status": "success" });
 	})
 }
 
@@ -156,14 +156,11 @@ exports.age = (age) => {
 		const regex = RegExp(/^[0-9]*$/);
 
 		if (!age){
-			console.log("fuck age > ", age);
-			console.log('missing');
-
 			reject({ "status": "error", "key": "age", "msg": "Age missing !" })
 		}
 		else if (!regex.test(age))
 			reject({ "status": "error", "key": "age", "msg": "Age bad character !" })
 		else
-			resolve();
+			resolve({ "status": "success" });
 	})
 }

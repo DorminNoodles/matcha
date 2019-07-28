@@ -40,10 +40,10 @@ exports.checkData = (data) => {
 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
-			inputModel.orientation(data.orientation).catch(e => e),
-			inputModel.avatar(data.avatar).catch(e => e),
+			inputModel.age(data.age).catch(e => e),
+			// inputModel.orientation(data.orientation).catch(e => e),
+			// inputModel.avatar(data.avatar).catch(e => e),
 			// inputModel.bio(data.bio).catch(e => e),
-			// inputModel.age(data.age).catch(e => e),
 			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
 		]).then((res) => {
 			console.log('HEY&&&&&&&&&&&&');
@@ -58,16 +58,15 @@ exports.checkData = (data) => {
 
 			console.log(json);
 
-			console.log('after foreach');
 
 
-
-			// if (error)
-				// reject(json);
-			// else
-				// resolve();
-		}).catch(() => {
-			reject({key: "bite"});
+			if (error)
+				reject(json);
+			else
+				resolve({status: "success", key: "checkData"});
+		}).catch((err) => {
+			console.log(err);
+			reject(err);
 			// console.log('probleme');
 		})
 
@@ -134,25 +133,27 @@ exports.findUserByEmail = (email) => {
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log('Here');
-		reject();
 
-		// bcrypt.hash(data.password, 10)
-		// .then((hash) => {
-		// 	data.password = hash;
-		// 	return database.connection();
-		// })
-		// .then((conn) => {
-		// 	console.log('>>>> ', data);
-		// 	return conn.query("INSERT INTO users SET ?", data);
-		// })
-		// .then((res) => {
-		// 	console.log('ta rem');
-		// 	resolve('User saved');
-		// })
-		// .catch((err) => {
-		// 	console.log(err);
-		// 	reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
-		// })
+		bcrypt.hash(data.password, 10)
+		.then((hash) => {
+			console.log('hash password > ', hash);
+			data.password = hash;
+			return database.connection();
+		})
+		.then((conn) => {
+			console.log('database connection >', conn);
+			return conn.query("INSERT INTO users SET ?", data);
+		})
+		.then((res) => {
+			console.log('query database > ', res);
+			resolve('User saved');
+		})
+		.catch((err) => {
+			console.log('catch >', err);
+			// reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
+			// reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
+			reject(err);
+		})
 	})
 }
 
