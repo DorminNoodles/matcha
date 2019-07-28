@@ -44,13 +44,9 @@ exports.checkData = (data) => {
 			inputModel.orientation(data.orientation).catch(e => e),
 			inputModel.avatar(data.avatar).catch(e => e),
 			inputModel.bio(data.bio).catch(e => e),
-			inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
+			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
 			inputModel.distance(data.distance).catch(e => e),
-			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
-			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
 		]).then((res) => {
-			console.log('HEY&&&&&&&&&&&&');
-			// console.log(res)
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
 					json[elem.key] = elem.msg;
