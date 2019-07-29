@@ -14,7 +14,7 @@ var eventEmitter = new events.EventEmitter();
 
 const avatarUpload = (data) => {
 	return new Promise((resolve, reject) => {
-		data.avatar.mv('public/pictures/' + data.username + '/avatar_' + data.username + '_' + data.avatar.name, (err) => {
+		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
 			if (err)
 				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
 			else
@@ -22,7 +22,6 @@ const avatarUpload = (data) => {
 		})
 	})
 }
-
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
@@ -50,7 +49,8 @@ exports.new = (data) => {
 				username: data.username,
 				distance: data.distance,
 				age: data.age,
-				bio: data.bio
+				bio: data.bio,
+				avatar: data.avatar.name,
 			});
 		})
 		.then((res) => {
@@ -146,7 +146,8 @@ exports.authenticate = (data) => {
 					location: result.location,
 					latitude: result.latitude,
 					longitude: result.longitude,
-					age: result.age
+					age: result.age,
+					avatar: result.avatar
 				};
 				resolve(datas);
 			}).catch((error) => {
