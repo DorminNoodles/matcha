@@ -54,7 +54,7 @@ exports.checkData = (data) => {
 				}
 			})
 
-			console.log("HERE HERE HERE");
+			console.log(json);
 
 			if (error)
 				reject(json);
@@ -71,7 +71,8 @@ exports.checkData = (data) => {
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
-		}).then((conn) => {
+		.then((conn) => {
+			console.log('HERE !!!!');
 			var result = conn.query('SELECT \
 									username,\
 									id, \
@@ -92,6 +93,7 @@ exports.findUserByUsername = (username) => {
 		}).catch((error) => {
 			reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 		})
+	})
 }
 
 exports.findUserByEmail = (email) => {
