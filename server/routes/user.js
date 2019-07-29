@@ -25,31 +25,6 @@ router.post('/', urlencodedParser, (req, res) => {
 	})
 })
 
-// router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
-//
-// 	console.log("Here post user !!!!!!!@@@@@@@");
-// 	req.body.avatar = {
-// 		"name": '',
-// 		"file": ''
-// 	}
-//
-// 	if (req.file && req.file.filename) {
-// 		req.body.avatar = {
-// 			"name": req.file.filename,
-// 			"file": req.file
-// 		}
-// 	}
-// 	user.new(req.body)
-// 	.then((result) => {
-// 		console.log('routes res success')
-// 		res.status(200).send({"status": "success", "msg": "user registered !"});
-// 	})
-// 	.catch((err) => {
-// 		console.log('routes res error')
-// 		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
-// 	})
-// })
-
 router.put('/', urlencodedParser, (req, res) => {
 	user.update(req.body)
 	.then((res) => {

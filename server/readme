@@ -2,3 +2,6 @@
 
 - visites
 - score
+- use default for AgeMin ageMax in db
+- use default in db for distance
+- avatar

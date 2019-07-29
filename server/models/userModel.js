@@ -54,7 +54,7 @@ exports.checkData = (data) => {
 				}
 			})
 
-			console.log(json);
+			console.log("HERE HERE HERE");
 
 			if (error)
 				reject(json);
@@ -64,19 +64,13 @@ exports.checkData = (data) => {
 			console.log(err);
 			reject(err);
 		})
-
 		console.log("ENDOOOO");
 	})
 }
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
+		database.connection()
 		}).then((conn) => {
 			var result = conn.query('SELECT \
 									username,\
@@ -98,7 +92,6 @@ exports.findUserByUsername = (username) => {
 		}).catch((error) => {
 			reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 		})
-	})
 }
 
 exports.findUserByEmail = (email) => {
@@ -127,8 +120,6 @@ exports.findUserByEmail = (email) => {
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log('Here');
-
 		bcrypt.hash(data.password, 10)
 		.then((hash) => {
 			console.log('hash password > ', hash);
