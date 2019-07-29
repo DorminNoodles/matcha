@@ -91,7 +91,6 @@ router.get('/', urlencodedParser, (req, res) => {
 	if (!req.token){
 		res.status(401).send({ "status": "error", "msg": "User Unauthorized" });
 		return;
-
 	}
 	if (!req.params.userId) {
 		user.get(req.token.id)
