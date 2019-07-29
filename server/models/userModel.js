@@ -83,7 +83,8 @@ exports.findUserByUsername = (username) => {
 									location, \
 									latitude, \
 									longitude, \
-									age \
+									age, \
+									avatar \
 									FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
