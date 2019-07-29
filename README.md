@@ -1,15 +1,20 @@
-# matcha
+# Matcha
+
 
 API
 
 user
 
-post - register
+	post - register
+	get - user/:id
+	put - user/:id
 
-get - user/:id
 
-post - authenticate
+authenticate
 
-put - user/:id
+	post - authenticate
+		body :	user,
+				password
 
-get - user/confirm (activation)
+avatar
+	get/:username
