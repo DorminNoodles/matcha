@@ -14,7 +14,7 @@ var eventEmitter = new events.EventEmitter();
 
 const avatarUpload = (data) => {
 	return new Promise((resolve, reject) => {
-		data.avatar.mv('uploads/avatar_' + data.username + '_' + data.avatar.name, (err) => {
+		data.avatar.mv('public/pictures/' + data.username + '/avatar_' + data.username + '_' + data.avatar.name, (err) => {
 			if (err)
 				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
 			else
