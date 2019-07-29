@@ -24,6 +24,7 @@ const visit = require("./routes/visit");
 const tags = require("./routes/tags");
 const gpsDistance = require("./routes/gpsDistance");
 const authenticate = require("./routes/authenticate");
+const avatar = require("./routes/avatar");
 
 const socketIO = require("./services/socketIO")(server);
 
@@ -68,6 +69,7 @@ app.use('/api/visit', visit);
 app.use('/api/tags', tags);
 app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
+app.use('/api/avatar', avatar);
 
 
 
