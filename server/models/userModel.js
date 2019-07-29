@@ -64,20 +64,15 @@ exports.checkData = (data) => {
 			console.log(err);
 			reject(err);
 		})
-
 		console.log("ENDOOOO");
 	})
 }
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
+		database.connection()
+		.then((conn) => {
+			console.log('HERE !!!!');
 			var result = conn.query('SELECT \
 									username,\
 									id, \
@@ -127,8 +122,6 @@ exports.findUserByEmail = (email) => {
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log('Here');
-
 		bcrypt.hash(data.password, 10)
 		.then((hash) => {
 			console.log('hash password > ', hash);
@@ -153,13 +146,8 @@ exports.saveUser = (data) => {
 exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
 		console.log('here', id);
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
+		database.connection()
+		.then((conn) => {
 			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
 			conn.end();
 			return (result);

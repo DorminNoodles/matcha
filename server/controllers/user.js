@@ -7,26 +7,14 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
+const inputModel = require('../models/inputModel');
 const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
-
-
-// exports.new = (data) => {
-// 	return new Promise((resolve, reject) => {
-//
-// 		console.log('new user !');
-//
-// 		resolve();
-//
-// 	})
-// }
-
-
 const avatarUpload = (data) => {
 	return new Promise((resolve, reject) => {
-		data.avatar.mv('uploads/avatar_' + data.username + '_' + data.avatar.name, (err) => {
+		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
 			if (err)
 				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
 			else
@@ -35,15 +23,10 @@ const avatarUpload = (data) => {
 	})
 }
 
-
-
-
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("Hey I");
 		console.log("Hey I", data.age);
-
-
 
 		userModel.checkData(data)
 		.then((res) => {
@@ -66,7 +49,8 @@ exports.new = (data) => {
 				username: data.username,
 				distance: data.distance,
 				age: data.age,
-				bio: data.bio
+				bio: data.bio,
+				avatar: data.avatar.name,
 			});
 		})
 		.then((res) => {
@@ -127,9 +111,9 @@ exports.find = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		checkInput.username(data.username)
+		inputModel.username(data.username)
 		.then(() => {
-			return checkInput.password(data.password)
+			return inputModel.password(data.password)
 		})
 		.then(() => {
 			console.log("hello authenticate");
@@ -162,7 +146,8 @@ exports.authenticate = (data) => {
 					location: result.location,
 					latitude: result.latitude,
 					longitude: result.longitude,
-					age: result.age
+					age: result.age,
+					avatar: result.avatar
 				};
 				resolve(datas);
 			}).catch((error) => {

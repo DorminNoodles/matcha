@@ -30,6 +30,7 @@ const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
 app.use(cors()); //CORS MIDDLEWARE
 app.use(fileUpload({
+	createParentPath: true,
 	limits: { fileSize: 50 * 1024 * 1024 },
 }));//upload files
 
