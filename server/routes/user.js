@@ -6,8 +6,7 @@ const user = require('../controllers/user');
 
 const router = express.Router();
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 router.post('/', urlencodedParser, (req, res) => {
@@ -25,31 +24,6 @@ router.post('/', urlencodedParser, (req, res) => {
 	})
 })
 
-// router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
-//
-// 	console.log("Here post user !!!!!!!@@@@@@@");
-// 	req.body.avatar = {
-// 		"name": '',
-// 		"file": ''
-// 	}
-//
-// 	if (req.file && req.file.filename) {
-// 		req.body.avatar = {
-// 			"name": req.file.filename,
-// 			"file": req.file
-// 		}
-// 	}
-// 	user.new(req.body)
-// 	.then((result) => {
-// 		console.log('routes res success')
-// 		res.status(200).send({"status": "success", "msg": "user registered !"});
-// 	})
-// 	.catch((err) => {
-// 		console.log('routes res error')
-// 		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
-// 	})
-// })
-
 router.put('/', urlencodedParser, (req, res) => {
 	user.update(req.body)
 	.then((res) => {
@@ -57,23 +31,6 @@ router.put('/', urlencodedParser, (req, res) => {
 	})
 	.catch((err) => {
 		console.log(err);
-	})
-})
-
-router.post('/authenticate', urlencodedParser, (req, res) => {
-	user.authenticate(req.body)
-	.then((resolve) => {
-		res.status(200).send({
-			status: 'ok',
-			message: 'connected !',
-			token: resolve.token,
-			user: resolve.user
-		});
-		console.log('connected !');
-	}).catch((error) => {
-		console.log('error');
-		console.log(error);
-		res.status(500).send(error);
 	})
 })
 

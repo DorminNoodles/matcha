@@ -6,11 +6,13 @@ API
 
 user
 
+	post - register
+	get - user/:id
+	put - user/:id
 
-post - register
-  
-get - user/:id
- 
-post - authenticate
-  
-put - user/:id
+
+authenticate
+
+	post - authenticate
+		body :	user,
+				password
