@@ -35,8 +35,6 @@ exports.get = (params) => {
 			console.log('query > ', res);
 
 			resolve(res);
-
-
 			// if (!res[0])
 			// 	reject({status: "error", key: "getUsers", msg: "Nobody find !"});
 			// else
