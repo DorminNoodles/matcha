@@ -17,4 +17,5 @@ authenticate
 				password
 
 avatar
+
 	get/:username
