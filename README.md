@@ -8,13 +8,13 @@ user
 	post - /
 		create user
 		body:	username,
-				firstname,
-				lastname,
-				password,
-				email,
-				age,
-				distance,
-				location
+			firstname,
+			lastname,
+			password,
+			email,
+			age,
+			distance,
+			location
 
 	get - /
 		get authenticate user
