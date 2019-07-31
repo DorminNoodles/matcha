@@ -6,6 +6,54 @@ const inputModel = require('../models/inputModel');
 
 const database = require('../controllers/database');
 
+exports.checkDataV2 = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("CHECK DATA");
+		console.log("data ->> ", data);
+
+		let filter = [];
+
+		for (let elem in data) {
+			filter.push(elem);
+		}
+
+		Promise.all([
+			inputModel.username(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.password(data.password).catch(e => e),
+			inputModel.firstname(data.firstname).catch(e => e),
+			inputModel.lastname(data.lastname).catch(e => e),
+			inputModel.email(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+			inputModel.location(data.location).catch(e => e),
+			inputModel.gender(data.gender).catch(e => e),
+			inputModel.age(data.age).catch(e => e),
+			inputModel.orientation(data.orientation).catch(e => e),
+			inputModel.avatar(data.avatar).catch(e => e),
+			inputModel.bio(data.bio).catch(e => e),
+			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
+			inputModel.distance(data.distance).catch(e => e),
+		]).then((res) => {
+			let errors;
+
+			console.log(res);
+
+			res.forEach((elem) => {
+				if (elem.status && elem.status === 'error') {
+					console.log(elem.key);
+					if (filter.includes(elem.key))
+						errors[elem.key] = elem.msg;
+				}
+			})
+
+			errors ? reject(errors) : resolve();
+		}).catch((err) => {
+			console.log(err);
+			reject(err);
+		})
+	})
+}
+
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
@@ -252,22 +300,41 @@ exports.changePwd = (email, username, pwd) => {
 			password: 'qwerty',
 			database: 'matcha'
 		})
-			.then((conn) => {
-				console.log("PUTAIN DE MERDE");
-				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
-			})
-			.then((res) => {
-				resolve({ "status": "success", "msg": "Password changed!" });
-			})
-			.catch((err) => {
-				console.log("Error !");
-				reject({ status: "error", msg: "error db !" });
-			})
+		.then((conn) => {
+			console.log("PUTAIN DE MERDE");
+			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+		})
+		.then((res) => {
+			resolve({ "status": "success", "msg": "Password changed!" });
+		})
+		.catch((err) => {
+			console.log("Error !");
+			reject({ status: "error", msg: "error db !" });
+		})
 	});
 }
 
 exports.update = (id, data) => {
 	return new Promise((resolve, reject) => {
+		console.log('### UPDATEUSER ###');
+
+		console.log('ID -> ', id);
+		console.log('data ->', data);
+
+		database.connection()
+		.then((conn) => {
+			return conn.query('UPDATE users SET ? WHERE id=?', [data, id])
+		})
+		.then((res) => {
+			console.log('query > ', res);
+			resolve({status : 'success'});
+		})
+		.catch((err) => {
+			console.log(err);
+			reject({status: "error", code: 502, msg: 'database error !'});
+		})
+
+
 
 	})
 }

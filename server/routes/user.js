@@ -24,8 +24,12 @@ router.post('/', urlencodedParser, (req, res) => {
 	})
 })
 
-router.put('/', urlencodedParser, (req, res) => {
-	user.update(req.body)
+router.patch('/', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !"});
+
+	user.update(req.token.id, req.body)
 	.then((res) => {
 		console.log(req.body);
 	})

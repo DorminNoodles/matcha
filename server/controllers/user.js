@@ -237,3 +237,31 @@ exports.getAvatar = (id) => {
 		})
 	})
 }
+
+exports.update = (id, data) => {
+	return new Promise((resolve, reject) => {
+		console.log('user update !');
+
+		console.log(data);
+
+		userModel.checkDataV2(data)
+		.then((res) => {
+			console.log('check finish');
+			console.log(res);
+
+			return userModel.update(id, data);
+		})
+		.then((res) => {
+			console.log('update user');
+			console.log(res);
+		})
+		.catch(() => {
+			console.log('check finish');
+
+		})
+
+
+
+
+	})
+}

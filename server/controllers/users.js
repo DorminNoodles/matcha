@@ -23,18 +23,6 @@ const checkAge = (ageMin, ageMax) => {
 	return [ageMin, ageMax];
 }
 
-// function compare(a, b) {
-// 	if (a < b)
-// 		return -1;
-// 	if (a est supérieur à b selon les critères de tri)
-// 		return 1;
-// 	return 0;
-// }
-
-// nombres.sort(function(a, b) {
-//   return a - b;
-// });
-
 const sortUsers = (sort, data, userData, callback) => {
 
 	console.log("sortUsers > ", sort);
