@@ -30,11 +30,16 @@ router.patch('/', urlencodedParser, (req, res) => {
 		res.status(401).send({ status: "error", msg: "access denied !"});
 
 	user.update(req.token.id, req.body)
-	.then((res) => {
-		console.log(req.body);
+	.then((result) => {
+		console.log('ROUTE SUCCESS');
+		// console.log(req.body);
+		console.log(result.code);
+		res.status(result.code).send(result);
+
 	})
 	.catch((err) => {
-		console.log(err);
+		console.log(' => ', err.data);
+		res.status(err.code).send({status: "error", msg: err.msg, data: err.data});
 	})
 })
 

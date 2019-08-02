@@ -34,19 +34,17 @@ exports.checkDataV2 = (data) => {
 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
 			inputModel.distance(data.distance).catch(e => e),
 		]).then((res) => {
-			let errors;
+			let errors = {};
 
-			console.log(res);
+			console.log('res => ', res);
 
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
-					console.log(elem.key);
 					if (filter.includes(elem.key))
 						errors[elem.key] = elem.msg;
 				}
 			})
-
-			errors ? reject(errors) : resolve();
+			Object.entries(errors).length ? reject(errors) : resolve();
 		}).catch((err) => {
 			console.log(err);
 			reject(err);
@@ -275,7 +273,6 @@ exports.activateUser = (username, email) => {
 			database: 'matcha'
 		})
 			.then((conn) => {
-				console.log("PUTAIN DE MERDE");
 				let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
 				conn.end();
 				return query;
@@ -319,22 +316,23 @@ exports.update = (id, data) => {
 		console.log('### UPDATEUSER ###');
 
 		console.log('ID -> ', id);
-		console.log('data ->', data);
+		console.log('MAIS WTF');
+		console.log('data pouet ------>>>>>', data);
+
 
 		database.connection()
 		.then((conn) => {
-			return conn.query('UPDATE users SET ? WHERE id=?', [data, id])
+			return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
 		})
 		.then((res) => {
+			console.log('QUERY SUCCESS');
 			console.log('query > ', res);
-			resolve({status : 'success'});
+			resolve();;
 		})
 		.catch((err) => {
 			console.log(err);
 			reject({status: "error", code: 502, msg: 'database error !'});
 		})
-
-
 
 	})
 }

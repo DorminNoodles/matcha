@@ -55,3 +55,17 @@ Binary Mask:
 	homo femme	00 01 01	5
 	bi homme	01 10 11	27
 	bi femme	10 01 11	39
+
+
+
+todo :
+
+	check orientation only heterosexual - homosexual - bisexual
+	check gender male - female
+	block change password from user patch
+	handle change avatar
+	handle change email
+	
+
+
+Wee ha oui test

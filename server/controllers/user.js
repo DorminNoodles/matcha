@@ -241,27 +241,43 @@ exports.getAvatar = (id) => {
 exports.update = (id, data) => {
 	return new Promise((resolve, reject) => {
 		console.log('user update !');
-
 		console.log(data);
+
+		let filter = [
+			'username',
+			'firstname',
+			'lastname',
+			'gender',
+			'orientation',
+			'email',
+			'orientation',
+			'location',
+			'avatar',
+			'age',
+			'age_min',
+			'age_max',
+			'bio',
+		]
+
+
+
 
 		userModel.checkDataV2(data)
 		.then((res) => {
-			console.log('check finish');
-			console.log(res);
-
+			console.log('checkDataV2 resolve !');
+			console.log('send ', id, data);
 			return userModel.update(id, data);
 		})
-		.then((res) => {
+		.then(() => {
 			console.log('update user');
-			console.log(res);
+			// console.log(res);
+			resolve({status: "success", code: 200});
 		})
-		.catch(() => {
-			console.log('check finish');
-
+		.catch((err) => {
+			console.log()
+			console.log(err);
+			console.log('error in update controller');
+			reject({status: "error", code: 403, data: err});
 		})
-
-
-
-
 	})
 }
