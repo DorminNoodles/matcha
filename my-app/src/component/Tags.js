@@ -34,8 +34,8 @@ function ModifyTag({ tagModify, tags, action, fct }) {
                     <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>Close</button>
                 </React.Fragment>
                     :
-                    <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>
-                        <p>Tag</p>
+                    <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })} style={{ margin: "15px 0px" }}>
+                        <p>Tags</p>
                         <span style={{ padding: "0px 5px" }}>
                             <i className="fas fa-tags"></i>
                         </span>
