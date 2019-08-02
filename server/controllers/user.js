@@ -257,10 +257,15 @@ exports.update = (id, data) => {
 			'age_min',
 			'age_max',
 			'bio',
-		]
+		];
 
-
-
+		for (let elem in data) {
+			console.log(elem);
+			if (!filter.includes(elem)) {
+				reject({status: 'error', code: 400, msg: 'Unhautorized key in data'});
+				return;
+			}
+		}
 
 		userModel.checkDataV2(data)
 		.then((res) => {

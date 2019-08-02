@@ -14,7 +14,9 @@ user
 			email,
 			age,
 			distance,
-			location
+			location,
+			ageMin,
+			ageMax,
 
 	get - /
 		get authenticate user
@@ -65,7 +67,7 @@ todo :
 	block change password from user patch
 	handle change avatar
 	handle change email
-	
+
 
 
 Wee ha oui test
