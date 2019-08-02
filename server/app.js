@@ -1,8 +1,11 @@
 "use strict";
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const app = express();
 const server = require('http').Server(app);
+
+
 
 const user = require('./routes/user');
 const users = require('./routes/users');
@@ -20,12 +23,18 @@ const score = require("./routes/score");
 const visit = require("./routes/visit");
 const tags = require("./routes/tags");
 const gpsDistance = require("./routes/gpsDistance");
+const authenticate = require("./routes/authenticate");
+const avatar = require("./routes/avatar");
 
 const socketIO = require("./services/socketIO")(server);
 
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
 app.use(cors()); //CORS MIDDLEWARE
+app.use(fileUpload({
+	createParentPath: true,
+	limits: { fileSize: 50 * 1024 * 1024 },
+}));//upload files
 
 // app.use(function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -59,9 +68,27 @@ app.use('/api/score', score);
 app.use('/api/visit', visit);
 app.use('/api/tags', tags);
 app.use('/api/gpsDistance', gpsDistance);
+app.use('/api/authenticate', authenticate);
+app.use('/api/avatar', avatar);
 
 
 
 // test
+
+
+app.get('/test', (req, res) => {
+
+	for (let i = 0; i < 200; i++) {
+		for (let j = 0; j < 4000000; j++) {
+
+		}
+	}
+
+	setTimeout(() => {
+		console.log("Hey");
+		res.send('ok');
+	}, 10);
+
+});
 
 server.listen(3300);

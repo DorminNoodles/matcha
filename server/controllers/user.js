@@ -7,18 +7,54 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
-const checkInput = require('../services/checkInput');
+const inputModel = require('../models/inputModel');
 const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
+const avatarUpload = (data) => {
+	return new Promise((resolve, reject) => {
+		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
+			if (err)
+				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
+			else
+				resolve({status: "success"});
+		})
+	})
+}
+
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
+		console.log("Hey I");
+		console.log("Hey I", data.age);
+
 		userModel.checkData(data)
 		.then((res) => {
-			return userModel.saveUser(data);
+			console.log('check data > ', res);
+			return avatarUpload(data);
 		})
 		.then((res) => {
+			console.log('avatar upload > ', res);
+			return userModel.saveUser({
+				username: data.username,
+				firstname: data.firstname,
+				lastname: data.lastname,
+				location: data.location,
+				password: data.password,
+				gender: data.gender,
+				email: data.email,
+				orientation: data.orientation,
+				age_min: data.age_min,
+				age_max: data.age_max,
+				username: data.username,
+				distance: data.distance,
+				age: data.age,
+				bio: data.bio,
+				avatar: data.avatar.name,
+			});
+		})
+		.then((res) => {
+			console.log('save user > ', res);
 			return location.findGps(data);
 		})
 		.then((res) => {
@@ -26,6 +62,8 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
+			console.log('out > ', err);
+			console.log('user controller check data error !!');
 			reject(err);
 		})
 	})
@@ -73,9 +111,9 @@ exports.find = (data) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		checkInput.username(data.username)
+		inputModel.username(data.username)
 		.then(() => {
-			return checkInput.password(data.password)
+			return inputModel.password(data.password)
 		})
 		.then(() => {
 			console.log("hello authenticate");
@@ -108,7 +146,8 @@ exports.authenticate = (data) => {
 					location: result.location,
 					latitude: result.latitude,
 					longitude: result.longitude,
-					age: result.age
+					age: result.age,
+					avatar: result.avatar
 				};
 				resolve(datas);
 			}).catch((error) => {
@@ -195,6 +234,50 @@ exports.getAvatar = (id) => {
 		})
 		.catch(() => {
 			reject({"status": "error", "msg": "id invalid"});
+		})
+	})
+}
+
+exports.update = (id, data) => {
+	return new Promise((resolve, reject) => {
+		console.log('user update !');
+		console.log(data);
+
+		let filter = [
+			'username',
+			'firstname',
+			'lastname',
+			'gender',
+			'orientation',
+			'email',
+			'orientation',
+			'location',
+			'avatar',
+			'age',
+			'age_min',
+			'age_max',
+			'bio',
+		]
+
+
+
+
+		userModel.checkDataV2(data)
+		.then((res) => {
+			console.log('checkDataV2 resolve !');
+			console.log('send ', id, data);
+			return userModel.update(id, data);
+		})
+		.then(() => {
+			console.log('update user');
+			// console.log(res);
+			resolve({status: "success", code: 200});
+		})
+		.catch((err) => {
+			console.log()
+			console.log(err);
+			console.log('error in update controller');
+			reject({status: "error", code: 403, data: err});
 		})
 	})
 }

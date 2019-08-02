@@ -1,19 +1,98 @@
+const geolib = require('geolib');
+
+const usersModel = require('../models/usersModel');
+const userModel = require('../models/userModel');
 
 
 
-exports.getUsers = () => {
+
+
+const checkDistance = (distance) => {
+	let defaultDistance = 25;
+
+	distance = parseInt(distance, 10);
+	distance = (isNaN(distance) || !distance) ? defaultDistance : distance;
+	return distance;
+}
+
+const checkAge = (ageMin, ageMax) => {
+	let ageMinDefault = 18;
+	let ageMaxDefault = 160;
+	ageMin = isNaN(parseInt(ageMin)) ? ageMinDefault : parseInt(ageMin);
+	ageMax = isNaN(parseInt(ageMax)) ? ageMaxDefault : parseInt(ageMax);
+	return [ageMin, ageMax];
+}
+
+const sortUsers = (sort, data, userData, callback) => {
+
+	console.log("sortUsers > ", sort);
+
+	switch (sort) {
+		case "score":
+			data.sort((a, b) => {
+				return a.score - b.score;
+			})
+			break;
+		default:
+			data.sort((a, b) => {
+				return a.distance - b.distance;
+			})
+	}
+	callback(data);
+}
+
+const addDistance = (userGps, data) => {
+
+	console.log('user latitude > ', userGps);
+	return data.map((elem) => {
+		console.log('elem latitude > ', elem.latitude);
+		elem.distance = geolib.getDistance(
+			{ latitude: userGps.lat, longitude : userGps.long},
+			{ latitude: elem.latitude, longitude : elem.longitude}
+		) / 1000;
+		return elem;
+	})
+
+}
+
+exports.getUsers = (query, userId) => {
 	return new Promise((resolve, reject) => {
-		resolve({
-			0: {
-				id: 2,
-				username: 'Galinette',
-				photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Gal_Gadot_%26_Chris_Pine_%2827976790524%29_%28cropped%29.jpg/480px-Gal_Gadot_%26_Chris_Pine_%2827976790524%29_%28cropped%29.jpg'
-			},
-			1: {
-				id: 4,
-				username: 'Kevine',
-				photo: 'https://vignette.wikia.nocookie.net/marvelstudios/images/e/ef/46925E6800000578-5104735-Auburn_beauty_Karen_Gillan_poses_in_a_semi_sheer_lace_blouse_as_-a-113_1511350796748.jpg/revision/latest/scale-to-width-down/310?cb=20180430193817&path-prefix=fr'
+
+		let userData;
+		let params = {
+			'distance': checkDistance(query.distance) * 0.0085,
+			'ageMin': checkAge(query.ageMin, 0)[0],// same fonction return array of two
+			'ageMax': checkAge(0, query.ageMax)[1]
+		}
+
+		userModel.findUserById(userId)
+		.then((res) => {
+			console.log('findUsers by id > ', res);
+			userData = res;//get data of self user
+			return usersModel.get({...params, originLat: res.latitude, originLong: res.longitude});
+		})
+		.then((res) => {
+			console.log('query > ', res);
+			return addDistance({lat: userData.latitude, long: userData.longitude}, res);
+		})
+		.then((res) => {
+			//sort is not always active change that please
+
+			console.log('res with distance > ', res);
+
+			if (!res[0]) {
+				reject({status: "error", code: 400, key: "getUsers", msg: "Nobody find !"});
+				return;
 			}
-		});
+			else
+				sortUsers(query.sort, res, userData, (sortData) => {
+					console.log(sortData);
+					resolve(sortData);
+				})
+		})
+		.catch((err) => {
+			console.log('reject', err);
+			reject(err);
+		})
 	})
 }

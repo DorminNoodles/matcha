@@ -1,38 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
 
 const user = require('../controllers/user');
 
 const router = express.Router();
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-var storage = multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, 'uploads/')
-	},
-	filename: function (req, file, callback) {
-		callback(null, file.fieldname + '-' + Date.now() + '.jpg')
-	}
-})
 
-var upload = multer({ storage: storage });
+router.post('/', urlencodedParser, (req, res) => {
+	console.log("new user route");
 
-router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
-
-	req.body.avatar = {
-		"name": '',
-		"file": ''
-	}
-
-	if (req.file && req.file.filename) {
-		req.body.avatar = {
-			"name": req.file.filename,
-			"file": req.file
-		}
-	}
+	if (req.files && req.files.avatar)
+		req.body.avatar = req.files.avatar;
 
 	user.new(req.body)
 	.then((result) => {
@@ -43,20 +24,22 @@ router.post('/', upload.single('avatar'), urlencodedParser, (req, res) => {
 	})
 })
 
-router.post('/authenticate', urlencodedParser, (req, res) => {
-	user.authenticate(req.body)
-	.then((resolve) => {
-		res.status(200).send({
-			status: 'ok',
-			message: 'connected !',
-			token: resolve.token,
-			user: resolve.user
-		});
-		console.log('connected !');
-	}).catch((error) => {
-		console.log('error');
-		console.log(error);
-		res.status(500).send(error);
+router.patch('/', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !"});
+
+	user.update(req.token.id, req.body)
+	.then((result) => {
+		console.log('ROUTE SUCCESS');
+		// console.log(req.body);
+		console.log(result.code);
+		res.status(result.code).send(result);
+
+	})
+	.catch((err) => {
+		console.log(' => ', err.data);
+		res.status(err.code).send({status: "error", msg: err.msg, data: err.data});
 	})
 })
 
@@ -117,9 +100,7 @@ router.get('/', urlencodedParser, (req, res) => {
 	if (!req.token){
 		res.status(401).send({ "status": "error", "msg": "User Unauthorized" });
 		return;
-
 	}
-	// console.log(!req.params.userId);
 	if (!req.params.userId) {
 		user.get(req.token.id)
 		.then((user) => {

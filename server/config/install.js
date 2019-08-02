@@ -35,20 +35,23 @@ async function db() {
 			firstname VARCHAR(255) NOT NULL,	\
 			lastname VARCHAR(255) NOT NULL,	\
 			email VARCHAR(255) NOT NULL,\
+			tmp_email VARCHAR(255),\
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) NOT NULL,\
 			location VARCHAR(255) NOT NULL,\
+			avatar VARCHAR(255) NOT NULL, \
 			mailValidation INT DEFAULT 0,\
 			score INT DEFAULT 0, \
+			age INT, \
+			distance INT DEFAULT 100, \
+			age_min INT DEFAULT 18, \
+			age_max INT DEFAULT 120, \
 			latitude DOUBLE DEFAULT 0, \
 			longitude DOUBLE DEFAULT 0, \
 			bio TEXT, \
-			age DATETIME, \
 			active DATETIME, \
 			reg_date TIMESTAMP, \
-			distance INT DEFAULT 25, \
-			age_min INT DEFAULT 18, \
-			age_max INT DEFAULT 25 \
+			compatibility INT DEFAULT 63 \
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \

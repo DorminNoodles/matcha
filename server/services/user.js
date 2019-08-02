@@ -1,6 +1,6 @@
 "use strict";
 const dotenv = require('dotenv').config();
-const checkInput = require('../services/checkInput');
+// const checkInput = require('../services/checkInput');
 const geoloc = require('../services/geoloc');
 const userModel = require('../models/userModel');
 const Photos = require('../services/photos');
@@ -13,45 +13,45 @@ class User {
 		// }, 2000);
 	}
 
-	checkData(data) {
-		return new Promise((resolve, reject) => {
-			checkInput.username(data.username)
-			.then((res) => {
-				return checkInput.usernameAlreadyTaken(data.username);
-			})
-			.then((res) => {
-				console.log('Username Checked');
-				return checkInput.password(data.password);
-			})
-			.then(function (res) {
-				console.log('Password Checked');
-				return checkInput.firstname(data.firstname);
-			})
-			.then((res) => {
-				console.log('Firstname Checked');
-				return checkInput.lastname(data.lastname);
-			})
-			.then((res) => {
-				console.log('Lastname Checked');
-				return checkInput.location(data.location);
-			})
-			.then((res) => {
-				console.log('Location Checked');
-				return checkInput.email(data.email);
-			})
-			.then((res) => {
-				return checkInput.emailAlreadyTaken(data.username);
-			})
-			.then((res) => {
-				console.log('Email Checked');
-				resolve(data);
-			})
-			.catch((err) => {
-				console.log("ERROR REGISTERED: ", err);
-				reject(err);
-			})
-		})
-	}
+	// checkData(data) {
+	// 	return new Promise((resolve, reject) => {
+	// 		checkInput.username(data.username)
+	// 		.then((res) => {
+	// 			return checkInput.usernameAlreadyTaken(data.username);
+	// 		})
+	// 		.then((res) => {
+	// 			console.log('Username Checked');
+	// 			return checkInput.password(data.password);
+	// 		})
+	// 		.then(function (res) {
+	// 			console.log('Password Checked');
+	// 			return checkInput.firstname(data.firstname);
+	// 		})
+	// 		.then((res) => {
+	// 			console.log('Firstname Checked');
+	// 			return checkInput.lastname(data.lastname);
+	// 		})
+	// 		.then((res) => {
+	// 			console.log('Lastname Checked');
+	// 			return checkInput.location(data.location);
+	// 		})
+	// 		.then((res) => {
+	// 			console.log('Location Checked');
+	// 			return checkInput.email(data.email);
+	// 		})
+	// 		.then((res) => {
+	// 			return checkInput.emailAlreadyTaken(data.username);
+	// 		})
+	// 		.then((res) => {
+	// 			console.log('Email Checked');
+	// 			resolve(data);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log("ERROR REGISTERED: ", err);
+	// 			reject(err);
+	// 		})
+	// 	})
+	// }
 
 	createUser(data) {
 		return new Promise((resolve, reject) => {

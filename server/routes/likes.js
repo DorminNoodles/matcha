@@ -12,7 +12,6 @@ router.get('/', urlencodedParser, (req, res) => {
 	console.log(req.body);
 	likes.getAll(req.body.liker)
 	.then((result) => {
-		// console.log(res);
 		res.send(result);
 	})
 	.catch((err) => {

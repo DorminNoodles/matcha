@@ -6,13 +6,61 @@ const inputModel = require('../models/inputModel');
 
 const database = require('../controllers/database');
 
+exports.checkDataV2 = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("CHECK DATA");
+		console.log("data ->> ", data);
+
+		let filter = [];
+
+		for (let elem in data) {
+			filter.push(elem);
+		}
+
+		Promise.all([
+			inputModel.username(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.password(data.password).catch(e => e),
+			inputModel.firstname(data.firstname).catch(e => e),
+			inputModel.lastname(data.lastname).catch(e => e),
+			inputModel.email(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+			inputModel.location(data.location).catch(e => e),
+			inputModel.gender(data.gender).catch(e => e),
+			inputModel.age(data.age).catch(e => e),
+			inputModel.orientation(data.orientation).catch(e => e),
+			inputModel.avatar(data.avatar).catch(e => e),
+			inputModel.bio(data.bio).catch(e => e),
+			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
+			inputModel.distance(data.distance).catch(e => e),
+		]).then((res) => {
+			let errors = {};
+
+			console.log('res => ', res);
+
+			res.forEach((elem) => {
+				if (elem.status && elem.status === 'error') {
+					if (filter.includes(elem.key))
+						errors[elem.key] = elem.msg;
+				}
+			})
+			Object.entries(errors).length ? reject(errors) : resolve();
+		}).catch((err) => {
+			console.log(err);
+			reject(err);
+		})
+	})
+}
+
 exports.checkData = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
+		console.log("data ->> ", data);
 
 		let error = false;
 		let json = {
 			'username': '',
+			'usernameAlreadyTaken': '',
 			'password': '',
 			'confirmPwd': '',
 			'firstname': '',
@@ -26,7 +74,6 @@ exports.checkData = (data) => {
 			'age_min': '',
 			'age_max': '',
 			'distance': '',
-			'bio': '',
 		};
 
 		Promise.all([
@@ -38,38 +85,40 @@ exports.checkData = (data) => {
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
+			inputModel.gender(data.gender).catch(e => e),
+			inputModel.age(data.age).catch(e => e),
+			inputModel.orientation(data.orientation).catch(e => e),
 			inputModel.avatar(data.avatar).catch(e => e),
-			// inputModel.ageRange(data.age_min, data.age_max).catch(e => e),
-			// inputModel.bio(data.bio).catch(e => e),
-			// inputModel.age(data.age).catch(e => e),
+			inputModel.bio(data.bio).catch(e => e),
+			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
+			inputModel.distance(data.distance).catch(e => e),
 		]).then((res) => {
-			res.map((elem) => {
-				if (elem.status === 'success' && elem.key)
+			res.forEach((elem) => {
+				if (elem.status && elem.status === 'error') {
 					json[elem.key] = elem.msg;
-				else if (elem.status === 'error') {
 					error = true;
-					json[elem.key] = elem.msg;
 				}
-			});
+			})
+
+			console.log(json);
+
 			if (error)
 				reject(json);
 			else
-				resolve();
-		});
-
+				resolve({status: "success", key: "checkData"});
+		}).catch((err) => {
+			console.log(err);
+			reject(err);
+		})
+		console.log("ENDOOOO");
 	})
 }
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
-		console.log("findUserByUsername");
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
+		database.connection()
+		.then((conn) => {
+			console.log('HERE !!!!');
 			var result = conn.query('SELECT \
 									username,\
 									id, \
@@ -80,7 +129,8 @@ exports.findUserByUsername = (username) => {
 									location, \
 									latitude, \
 									longitude, \
-									age \
+									age, \
+									avatar \
 									FROM users WHERE username=?', [username]);
 			conn.end();
 			return result;
@@ -120,40 +170,31 @@ exports.findUserByEmail = (email) => {
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
 		bcrypt.hash(data.password, 10)
-			.then((hash) => {
-				data.password = hash;
-				return mysql.createConnection({
-					port: process.env.PORT,
-					host: 'localhost',
-					user: 'root',
-					password: 'qwerty',
-					database: 'matcha'
-				})
-			})
-	})
+		.then((hash) => {
+			console.log('hash password > ', hash);
+			data.password = hash;
+			return database.connection();
+		})
 		.then((conn) => {
-			return conn.query("INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, location)\
-					VALUES ('" + data.username + "', '" + data.password + "', '" + data.firstname + "',\
-					'" + data.lastname + "', '" + data.email + "', '" + data.gender + "', '" + data.orientation + "', '" + data.location + "')");
+			console.log('database connection >', conn);
+			return conn.query("INSERT INTO users SET ?", data);
 		})
 		.then((res) => {
+			console.log('query database > ', res);
 			resolve('User saved');
 		})
 		.catch((err) => {
-			reject({ "status": "error", "key": "database", "msg": "Connexion error !" });
+			console.log('catch >', err);
+			reject(err);
 		})
+	})
 }
 
 exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
 		console.log('here', id);
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
+		database.connection()
+		.then((conn) => {
 			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
 			conn.end();
 			return (result);
@@ -201,8 +242,6 @@ exports.checkLogin = (username, password) => {
 
 exports.saveGps = (id, long, lat) => {
 	return new Promise((resolve, reject) => {
-		console.log("BORDELLLLLL");
-		console.log(id, long, lat);
 		mysql.createConnection({
 			port: process.env.PORT,
 			host: 'localhost',
@@ -234,7 +273,6 @@ exports.activateUser = (username, email) => {
 			database: 'matcha'
 		})
 			.then((conn) => {
-				console.log("PUTAIN DE MERDE");
 				let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
 				conn.end();
 				return query;
@@ -259,16 +297,42 @@ exports.changePwd = (email, username, pwd) => {
 			password: 'qwerty',
 			database: 'matcha'
 		})
-			.then((conn) => {
-				console.log("PUTAIN DE MERDE");
-				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
-			})
-			.then((res) => {
-				resolve({ "status": "success", "msg": "Password changed!" });
-			})
-			.catch((err) => {
-				console.log("Error !");
-				reject({ status: "error", msg: "error db !" });
-			})
+		.then((conn) => {
+			console.log("PUTAIN DE MERDE");
+			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+		})
+		.then((res) => {
+			resolve({ "status": "success", "msg": "Password changed!" });
+		})
+		.catch((err) => {
+			console.log("Error !");
+			reject({ status: "error", msg: "error db !" });
+		})
 	});
+}
+
+exports.update = (id, data) => {
+	return new Promise((resolve, reject) => {
+		console.log('### UPDATEUSER ###');
+
+		console.log('ID -> ', id);
+		console.log('MAIS WTF');
+		console.log('data pouet ------>>>>>', data);
+
+
+		database.connection()
+		.then((conn) => {
+			return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
+		})
+		.then((res) => {
+			console.log('QUERY SUCCESS');
+			console.log('query > ', res);
+			resolve();;
+		})
+		.catch((err) => {
+			console.log(err);
+			reject({status: "error", code: 502, msg: 'database error !'});
+		})
+
+	})
 }

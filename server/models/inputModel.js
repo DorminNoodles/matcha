@@ -20,10 +20,10 @@ exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByUsername(username)
 			.then(() => {
-				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
+				reject({ "status": "error", "key": "usernameAlreadyTaken", "msg": "Username already taken !" });
 			})
 			.catch((err) => {
-				resolve({ "status": "success", "key": "username", "msg": '' });
+				resolve({ "status": "success", "key": "usernameAlreadyTaken", "msg": '' });
 			})
 	})
 }
@@ -40,7 +40,9 @@ exports.password = (password) => {
 
 exports.firstname = (firstname) => {
 	return new Promise((resolve, reject) => {
-		if (!firstname.match(/^[A-zÀ-ÿ\-\. ]{2,23}$/))
+		if (!firstname)
+			reject({ "status": "error", "key": "firstname", "msg": "Firstname missing !" });
+		else if (!firstname.match(/^[A-zÀ-ÿ\-\. ]{2,23}$/))
 			reject({ "status": "error", "key": "firstname", "msg": "Firstname bad Character !" });
 		else if (!firstname.match(/^.{1,32}$/))
 			reject({ "status": "error", "key": "firstname", "msg": "Firstname bad size !" });
@@ -52,7 +54,9 @@ exports.firstname = (firstname) => {
 
 exports.lastname = (lastname) => {
 	return new Promise((resolve, reject) => {
-		if (!lastname.match(/^[A-zÀ-ÿ\-\. ]{2,23}$/))
+		if (!lastname)
+			reject({ "status": "error", "key": "lastname", "msg": "Lastname missing !" });
+		else if (!lastname.match(/^[A-zÀ-ÿ\-\. ]{2,23}$/))
 			reject({ "status": "error", "key": "lastname", "msg": "Lastname bad Character !" });
 		else if (!lastname.match(/^.{1,32}$/))
 			reject({ "status": "error", "key": "lastname", "msg": "Lastname bad size !" });
@@ -74,27 +78,31 @@ exports.email = (email) => {
 exports.location = (location) => {
 	return new Promise((resolve, reject) => {
 		var reg = /^[a-zA-Z]+$/
-		if (location.match(reg))
-			resolve({ "status": "success", "key": "location", "msg": '' });
-		else
+		if (!location)
+			reject({ "status": "error", "key": "location", "msg": "Location missing !" })
+		else if (!location.match(reg))
 			reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+		else
+			resolve({ "status": "success", "key": "location", "msg": '' });
 	})
 }
 
 exports.message = (text) => {
 	return new Promise((resolve, reject) => {
 		console.log("HELLLO");
-		resolve(text);
+		if (!message)
+			reject({ "status": "error", "key": "message", "msg": "Message Missing !" });
+		else
+			resolve({ "status": "success" });
 	})
 }
 
 exports.avatar = (avatar) => {
 	return new Promise((resolve, reject) => {
-		if (!avatar.file || !avatar.name)
+		if (!avatar || !avatar.name)
 			reject({ "status": "error", "key": "avatar", "msg": "Avatar error !" })
 		else
 			resolve({ "status": "success" });
-		// console.log("HELLLO");
 	})
 }
 
@@ -102,10 +110,85 @@ exports.emailAlreadyTaken = (email) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByEmail(email)
 			.then(() => {
-				reject({ "status": "error", "key": "email", "msg": "Email already taken !" });
+				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
 			})
 			.catch((err) => {
 				resolve({ "status": "success", "key": "email", "msg": '' });
 			})
+	})
+}
+
+exports.orientation = (orientation) => {
+	return new Promise((resolve, reject) => {
+		if (!orientation)
+			reject({ "status": "error", "key": "orientation", "msg": "Orientation error !" })
+		else
+			resolve({ "status": "success" });
+	})
+}
+
+exports.gender = (gender) => {
+	return new Promise((resolve, reject) => {
+		if (!gender)
+			reject({ "status": "error", "key": "gender", "msg": "Gender missing !" })
+		else if (gender != "male" && gender != "female")
+			reject({ "status": "error", "key": "gender", "msg": "Gender error !" })
+		else
+			resolve({ "status": "success" });
+	})
+}
+
+exports.bio = (bio) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[a-zA-Z0-9\s]*$/);
+
+		if (!bio)
+			reject({ "status": "error", "key": "bio", "msg": "Bio missing !" })
+		else if (!regex.test(bio))
+			reject({ "status": "error", "key": "bio", "msg": "Bio bad character !" })
+		else
+			resolve({ "status": "success" });
+	})
+}
+
+exports.age = (age) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[0-9]*$/);
+
+		if (!age)
+			reject({ "status": "error", "key": "age", "msg": "Age missing !" })
+		else if (!regex.test(age))
+			reject({ "status": "error", "key": "age", "msg": "Age bad character !" })
+		else
+			resolve({ "status": "success" });
+	})
+}
+
+exports.ageRange = (ageMin, ageMax) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[0-9]*$/);
+
+		if (!ageMin || !ageMax)
+			reject({ "status": "error", "key": "ageRange", "msg": "Age range missing !" });
+		else if (!regex.test(ageMax) || !regex.test(ageMin))
+			reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
+		else if (agMin < 18)
+			reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+		else
+			resolve({ "status": "success" });
+
+	})
+}
+
+exports.distance = (distance) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[0-9]*$/);
+
+		if (!distance)
+			reject({ "status": "error", "key": "distance", "msg": "Distance missing !" });
+		else if (!regex.test(distance))
+			reject({ "status": "error", "key": "distance", "msg": "Distance bad characters !" });
+		else
+			resolve({ "status": "success" });
 	})
 }
