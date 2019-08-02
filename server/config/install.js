@@ -35,6 +35,7 @@ async function db() {
 			firstname VARCHAR(255) NOT NULL,	\
 			lastname VARCHAR(255) NOT NULL,	\
 			email VARCHAR(255) NOT NULL,\
+			tmp_email VARCHAR(255),\
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) NOT NULL,\
 			location VARCHAR(255) NOT NULL,\
