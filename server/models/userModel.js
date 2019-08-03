@@ -58,23 +58,7 @@ exports.checkData = (data) => {
 		console.log("data ->> ", data);
 
 		let error = false;
-		let json = {
-			'username': '',
-			'usernameAlreadyTaken': '',
-			'password': '',
-			'confirmPwd': '',
-			'firstname': '',
-			'lastname': '',
-			'location': '',
-			'email': '',
-			'avatar': '',
-			'gender': '',
-			'orientation': '',
-			'age': '',
-			'age_min': '',
-			'age_max': '',
-			'distance': '',
-		};
+		let json = {};
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
