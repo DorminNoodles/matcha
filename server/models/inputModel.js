@@ -122,7 +122,7 @@ exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
 		if (!orientation)
 			reject({ "status": "error", "key": "orientation", "msg": "Orientation error !" });
-		else if (gender != "heterosexual" && gender != "homosexual" && gender != "bisexual")
+		else if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
 			reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
 		else
 			resolve({ "status": "success" });

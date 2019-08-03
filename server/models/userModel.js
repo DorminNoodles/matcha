@@ -17,6 +17,7 @@ exports.checkDataV2 = (data) => {
 			filter.push(elem);
 		}
 
+
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
 			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
@@ -102,7 +103,6 @@ exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 		.then((conn) => {
-			console.log('HERE !!!!');
 			var result = conn.query('SELECT \
 									username,\
 									id, \
@@ -119,8 +119,10 @@ exports.findUserByUsername = (username) => {
 			conn.end();
 			return result;
 		}).then((result) => {
-			if (result[0]) { resolve(result[0]); }
-			else { reject({ "status": "error", "key": "user", "msg": "User does not exist" }); }
+			if (result[0])
+				resolve(result[0]);
+			else
+				reject({ "status": "error", "key": "user", "msg": "User does not exist" });
 		}).catch((error) => {
 			reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 		})
@@ -176,7 +178,6 @@ exports.saveUser = (data) => {
 
 exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
-		console.log('here', id);
 		database.connection()
 		.then((conn) => {
 			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
@@ -196,7 +197,6 @@ exports.findUserById = (id) => {
 }
 
 exports.checkLogin = (username, password) => {
-	console.log("hello");
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			port: process.env.PORT,
@@ -303,6 +303,8 @@ exports.update = (id, data) => {
 		console.log('MAIS WTF');
 		console.log('data pouet ------>>>>>', data);
 
+
+		console.log('in update userModel >> ', data);
 
 		database.connection()
 		.then((conn) => {
