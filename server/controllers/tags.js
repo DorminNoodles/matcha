@@ -1,18 +1,25 @@
 const tagsModel = require('../models/tagsModel.js');
 
+
 /*
 	On peut creer des tags
 	supprimer des tags
 	ajouter des users ou en enlever
 
-	Ici on garde un tag avec son id et la list des users qui y ont subscribe
-	ainsi on va pouvoir avoir la list de tous les users propre a un tag (dans users/:tags)
+	on peut ajouter plusieurs fois le meme tag mais pas avec le meme userID
 */
 
 exports.new = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 
-		tagsModel.new(tag, userId)
+		if (!tag || typeof tag != 'string' || !userId || typeof userId != 'number')
+			reject();
+		tag = tag.toLowerCase();
+
+		inputModel.tag(tag)
+		.then((res) => {
+			return tagModel.new(tag, userId)
+		})
 		.then((result) => {
 			console.log("hello : ", result.tag);
 			resolve();

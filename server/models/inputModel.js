@@ -194,3 +194,15 @@ exports.distance = (distance) => {
 			resolve({ "status": "success" });
 	})
 }
+
+exports.tag = (tag) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[a-z0-9]*$/);
+
+		if (!regex.test(tag))
+			reject({ "status": "error", "key": "tag", "msg": "Tag error bad character !" });
+		else
+			resolve({"status": "success"})
+
+	})
+}
