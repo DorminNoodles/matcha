@@ -37,7 +37,7 @@ async function db() {
 			email VARCHAR(255) NOT NULL,\
 			tmp_email VARCHAR(255),\
 			gender VARCHAR(255) NOT NULL,\
-			orientation VARCHAR(255) NOT NULL,\
+			orientation VARCHAR(255) DEFAULT "bisexual",\
 			location VARCHAR(255) NOT NULL,\
 			avatar VARCHAR(255) NOT NULL, \
 			mailValidation INT DEFAULT 0,\

@@ -1,5 +1,5 @@
-const tagsModel = require('../models/tagsModel.js');
-
+const tagsModel = require('../models/tagModel');
+const inputModel = require('../models/inputModel');
 
 /*
 	On peut creer des tags
