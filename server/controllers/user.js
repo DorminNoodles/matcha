@@ -25,32 +25,45 @@ const avatarUpload = (data) => {
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("Hey I");
-		console.log("Hey I", data.age);
 
-		userModel.checkData(data)
+		let filter = [
+			'username',
+			'firstname',
+			'lastname',
+			'email',
+			'password',
+			'location',
+			'avatar',
+			'gender',
+			'orientation',
+			'age',
+			'age_min',
+			'age_max',
+			'bio',
+			'distance',
+		];
+
+		for (let elem in data) {
+			console.log(elem);
+			if (!filter.includes(elem)) {
+				reject({status: 'error', code: 400, msg: 'Unhautorized key in data'});
+				return;
+			}
+		}
+
+
+		userModel.checkDataV2(data)
 		.then((res) => {
 			console.log('check data > ', res);
 			return avatarUpload(data);
 		})
 		.then((res) => {
 			console.log('avatar upload > ', res);
+
+
 			return userModel.saveUser({
-				username: data.username,
-				firstname: data.firstname,
-				lastname: data.lastname,
-				location: data.location,
-				password: data.password,
-				gender: data.gender,
-				email: data.email,
-				orientation: data.orientation,
-				age_min: data.age_min,
-				age_max: data.age_max,
-				username: data.username,
-				distance: data.distance,
-				age: data.age,
-				bio: data.bio,
-				avatar: data.avatar.name,
+				...data,
+				avatar: data.avatar.name
 			});
 		})
 		.then((res) => {
