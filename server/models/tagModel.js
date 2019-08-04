@@ -13,13 +13,13 @@ exports.new = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 		.then((conn) => {
-			conn.query('INSERT INTO tags (`id`, `tag`) VALUES (?, ?)', [userId, tag])
+			conn.query('INSERT INTO tags (`userId`, `tag`) VALUES (?, ?)', [userId, tag])
 			.then((res) => {
-				console.log("OK >>>>>>>>>>>>>> ", res);
+				console.log("Tag sucessfully created");
 				resolve({"status": "success", "key": "tagSaved", "msg": "Tag saved !"});
 			})
 			.catch((err) => {
-				console.log("FUCK >>>>>>>>>>>>>> ", err);
+				console.log("/!\\ Tag save error /!\\");
 				reject({"status": "error", "key": "query", "msg": "Bad query !"});
 			})
 		})
@@ -29,17 +29,18 @@ exports.new = (tag, userId) => {
 	});
 }
 
-exports.get = (tag) => {
+exports.get = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 		.then((conn) => {
-			conn.query('SELECT * FROM `tags` WHERE `tag` = ?', tag)
+			console.log('HERE');
+			conn.query('SELECT * FROM `tags` WHERE `tag` = ? AND `userId` = ?', [tag, userId])
 			.then((res) => {
 				console.log("OK >>>>>>>>>>>>>> ", res);
 				if (res[0])
 					resolve(res[0]);
 				else
-					reject();
+					reject({status: 'error', msg: 'Tag not found'});
 			})
 			.catch((err) => {
 				console.log("FUCK >>>>>>>>>>>>>> ", err);
@@ -48,6 +49,7 @@ exports.get = (tag) => {
 			})
 		})
 		.catch((err) => {
+			console.log(err);
 			reject(err);
 		})
 	});

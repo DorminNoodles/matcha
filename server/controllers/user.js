@@ -7,6 +7,7 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
+const tagsModel = require('../models/tagsModel');
 const inputModel = require('../models/inputModel');
 const location = require('../controllers/location');
 
@@ -98,10 +99,16 @@ exports.createUser = (data) => {
 
 exports.get = (userId) => {
 	return new Promise((resolve, reject) => {
+		let data;
+
 		userModel.findUserById(userId)
 		.then((user) => {
 			user.password = '';
-			resolve(user);
+			data = user;
+			return tagsModel.get(userId);
+		})
+		.then((tags) => {
+			resolve({...data, tags: tags});
 		})
 		.catch((err) => {
 			reject(err);
