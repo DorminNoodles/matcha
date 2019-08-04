@@ -105,10 +105,13 @@ exports.get = (userId) => {
 		.then((user) => {
 			user.password = '';
 			data = user;
-			return tagsModel.get(userId);
-		})
-		.then((tags) => {
-			resolve({...data, tags: tags});
+			tagsModel.get(userId)
+			.then((tags) => {
+				resolve({...data, tags: tags});
+			})
+			.catch(() => {
+				resolve(data);
+			})
 		})
 		.catch((err) => {
 			reject(err);

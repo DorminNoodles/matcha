@@ -46,7 +46,29 @@ exports.get = (tag) => {
 	return new Promise((resolve, reject) => {
 		tagModel.get(tag)
 		.then(() => {
-			resolve({"status": "success", "msg": "Tags saved !"});
+			resolve({"status": "success", "msg": "Tag saved !"});
+		})
+		.catch((err) => {
+			reject(err);
+		})
+	});
+}
+
+exports.delete = (tag, userId) => {
+	return new Promise((resolve, reject) => {
+
+		console.log("hey ho");
+		if (!tag) {
+			reject({status: "error", msg: "Tag missing"});
+			return;
+		}
+		inputModel.tag(tag)
+		.then(() => {
+			return tagModel.delete(tag, userId)
+		})
+		.then((res) => {
+			console.log(res);
+			resolve({"status": "success", "msg": "Tag delete !"});
 		})
 		.catch((err) => {
 			reject(err);

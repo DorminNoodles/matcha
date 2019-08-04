@@ -55,16 +55,21 @@ exports.get = (tag, userId) => {
 	});
 }
 
-exports.patch = (tag, data) => {
+exports.delete = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 		.then((conn) => {
-			let str = data.toString();
-			console.log(str)
-			// conn.query('UPDATE tags SET `users` ')
+			return conn.query('DELETE FROM `tags` WHERE `tag` = ? AND `userId` = ?', [tag, userId])
 		})
-		.cath((err) => {
-			reject(err);
+		.then((res) => {
+			if(!res.affectedRows) {
+				reject({status: 'error', msg: 'Tag not found'});
+				return;
+			}
+			resolve({"status": "success", "key": "tagSaved", "msg": "Tag saved !"});
 		})
-	});
+		.catch((err) => {
+			reject({status: 'error', msg: 'Tag not found'});
+		})
+	})
 }
