@@ -1,5 +1,14 @@
 const database = require('../controllers/database');
 
+/*
+	comment recuperer tous les users qui ont subscribe a un tag ?
+		on peut stocker tous les subscribes dans un json dans la base de donné
+
+	Comment savoir si un user a subscribe a un tag ?
+		on peut stocker dans l'user tous ses tags
+
+*/
+
 exports.new = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
