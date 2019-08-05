@@ -155,6 +155,9 @@ exports.findUserByEmail = (email) => {
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
+
+		console.log(data);
+		
 		bcrypt.hash(data.password, 10)
 		.then((hash) => {
 			console.log('hash password > ', hash);

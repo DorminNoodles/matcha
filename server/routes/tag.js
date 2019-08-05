@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const tags = require('../controllers/tags');
+const tag = require('../controllers/tag');
 
 
 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 router.post('/', urlencodedParser, (req, res) => {
-	
+
 	if (!req.token) {
 		res.status(401).send({"status": "error", "key": "auth", "msg": "bad authentification"});
 		return;
 	}
-	tags.new(req.body.tag, req.body.userId)
+	tag.new(req.body.tag, req.token.id)
 	.then((result) => {
 		res.status(200).send(result);
 	})
@@ -27,7 +27,7 @@ router.get('/', urlencodedParser, (req, res) => {
 		res.status(401).send({"status": "error", "key": "auth", "msg": "bad authentification"});
 		return;
 	}
-	tags.get(req.body.tag)
+	tag.get(req.body.tag)
 	.then((result) => {
 		res.status(200).send(result);
 	})

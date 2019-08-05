@@ -120,9 +120,8 @@ exports.emailAlreadyTaken = (email) => {
 
 exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
-		if (!orientation)
-			reject({ "status": "error", "key": "orientation", "msg": "Orientation error !" });
-		else if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
+ 
+		if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
 			reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
 		else
 			resolve({ "status": "success" });
@@ -192,5 +191,17 @@ exports.distance = (distance) => {
 			reject({ "status": "error", "key": "distance", "msg": "Distance bad characters !" });
 		else
 			resolve({ "status": "success" });
+	})
+}
+
+exports.tag = (tag) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[a-z0-9]*$/);
+
+		if (!regex.test(tag))
+			reject({ "status": "error", "key": "tag", "msg": "Tag error bad character !" });
+		else
+			resolve({"status": "success"})
+
 	})
 }

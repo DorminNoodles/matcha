@@ -37,7 +37,7 @@ async function db() {
 			email VARCHAR(255) NOT NULL,\
 			tmp_email VARCHAR(255),\
 			gender VARCHAR(255) NOT NULL,\
-			orientation VARCHAR(255) NOT NULL,\
+			orientation VARCHAR(255) DEFAULT \'bisexual\',\
 			location VARCHAR(255) NOT NULL,\
 			avatar VARCHAR(255) NOT NULL, \
 			mailValidation INT DEFAULT 0,\
@@ -55,8 +55,8 @@ async function db() {
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
-        	users TEXT, \
-        	tag VARCHAR(255) \
+        	userId INT NOT NULL, \
+        	tag VARCHAR(255) NOT NULL \
         )');
 		await connection.query('CREATE TABLE block (\
         	id INT AUTO_INCREMENT PRIMARY KEY,\
