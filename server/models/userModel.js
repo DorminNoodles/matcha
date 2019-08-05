@@ -302,9 +302,13 @@ exports.update = (id, data) => {
 		console.log('ID -> ', id);
 		console.log('MAIS WTF');
 		console.log('data pouet ------>>>>>', data);
-
-
 		console.log('in update userModel >> ', data);
+
+		if (data.email) {
+			console.log('faire quelque chose');
+			data.tmp_email = data.email;
+			delete data['email'];
+		}
 
 		database.connection()
 		.then((conn) => {
@@ -313,6 +317,7 @@ exports.update = (id, data) => {
 		.then((res) => {
 			console.log('QUERY SUCCESS');
 			console.log('query > ', res);
+			myEmitter.emit('userUpdate', data);
 			resolve();;
 		})
 		.catch((err) => {

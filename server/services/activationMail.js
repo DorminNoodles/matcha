@@ -15,7 +15,7 @@ class ActivationMail {
 
 		console.log("SEND ACTIVATION MAIL");
 
-		var token = jwt.sign({
+		let token = jwt.sign({
 			"username": data.username,
 			"email": data.email
 		}, process.env.JWT_KEY);
@@ -33,7 +33,7 @@ class ActivationMail {
 
 			var key = Math.floor(Math.random()*900000000) + 100000000;
 			console.log(token);
-		    let mailOptions = {
+			let mailOptions = {
 				from: '"Matcha 🔥" <matchaducancer@gmail.com>',
 				to: data.email,
 				subject: 'Confirm your account',
