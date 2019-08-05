@@ -120,6 +120,7 @@ exports.emailAlreadyTaken = (email) => {
 
 exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
+ 
 		if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
 			reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
 		else

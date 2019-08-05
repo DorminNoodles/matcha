@@ -262,6 +262,7 @@ exports.update = (id, data) => {
 	return new Promise((resolve, reject) => {
 		console.log('user update !');
 		console.log(data);
+		console.log('hellooooooooo     ', data.length);
 
 		let filter = [
 			'username',

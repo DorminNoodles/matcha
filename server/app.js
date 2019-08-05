@@ -6,7 +6,6 @@ const app = express();
 const server = require('http').Server(app);
 
 
-
 const user = require('./routes/user');
 const users = require('./routes/users');
 const messages = require('./routes/messages');
