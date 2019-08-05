@@ -291,12 +291,11 @@ exports.update = (id, data) => {
 		userModel.checkDataV2(data)
 		.then((res) => {
 			console.log('checkDataV2 resolve !');
-			console.log('send ', id, data);
+			console.log('send #########', id, data);
 			return userModel.update(id, data);
 		})
 		.then(() => {
 			console.log('update user');
-			// console.log(res);
 			resolve({status: "success", code: 200});
 		})
 		.catch((err) => {

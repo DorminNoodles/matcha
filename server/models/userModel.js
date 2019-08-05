@@ -157,7 +157,7 @@ exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
 
 		console.log(data);
-		
+
 		bcrypt.hash(data.password, 10)
 		.then((hash) => {
 			console.log('hash password > ', hash);
@@ -318,10 +318,15 @@ exports.update = (id, data) => {
 			return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
 		})
 		.then((res) => {
-			console.log('QUERY SUCCESS');
-			console.log('query > ', res);
-			myEmitter.emit('userUpdate', data);
-			resolve();;
+
+			if (res.affectedRows == 1) {
+				console.log('QUERY SUCCESS');
+				myEmitter.emit('userUpdate', data);
+				resolve();;
+			}
+			else {
+				reject({status: "error", msg: "User not found !"});
+			}
 		})
 		.catch((err) => {
 			console.log(err);
