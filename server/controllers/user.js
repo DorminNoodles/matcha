@@ -61,7 +61,6 @@ exports.new = (data) => {
 		.then((res) => {
 			console.log('avatar upload > ', res);
 
-
 			return userModel.saveUser({
 				...data,
 				avatar: data.avatar.name
@@ -299,7 +298,6 @@ exports.update = (id, data) => {
 			resolve({status: "success", code: 200});
 		})
 		.catch((err) => {
-			console.log()
 			console.log(err);
 			console.log('error in update controller');
 			reject({status: "error", code: 403, data: err});

@@ -1,4 +1,5 @@
 const mysql = require('promise-mysql');
+const dotenv = require('dotenv').config();
 
 exports.connection = () => {
 	return new Promise((resolve, reject) => {

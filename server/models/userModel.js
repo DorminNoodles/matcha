@@ -37,14 +37,16 @@ exports.checkDataV2 = (data) => {
 		]).then((res) => {
 			let errors = {};
 
-			console.log('res => ', res);
-
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
 					if (filter.includes(elem.key))
 						errors[elem.key] = elem.msg;
 				}
 			})
+
+			// console.log('errors  ', errors);
+			// errors.username = 'fuck';
+
 			Object.entries(errors).length ? reject(errors) : resolve();
 		}).catch((err) => {
 			console.log(err);
