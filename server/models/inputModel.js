@@ -99,6 +99,8 @@ exports.message = (text) => {
 
 exports.avatar = (avatar) => {
 	return new Promise((resolve, reject) => {
+
+		console.log('AVATAR >>>>' ,avatar);
 		if (!avatar || !avatar.name)
 			reject({ "status": "error", "key": "avatar", "msg": "Avatar error !" })
 		else
@@ -120,7 +122,7 @@ exports.emailAlreadyTaken = (email) => {
 
 exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
- 
+
 		if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
 			reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
 		else

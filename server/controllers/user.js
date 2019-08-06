@@ -52,15 +52,13 @@ exports.new = (data) => {
 			}
 		}
 
-
-		userModel.checkDataV2(data)
+		userModel.checkDataV2(data, filter)
 		.then((res) => {
 			console.log('check data > ', res);
 			return avatarUpload(data);
 		})
 		.then((res) => {
 			console.log('avatar upload > ', res);
-
 			return userModel.saveUser({
 				...data,
 				avatar: data.avatar.name
@@ -263,25 +261,32 @@ exports.update = (id, data) => {
 		console.log(data);
 		console.log('hellooooooooo     ', data.length);
 
-		let filter = [
+		let validKeys = [
 			'username',
 			'firstname',
 			'lastname',
-			'gender',
-			'orientation',
 			'email',
-			'orientation',
+			'password',
 			'location',
 			'avatar',
+			'gender',
+			'orientation',
 			'age',
 			'age_min',
 			'age_max',
 			'bio',
-		];
+			'distance',
+		]
+
+		let filter = [];
+
+		for (let elem in data) {
+			filter.push(elem);
+		}
 
 		for (let elem in data) {
 			console.log(elem);
-			if (!filter.includes(elem)) {
+			if (!validKeys.includes(elem)) {
 				reject({status: 'error', code: 400, msg: 'Unhautorized key in data'});
 				return;
 			}
