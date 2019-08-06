@@ -39,7 +39,7 @@ class Signup extends React.Component {
                 distance: { value: 25, error: "" },
             },
             page: 1,
-            status: { value: "signup", text: "Create your account", function: this.register },
+            status: { value: "signup", text: "Create your account", fct: this.register },
             error: ""
         }
         this.onChange = this.onChange.bind(this)
@@ -60,18 +60,17 @@ class Signup extends React.Component {
             this.context.onChange("header", "white-red")
 
         if (next.location.pathname === "/parameters")
-            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", function: this.modify } },
+            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
                 () => {
                     getUser(this.context.user.token)
                         .then((res) => { this.initInfo(res.data) })
                 })
         else
-            this.setState({ ...this.state, status: { value: "signup", text: "Create your account", function: this.register } })
+            this.setState({ ...this.state, status: { value: "signup", text: "Create your account", fct: this.register } })
 
     }
 
     componentDidMount() {
-
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
     }

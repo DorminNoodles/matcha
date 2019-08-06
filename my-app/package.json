@@ -8,10 +8,11 @@
     "bulma": "^0.7.5",
     "bulma-extensions": "^6.2.7",
     "bulma-tagsinput": "^2.0.0",
-    "query-string": "^6.8.1",
+    "lodash": "^4.17.15",
+    "query-string": "^6.8.2",
     "rc-slider": "^8.6.13",
     "react": "^16.8.6",
-    "react-date-picker": "^7.8.0",
+    "react-date-picker": "^7.8.1",
     "react-dnd": "^7.7.0",
     "react-dnd-html5-backend": "^7.7.0",
     "react-dom": "^16.8.6",
@@ -41,6 +42,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-export-default-from": "^7.5.2"
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "dotenv": "^8.0.0"
   }
 }
