@@ -6,7 +6,7 @@ import Chat from "../container/Chat";
 import { Parameters } from "../container/Parameters";
 import Signin from "../container/Signin";
 import { Signout } from "../container/Signout";
-import Signup from "../container/Signup";
+import SignupAndParams from "../container/SignupAndParams";
 import { Password } from "../container/Password";
 import Header from "../container/Header";
 import HeaderSide from "../container/HeaderSide";
@@ -39,7 +39,7 @@ export {
     Parameters,
     Signin,
     Signout,
-    Signup,
+    SignupAndParams,
     Password,
     Header,
     HeaderSide,

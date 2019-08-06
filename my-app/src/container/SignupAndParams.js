@@ -1,9 +1,10 @@
 import React from 'react';
 import { check } from "../function/signup.js"
-import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/Signup.js"
+import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/SignupAndParams.js"
 import UserProvider from '../context/UserProvider';
 import { register } from "../function/post"
 import { getUser } from '../function/get'
+import { signupInfo } from '../export/object'
 
 class Signup extends React.Component {
     constructor(props) {
@@ -60,13 +61,13 @@ class Signup extends React.Component {
             this.context.onChange("header", "white-red")
 
         if (next.location.pathname === "/parameters")
-            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
+            this.setState({ ...this.state, ...signupInfo, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
                 () => {
                     getUser(this.context.user.token)
                         .then((res) => { this.initInfo(res.data) })
                 })
         else
-            this.setState({ ...this.state, status: { value: "signup", text: "Create your account", fct: this.register } })
+            this.setState({ ...this.state, ...signupInfo, status: { value: "signup", text: "Create your account", fct: this.register } })
 
     }
 
