@@ -1,4 +1,5 @@
 const mysql = require('promise-mysql');
+require('dotenv').config();
 
 async function db() {
 	try {

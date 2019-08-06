@@ -59,7 +59,7 @@ export function register(data, info) {
 export function connect(username, password) {
     return axios({
         method: 'post',
-        url: 'http://localhost:3300/api/user/authenticate',
+        url: 'http://localhost:3300/api/authenticate',
         data: {
             username: username,
             password: password,

@@ -39,7 +39,7 @@ class Signup extends React.Component {
                 distance: { value: 25, error: "" },
             },
             page: 1,
-            status: { value: "signup", function: this.register },
+            status: { value: "signup", text: "Create your account", function: this.register },
             error: ""
         }
         this.onChange = this.onChange.bind(this)
@@ -51,6 +51,10 @@ class Signup extends React.Component {
 
     static contextType = UserProvider;
 
+
+    // get the page's type
+    // if param init info
+
     componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
@@ -59,14 +63,14 @@ class Signup extends React.Component {
             this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", function: this.modify } },
                 () => {
                     getUser(this.context.user.token)
-                        .then((res) => { this.initInfo(res) })
+                        .then((res) => { this.initInfo(res.data) })
                 })
         else
-            this.setState({ ...this.state, status: { value: "signup", text: "Create an account", function: this.register } })
+            this.setState({ ...this.state, status: { value: "signup", text: "Create your account", function: this.register } })
+
     }
 
     componentDidMount() {
-        this.initInfo(this.context.user)
 
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
@@ -78,7 +82,7 @@ class Signup extends React.Component {
         for (var i in nw)
             info[i] = { value: nw[i], error: "" }
 
-        this.setState({ ...this.state, info }, () => {console.log(this.state)})
+        this.setState({ ...this.state, info }, () => { console.log(this.state) })
     }
 
     onChange = (index) => {
@@ -86,6 +90,7 @@ class Signup extends React.Component {
         let { state, state: { info } } = this
         let key = !(index.target) ? Object.keys(index) : (index.target.placeholder).toLowerCase();
         let value = !(index.target) ? Object.values(index)[0] : index.target.value;
+
         this.setState({
             ...state,
             info: {
@@ -158,12 +163,12 @@ class Signup extends React.Component {
         else if (page === 2)
             signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} />
         else
-            signPage = <ThirdPage button={status} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
+            signPage = <ThirdPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg image={image} sendFile={this.sendFile} />
+                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} />
                     {signPage}
                 </div>
             </div>

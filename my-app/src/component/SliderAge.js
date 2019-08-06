@@ -12,9 +12,9 @@ function SliderAgeRange(props) {
   const handle = (props, { age, onChange }) => {
     const { value, dragging, index, ...restProps } = props;
 
-    if (index === 0 && value !== age.min) 
+    if (index === 0 && value !== age.min)
       onChange({ desired: { min: value, max: age.max } });
-    else if (index === 1 && value !== age.max) 
+    else if (index === 1 && value !== age.max)
       onChange({ desired: { min: age.min, max: value } });
 
     return (
@@ -38,7 +38,7 @@ function SliderAgeRange(props) {
       </div>
       <Range
         min={18}
-        defaultValue={[18, 25]}
+        defaultValue={[props.age.min, props.age.max]}
         handle={(e) => handle(e, props)}
         pushable
       />
@@ -47,8 +47,8 @@ function SliderAgeRange(props) {
 }
 
 function SliderAge(props) {
-  
-  const handle = (props, {age, onChange}) => {
+
+  const handle = (props, { age, onChange }) => {
     const { value, dragging, index, ...restProps } = props;
 
     if (value !== age)
@@ -76,7 +76,7 @@ function SliderAge(props) {
       <Slider
         min={18}
         max={100}
-        defaultValue={18}
+        defaultValue={props.age}
         handle={(e) => handle(e, props)}
       />
     </div>
