@@ -27,7 +27,6 @@ describe('post user', () => {
 			const body = res.body;
 
 			expect(body).to.contain.property("status");
-			// expect(body).to.contain.property("status");
 			assert.equal(body.status, 'success', 'Return success');
 
 			done();
@@ -82,7 +81,7 @@ describe('post user', () => {
 		.field('lastname', 'Jericho')
 		.field('age', 34)
 		.field('email', 'tototo4777584@gmailto.com')
-		.field('password', '1234#@c1')
+		.field('password', '1234@c11L')
 		.field('distance', 5)
 		.field('bio', 'zizi')
 		.field('gender', 'male')
@@ -102,24 +101,40 @@ describe('post user', () => {
 		})
 
 	})
+
+	it ('Get user creating without optional fields', (done) => {
+		userModel.findUserByUsername('Soso')
+		.then((data) => {
+			// const body = response.body;
+
+			console.log('8888>>>>>>> ', data);
+
+			expect(data).to.contain.property("username");
+			expect(data).to.contain.property("id");
+			expect(data).to.contain.property("mailValidation");
+			expect(data).to.contain.property("email");
+			expect(data).to.contain.property("gender");
+			expect(data).to.contain.property("orientation");
+			expect(data).to.contain.property("location");
+			expect(data).to.contain.property("latitude");
+			expect(data).to.contain.property("longitude");
+			expect(data).to.contain.property("age");
+			expect(data).to.contain.property("avatar");
+
+
+			assert.equal(data.username, 'Patricko');
+			assert.equal(data.email, 'tototo4777584@gmailto.com');
+			assert.equal(data.age, 34);
+			assert.equal(data.gender, 'male');
+			assert.equal(data.orientation, 'bisexual');
+			assert.equal(data.distance, 5);
+
+			done();
+		})
+		.catch((err) => {
+			console.log('error >>> ', err);
+			done(err);
+		})
+
+	})
 })
-
-
-
-// {
-//     "status": "error",
-//     "data": {
-//         "username": "Username already taken !",
-//         "password": "Bad Password !",
-//         "firstname": "Firstname missing !",
-//         "lastname": "Lastname missing !",
-//         "email": "Bad email !",
-//         "location": "Location missing !",
-//         "gender": "Gender missing !",
-//         "age": "Age missing !",
-//         "orientation": "Orientation not exist !",
-//         "avatar": "Avatar error !",
-//         "bio": "Bio missing !",
-//         "distance": "Distance missing !"
-//     }
-// }

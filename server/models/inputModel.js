@@ -78,12 +78,15 @@ exports.email = (email) => {
 exports.location = (location) => {
 	return new Promise((resolve, reject) => {
 		var reg = /^[a-zA-Z]+$/
-		if (!location)
-			reject({ "status": "error", "key": "location", "msg": "Location missing !" })
-		else if (!location.match(reg))
-			reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+		if (location) {
+			if (!location.match(reg))
+				reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+			else
+				resolve({ "status": "success", "key": "location", "msg": '' });
+		}
 		else
-			resolve({ "status": "success", "key": "location", "msg": '' });
+			resolve({ "status": "success", "key": "location"});
+
 	})
 }
 
