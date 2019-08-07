@@ -120,9 +120,12 @@ exports.emailAlreadyTaken = (email) => {
 
 exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
- 
-		if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
-			reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
+		if (orientation) {
+			if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
+				reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
+			else
+				resolve({ "status": "success" });
+		}
 		else
 			resolve({ "status": "success" });
 	})
@@ -169,12 +172,14 @@ exports.ageRange = (ageMin, ageMax) => {
 	return new Promise((resolve, reject) => {
 		const regex = RegExp(/^[0-9]*$/);
 
-		if (!ageMin || !ageMax)
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range missing !" });
-		else if (!regex.test(ageMax) || !regex.test(ageMin))
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
-		else if (agMin < 18)
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+		if (ageMin && ageMax) {
+			if (!regex.test(ageMax) || !regex.test(ageMin))
+				reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
+			else if (agMin < 18)
+				reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+			else
+				resolve({ "status": "success" });
+		}
 		else
 			resolve({ "status": "success" });
 

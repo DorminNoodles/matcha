@@ -15,6 +15,10 @@ var eventEmitter = new events.EventEmitter();
 
 const avatarUpload = (data) => {
 	return new Promise((resolve, reject) => {
+		if (!data.avatar || !data.avatar.mv) {
+			reject({status: "error", key: "avatar", msg: "Avatar upload error !"})
+			return;
+		}
 		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
 			if (err)
 				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
@@ -38,8 +42,8 @@ exports.new = (data) => {
 			'gender',
 			'orientation',
 			'age',
-			'age_min',
-			'age_max',
+			'ageMin',
+			'ageMax',
 			'bio',
 			'distance',
 		];
@@ -52,8 +56,7 @@ exports.new = (data) => {
 			}
 		}
 
-
-		userModel.checkDataV2(data)
+		userModel.checkDataNew(data)
 		.then((res) => {
 			console.log('check data > ', res);
 			return avatarUpload(data);
@@ -75,7 +78,7 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log('out > ', err);
+			// console.log('out > ', err);
 			console.log('user controller check data error !!');
 			reject(err);
 		})
@@ -287,7 +290,7 @@ exports.update = (id, data) => {
 			}
 		}
 
-		userModel.checkDataV2(data)
+		userModel.checkDataUpdate(data)
 		.then((res) => {
 			console.log('checkDataV2 resolve !');
 			console.log('send #########', id, data);

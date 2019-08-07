@@ -29,7 +29,7 @@
     "websocket": "^1.0.28"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --recursive --exit",
     "start": "nodemon"
   },
   "author": "",

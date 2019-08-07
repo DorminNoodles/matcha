@@ -44,8 +44,8 @@ async function db() {
 			score INT DEFAULT 0, \
 			age INT, \
 			distance INT DEFAULT 100, \
-			age_min INT DEFAULT 18, \
-			age_max INT DEFAULT 120, \
+			ageMin INT DEFAULT 18, \
+			ageMax INT DEFAULT 120, \
 			latitude DOUBLE DEFAULT 0, \
 			longitude DOUBLE DEFAULT 0, \
 			bio TEXT, \

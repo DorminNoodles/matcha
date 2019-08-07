@@ -9,7 +9,7 @@ describe('test1', function() {
 
 	it('error in username', (done) => {
 
-		userModel.checkDataV2({
+		userModel.checkDataNew({
 			username: "Patooo@",
 			firstname: "Jack",
 		})
