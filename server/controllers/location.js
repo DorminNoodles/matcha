@@ -31,7 +31,7 @@ exports.findGpsByAddress = (data) => {
 	})
 }
 
-exports.findGps = (data) => {
+exports.getGps = (data) => {
 	return new Promise((resolve, reject) => {
 
 		let coordGps = {
@@ -62,6 +62,7 @@ exports.findGps = (data) => {
 			})
 		})
 		.catch(() => {
+
 			this.findLocationByIp()
 			.then((res) => {
 

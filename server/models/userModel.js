@@ -6,7 +6,7 @@ const inputModel = require('../models/inputModel');
 
 const database = require('../controllers/database');
 
-exports.checkDataV2 = (data, filter) => {
+exports.checkDataNew = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
 		console.log("data ->> ", data);
@@ -40,12 +40,11 @@ exports.checkDataV2 = (data, filter) => {
 					console.log('elem >>>>> ', elem.key);
 					if (filter.includes(elem.key)){
 						console.log('elem in IF FILTER > ', elem);
+
 						errors[elem.key] = elem.msg;
 					}
 				}
 			})
-
-			console.log('errors', errors);
 
 			Object.entries(errors).length ? reject(errors) : resolve();
 		}).catch((err) => {
@@ -55,13 +54,16 @@ exports.checkDataV2 = (data, filter) => {
 	})
 }
 
-exports.checkData = (data) => {
+exports.checkDataUpdate = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
 		console.log("data ->> ", data);
 
-		let error = false;
-		let json = {};
+		let filter = [];
+
+		for (let elem in data) {
+			filter.push(elem);
+		}
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
@@ -80,26 +82,71 @@ exports.checkData = (data) => {
 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
 			inputModel.distance(data.distance).catch(e => e),
 		]).then((res) => {
+			let errors = {};
+
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
-					json[elem.key] = elem.msg;
-					error = true;
+					if (filter.includes(elem.key))
+						errors[elem.key] = elem.msg;
 				}
 			})
 
-			console.log(json);
+			// console.log('errors  ', errors);
+			// errors.username = 'fuck';
 
-			if (error)
-				reject(json);
-			else
-				resolve({status: "success", key: "checkData"});
+			Object.entries(errors).length ? reject(errors) : resolve();
 		}).catch((err) => {
 			console.log(err);
 			reject(err);
 		})
-		console.log("ENDOOOO");
 	})
 }
+
+// exports.checkData = (data) => {
+// 	return new Promise((resolve, reject) => {
+// 		console.log("CHECK DATA");
+// 		console.log("data ->> ", data);
+//
+// 		let error = false;
+// 		let json = {};
+//
+// 		Promise.all([
+// 			inputModel.username(data.username).catch(e => e),
+// 			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+// 			inputModel.password(data.password).catch(e => e),
+// 			inputModel.firstname(data.firstname).catch(e => e),
+// 			inputModel.lastname(data.lastname).catch(e => e),
+// 			inputModel.email(data.email).catch(e => e),
+// 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+// 			inputModel.location(data.location).catch(e => e),
+// 			inputModel.gender(data.gender).catch(e => e),
+// 			inputModel.age(data.age).catch(e => e),
+// 			inputModel.orientation(data.orientation).catch(e => e),
+// 			inputModel.avatar(data.avatar).catch(e => e),
+// 			inputModel.bio(data.bio).catch(e => e),
+// 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
+// 			inputModel.distance(data.distance).catch(e => e),
+// 		]).then((res) => {
+// 			res.forEach((elem) => {
+// 				if (elem.status && elem.status === 'error') {
+// 					json[elem.key] = elem.msg;
+// 					error = true;
+// 				}
+// 			})
+//
+// 			console.log(json);
+//
+// 			if (error)
+// 				reject(json);
+// 			else
+// 				resolve({status: "success", key: "checkData"});
+// 		}).catch((err) => {
+// 			console.log(err);
+// 			reject(err);
+// 		})
+// 		console.log("ENDOOOO");
+// 	})
+// }
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
@@ -167,7 +214,6 @@ exports.saveUser = (data) => {
 			return database.connection();
 		})
 		.then((conn) => {
-			console.log('database connection >', conn);
 			return conn.query("INSERT INTO users SET ?", data);
 		})
 		.then((res) => {

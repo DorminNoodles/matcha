@@ -15,7 +15,6 @@ const block = require('./routes/block');
 const photos = require('./routes/photos');
 const emitter = require('./emitter');
 const jwtToken = require('./middlewares/jwtToken');
-const geoloc = require('./services/geoloc');
 const chat = require("./routes/chat");
 const score = require("./routes/score");
 const visit = require("./routes/visit");
@@ -30,6 +29,7 @@ const confirm = require("./routes/confirm");
 const socketIO = require("./services/socketIO")(server);
 const activationMail = require('./services/activationMail');
 const changeEmail = require('./services/changeEmail');
+const geolocation = require('./services/geolocation');
 
 
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
@@ -97,3 +97,5 @@ app.get('/test', (req, res) => {
 });
 
 server.listen(3300);
+
+module.exports = server;
