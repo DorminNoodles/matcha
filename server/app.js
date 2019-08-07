@@ -14,7 +14,6 @@ const like = require('./routes/like');
 const block = require('./routes/block');
 const photos = require('./routes/photos');
 const emitter = require('./emitter');
-const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
 const geoloc = require('./services/geoloc');
 const chat = require("./routes/chat");
@@ -24,8 +23,14 @@ const tag = require("./routes/tag");
 const gpsDistance = require("./routes/gpsDistance");
 const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
+const confirm = require("./routes/confirm");
 
+
+//SERVICES
 const socketIO = require("./services/socketIO")(server);
+const activationMail = require('./services/activationMail');
+const changeEmail = require('./services/changeEmail');
+
 
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
@@ -69,6 +74,7 @@ app.use('/api/tag', tag);
 app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
+app.use('/api/confirm', confirm);
 
 
 

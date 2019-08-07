@@ -302,11 +302,6 @@ exports.update = (id, data) => {
 	return new Promise((resolve, reject) => {
 		console.log('### UPDATEUSER ###');
 
-		console.log('ID -> ', id);
-		console.log('MAIS WTF');
-		console.log('data pouet ------>>>>>', data);
-		console.log('in update userModel >> ', data);
-
 		if (data.email) {
 			console.log('faire quelque chose');
 			data.tmp_email = data.email;
@@ -321,7 +316,7 @@ exports.update = (id, data) => {
 
 			if (res.affectedRows == 1) {
 				console.log('QUERY SUCCESS');
-				myEmitter.emit('userUpdate', data);
+				myEmitter.emit('userUpdate', {...data, id});
 				resolve();;
 			}
 			else {
@@ -332,6 +327,24 @@ exports.update = (id, data) => {
 			console.log(err);
 			reject({status: "error", code: 502, msg: 'database error !'});
 		})
+	})
+}
 
+exports.changeEmail = (id, tmp_email) => {
+	return new Promise((resolve, reject) => {
+
+		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
+		database.connection()
+		.then((conn) => {
+			return conn.query('UPDATE users SET ? WHERE id=?', [{"email": tmp_email}, id]);
+		})
+		.then((conn) => {
+			resolve();
+		})
+		.catch((err) => {
+			console.log(err)
+			reject();
+		})
 	})
 }
