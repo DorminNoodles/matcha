@@ -14,6 +14,7 @@ describe('test1', function() {
 
 	it('error in username', (done) => {
 
+<<<<<<< HEAD
 		let data = {
 			username: 'Patooo@',
 		};
@@ -23,6 +24,12 @@ describe('test1', function() {
 		]
 
 		userModel.checkDataV2(data, filter)
+=======
+		userModel.checkDataNew({
+			username: "Patooo@",
+			firstname: "Jack",
+		})
+>>>>>>> origin/mocha
 		.then(() => {
 			done(new Error("should failed"));
 		})

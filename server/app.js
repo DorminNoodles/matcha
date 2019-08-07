@@ -97,3 +97,5 @@ app.get('/test', (req, res) => {
 });
 
 server.listen(3300);
+
+module.exports = server;

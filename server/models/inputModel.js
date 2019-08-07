@@ -78,12 +78,15 @@ exports.email = (email) => {
 exports.location = (location) => {
 	return new Promise((resolve, reject) => {
 		var reg = /^[a-zA-Z]+$/
-		if (!location)
-			reject({ "status": "error", "key": "location", "msg": "Location missing !" })
-		else if (!location.match(reg))
-			reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+		if (location) {
+			if (!location.match(reg))
+				reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+			else
+				resolve({ "status": "success", "key": "location", "msg": '' });
+		}
 		else
-			resolve({ "status": "success", "key": "location", "msg": '' });
+			resolve({ "status": "success", "key": "location"});
+
 	})
 }
 
@@ -122,9 +125,18 @@ exports.emailAlreadyTaken = (email) => {
 
 exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
+<<<<<<< HEAD
 
 		if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
 			reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
+=======
+		if (orientation) {
+			if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
+				reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
+			else
+				resolve({ "status": "success" });
+		}
+>>>>>>> origin/mocha
 		else
 			resolve({ "status": "success" });
 	})
@@ -174,12 +186,14 @@ exports.ageRange = (ageMin, ageMax) => {
 	return new Promise((resolve, reject) => {
 		const regex = RegExp(/^[0-9]*$/);
 
-		if (!ageMin || !ageMax)
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range missing !" });
-		else if (!regex.test(ageMax) || !regex.test(ageMin))
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
-		else if (agMin < 18)
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+		if (ageMin && ageMax) {
+			if (!regex.test(ageMax) || !regex.test(ageMin))
+				reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
+			else if (agMin < 18)
+				reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+			else
+				resolve({ "status": "success" });
+		}
 		else
 			resolve({ "status": "success" });
 
