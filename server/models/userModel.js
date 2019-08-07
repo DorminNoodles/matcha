@@ -6,17 +6,10 @@ const inputModel = require('../models/inputModel');
 
 const database = require('../controllers/database');
 
-exports.checkDataV2 = (data) => {
+exports.checkDataV2 = (data, filter) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
 		console.log("data ->> ", data);
-
-		let filter = [];
-
-		for (let elem in data) {
-			filter.push(elem);
-		}
-
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
@@ -37,14 +30,23 @@ exports.checkDataV2 = (data) => {
 		]).then((res) => {
 			let errors = {};
 
-			console.log('res => ', res);
+
+			console.log('############## HEY >> ', filter);
+
+			console.log('res errors from promise all >>> ', res);
 
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
-					if (filter.includes(elem.key))
+					console.log('elem >>>>> ', elem.key);
+					if (filter.includes(elem.key)){
+						console.log('elem in IF FILTER > ', elem);
 						errors[elem.key] = elem.msg;
+					}
 				}
 			})
+
+			console.log('errors', errors);
+
 			Object.entries(errors).length ? reject(errors) : resolve();
 		}).catch((err) => {
 			console.log(err);
