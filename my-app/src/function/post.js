@@ -15,7 +15,6 @@ export function forgot(email) {
     });
 }
 
-
 export function password(password, confirmPassword, token) {
 
     return axios({
@@ -42,8 +41,8 @@ export function register(data, info) {
         url: 'http://localhost:3300/api/user',
         data,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then(() => {
-        return (info)
+    }).then((res) => {
+        return ({res:info, err: ""})
     }).catch((error) => {
         var err = JSON.parse(error.request.response).data
 
@@ -68,9 +67,7 @@ export function connect(username, password) {
     }).then(response => {
         return ({ res: 1, data: response.data })
     }).catch(error => {
-        console.log({ ...error })
-        return (0)
-
+        return ({ res: 0, data: error.response.data.msg })
     });
 }
 

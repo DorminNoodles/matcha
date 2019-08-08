@@ -158,6 +158,7 @@ form > .inputfile {
   padding: 10px 0px;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
 }
 
 #main {
@@ -381,10 +382,20 @@ form > .inputfile {
 .profil-bottom{
   width: 100%;
   bottom: 0px;
+  display: flex;
+  color:#f5e7e7;
   position: absolute;
   justify-content: space-around;
-  display: flex;
   background: #00000040;
+}
+
+.profil-modal{
+  background: rgba(0, 0, 0, 0.71);
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  color:#f5e7e7;
 }
 
 /* ################################################################### */

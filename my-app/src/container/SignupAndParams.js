@@ -11,39 +11,45 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: { value: "", error: "" },
-            // info: {
-            //     username: { value: "Dormin", error: "" },
-            //     password: { value: "Root123", error: "" },
-            //     confirmation: { value: "Root123", error: "" },
-            //     firstname: { value: "Loic", error: "" },
-            //     lastname: { value: "Chety", error: "" },
-            //     email: { value: "03b237b339@himail.online", error: "" },
-            //     orientation: { value: "bisexual", error: "" },
-            //     gender: { value: "male", error: "" },
-            //     age: { value: 18, error: "" },
-            //     bio: { value: "je suis s", error: "" },
-            //     desired: { value: { min: 18, max: 25 }, error: "" },
-            //     distance: { value: 25, error: "" },
-            // },
             info: {
-                username: { value: "", error: "" },
-                password: { value: "", error: "" },
-                confirmation: { value: "", error: "" },
-                firstname: { value: "", error: "" },
-                lastname: { value: "", error: "" },
-                email: { value: "", error: "" },
+                username: { value: "Dormin", error: "" },
+                password: { value: "Root123", error: "" },
+                confirmation: { value: "Root123", error: "" },
+                firstname: { value: "Loic", error: "" },
+                lastname: { value: "Chety", error: "" },
+                email: { value: "03b237b339@himail.online", error: "" },
                 orientation: { value: "bisexual", error: "" },
-                gender: { value: "", error: "" },
+                gender: { value: "male", error: "" },
                 age: { value: 18, error: "" },
-                bio: { value: "", error: "" },
+                bio: { value: "je suis s", error: "" },
+                desired: { value: { min: 18, max: 25 }, error: "" },
                 age_min: { value: 18, error: "" },
                 age_max: { value: 25, error: "" },
                 ageMin: { value: 18, error: "" },
                 ageMax: { value: 25, error: "" },
                 distance: { value: 25, error: "" },
 
-                location: { value: 25, error: "" },
+                location: { value: "Paris", error: "" },
             },
+            // info: {
+            //     username: { value: "", error: "" },
+            //     password: { value: "", error: "" },
+            //     confirmation: { value: "", error: "" },
+            //     firstname: { value: "", error: "" },
+            //     lastname: { value: "", error: "" },
+            //     email: { value: "", error: "" },
+            //     orientation: { value: "bisexual", error: "" },
+            //     gender: { value: "", error: "" },
+            //     age: { value: 18, error: "" },
+            //     bio: { value: "", error: "" },
+            //     age_min: { value: 18, error: "" },
+            //     age_max: { value: 25, error: "" },
+            //     ageMin: { value: 18, error: "" },
+            //     ageMax: { value: 25, error: "" },
+            //     distance: { value: 25, error: "" },
+
+            //     location: { value: "Paris", error: "" },
+            // },
             page: 1,
             status: { value: "signup", text: "Create your account", fct: this.register },
             error: ""
@@ -65,8 +71,17 @@ class Signup extends React.Component {
     componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+        this.setting(next.location.pathname)
+    }
 
-        if (next.location.pathname === "/parameters")
+    componentDidMount(props) {
+        if (this.context.header !== "white-red")
+            this.context.onChange("header", "white-red")
+        this.setting(this.props.location.pathname)
+    }
+
+    setting(pathname) {
+        if (pathname === "/parameters")
             this.setState({ ...this.state, ...signupInfo, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
                 () => {
                     getUser(this.context.user.token)
@@ -74,12 +89,6 @@ class Signup extends React.Component {
                 })
         else
             this.setState({ ...this.state, ...signupInfo, status: { value: "signup", text: "Create your account", fct: this.register } })
-
-    }
-
-    componentDidMount() {
-        if (this.context.header !== "white-red")
-            this.context.onChange("header", "white-red")
     }
 
     initInfo(nw) {
@@ -179,7 +188,7 @@ class Signup extends React.Component {
         if (page === 1)
             signPage = <FirstPage info={info} onChange={this.onChange} changePage={this.changePage} />
         else if (page === 2)
-            signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage}  onChangeAge={this.onChangeAge}/>
+            signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} onChangeAge={this.onChangeAge} />
         else
             signPage = <ThirdPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
 

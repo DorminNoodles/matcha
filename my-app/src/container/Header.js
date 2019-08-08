@@ -9,15 +9,10 @@ class Header extends React.Component {
         let { header, user } = this.context
 
         return (
-            <nav id="header" className={header}>
-                <Route />
-                <ul>
-                    <li>
-                        <Link to="/parameters" className={header}><i className="fas fa-cog fa-lg"></i></Link>
-                    </li>
-                </ul>
+            <div id="header" className={header}>
+                <span style={{ position: "absolute", right: "11px" }}><i className="fas fa-bell fa-lg"/></span>
                 <div style={{ position: "absolute", right: "62px" }}>{user.username}</div>
-            </nav>
+            </div >
         )
     }
 }

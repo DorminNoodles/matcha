@@ -38,9 +38,11 @@ class HeaderSide extends React.Component {
                                 </li>
                                 <li>
                                     <button className={header} style={{ border: "none" }} onClick={this.logout}>
-                                        <a className={header}><i className="fas fa-sign-out-alt fa-lg header-link"/></a>
+                                        <a className={header}><i className="fas fa-sign-out-alt fa-lg header-link" /></a>
                                     </button>
                                 </li>
+                                <Link to="/parameters" className={header}><i className="fas fa-cog fa-lg header-link"></i></Link>
+
                             </React.Fragment>
                             :
 
