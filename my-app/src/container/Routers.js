@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, User, Match, Chat, SignupAndParams, Signin, Signup, Password, Header, HeaderSide, NotFound, Confirm, Notification } from '../export'
+import { Home, User, Match, Chat, SignupAndParams, Signin, Password, Header, HeaderSide, NotFound, Confirm, Notification } from '../export'
 import Test from './Test'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';

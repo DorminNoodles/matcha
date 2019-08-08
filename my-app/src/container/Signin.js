@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Field } from "../export"
 import { connect } from "../function/post"
 import UserProvider from '../context/UserProvider';

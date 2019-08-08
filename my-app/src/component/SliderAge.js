@@ -9,13 +9,13 @@ const Handle = Slider.Handle;
 
 function SliderAgeRange(props) {
 
-  const handle = (props, { age, onChange }) => {
+  const handle = (props, { age_min, age_max, onChangeAge }) => {
     const { value, dragging, index, ...restProps } = props;
 
-    if (index === 0 && value !== age.min)
-      onChange({ desired: { min: value, max: age.max } });
-    else if (index === 1 && value !== age.max)
-      onChange({ desired: { min: age.min, max: value } });
+    if (index === 0 && value !== age_min)
+      onChangeAge(value, age_max);
+    else if (index === 1 && value !== age_max)
+      onChangeAge(age_min, value);
 
     return (
       <Tooltip
@@ -34,11 +34,11 @@ function SliderAgeRange(props) {
     <div className="field-param">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <p style={{ margin: "10px 0px" }}>Show Ages: </p>
-        <p>{props.age.min} - {props.age.max}</p>
+        <p>{props.age_min} - {props.age_max}</p>
       </div>
       <Range
         min={18}
-        defaultValue={[props.age.min, props.age.max]}
+        defaultValue={[props.age_min, props.age_max]}
         handle={(e) => handle(e, props)}
         pushable
       />

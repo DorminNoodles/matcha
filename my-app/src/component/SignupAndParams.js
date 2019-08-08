@@ -5,7 +5,7 @@ import { SliderAge, SliderLocation, Gender, SexualOrientation, SliderAgeRange } 
 
 function ProfileImg({ image, sendFile, avatar }) {
 
-    let imgProfil = image.value !== "" ? image.value : (avatar && avatar.value !== "" ? process.env.REACT_APP_PUBLIC_URL +"pictures/lisouiw/" + avatar.value : profile)
+    let imgProfil = image.value !== "" ? image.value : (avatar && avatar.value !== "" ? process.env.REACT_APP_PUBLIC_URL + "pictures/lisouiw/" + avatar.value : profile)
     return (
 
         <div className="center" style={{ flexWrap: "wrap", flexDirection: "column" }}>
@@ -52,7 +52,7 @@ function FirstPage({ info, onChange, changePage }) {
     )
 }
 
-function SecondPage({ info, onChange, changePage }) {
+function SecondPage({ info, onChange, changePage, onChangeAge }) {
     return (
 
         <div className="">
@@ -61,7 +61,7 @@ function SecondPage({ info, onChange, changePage }) {
 
             <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
-            <SliderAgeRange onChange={onChange} age={info.desired.value} />
+            <SliderAgeRange onChangeAge={onChangeAge} age_min={info.age_min.value} age_max={info.age_max.value} />
             <SliderLocation onChange={onChange} distance={info.distance.value} />
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
