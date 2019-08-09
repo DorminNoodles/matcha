@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, User, Match, Chat, SignupAndParams, Signin, Password, Header, HeaderSide, NotFound, Confirm, Notification } from '../export'
+import { Home, User, Match, Chat, SignupAndParams, Signin, Password, Header, HeaderSide, NotFound, Confirm, ListMessage, Notification } from '../export'
 import Test from './Test'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
@@ -26,6 +26,7 @@ class Routers extends React.Component {
             <Route exact path="/user/password" component={Password} />
             <Route exact path="/user/:id" render={(props) => <User {...props} />} />
             <Route exact path="/match" component={Match} />
+            <Route exact path="/messages" component={ListMessage} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/signup" component={SignupAndParams} />

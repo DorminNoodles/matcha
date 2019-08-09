@@ -1,18 +1,18 @@
 import Home from "../container/Home";
-import { User } from "../container/User";
+import User from "../container/User";
 import Confirm from "../container/Confirm";
-import { Match } from "../container/Match";
+import Match from "../container/Match";
 import Chat from "../container/Chat";
-import { Parameters } from "../container/Parameters";
+import Parameters from "../container/Parameters";
 import Signin from "../container/Signin";
-import { Signout } from "../container/Signout";
 import SignupAndParams from "../container/SignupAndParams";
-import { Password } from "../container/Password";
+import Password from "../container/Password";
 import Header from "../container/Header";
 import HeaderSide from "../container/HeaderSide";
 import NotFound from "../container/NotFound";
 import Notification from "../container/Notification";
 import Tags from "../container/Tags";
+import ListMessage from "../container/ListMessage";
 
 import { SliderAge } from "../component/SliderAge";
 import { SliderAgeRange } from "../component/SliderAge";
@@ -38,7 +38,6 @@ export {
     Chat,
     Parameters,
     Signin,
-    Signout,
     SignupAndParams,
     Password,
     Header,
@@ -46,6 +45,7 @@ export {
     NotFound,
     Notification,
     Tags,
+    ListMessage,
     SliderAge,
     SliderAgeRange,
     SliderLocation,

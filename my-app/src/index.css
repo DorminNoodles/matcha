@@ -144,7 +144,7 @@ form > .inputfile {
 #side {
   position: absolute;
   top: 50px;
-  width: 50px;
+  width: 40px;
   height: calc(100% - 50px);
   display: flex;
   flex-direction: column;
@@ -163,13 +163,13 @@ form > .inputfile {
 
 #main {
   top: 50px;
-  left: 50px;
+  left: 40px;
   display: flex;
   position: absolute;
   overflow: scroll;
   justify-content: center;
   height: calc(100% - 50px);
-  width: calc(100% - 50px);
+  width: calc(100% - 40px);
   border-radius: 5px 0px 0px;
   background: #B33070 !important;
   color: white;
@@ -235,7 +235,6 @@ form > .inputfile {
 }
 
 .header-chat{
-  width: 75%;
   height: 100px;
   color:white;
   font-size: larger;
@@ -260,28 +259,6 @@ form > .inputfile {
   margin: 10px;
 }
 
-#chat{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background: white;
-}
-
-#list-chat {
-  width: 25%;
-  height:100%;
-  min-width: 75px;
-  background:white;
-  border: 1px solid #cdcdcd;
-}
-
-#conversation {
-  width: 75%;
-  height:100%;
-  background:white;
-  border: 1px solid #B33070;
-  border-width: 1px 0px;
-}
 
 .message-box {
   height: 100px;
@@ -365,6 +342,38 @@ form > .inputfile {
   width: 100%;
   height: 100%;
 }
+/* ################################ CHAT ################################### */
+
+@media screen and (min-width: 480px) {
+  #list-chat {
+    width: 25%;
+    height:100%;
+    min-width: 75px;
+    background:white;
+    border: 1px solid #cdcdcd;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  #list-chat {
+    display: none
+  }
+}
+
+#chat{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: white;
+}
+
+#conversation {
+  position: relative;
+  height:100%;
+  background:white;
+}
+
+/* ################################ PROFIL ################################### */
 
 .profil-image{
   border-radius: 8px;
@@ -396,6 +405,22 @@ form > .inputfile {
   display: flex;
   flex-flow: column;
   color:#f5e7e7;
+}
+
+/* ############################# MESSAGE ###################################### */
+
+.list-message{
+  height: 100%;
+  width: 100%;
+}
+.message-active{
+  font-size: large;
+  border-color: black;
+  display: flex;
+  padding: 5px;
+  border: 1px solid #b33070;
+  border-width: 0px 0px 1px 0px;
+  background: #dbc4cf !important;
 }
 
 /* ################################################################### */

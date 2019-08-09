@@ -61,4 +61,4 @@ class Password extends React.Component {
     }
 }
 
-export { Password };   
+export default Password  
