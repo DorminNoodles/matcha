@@ -6,7 +6,6 @@ const app = express();
 const server = require('http').Server(app);
 
 
-
 const user = require('./routes/user');
 const users = require('./routes/users');
 const messages = require('./routes/messages');
@@ -15,18 +14,23 @@ const like = require('./routes/like');
 const block = require('./routes/block');
 const photos = require('./routes/photos');
 const emitter = require('./emitter');
-const activationMail = require('./services/activationMail');
 const jwtToken = require('./middlewares/jwtToken');
-const geoloc = require('./services/geoloc');
 const chat = require("./routes/chat");
 const score = require("./routes/score");
 const visit = require("./routes/visit");
-const tags = require("./routes/tags");
+const tag = require("./routes/tag");
 const gpsDistance = require("./routes/gpsDistance");
 const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
+const confirm = require("./routes/confirm");
 
+
+//SERVICES
 const socketIO = require("./services/socketIO")(server);
+const activationMail = require('./services/activationMail');
+const changeEmail = require('./services/changeEmail');
+const geolocation = require('./services/geolocation');
+
 
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
 
@@ -66,10 +70,11 @@ app.use('/api/like', like);
 app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
-app.use('/api/tags', tags);
+app.use('/api/tag', tag);
 app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
+app.use('/api/confirm', confirm);
 
 
 
@@ -92,3 +97,5 @@ app.get('/test', (req, res) => {
 });
 
 server.listen(3300);
+
+module.exports = server;

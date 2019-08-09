@@ -14,7 +14,9 @@ user
 			email,
 			age,
 			distance,
-			location
+			location,
+			ageMin,
+			ageMax,
 
 	get - /
 		get authenticate user
@@ -64,8 +66,5 @@ todo :
 	check gender male - female
 	block change password from user patch
 	handle change avatar
-	handle change email
-	
-
-
-Wee ha oui test
+	handle change email (emit event if user update if event update check mail if mail temp so change mail)
+	CHOOSE camelcase or underscore for DATABSE !!!/!\

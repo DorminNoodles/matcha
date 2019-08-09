@@ -20,10 +20,10 @@ exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByUsername(username)
 			.then(() => {
-				reject({ "status": "error", "key": "usernameAlreadyTaken", "msg": "Username already taken !" });
+				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
 			})
 			.catch((err) => {
-				resolve({ "status": "success", "key": "usernameAlreadyTaken", "msg": '' });
+				resolve({ "status": "success", "key": "username", "msg": '' });
 			})
 	})
 }
@@ -78,12 +78,15 @@ exports.email = (email) => {
 exports.location = (location) => {
 	return new Promise((resolve, reject) => {
 		var reg = /^[a-zA-Z]+$/
-		if (!location)
-			reject({ "status": "error", "key": "location", "msg": "Location missing !" })
-		else if (!location.match(reg))
-			reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+		if (location) {
+			if (!location.match(reg))
+				reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+			else
+				resolve({ "status": "success", "key": "location", "msg": '' });
+		}
 		else
-			resolve({ "status": "success", "key": "location", "msg": '' });
+			resolve({ "status": "success", "key": "location"});
+
 	})
 }
 
@@ -99,6 +102,8 @@ exports.message = (text) => {
 
 exports.avatar = (avatar) => {
 	return new Promise((resolve, reject) => {
+
+		console.log('AVATAR >>>>' ,avatar);
 		if (!avatar || !avatar.name)
 			reject({ "status": "error", "key": "avatar", "msg": "Avatar error !" })
 		else
@@ -120,8 +125,12 @@ exports.emailAlreadyTaken = (email) => {
 
 exports.orientation = (orientation) => {
 	return new Promise((resolve, reject) => {
-		if (!orientation)
-			reject({ "status": "error", "key": "orientation", "msg": "Orientation error !" })
+		if (orientation) {
+			if (orientation != "heterosexual" && orientation != "homosexual" && orientation != "bisexual")
+				reject({ "status": "error", "key": "orientation", "msg": "Orientation not exist !" });
+			else
+				resolve({ "status": "success" });
+		}
 		else
 			resolve({ "status": "success" });
 	})
@@ -141,11 +150,14 @@ exports.gender = (gender) => {
 exports.bio = (bio) => {
 	return new Promise((resolve, reject) => {
 		const regex = RegExp(/^[a-zA-Z0-9\s]*$/);
+		// reject({ "status": "error", "key": "bio", "msg": "Bio missing !" })
 
-		if (!bio)
-			reject({ "status": "error", "key": "bio", "msg": "Bio missing !" })
-		else if (!regex.test(bio))
-			reject({ "status": "error", "key": "bio", "msg": "Bio bad character !" })
+		if (bio) {
+			if (!regex.test(bio))
+				reject({ "status": "error", "key": "bio", "msg": "Bio bad character !" })
+			else
+				resolve({ "status": "success" });
+		}
 		else
 			resolve({ "status": "success" });
 	})
@@ -168,12 +180,14 @@ exports.ageRange = (ageMin, ageMax) => {
 	return new Promise((resolve, reject) => {
 		const regex = RegExp(/^[0-9]*$/);
 
-		if (!ageMin || !ageMax)
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range missing !" });
-		else if (!regex.test(ageMax) || !regex.test(ageMin))
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
-		else if (agMin < 18)
-			reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+		if (ageMin && ageMax) {
+			if (!regex.test(ageMax) || !regex.test(ageMin))
+				reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
+			else if (agMin < 18)
+				reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
+			else
+				resolve({ "status": "success" });
+		}
 		else
 			resolve({ "status": "success" });
 
@@ -190,5 +204,17 @@ exports.distance = (distance) => {
 			reject({ "status": "error", "key": "distance", "msg": "Distance bad characters !" });
 		else
 			resolve({ "status": "success" });
+	})
+}
+
+exports.tag = (tag) => {
+	return new Promise((resolve, reject) => {
+		const regex = RegExp(/^[a-z0-9]*$/);
+
+		if (!regex.test(tag))
+			reject({ "status": "error", "key": "tag", "msg": "Tag error bad character !" });
+		else
+			resolve({"status": "success"})
+
 	})
 }

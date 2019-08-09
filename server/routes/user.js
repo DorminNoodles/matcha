@@ -32,7 +32,6 @@ router.patch('/', urlencodedParser, (req, res) => {
 	user.update(req.token.id, req.body)
 	.then((result) => {
 		console.log('ROUTE SUCCESS');
-		// console.log(req.body);
 		console.log(result.code);
 		res.status(result.code).send(result);
 

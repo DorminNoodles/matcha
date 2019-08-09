@@ -29,12 +29,13 @@ class ListMessage extends React.Component {
 
         return (
             <div className="list-message">
-        <Route />
+                <Route />
 
 
                 <Link to={{ pathname: "/chat", search: "?id=1" }}>
                     <div className="message-active">
                         <figure className="image is-96x96">
+                            <div className="green-dot"/>
                             <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                         </figure>
                         <div>
@@ -47,12 +48,13 @@ class ListMessage extends React.Component {
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
+                        <div className="red-dot"/>
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
 
 
@@ -61,81 +63,159 @@ class ListMessage extends React.Component {
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
                         <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
-                    <p>
+                    <div>
                         <p>Lisa</p>
                         <p>Message</p>
-                    </p>
+                    </div>
                 </div>
+
+
+                <div className="white-red" style={{ display: "flex", padding: "5px" }}>
+
+                    <figure className="image is-96x96">
+                        <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
+                    </figure>
+                    <div>
+                        <p>Lisa</p>
+                        <p>Message</p>
+                    </div>
+                </div>
+
+
+                <div className="white-red" style={{ display: "flex", padding: "5px" }}>
+
+                    <figure className="image is-96x96">
+                        <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
+                    </figure>
+                    <div>
+                        <p>Lisa</p>
+                        <p>Message</p>
+                    </div>
+                </div>
+
+
+                <div className="white-red" style={{ display: "flex", padding: "5px" }}>
+
+                    <figure className="image is-96x96">
+                        <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
+                    </figure>
+                    <div>
+                        <p>Lisa</p>
+                        <p>Message</p>
+                    </div>
+                </div>
+
+
+                <div className="white-red" style={{ display: "flex", padding: "5px" }}>
+
+                    <figure className="image is-96x96">
+                        <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
+
+                    </figure>
+                    <div>
+                        <p>Lisa</p>
+                        <p>Message</p>
+                    </div>
+                </div>
+
+
+                <div className="white-red" style={{ display: "flex", padding: "5px" }}>
+
+                    <figure className="image is-96x96">
+                        <img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
+                    </figure>
+                    <div>
+                        <p>Lisa</p>
+                        <p>Message</p>
+                    </div>
+                </div>
+
+
+
 
             </div>
         )

@@ -6,7 +6,55 @@ const inputModel = require('../models/inputModel');
 
 const database = require('../controllers/database');
 
-exports.checkDataV2 = (data) => {
+exports.checkDataNew = (data) => {
+	return new Promise((resolve, reject) => {
+		console.log("CHECK DATA");
+		console.log("data ->> ", data);
+
+		Promise.all([
+			inputModel.username(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.password(data.password).catch(e => e),
+			inputModel.firstname(data.firstname).catch(e => e),
+			inputModel.lastname(data.lastname).catch(e => e),
+			inputModel.email(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+			inputModel.location(data.location).catch(e => e),
+			inputModel.gender(data.gender).catch(e => e),
+			inputModel.age(data.age).catch(e => e),
+			inputModel.orientation(data.orientation).catch(e => e),
+			inputModel.avatar(data.avatar).catch(e => e),
+			inputModel.bio(data.bio).catch(e => e),
+			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
+			inputModel.distance(data.distance).catch(e => e),
+		]).then((res) => {
+			let errors = {};
+
+
+			console.log('############## HEY >> ', filter);
+
+			console.log('res errors from promise all >>> ', res);
+
+			res.forEach((elem) => {
+				if (elem.status && elem.status === 'error') {
+					console.log('elem >>>>> ', elem.key);
+					if (filter.includes(elem.key)){
+						console.log('elem in IF FILTER > ', elem);
+
+						errors[elem.key] = elem.msg;
+					}
+				}
+			})
+
+			Object.entries(errors).length ? reject(errors) : resolve();
+		}).catch((err) => {
+			console.log(err);
+			reject(err);
+		})
+	})
+}
+
+exports.checkDataUpdate = (data) => {
 	return new Promise((resolve, reject) => {
 		console.log("CHECK DATA");
 		console.log("data ->> ", data);
@@ -36,14 +84,16 @@ exports.checkDataV2 = (data) => {
 		]).then((res) => {
 			let errors = {};
 
-			console.log('res => ', res);
-
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
 					if (filter.includes(elem.key))
 						errors[elem.key] = elem.msg;
 				}
 			})
+
+			// console.log('errors  ', errors);
+			// errors.username = 'fuck';
+
 			Object.entries(errors).length ? reject(errors) : resolve();
 		}).catch((err) => {
 			console.log(err);
@@ -52,73 +102,56 @@ exports.checkDataV2 = (data) => {
 	})
 }
 
-exports.checkData = (data) => {
-	return new Promise((resolve, reject) => {
-		console.log("CHECK DATA");
-		console.log("data ->> ", data);
-
-		let error = false;
-		let json = {
-			'username': '',
-			'usernameAlreadyTaken': '',
-			'password': '',
-			'confirmPwd': '',
-			'firstname': '',
-			'lastname': '',
-			'location': '',
-			'email': '',
-			'avatar': '',
-			'gender': '',
-			'orientation': '',
-			'age': '',
-			'age_min': '',
-			'age_max': '',
-			'distance': '',
-		};
-
-		Promise.all([
-			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
-			inputModel.password(data.password).catch(e => e),
-			inputModel.firstname(data.firstname).catch(e => e),
-			inputModel.lastname(data.lastname).catch(e => e),
-			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-			inputModel.location(data.location).catch(e => e),
-			inputModel.gender(data.gender).catch(e => e),
-			inputModel.age(data.age).catch(e => e),
-			inputModel.orientation(data.orientation).catch(e => e),
-			inputModel.avatar(data.avatar).catch(e => e),
-			inputModel.bio(data.bio).catch(e => e),
-			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
-			inputModel.distance(data.distance).catch(e => e),
-		]).then((res) => {
-			res.forEach((elem) => {
-				if (elem.status && elem.status === 'error') {
-					json[elem.key] = elem.msg;
-					error = true;
-				}
-			})
-
-			console.log(json);
-
-			if (error)
-				reject(json);
-			else
-				resolve({status: "success", key: "checkData"});
-		}).catch((err) => {
-			console.log(err);
-			reject(err);
-		})
-		console.log("ENDOOOO");
-	})
-}
+// exports.checkData = (data) => {
+// 	return new Promise((resolve, reject) => {
+// 		console.log("CHECK DATA");
+// 		console.log("data ->> ", data);
+//
+// 		let error = false;
+// 		let json = {};
+//
+// 		Promise.all([
+// 			inputModel.username(data.username).catch(e => e),
+// 			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+// 			inputModel.password(data.password).catch(e => e),
+// 			inputModel.firstname(data.firstname).catch(e => e),
+// 			inputModel.lastname(data.lastname).catch(e => e),
+// 			inputModel.email(data.email).catch(e => e),
+// 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+// 			inputModel.location(data.location).catch(e => e),
+// 			inputModel.gender(data.gender).catch(e => e),
+// 			inputModel.age(data.age).catch(e => e),
+// 			inputModel.orientation(data.orientation).catch(e => e),
+// 			inputModel.avatar(data.avatar).catch(e => e),
+// 			inputModel.bio(data.bio).catch(e => e),
+// 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
+// 			inputModel.distance(data.distance).catch(e => e),
+// 		]).then((res) => {
+// 			res.forEach((elem) => {
+// 				if (elem.status && elem.status === 'error') {
+// 					json[elem.key] = elem.msg;
+// 					error = true;
+// 				}
+// 			})
+//
+// 			console.log(json);
+//
+// 			if (error)
+// 				reject(json);
+// 			else
+// 				resolve({status: "success", key: "checkData"});
+// 		}).catch((err) => {
+// 			console.log(err);
+// 			reject(err);
+// 		})
+// 		console.log("ENDOOOO");
+// 	})
+// }
 
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 		.then((conn) => {
-			console.log('HERE !!!!');
 			var result = conn.query('SELECT \
 									username,\
 									id, \
@@ -135,8 +168,10 @@ exports.findUserByUsername = (username) => {
 			conn.end();
 			return result;
 		}).then((result) => {
-			if (result[0]) { resolve(result[0]); }
-			else { reject({ "status": "error", "key": "user", "msg": "User does not exist" }); }
+			if (result[0])
+				resolve(result[0]);
+			else
+				reject({ "status": "error", "key": "user", "msg": "User does not exist" });
 		}).catch((error) => {
 			reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 		})
@@ -169,6 +204,9 @@ exports.findUserByEmail = (email) => {
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
+
+		console.log(data);
+
 		bcrypt.hash(data.password, 10)
 		.then((hash) => {
 			console.log('hash password > ', hash);
@@ -176,7 +214,6 @@ exports.saveUser = (data) => {
 			return database.connection();
 		})
 		.then((conn) => {
-			console.log('database connection >', conn);
 			return conn.query("INSERT INTO users SET ?", data);
 		})
 		.then((res) => {
@@ -192,7 +229,6 @@ exports.saveUser = (data) => {
 
 exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
-		console.log('here', id);
 		database.connection()
 		.then((conn) => {
 			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
@@ -212,7 +248,6 @@ exports.findUserById = (id) => {
 }
 
 exports.checkLogin = (username, password) => {
-	console.log("hello");
 	return new Promise((resolve, reject) => {
 		mysql.createConnection({
 			port: process.env.PORT,
@@ -315,24 +350,49 @@ exports.update = (id, data) => {
 	return new Promise((resolve, reject) => {
 		console.log('### UPDATEUSER ###');
 
-		console.log('ID -> ', id);
-		console.log('MAIS WTF');
-		console.log('data pouet ------>>>>>', data);
-
+		if (data.email) {
+			console.log('faire quelque chose');
+			data.tmp_email = data.email;
+			delete data['email'];
+		}
 
 		database.connection()
 		.then((conn) => {
 			return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
 		})
 		.then((res) => {
-			console.log('QUERY SUCCESS');
-			console.log('query > ', res);
-			resolve();;
+
+			if (res.affectedRows == 1) {
+				console.log('QUERY SUCCESS');
+				myEmitter.emit('userUpdate', {...data, id});
+				resolve();;
+			}
+			else {
+				reject({status: "error", msg: "User not found !"});
+			}
 		})
 		.catch((err) => {
 			console.log(err);
 			reject({status: "error", code: 502, msg: 'database error !'});
 		})
+	})
+}
 
+exports.changeEmail = (id, tmp_email) => {
+	return new Promise((resolve, reject) => {
+
+		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
+		database.connection()
+		.then((conn) => {
+			return conn.query('UPDATE users SET ? WHERE id=?', [{"email": tmp_email}, id]);
+		})
+		.then((conn) => {
+			resolve();
+		})
+		.catch((err) => {
+			console.log(err)
+			reject();
+		})
 	})
 }

@@ -7,6 +7,7 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
+const tagsModel = require('../models/tagsModel');
 const inputModel = require('../models/inputModel');
 const location = require('../controllers/location');
 
@@ -14,6 +15,10 @@ var eventEmitter = new events.EventEmitter();
 
 const avatarUpload = (data) => {
 	return new Promise((resolve, reject) => {
+		if (!data.avatar || !data.avatar.mv) {
+			reject({status: "error", key: "avatar", msg: "Avatar upload error !"})
+			return;
+		}
 		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
 			if (err)
 				reject({status: "error", key: "avatar", msg: "Avatar upload error !"});
@@ -25,10 +30,34 @@ const avatarUpload = (data) => {
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("Hey I");
-		console.log("Hey I", data.age);
 
-		userModel.checkData(data)
+		let filter = [
+			'username',
+			'firstname',
+			'lastname',
+			'email',
+			'password',
+			'location',
+			'avatar',
+			'gender',
+			'orientation',
+			'age',
+			'ageMin',
+			'ageMax',
+			'bio',
+			'distance',
+		];
+
+		for (let elem in data) {
+			console.log(elem);
+			if (!filter.includes(elem)) {
+				reject({status: 'error', code: 400, msg: 'Unhautorized key in data'});
+				return;
+			}
+		}
+
+
+		userModel.checkDataNew(data)
 		.then((res) => {
 			console.log('check data > ', res);
 			return avatarUpload(data);
@@ -36,21 +65,8 @@ exports.new = (data) => {
 		.then((res) => {
 			console.log('avatar upload > ', res);
 			return userModel.saveUser({
-				username: data.username,
-				firstname: data.firstname,
-				lastname: data.lastname,
-				location: data.location,
-				password: data.password,
-				gender: data.gender,
-				email: data.email,
-				orientation: data.orientation,
-				age_min: data.age_min,
-				age_max: data.age_max,
-				username: data.username,
-				distance: data.distance,
-				age: data.age,
-				bio: data.bio,
-				avatar: data.avatar.name,
+				...data,
+				avatar: data.avatar.name
 			});
 		})
 		.then((res) => {
@@ -62,7 +78,7 @@ exports.new = (data) => {
 			resolve(res);
 		})
 		.catch((err) => {
-			console.log('out > ', err);
+			// console.log('out > ', err);
 			console.log('user controller check data error !!');
 			reject(err);
 		})
@@ -85,10 +101,16 @@ exports.createUser = (data) => {
 
 exports.get = (userId) => {
 	return new Promise((resolve, reject) => {
+		let data;
+
 		userModel.findUserById(userId)
 		.then((user) => {
 			user.password = '';
-			resolve(user);
+			data = user;
+			return tagsModel.get(userId);
+		})
+		.then((tags) => {
+			resolve({...data, tags: tags});
 		})
 		.catch((err) => {
 			reject(err);
@@ -242,42 +264,81 @@ exports.update = (id, data) => {
 	return new Promise((resolve, reject) => {
 		console.log('user update !');
 		console.log(data);
+		console.log('hellooooooooo     ', data.length);
 
-		let filter = [
+		let validKeys = [
 			'username',
 			'firstname',
 			'lastname',
-			'gender',
-			'orientation',
 			'email',
-			'orientation',
+			'password',
 			'location',
 			'avatar',
+			'gender',
+			'orientation',
 			'age',
 			'age_min',
 			'age_max',
 			'bio',
+			'distance',
 		]
 
+		let filter = [];
 
+		for (let elem in data) {
+			filter.push(elem);
+		}
 
+		for (let elem in data) {
+			console.log(elem);
+			if (!validKeys.includes(elem)) {
+				reject({status: 'error', code: 400, msg: 'Unhautorized key in data'});
+				return;
+			}
+		}
 
-		userModel.checkDataV2(data)
+		userModel.checkDataUpdate(data)
 		.then((res) => {
 			console.log('checkDataV2 resolve !');
-			console.log('send ', id, data);
+			console.log('send #########', id, data);
 			return userModel.update(id, data);
 		})
 		.then(() => {
 			console.log('update user');
-			// console.log(res);
 			resolve({status: "success", code: 200});
 		})
 		.catch((err) => {
-			console.log()
 			console.log(err);
 			console.log('error in update controller');
 			reject({status: "error", code: 403, data: err});
 		})
+	})
+}
+
+exports.changeEmail = (token) => {
+	return new Promise((resolve, reject) => {
+
+		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+			if (err)
+				reject({status: 'error', msg: 'Token false !'});
+			else {
+				console.log(decoded);
+				console.log('decode Ok !');
+
+				userModel.changeEmail(decoded.id, decoded.email)
+				.then((result) => {
+					console.log('OK');
+					resolve();
+				})
+				.catch(() => {
+					console.log('ERROR 457');
+					reject();
+
+				})
+
+			}
+		});
+
+		// resolve();
 	})
 }
