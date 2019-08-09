@@ -4,7 +4,6 @@ import { UserProfil, Field, Modal, ModalPhoto } from '../export'
 import { getUser } from '../function/get'
 import queryString from 'query-string'
 
-
 class User extends React.Component {
   state = {
     modal: "modal",
@@ -38,6 +37,7 @@ class User extends React.Component {
   render() {
     let params = queryString.parse(this.props.location.search)
     let id = !params.id ? 0 :params.id 
+
     return (
       <div id="user">
 
