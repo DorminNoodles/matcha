@@ -10,10 +10,12 @@ exports.checkDataNew = (data) => {
 	return new Promise((resolve, reject) => {
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
@@ -51,10 +53,12 @@ exports.checkDataUpdate = (data) => {
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
@@ -186,8 +190,6 @@ exports.findUserByEmail = (email) => {
 
 exports.saveUser = (data) => {
 	return new Promise((resolve, reject) => {
-
-		console.log(data);
 
 		bcrypt.hash(data.password, 10)
 			.then((hash) => {

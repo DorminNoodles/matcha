@@ -12,12 +12,19 @@ exports.username = (username) => {
 		else if (!sizeRegex.test(username))
 			reject({ "status": "error", "key": "username", "msg": "Username length must be between 2 and 28 character !" });
 		else
-			userModel.findUserByUsername(username)
-				.then(() => {
-					reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
-				}).catch((err) => {
-					resolve({ "status": "success", "key": "username", "msg": '' });
-				})
+			resolve({ "status": "success", "key": "username", "msg": '' });
+	})
+}
+
+exports.usernameAlreadyTaken = (username) => {
+	return new Promise((resolve, reject) => {
+		userModel.findUserByUsername(username)
+			.then(() => {
+				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
+			})
+			.catch((err) => {
+				resolve({ "status": "success", "key": "username", "msg": '' });
+			})
 	})
 }
 
@@ -61,16 +68,21 @@ exports.lastname = (lastname) => {
 exports.email = (email) => {
 	return new Promise((resolve, reject) => {
 		var reg = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+		if (email && email.match(reg))
+			resolve({ "status": "success", "key": "email", "msg": '' });
+		else
+			reject({ "status": "error", "key": "email", "msg": "Bad email !" });
+	})
+}
 
+exports.emailAlreadyTaken = (email) => {
+	return new Promise((resolve, reject) => {
 		userModel.findUserByEmail(email)
 			.then(() => {
-				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400 });
+				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
 			})
 			.catch((err) => {
-				if (email && email.match(reg))
-					resolve({ "status": "success", "key": "email", "msg": '' });
-				else
-					reject({ "status": "error", "key": "email", "msg": "Bad email !" });
+				resolve({ "status": "success", "key": "email", "msg": '' });
 			})
 	})
 }
@@ -169,7 +181,7 @@ exports.ageRange = (ageMin, ageMax) => {
 		if (ageMin && ageMax) {
 			if (!regex.test(ageMax) || !regex.test(ageMin))
 				reject({ "status": "error", "key": "ageRange", "msg": "Age range bad characters !" });
-			else if (agMin < 18)
+			else if (ageMin < 18)
 				reject({ "status": "error", "key": "ageRange", "msg": "Age range error !" });
 			else
 				resolve({ "status": "success" });
