@@ -6,25 +6,18 @@ exports.username = (username) => {
 		const sizeRegex = RegExp(/^[a-zA-Z0-9]{2,28}$/);
 
 		if (!username || username === '')
-			reject({"status": "error", "key": "username", "msg": "Username Empty !"});
+			reject({ "status": "error", "key": "username", "msg": "Username Empty !" });
 		else if (!usernameRegex.test(username))
-			reject({"status": "error", "key": "username", "msg": "Username Bad Character!"});
+			reject({ "status": "error", "key": "username", "msg": "Username Bad Character!" });
 		else if (!sizeRegex.test(username))
 			reject({ "status": "error", "key": "username", "msg": "Username length must be between 2 and 28 character !" });
 		else
-			resolve({ "status": "success", "key": "username", "msg": '' });
-	})
-}
-
-exports.usernameAlreadyTaken = (username) => {
-	return new Promise((resolve, reject) => {
-		userModel.findUserByUsername(username)
-			.then(() => {
-				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
-			})
-			.catch((err) => {
-				resolve({ "status": "success", "key": "username", "msg": '' });
-			})
+			userModel.findUserByUsername(username)
+				.then(() => {
+					reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
+				}).catch((err) => {
+					resolve({ "status": "success", "key": "username", "msg": '' });
+				})
 	})
 }
 
@@ -68,10 +61,17 @@ exports.lastname = (lastname) => {
 exports.email = (email) => {
 	return new Promise((resolve, reject) => {
 		var reg = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-		if (email && email.match(reg))
-			resolve({ "status": "success", "key": "email", "msg": '' });
-		else
-			reject({ "status": "error", "key": "email", "msg": "Bad email !" });
+
+		userModel.findUserByEmail(email)
+			.then(() => {
+				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400 });
+			})
+			.catch((err) => {
+				if (email && email.match(reg))
+					resolve({ "status": "success", "key": "email", "msg": '' });
+				else
+					reject({ "status": "error", "key": "email", "msg": "Bad email !" });
+			})
 	})
 }
 
@@ -85,14 +85,13 @@ exports.location = (location) => {
 				resolve({ "status": "success", "key": "location", "msg": '' });
 		}
 		else
-			resolve({ "status": "success", "key": "location"});
+			resolve({ "status": "success", "key": "location" });
 
 	})
 }
 
 exports.message = (text) => {
 	return new Promise((resolve, reject) => {
-		console.log("HELLLO");
 		if (!message)
 			reject({ "status": "error", "key": "message", "msg": "Message Missing !" });
 		else
@@ -103,23 +102,10 @@ exports.message = (text) => {
 exports.avatar = (avatar) => {
 	return new Promise((resolve, reject) => {
 
-		console.log('AVATAR >>>>' ,avatar);
 		if (!avatar || !avatar.name)
 			reject({ "status": "error", "key": "avatar", "msg": "Avatar error !" })
 		else
 			resolve({ "status": "success" });
-	})
-}
-
-exports.emailAlreadyTaken = (email) => {
-	return new Promise((resolve, reject) => {
-		userModel.findUserByEmail(email)
-			.then(() => {
-				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
-			})
-			.catch((err) => {
-				resolve({ "status": "success", "key": "email", "msg": '' });
-			})
 	})
 }
 
@@ -214,7 +200,7 @@ exports.tag = (tag) => {
 		if (!regex.test(tag))
 			reject({ "status": "error", "key": "tag", "msg": "Tag error bad character !" });
 		else
-			resolve({"status": "success"})
+			resolve({ "status": "success" })
 
 	})
 }

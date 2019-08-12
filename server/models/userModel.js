@@ -8,17 +8,12 @@ const database = require('../controllers/database');
 
 exports.checkDataNew = (data) => {
 	return new Promise((resolve, reject) => {
-		console.log("CHECK DATA");
-		console.log("data ->> ", data);
-
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
@@ -30,20 +25,9 @@ exports.checkDataNew = (data) => {
 		]).then((res) => {
 			let errors = {};
 
-
-			console.log('############## HEY >> ', filter);
-
-			console.log('res errors from promise all >>> ', res);
-
 			res.forEach((elem) => {
-				if (elem.status && elem.status === 'error') {
-					console.log('elem >>>>> ', elem.key);
-					if (filter.includes(elem.key)){
-						console.log('elem in IF FILTER > ', elem);
-
-						errors[elem.key] = elem.msg;
-					}
-				}
+				if (elem.status && elem.status === 'error')
+					errors[elem.key] = elem.msg;
 			})
 
 			Object.entries(errors).length ? reject(errors) : resolve();
@@ -67,12 +51,10 @@ exports.checkDataUpdate = (data) => {
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
 			inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
@@ -151,8 +133,8 @@ exports.checkDataUpdate = (data) => {
 exports.findUserByUsername = (username) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
-		.then((conn) => {
-			var result = conn.query('SELECT \
+			.then((conn) => {
+				var result = conn.query('SELECT \
 									username,\
 									id, \
 									mailValidation, \
@@ -165,16 +147,16 @@ exports.findUserByUsername = (username) => {
 									age, \
 									avatar \
 									FROM users WHERE username=?', [username]);
-			conn.end();
-			return result;
-		}).then((result) => {
-			if (result[0])
-				resolve(result[0]);
-			else
-				reject({ "status": "error", "key": "user", "msg": "User does not exist" });
-		}).catch((error) => {
-			reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
-		})
+				conn.end();
+				return result;
+			}).then((result) => {
+				if (result[0])
+					resolve(result[0]);
+				else
+					reject({ "status": "error", "key": "user", "msg": "User does not exist" });
+			}).catch((error) => {
+				reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
+			})
 	})
 }
 
@@ -208,42 +190,42 @@ exports.saveUser = (data) => {
 		console.log(data);
 
 		bcrypt.hash(data.password, 10)
-		.then((hash) => {
-			console.log('hash password > ', hash);
-			data.password = hash;
-			return database.connection();
-		})
-		.then((conn) => {
-			return conn.query("INSERT INTO users SET ?", data);
-		})
-		.then((res) => {
-			console.log('query database > ', res);
-			resolve('User saved');
-		})
-		.catch((err) => {
-			console.log('catch >', err);
-			reject(err);
-		})
+			.then((hash) => {
+				console.log('hash password > ', hash);
+				data.password = hash;
+				return database.connection();
+			})
+			.then((conn) => {
+				return conn.query("INSERT INTO users SET ?", data);
+			})
+			.then((res) => {
+				console.log('query database > ', res);
+				resolve('User saved');
+			})
+			.catch((err) => {
+				console.log('catch >', err);
+				reject(err);
+			})
 	})
 }
 
 exports.findUserById = (id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
-		.then((conn) => {
-			var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
-			conn.end();
-			return (result);
-		}).then((result) => {
-			if (result[0])
-				resolve(result[0]);
-			else
-				reject();
-		}).catch((error) => {
-			console.log("findUserByName failed");
-			reject(error);
-			return;
-		})
+			.then((conn) => {
+				var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
+				conn.end();
+				return (result);
+			}).then((result) => {
+				if (result[0])
+					resolve(result[0]);
+				else
+					reject();
+			}).catch((error) => {
+				console.log("findUserByName failed");
+				reject(error);
+				return;
+			})
 	})
 }
 
@@ -332,17 +314,17 @@ exports.changePwd = (email, username, pwd) => {
 			password: 'qwerty',
 			database: 'matcha'
 		})
-		.then((conn) => {
-			console.log("PUTAIN DE MERDE");
-			return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
-		})
-		.then((res) => {
-			resolve({ "status": "success", "msg": "Password changed!" });
-		})
-		.catch((err) => {
-			console.log("Error !");
-			reject({ status: "error", msg: "error db !" });
-		})
+			.then((conn) => {
+				console.log("PUTAIN DE MERDE");
+				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+			})
+			.then((res) => {
+				resolve({ "status": "success", "msg": "Password changed!" });
+			})
+			.catch((err) => {
+				console.log("Error !");
+				reject({ status: "error", msg: "error db !" });
+			})
 	});
 }
 
@@ -357,24 +339,24 @@ exports.update = (id, data) => {
 		}
 
 		database.connection()
-		.then((conn) => {
-			return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
-		})
-		.then((res) => {
+			.then((conn) => {
+				return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
+			})
+			.then((res) => {
 
-			if (res.affectedRows == 1) {
-				console.log('QUERY SUCCESS');
-				myEmitter.emit('userUpdate', {...data, id});
-				resolve();;
-			}
-			else {
-				reject({status: "error", msg: "User not found !"});
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-			reject({status: "error", code: 502, msg: 'database error !'});
-		})
+				if (res.affectedRows == 1) {
+					console.log('QUERY SUCCESS');
+					myEmitter.emit('userUpdate', { ...data, id });
+					resolve();;
+				}
+				else {
+					reject({ status: "error", msg: "User not found !" });
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				reject({ status: "error", code: 502, msg: 'database error !' });
+			})
 	})
 }
 
@@ -384,15 +366,15 @@ exports.changeEmail = (id, tmp_email) => {
 		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
 		database.connection()
-		.then((conn) => {
-			return conn.query('UPDATE users SET ? WHERE id=?', [{"email": tmp_email}, id]);
-		})
-		.then((conn) => {
-			resolve();
-		})
-		.catch((err) => {
-			console.log(err)
-			reject();
-		})
+			.then((conn) => {
+				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
+			})
+			.then((conn) => {
+				resolve();
+			})
+			.catch((err) => {
+				console.log(err)
+				reject();
+			})
 	})
 }
