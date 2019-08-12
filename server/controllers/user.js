@@ -49,7 +49,6 @@ exports.new = (data) => {
 		];
 
 		for (let elem in data) {
-			console.log(elem);
 			if (!filter.includes(elem)) {
 				reject({ status: 'error', code: 400, msg: 'Unhautorized key in data' });
 				return;

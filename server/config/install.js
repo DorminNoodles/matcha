@@ -23,6 +23,7 @@ async function db() {
 		console.log("> CONNECTED.");
 		await connection.query('DROP TABLE IF EXISTS users');
 		await connection.query('DROP TABLE IF EXISTS tags');
+		await connection.query('DROP TABLE IF EXISTS userTags');
 		await connection.query('DROP TABLE IF EXISTS likes');
 		await connection.query('DROP TABLE IF EXISTS block');
 		await connection.query('DROP TABLE IF EXISTS report');
@@ -56,8 +57,11 @@ async function db() {
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
-        	userId INT NOT NULL, \
         	tag VARCHAR(255) NOT NULL \
+		)');
+		await connection.query('CREATE TABLE userTags (\
+        	user_id INT NOT NULL, \
+        	tag_id INT NOT NULL\
         )');
 		await connection.query('CREATE TABLE block (\
         	id INT AUTO_INCREMENT PRIMARY KEY,\
