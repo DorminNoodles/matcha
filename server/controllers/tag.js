@@ -22,28 +22,21 @@ exports.new = (tag, user_id) => {
 		inputModel.tag(tag)//sanitize input
 			.then(() => {
 				tagModel.get(tag).then((res) => {
-					console.log(user_id)
-					console.log( res.id)
-					tagModel.user(user_id, res.id).then((res)=> {
+					tagModel.user(user_id, res.id).then((res) => {
 						resolve(res)
-					}).catch((err)=> {
-						reject(err)
-					})
+					}).catch((err) => { reject(err) })
 				})
 			})
-			// .catch((err) => {
-			// 	reject(err)
-			// 	console.log("===============586s3d5f3sd======")
-
-			// 	tagModel.new(tag, user_id) //save new tag
-			// 		.then((result) => {
-			// 			resolve(result);
-			// 		})
-			// 		.catch(() => {
-			// 			console.log('reject');
-			// 			reject();
-			// 		})
-			// })
+		.catch((err) => {
+			tagModel.new(tag, user_id) //save new tag
+				.then((result) => {
+					resolve(result);
+				})
+				.catch(() => {
+					console.log('reject');
+					reject();
+				})
+		})
 
 	});
 }

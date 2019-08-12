@@ -14,9 +14,6 @@ router.post('/', urlencodedParser, (req, res) => {
 		return;
 	}
 
-	console.log("add new tag")
-	console.log("reqbody", req.body)
-	console.log("reqtoken", req.token)
 	tag.new(req.body.tag, req.token.id)
 	.then((result) => {
 		res.status(200).send(result);

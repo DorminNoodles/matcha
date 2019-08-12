@@ -13,14 +13,19 @@ exports.new = (tag, user_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				conn.query('INSERT INTO tags (`tag`) VALUES (?)', [tag])
+				conn.query('INSERT INTO tags (tag) VALUES (?)', [tag])
 					.then((res) => {
-						console.log("Tag sucessfully created");
-						console.log(res)
-						console.log(res.insertId)
-						conn.query('INSERT INTO usertags (`user_id, tag_id`) VALUES (?,?)', [user_id, tag])
+						// console.log("Tag sucessfully created");
+						// console.log(res)
+						// console.log(res.insertId)
+						// conn.query('INSERT INTO usertags (`user_id, tag_id`) VALUES (?,?)', [user_id, tag])
+						exports.user(user_id, res.insertId).then(() => {
+							resolve({ "status": "success", "key": "tagSaved", "msg": "Tag saved !" });
+						})
+						.catch((err) => {
+							reject(err)
+						})
 
-						resolve({ "status": "success", "key": "tagSaved", "msg": "Tag saved !" });
 					})
 					.catch((err) => {
 						console.log("/!\\ Tag save error /!\\");
@@ -56,16 +61,16 @@ exports.get = (tag) => {
 	});
 }
 
+// link the id_tag to user_id
 exports.user = (user_id, tag_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
 				conn.query('INSERT INTO usertags (user_id, tag_id) VALUES (?, ?)', [user_id, tag_id])
 					.then((res) => {
-						resolve({ "status": "success", "key": "tag", "msg": "Tag saved !" });
+						resolve({ "status": "success", "key": "tag", "msg": "new user tag" });
 					})
 					.catch((err) => {
-						console.log("/!\\ Tag save error /!\\");
 						reject({ "status": "error", "key": "query", "msg": "Bad query !" });
 					})
 			})
