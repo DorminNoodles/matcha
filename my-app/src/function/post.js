@@ -15,7 +15,6 @@ export function forgot(email) {
     });
 }
 
-
 export function password(password, confirmPassword, token) {
 
     return axios({
@@ -42,8 +41,8 @@ export function register(data, info) {
         url: 'http://localhost:3300/api/user',
         data,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then(() => {
-        return (info)
+    }).then((res) => {
+        return ({res:info, err: ""})
     }).catch((error) => {
         var err = JSON.parse(error.request.response).data
 
@@ -59,7 +58,7 @@ export function register(data, info) {
 export function connect(username, password) {
     return axios({
         method: 'post',
-        url: 'http://localhost:3300/api/user/authenticate',
+        url: 'http://localhost:3300/api/authenticate',
         data: {
             username: username,
             password: password,
@@ -68,8 +67,25 @@ export function connect(username, password) {
     }).then(response => {
         return ({ res: 1, data: response.data })
     }).catch(error => {
+        return ({ res: 0, data: error.response.data.msg })
+    });
+}
+
+export function addTag(id, value, token) {
+    return axios({
+        method: 'post',
+        url: 'http://localhost:3300/api/tags',
+        data: {
+            userID: id,
+            tag: value,
+        },
+        config: { headers: { 'Content-Type': 'multipart/form-data' } },
+        headers: { 'Authorization': "bearer " + token }
+    }).then(response => {
+        console.log("ok")
+        return ({ res: 1, data: response.data })
+    }).catch(error => {
         console.log({ ...error })
         return (0)
-
     });
 }

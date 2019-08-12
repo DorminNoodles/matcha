@@ -1,78 +1,48 @@
 import React from 'react';
+import { Field } from '../export/index'
 
-const KeyCodes = {
-    comma: 188,
-    enter: 13,
-};
+function BubbleTag({ value, onDelete, pos }) {
+    return (
+        <div style={{
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "4px",
+            marginRight: "15px"
+        }}>
+            {value}
+            <span style={{ padding: "0px 5px" }} onClick={() => onDelete(pos)}>
+                <i className="fas fa-times" />
+            </span>
+        </div>
+    )
+}
 
-const delimiters = [KeyCodes.comma, KeyCodes.enter];
+function ModifyTag({ tagModify, tags, action, fct }) {
 
-class Tags extends React.Component {
-    constructor(props) {
-        super(props);
+    let { onChange, onDelete } = fct
+    return (
+        <React.Fragment>
+            {
+                tagModify ? <React.Fragment >
 
-        this.state = {
-            tags: [
-                { id: "Thailand", text: "Thailand" },
-                { id: "India", text: "India" }
-            ],
-            suggestions: [
-                { id: 'USA', text: 'USA' },
-                { id: 'Germany', text: 'Germany' },
-                { id: 'Austria', text: 'Austria' },
-                { id: 'Costa Rica', text: 'Costa Rica' },
-                { id: 'Sri Lanka', text: 'Sri Lanka' },
-                { id: 'Thailand', text: 'Thailand' }
-            ]
-        };
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleAddition = this.handleAddition.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
-    }
+                    <div style={{ display: "flex", padding: "15px 0px" }}>
+                        {Object.keys(tags).map((value, id) => {
+                            return (<BubbleTag key={id} pos={id} value={tags[value].name} onDelete={onDelete} />)
+                        })}
+                    </div>
+                    <Field icon="fas fa-tag" position="left" style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
+                    <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>Close</button>
+                </React.Fragment>
+                    :
+                    <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })} style={{ margin: "15px 0px" }}>
+                        <p>Tags</p>
+                        <span style={{ padding: "0px 5px" }}>
+                            <i className="fas fa-tags"></i>
+                        </span>
+                    </button>
+            }
+        </React.Fragment>
+    )
+}
 
-    handleDelete(i) {
-        const { tags } = this.state;
-        this.setState({
-            tags: tags.filter((tag, index) => index !== i),
-        });
-    }
-
-    handleAddition(tag) {
-        this.setState(state => ({ tags: [...state.tags, tag] }));
-    }
-
-    handleDrag(tag, currPos, newPos) {
-        const tags = [...this.state.tags];
-        const newTags = tags.slice();
-
-        newTags.splice(currPos, 1);
-        newTags.splice(newPos, 0, tag);
-
-        // re-render
-        this.setState({ tags: newTags });
-    }
-
-    render() {
-        const { tags, suggestions } = this.state;
-        return (
-            <div>
-                {/* <ReactTags tags={tags}
-                    suggestions={suggestions}
-                    handleDelete={this.handleDelete}
-                    handleAddition={this.handleAddition}
-                    handleDrag={this.handleDrag}
-                    delimiters={delimiters}
-                    inputFieldPosition="inline"
-                    inline
-                /> */}
-                <button className="button" style={{ float: "right", margin: "5px" }}>Save</button>
-                <br></br>
-                <p style={{ fontStyle: "italic", fontWeight: "700" }}>
-                    #fille #sushi #pasteque #argent
-                </p>
-            </div>
-        )
-    }
-};
-
-export { Tags };
+export { BubbleTag, ModifyTag };

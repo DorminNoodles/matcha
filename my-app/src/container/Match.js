@@ -1,6 +1,7 @@
 import React from 'react';
 import { Profil } from "../export";
 import UserProvider from '../context/UserProvider';
+import { getUser } from '../function/get'
 
 class Match extends React.Component {
   static contextType = UserProvider;
@@ -13,8 +14,13 @@ class Match extends React.Component {
   componentDidMount() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
+    
   }
   
+  getUsers(){
+
+  }
+
   render() {
 
     return (
@@ -24,4 +30,4 @@ class Match extends React.Component {
   }
 }
 
-export { Match };
+export default Match

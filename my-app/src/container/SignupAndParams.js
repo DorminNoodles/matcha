@@ -1,8 +1,10 @@
 import React from 'react';
 import { check } from "../function/signup.js"
-import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/Signup.js"
+import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/SignupAndParams.js"
 import UserProvider from '../context/UserProvider';
 import { register } from "../function/post"
+import { getUser } from '../function/get'
+import { signupInfo } from '../export/object'
 
 class Signup extends React.Component {
     constructor(props) {
@@ -21,7 +23,13 @@ class Signup extends React.Component {
                 age: { value: 18, error: "" },
                 bio: { value: "je suis s", error: "" },
                 desired: { value: { min: 18, max: 25 }, error: "" },
+                age_min: { value: 18, error: "" },
+                age_max: { value: 25, error: "" },
+                ageMin: { value: 18, error: "" },
+                ageMax: { value: 25, error: "" },
                 distance: { value: 25, error: "" },
+
+                location: { value: "Paris", error: "" },
             },
             // info: {
             //     username: { value: "", error: "" },
@@ -34,44 +42,62 @@ class Signup extends React.Component {
             //     gender: { value: "", error: "" },
             //     age: { value: 18, error: "" },
             //     bio: { value: "", error: "" },
-            //     desired: { value: { min: 18, max: 25 }, error: "" },
+            //     age_min: { value: 18, error: "" },
+            //     age_max: { value: 25, error: "" },
+            //     ageMin: { value: 18, error: "" },
+            //     ageMax: { value: 25, error: "" },
             //     distance: { value: 25, error: "" },
+
+            //     location: { value: "Paris", error: "" },
             // },
             page: 1,
-            status: { value: "signup", function: this.register },
+            status: { value: "signup", text: "Create your account", fct: this.register },
             error: ""
         }
         this.onChange = this.onChange.bind(this)
+        this.onChangeAge = this.onChangeAge.bind(this)
         this.changePage = this.changePage.bind(this)
         this.register = this.register.bind(this)
         this.modify = this.modify.bind(this)
+        this.initInfo = this.initInfo.bind(this)
     }
 
     static contextType = UserProvider;
 
 
-    componentWillMount() {
-        let info = Object.assign({ ...this.state.info })
-
-        for (var i in this.context.user)
-            info[i] = { value: this.context.user[i], error: "" }
-
-        this.setState({ ...this.state, info })
-    }
+    // get the page's type
+    // if param init info
 
     componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
-
-        if (next.location.pathname === "/parameters")
-            this.setState({ ...this.state, status: { value: "parameters", text: "Modify Your Informations", function: this.modify } })
-        else
-            this.setState({ ...this.state, status: { value: "signup", text: "Create an account", function: this.register } })
+        this.setting(next.location.pathname)
     }
 
-    componentDidMount() {
+    componentDidMount(props) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+        this.setting(this.props.location.pathname)
+    }
+
+    setting(pathname) {
+        if (pathname === "/parameters")
+            this.setState({ ...this.state, ...signupInfo, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
+                () => {
+                    getUser(this.context.user.token)
+                        .then((res) => { this.initInfo(res.data) })
+                })
+        else
+            this.setState({ ...this.state, ...signupInfo, status: { value: "signup", text: "Create your account", fct: this.register } })
+    }
+
+    initInfo(nw) {
+        let info = Object.assign({ ...this.state.info })
+
+        for (var i in nw)
+            info[i] = { value: nw[i], error: "" }
+
+        this.setState({ ...this.state, info }, () => { console.log(this.state) })
     }
 
     onChange = (index) => {
@@ -79,6 +105,7 @@ class Signup extends React.Component {
         let { state, state: { info } } = this
         let key = !(index.target) ? Object.keys(index) : (index.target.placeholder).toLowerCase();
         let value = !(index.target) ? Object.values(index)[0] : index.target.value;
+
         this.setState({
             ...state,
             info: {
@@ -87,6 +114,18 @@ class Signup extends React.Component {
                     ...info[key],
                     value: value
                 }
+            }
+        })
+    }
+
+    onChangeAge = (min, max) => {
+
+        this.setState({
+            ...this.state,
+            info: {
+                ...this.state.info,
+                age_min: { value: min, error: "" },
+                age_max: { value: max, error: "" }
             }
         })
     }
@@ -149,14 +188,14 @@ class Signup extends React.Component {
         if (page === 1)
             signPage = <FirstPage info={info} onChange={this.onChange} changePage={this.changePage} />
         else if (page === 2)
-            signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} />
+            signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} onChangeAge={this.onChangeAge} />
         else
-            signPage = <ThirdPage button={status} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
+            signPage = <ThirdPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} error={error} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg image={image} sendFile={this.sendFile} />
+                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} />
                     {signPage}
                 </div>
             </div>

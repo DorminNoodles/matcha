@@ -1,7 +1,8 @@
 import React from 'react';
-import { UserProfil, Field } from '../export'
 import UserProvider from '../context/UserProvider';
-import { Modal, ModalPhoto } from '../export'
+import { UserProfil, Field, Modal, ModalPhoto } from '../export'
+import { getUser } from '../function/get'
+import queryString from 'query-string'
 
 class User extends React.Component {
   state = {
@@ -9,6 +10,15 @@ class User extends React.Component {
     modalInfo: "modal"
   }
   static contextType = UserProvider;
+
+  componentWillMount() {
+
+    let params = queryString.parse(this.props.location.search)
+    let token = !params.id ? this.context.user.token : params.id
+
+    getUser(token)
+      .then((res) => { this.setState({ ...this.state, ...res.data }) })
+  }
 
   componentWillReceiveProps() {
     if (this.context.header !== "red-white")
@@ -25,15 +35,16 @@ class User extends React.Component {
   }
 
   render() {
+    let params = queryString.parse(this.props.location.search)
+    let id = !params.id ? 0 :params.id 
 
     return (
       <div id="user">
 
-
         <div id="info-user">
-          <UserProfil {...this.state} onChange={this.onChange} />
+          <UserProfil info={this.state} onChange={this.onChange} id={id}/>
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
-          
+
           <Modal index="modalInfo" modal={this.state.modalInfo} onChange={this.onChange}>
             <Field />
           </Modal>
@@ -44,4 +55,4 @@ class User extends React.Component {
   }
 }
 
-export { User };
+export default User;

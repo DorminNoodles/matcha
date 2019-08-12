@@ -36,7 +36,7 @@ function SliderLocation(props) {
       <Slider
         min={5}
         max={300}
-        defaultValue={25}
+        defaultValue={props.distance}
         handle={(e) => handle(e, props)}
       />
     </div>

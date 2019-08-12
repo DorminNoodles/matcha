@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Field } from "../export"
 import { connect } from "../function/post"
 import UserProvider from '../context/UserProvider';
@@ -11,10 +10,7 @@ class Signin extends Component {
     this.state = {
       username: "",
       password: "",
-      error: {
-        username: "",
-        password: ""
-      }
+      error: ""
     }
     this.connect = this.connect.bind(this)
     this.onChange = this.onChange.bind(this)
@@ -43,9 +39,7 @@ class Signin extends Component {
       if (res === 1) {
         this.context.onChange("user", { token: data.token, ...data.user })
         this.props.history.push("/")
-      } else {
-
-      }
+      } else { this.setState({ ...this.state, error: data }) }
     })
   }
 
@@ -60,10 +54,11 @@ class Signin extends Component {
       <div id="signin" >
         <p style={{ fontFamily: "LadylikeBB", fontSize: "xx-large" }}>Matcha</p>
         <br></br>
-        <Field placeholder="Username" position="left" icon="fas fa-user" onChange={this.onChange} error={this.state.error.username} />
-        <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" onChange={this.onChange} error={this.state.error.password} />
+        <Field placeholder="Username" position="left" icon="fas fa-user" action={{ onChange: this.onChange }} />
+        <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: this.onChange }} />
         <br />
         <button className="button white-red" onClick={this.connect} >Connect to your account</button>
+        <p className="error center">{this.state.error}</p>
         <div className="link-white" onClick={this.password} style={{ fontSize: "small" }}>Forget your password?</div>
       </div>
     )

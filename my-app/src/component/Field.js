@@ -1,17 +1,15 @@
 import React from 'react';
 
-
-
-function Field({ position, icon, onChange, placeholder, error, success ,type, value}) {
+function Field({ position, icon, placeholder, error, success, type, value, style, action }) {
 
     return (
-        <div className="field">
+        <div className="field" {...style}>
 
             <p className={`control has-icons-${position}`}>
                 <span className={`icon is-small is-${position}`}>
                     <i className={icon}></i>
                 </span>
-                <input className="input" type={type} placeholder={placeholder} onChange={onChange} value={value} />
+                <input className="input" type={type} placeholder={placeholder} value={value} {...action} />
                 {
                     error &&
                     <span className={`icon is-small is-right`}>

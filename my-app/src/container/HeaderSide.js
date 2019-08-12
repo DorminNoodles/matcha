@@ -20,7 +20,7 @@ class HeaderSide extends React.Component {
 
                 <ul style={{ display: "contents" }}>
                     <li>
-                        <Link to="/" className={header}><i className="fas fa-home fa-lg header-link"></i></Link>
+                        <Link to="/" className={header}><i className="fas fa-home header-link"></i></Link>
                     </li>
 
                     {
@@ -28,24 +28,26 @@ class HeaderSide extends React.Component {
                             <React.Fragment>
 
                                 <li>
-                                    <Link to="/user" className={header} ><i className="fas fa-user fa-lg header-link"></i></Link>
+                                    <Link to="/user" className={header} ><i className="fas fa-user header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <Link to="/match" className={header} ><i className="fas fa-heart fa-lg header-link"></i></Link>
+                                    <Link to="/match" className={header} ><i className="fas fa-heart header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <Link to="/chat" className={header}><i className="fas fa-comments fa-lg header-link"></i></Link>
+                                    <Link to="/messages" className={header}><i className="fas fa-comments header-link"></i></Link>
                                 </li>
                                 <li>
-                                    <button className={header} style={{ border: "none" }} onClick={this.logout} > <a className={header}><i className="fas fa-sign-out-alt fa-lg header-link"></i>
-                                    </a>
+                                    <button className={header} style={{ border: "none" }} onClick={this.logout}>
+                                        <a className={header}><i className="fas fa-sign-out-alt header-link" /></a>
                                     </button>
                                 </li>
+                                <Link to="/parameters" className={header}><i className="fas fa-cog header-link"></i></Link>
+
                             </React.Fragment>
                             :
 
                             <li>
-                                <Link to="/signin" className={this.context.header}><i className="fas fa-sign-in-alt fa-lg header-link"></i></Link>
+                                <Link to="/signin" className={this.context.header}><i className="fas fa-sign-in-alt header-link"></i></Link>
                             </li>
                     }
 
