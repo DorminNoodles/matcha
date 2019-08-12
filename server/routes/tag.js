@@ -13,6 +13,10 @@ router.post('/', urlencodedParser, (req, res) => {
 		res.status(401).send({"status": "error", "key": "auth", "msg": "bad authentification"});
 		return;
 	}
+
+	console.log("add new tag")
+	console.log("reqbody", req.body)
+	console.log("reqtoken", req.token)
 	tag.new(req.body.tag, req.token.id)
 	.then((result) => {
 		res.status(200).send(result);
@@ -27,6 +31,7 @@ router.get('/', urlencodedParser, (req, res) => {
 		res.status(401).send({"status": "error", "key": "auth", "msg": "bad authentification"});
 		return;
 	}
+
 	tag.get(req.body.tag)
 	.then((result) => {
 		res.status(200).send(result);

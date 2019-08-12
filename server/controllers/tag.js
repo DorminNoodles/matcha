@@ -9,35 +9,41 @@ const inputModel = require('../models/inputModel');
 	on peut ajouter plusieurs fois le meme tag mais pas avec le meme userID
 */
 
-exports.new = (tag, userId) => {
+exports.new = (tag, user_id) => {
 	return new Promise((resolve, reject) => {
 
-		console.log('data: ', tag, userId)
-
-		if (!tag || typeof tag != 'string' || !userId || typeof userId != 'number') {
-			reject({status: "error", msg: "Error in params need : tag : yourTag"});
+		if (!tag || typeof tag != 'string' || !user_id || typeof user_id != 'number') {
+			reject({ status: "error", msg: "Error in params need : tag : yourTag" });
 			return;
 		}
 
 		tag = tag.toLowerCase();
 
 		inputModel.tag(tag)//sanitize input
-		.then(() => {
-			return tagModel.get(tag, userId)//try to get already exist tag
-		})
-		.then((result) => {
-			reject({status: "error", msg: "Tag already exist"});//if tag already exist error
-		})
-		.catch((err) => {
-			tagModel.new(tag, userId) //save new tag
-			.then((result) => {
-				resolve(result);
+			.then(() => {
+				tagModel.get(tag).then((res) => {
+					console.log(user_id)
+					console.log( res.id)
+					tagModel.user(user_id, res.id).then((res)=> {
+						resolve(res)
+					}).catch((err)=> {
+						reject(err)
+					})
+				})
 			})
-			.catch(() => {
-				console.log('reject');
-				reject();
-			})
-		})
+			// .catch((err) => {
+			// 	reject(err)
+			// 	console.log("===============586s3d5f3sd======")
+
+			// 	tagModel.new(tag, user_id) //save new tag
+			// 		.then((result) => {
+			// 			resolve(result);
+			// 		})
+			// 		.catch(() => {
+			// 			console.log('reject');
+			// 			reject();
+			// 		})
+			// })
 
 	});
 }
@@ -45,11 +51,11 @@ exports.new = (tag, userId) => {
 exports.get = (tag) => {
 	return new Promise((resolve, reject) => {
 		tagModel.get(tag)
-		.then(() => {
-			resolve({"status": "success", "msg": "Tags saved !"});
-		})
-		.catch((err) => {
-			reject(err);
-		})
+			.then(() => {
+				resolve({ "status": "success", "msg": "Tags saved !" });
+			})
+			.catch((err) => {
+				reject(err);
+			})
 	});
 }
