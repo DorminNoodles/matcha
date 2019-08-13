@@ -42,7 +42,7 @@ export function register(data, info) {
         data,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then((res) => {
-        return ({res:info, err: ""})
+        return ({ res: info, err: "" })
     }).catch((error) => {
         var err = JSON.parse(error.request.response).data
 
@@ -71,14 +71,11 @@ export function connect(username, password) {
     });
 }
 
-export function addTag(id, value, token) {
+export function addTag(value, token) {
     return axios({
         method: 'post',
-        url: 'http://localhost:3300/api/tags',
-        data: {
-            userID: id,
-            tag: value,
-        },
+        url: 'http://localhost:3300/api/tag',
+        data: { tag: value, },
         config: { headers: { 'Content-Type': 'multipart/form-data' } },
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {

@@ -19,6 +19,7 @@ const chat = require("./routes/chat");
 const score = require("./routes/score");
 const visit = require("./routes/visit");
 const tag = require("./routes/tag");
+const tags = require("./routes/tags");
 const gpsDistance = require("./routes/gpsDistance");
 const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
@@ -71,11 +72,11 @@ app.use('/api/photos', photos);
 app.use('/api/score', score);
 app.use('/api/visit', visit);
 app.use('/api/tag', tag);
+app.use('/api/tags', tags);
 app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
 app.use('/api/confirm', confirm);
-
 
 
 // test

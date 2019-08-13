@@ -29,7 +29,7 @@ class Tags extends React.Component {
 
     handleKeyDown(props) {
         if (props.keyCode === 13)
-            addTag(props.target.value, this.context.user.id, this.context.user.token)
+            addTag(props.target.value,this.context.user.token)
     }
 
     onChange(value) {
