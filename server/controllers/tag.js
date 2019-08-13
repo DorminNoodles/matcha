@@ -19,26 +19,23 @@ exports.new = (tag, user_id) => {
 
 		tag = tag.toLowerCase();
 
-		inputModel.tag(tag)//sanitize input
+		inputModel.tag(tag, user_id) //sanitize input
 			.then(() => {
-				tagModel.get(tag).then((res) => {
-					tagModel.user(user_id, res.id).then((res) => {
-						resolve(res)
-					}).catch((err) => { reject(err) })
+				return new Promise((resolve, reject) => {
+					tagModel.get(tag, user_id)
+						.then((res) => { resolve(res) })
+						.catch((err) => { reject(err) })
+				}).then((res) => {
+					tagModel.user(user_id, res.id)
+						.then((res) => { resolve(res) })
+						.catch((err) => { reject(err); })
+				}).catch((err) => {
+					tagModel.new(tag, user_id)
+						.then((result) => { resolve(result); })
+						.catch((err) => { reject(err); })
 				})
-			})
-		.catch((err) => {
-			tagModel.new(tag, user_id) //save new tag
-				.then((result) => {
-					resolve(result);
-				})
-				.catch(() => {
-					console.log('reject');
-					reject();
-				})
-		})
-
-	});
+			}).catch((err) => { reject(err) })
+	})
 }
 
 exports.get = (tag) => {

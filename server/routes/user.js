@@ -66,8 +66,6 @@ router.put('/password', urlencodedParser, (req, res) => {
 
 router.get('/confirm', urlencodedParser, (req, res) => {
 
-	console.log(req.query.key);
-
 	if (req.query.key) {
 		user.activate(req.query.key)
 			.then(() => {

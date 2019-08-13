@@ -15,21 +15,13 @@ exports.new = (tag, user_id) => {
 			.then((conn) => {
 				conn.query('INSERT INTO tags (tag) VALUES (?)', [tag])
 					.then((res) => {
-						// console.log("Tag sucessfully created");
-						// console.log(res)
-						// console.log(res.insertId)
-						// conn.query('INSERT INTO usertags (`user_id, tag_id`) VALUES (?,?)', [user_id, tag])
-						exports.user(user_id, res.insertId).then(() => {
-							resolve({ "status": "success", "key": "tagSaved", "msg": "Tag saved !" });
-						})
-						.catch((err) => {
-							reject(err)
-						})
-
+						exports.user(user_id, res.insertId)
+							.then(() => {
+								resolve({ "status": "success", "msg": "Tag saved !" });
+							}).catch((err) => { reject(err) })
 					})
 					.catch((err) => {
-						console.log("/!\\ Tag save error /!\\");
-						reject({ "status": "error", "key": "query", "msg": "Bad query !" });
+						reject({ "status": "error", "msg": "Bad query !" });
 					})
 			})
 			.catch((err) => {
@@ -42,22 +34,19 @@ exports.get = (tag) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				conn.query('SELECT * FROM tags WHERE tag = "' + tag + '"')
-					.then((res) => {
-						if (res[0])
-							resolve(res[0]);
-						else
-							reject({ status: 'error', msg: 'Tag not found' });
-					})
-					.catch((err) => {
-						console.log("FUCK >>>>>>>>>>>>>> ", err);
-						// reject({"status": "error", "key": "query", "msg": "Bad query !"});
-						reject();
-					})
+				return new Promise((resolve, reject) => {
+					conn.query('SELECT * FROM tags WHERE tag="' + tag + '"')
+						.then((res) => {
+							if (res.length === 0)
+								reject({ status: 'error', msg: 'Tag not found' });
+							else
+								resolve(res[0])
+						})
+						.catch(() => { reject({ status: 'error', msg: 'Tag not found' }); })
+				})
 			})
-			.catch((err) => {
-				reject(err);
-			})
+			.then((res) => { resolve(res) })
+			.catch((err) => { reject(err) })
 	});
 }
 
@@ -66,17 +55,19 @@ exports.user = (user_id, tag_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				conn.query('INSERT INTO usertags (user_id, tag_id) VALUES (?, ?)', [user_id, tag_id])
+				conn.query('SELECT * FROM usertags WHERE user_id=? AND tag_id=?;', [user_id, tag_id])
 					.then((res) => {
-						resolve({ "status": "success", "key": "tag", "msg": "new user tag" });
-					})
-					.catch((err) => {
-						reject({ "status": "error", "key": "query", "msg": "Bad query !" });
-					})
-			})
-			.catch((err) => {
-				reject(err);
-			})
+
+						if (res.length === 0)
+							conn.query('INSERT INTO usertags (user_id, tag_id) VALUES (?, ?)', [user_id, tag_id])
+								.then((res) => {
+									resolve({ "status": "success", "msg": "Tags saved !" });
+								}).catch((err) => { reject(err); })
+						else
+							reject({ "status": "error", "key": "query", "msg": "Already saved" });
+
+					}).catch((err) => { reject(err); })
+			}).catch((err) => { reject(err); })
 	});
 }
 
