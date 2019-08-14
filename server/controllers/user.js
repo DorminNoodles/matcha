@@ -94,22 +94,17 @@ exports.createUser = (data) => {
 	});
 }
 
-exports.get = (userId) => {
+exports.get = (id) => {
 	return new Promise((resolve, reject) => {
 		let data;
 
-		userModel.findUserById(userId)
+		userModel.findUserById(id)
 			.then((user) => {
 				user.password = '';
-				data = user;
-				return tagsModel.get(userId);
+				return(user)
 			})
-			.then((tags) => {
-				resolve({ ...data, tags: tags });
-			})
-			.catch((err) => {
-				reject(err);
-			})
+			.then((res) => {resolve(res);})
+			.catch((err) => { reject(err);})
 	});
 }
 

@@ -10,7 +10,6 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 router.post('/', urlencodedParser, (req, res) => {
-	console.log("new user route");
 
 	if (req.files && req.files.avatar)
 		req.body.avatar = req.files.avatar;
@@ -31,13 +30,9 @@ router.patch('/', urlencodedParser, (req, res) => {
 
 	user.update(req.token.id, req.body)
 	.then((result) => {
-		console.log('ROUTE SUCCESS');
-		console.log(result.code);
 		res.status(result.code).send(result);
-
 	})
 	.catch((err) => {
-		console.log(' => ', err.data);
 		res.status(err.code).send({status: "error", msg: err.msg, data: err.data});
 	})
 })
@@ -98,10 +93,10 @@ router.get('/', urlencodedParser, (req, res) => {
 		res.status(401).send({ "status": "error", "msg": "User Unauthorized" });
 		return;
 	}
-	if (!req.params.userId) {
-		user.get(req.token.id)
+
+	if (req.query.id) {
+		user.get(parseInt(req.query.id))
 		.then((user) => {
-			console.log(user);
 			res.status(200).send({...user});
 		})
 		.catch(() => {

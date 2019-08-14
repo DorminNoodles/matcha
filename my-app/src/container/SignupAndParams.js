@@ -11,37 +11,18 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: { value: "", error: "" },
-            info: {
-                username: { value: "Dormin", error: "" },
-                password: { value: "Root123", error: "" },
-                confirmation: { value: "Root123", error: "" },
-                firstname: { value: "Loic", error: "" },
-                lastname: { value: "Chety", error: "" },
-                email: { value: "03b237b339@himail.online", error: "" },
-                orientation: { value: "bisexual", error: "" },
-                gender: { value: "male", error: "" },
-                age: { value: 18, error: "" },
-                bio: { value: "je suis s", error: "" },
-                desired: { value: { min: 18, max: 25 }, error: "" },
-                age_min: { value: 18, error: "" },
-                age_max: { value: 25, error: "" },
-                ageMin: { value: 18, error: "" },
-                ageMax: { value: 25, error: "" },
-                distance: { value: 25, error: "" },
-
-                location: { value: "Paris", error: "" },
-            },
             // info: {
-            //     username: { value: "", error: "" },
-            //     password: { value: "", error: "" },
-            //     confirmation: { value: "", error: "" },
-            //     firstname: { value: "", error: "" },
-            //     lastname: { value: "", error: "" },
-            //     email: { value: "", error: "" },
+            //     username: { value: "Dormin", error: "" },
+            //     password: { value: "Root123", error: "" },
+            //     confirmation: { value: "Root123", error: "" },
+            //     firstname: { value: "Loic", error: "" },
+            //     lastname: { value: "Chety", error: "" },
+            //     email: { value: "03b237b339@himail.online", error: "" },
             //     orientation: { value: "bisexual", error: "" },
-            //     gender: { value: "", error: "" },
+            //     gender: { value: "male", error: "" },
             //     age: { value: 18, error: "" },
-            //     bio: { value: "", error: "" },
+            //     bio: { value: "je suis s", error: "" },
+            //     desired: { value: { min: 18, max: 25 }, error: "" },
             //     age_min: { value: 18, error: "" },
             //     age_max: { value: 25, error: "" },
             //     ageMin: { value: 18, error: "" },
@@ -50,6 +31,25 @@ class Signup extends React.Component {
 
             //     location: { value: "Paris", error: "" },
             // },
+            info: {
+                username: { value: "", error: "" },
+                password: { value: "", error: "" },
+                confirmation: { value: "", error: "" },
+                firstname: { value: "", error: "" },
+                lastname: { value: "", error: "" },
+                email: { value: "", error: "" },
+                orientation: { value: "bisexual", error: "" },
+                gender: { value: "", error: "" },
+                age: { value: 18, error: "" },
+                bio: { value: "", error: "" },
+                age_min: { value: 18, error: "" },
+                age_max: { value: 25, error: "" },
+                ageMin: { value: 18, error: "" },
+                ageMax: { value: 25, error: "" },
+                distance: { value: 25, error: "" },
+
+                location: { value: "Paris", error: "" },
+            },
             page: 1,
             status: { value: "signup", text: "Create your account", fct: this.register },
             error: ""
@@ -58,7 +58,6 @@ class Signup extends React.Component {
         this.onChangeAge = this.onChangeAge.bind(this)
         this.changePage = this.changePage.bind(this)
         this.register = this.register.bind(this)
-        this.modify = this.modify.bind(this)
         this.initInfo = this.initInfo.bind(this)
     }
 
@@ -84,7 +83,7 @@ class Signup extends React.Component {
         if (pathname === "/parameters")
             this.setState({ ...this.state, ...signupInfo, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
                 () => {
-                    getUser(this.context.user.token)
+                    getUser(this.context.user.token, this.context.user.id)
                         .then((res) => { this.initInfo(res.data) })
                 })
         else
@@ -97,7 +96,7 @@ class Signup extends React.Component {
         for (var i in nw)
             info[i] = { value: nw[i], error: "" }
 
-        this.setState({ ...this.state, info }, () => { console.log(this.state) })
+        this.setState({ ...this.state, info })
     }
 
     onChange = (index) => {
@@ -162,9 +161,6 @@ class Signup extends React.Component {
 
             })
         }
-    }
-
-    modify = () => {
     }
 
     sendFile = (e) => {

@@ -3,6 +3,7 @@ import UserProvider from '../context/UserProvider';
 import { UserProfil, Field, Modal, ModalPhoto } from '../export'
 import { getUser } from '../function/get'
 import queryString from 'query-string'
+import axios from 'axios';
 
 class User extends React.Component {
   state = {
@@ -14,10 +15,10 @@ class User extends React.Component {
   componentWillMount() {
 
     let params = queryString.parse(this.props.location.search)
-    let token = !params.id ? this.context.user.token : params.id
 
-    getUser(token)
-      .then((res) => { this.setState({ ...this.state, ...res.data }) })
+    getUser(this.context.user.token, !params.id ? this.context.user.id :params.id )
+      .then((res) => {
+        this.setState({ ...this.state, ...res.data }) })
   }
 
   componentWillReceiveProps() {
@@ -28,6 +29,7 @@ class User extends React.Component {
   componentDidMount() {
     if (this.context.header !== "red-white")
       this.context.onChange("header", "red-white")
+
   }
 
   onChange = (obj) => {

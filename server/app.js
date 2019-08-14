@@ -97,6 +97,15 @@ app.get('/test', (req, res) => {
 
 });
 
+
+//   var geoip = require('geoip-lite');
+
+// var ip = "62.210.32.0";
+// var geo = geoip.lookup(ip);
+
+// console.log(geo);
+
+
 server.listen(3300);
 
 module.exports = server;

@@ -31,7 +31,7 @@ exports.findGpsByAddress = (data) => {
 	})
 }
 
-exports.getGps = (data) => {
+exports.findGps = (data) => {
 	return new Promise((resolve, reject) => {
 
 		let coordGps = {
@@ -41,7 +41,6 @@ exports.getGps = (data) => {
 
 		this.findGpsByAddress(data.location)
 		.then((result) => {
-			console.log("FIND BY GPS ADRRESSE");
 
 			coordGps.lng = result.lng;
 			coordGps.lat = result.lat;

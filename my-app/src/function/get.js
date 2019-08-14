@@ -17,10 +17,11 @@ export function confirm({ login, key }) {
     });
 }
 
-export function getUser(token) {
+export function getUser(token, id) {
 
     return axios({
         method: 'GET',
+        params: { id } ,
         url: 'http://localhost:3300/api/user/',
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {
