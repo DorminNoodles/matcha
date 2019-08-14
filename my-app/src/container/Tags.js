@@ -11,7 +11,8 @@ class Tags extends React.Component {
 
         this.state = {
             tagModify: false,
-            tags: []
+            tags: [],
+            value: ""
         }
         this.function = {
             handleKeyDown: this.handleKeyDown.bind(this),
@@ -22,21 +23,35 @@ class Tags extends React.Component {
     }
     static contextType = UserProvider;
 
-    componentDidMount() {
+    componentDidMount() { this.getUserTags()}
+
+    getUserTags() {
         let id = this.props.id > 0 ? this.props.id : this.context.user.id
+
         getUserTags(this.context.user.token, id).then((res) => {
-            this.setState({ ...this.state, tags: res.data.data })
+            if (res.data && res.data.data)
+                this.setState({ ...this.state, tags: res.data.data })
         })
     }
 
     onDelete(key) {
         let { token, id } = this.context.user
-        deleteTag(token, this.state.tags.slice(key, key + 1), id)
+        deleteTag(token, this.state.tags.slice(key, key + 1), id).then((res) => {
+            if (res.status === "success") {
+                this.state.tags.splice(key, 1)
+                this.setState({ ...this.state, tags: this.state.tags })
+            }
+        })
     }
 
     handleKeyDown(props) {
         if (props.keyCode === 13)
-            addTag(props.target.value, this.context.user.token)
+            addTag(props.target.value, this.context.user.token).then((res) => {
+                if (res.status === "success"){
+                    this.getUserTags()
+                    this.setState({ ...this.state, value: "" })
+                }
+            })
     }
 
     onChange(value) { this.setState({ ...this.state, ...value }) }
@@ -50,7 +65,7 @@ class Tags extends React.Component {
     }
 
     render() {
-        let action = { onKeyDown: this.function.handleKeyDown }
+        let action = { onKeyDown: this.function.handleKeyDown, onChange: (e) => { this.onChange({value:e.target.value})} }
 
         return (
             <React.Fragment>
@@ -61,7 +76,7 @@ class Tags extends React.Component {
                 }
                 {
                     this.props.id > 0 ? <React.Fragment />
-                        : <ModifyTag {...this.state} action={action} fct={this.function} />
+                        : <ModifyTag {...this.state} value={this.state.value} action={action} fct={this.function} />
                 }
             </React.Fragment>
         )

@@ -79,7 +79,7 @@ export function addTag(value, token) {
         config: { headers: { 'Content-Type': 'multipart/form-data' } },
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {
-        return ({ res: 1, data: response.data })
+        return ( response.data )
     }).catch(error => {
         return (0)
     });

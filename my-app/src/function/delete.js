@@ -11,9 +11,8 @@ export function deleteTag(token, body, id) {
         },
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {
-        if (response.status === 200)
-            return ("You have successfully confirmed your account")
+        return (response.data)
     }).catch(error => {
-        return ("Confirmation attempt failed")
+        return (error)
     });
 }
