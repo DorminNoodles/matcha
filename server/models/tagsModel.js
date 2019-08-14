@@ -1,15 +1,15 @@
 const database = require('../controllers/database');
 
-exports.userTags = (userId) => {
+exports.user = (userId) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				conn.query('SELECT `id`, `tag` FROM `tags` WHERE `userId` = ?', [userId])
+				conn.query('SELECT tags.tag , tags.id FROM tags INNER JOIN usertags ON tags.id=usertags.tag_id WHERE usertags.user_id=' + userId)
 					.then((res) => {
-
+						resolve({ "status": "success", data: res });
 					})
 					.catch((err) => {
-						reject({ status: "error", key: "tags" });
+						reject({ status: "error", msg: "Bad query" });
 					})
 			})
 			.catch((err) => { reject(err); })

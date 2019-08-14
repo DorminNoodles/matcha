@@ -43,3 +43,13 @@ export function getUsers(token) {
         return "not ok";
     });
 }
+
+export function getUserTags(token, user_id) {
+    return axios({
+        method: 'GET',
+        url: 'http://localhost:3300/api/tags/user',
+        params: { user_id },
+        headers: { 'Authorization': "bearer " + token }
+    }).then(response => { return response })
+        .catch(error => { return error; });
+}

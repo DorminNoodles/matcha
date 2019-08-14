@@ -71,6 +71,21 @@ exports.user = (user_id, tag_id) => {
 	});
 }
 
+exports.delete = ({ user_id, tag_id }) => {
+	return new Promise((resolve, reject) => {
+		database.connection()
+			.then((conn) => {
+				return new Promise((resolve, reject) => {
+					conn.query('DELETE FROM usertags WHERE user_id=? AND tag_id=?;', [user_id, tag_id])
+						.then((res) => {
+							resolve({ "status": "success", "msg": "Tags deleted" })
+						}).catch((err) => { reject(err); })
+				})
+			}).then((res) => { resolve(res) })
+			.catch((err) => { reject(err); })
+	});
+}
+
 exports.patch = (tag, data) => {
 	return new Promise((resolve, reject) => {
 		database.connection()

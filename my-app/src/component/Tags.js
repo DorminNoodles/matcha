@@ -7,7 +7,7 @@ function BubbleTag({ value, onDelete, pos }) {
             border: "1px solid",
             borderRadius: "5px",
             padding: "4px",
-            marginRight: "15px"
+            margin: "0px 15px 10px 0px"
         }}>
             {value}
             <span style={{ padding: "0px 5px" }} onClick={() => onDelete(pos)}>
@@ -25,9 +25,9 @@ function ModifyTag({ tagModify, tags, action, fct }) {
             {
                 tagModify ? <React.Fragment >
 
-                    <div style={{ display: "flex", padding: "15px 0px" }}>
+                    <div style={{ display: "flex", padding: "15px 0px", flexWrap: "wrap" }}>
                         {Object.keys(tags).map((value, id) => {
-                            return (<BubbleTag key={id} pos={id} value={tags[value].name} onDelete={onDelete} />)
+                            return (<BubbleTag key={id} pos={id} value={tags[value].tag} onDelete={onDelete} />)
                         })}
                     </div>
                     <Field icon="fas fa-tag" position="left" style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />

@@ -38,4 +38,20 @@ router.get('/', urlencodedParser, (req, res) => {
 	})
 });
 
+router.delete('/', urlencodedParser, (req, res) => {
+
+	if (!req.token || parseInt(req.body.user_id) !== req.token.id) {
+		res.status(401).send({ "status": "error", "key": "auth", "msg": "bad authentification" });
+		return;
+	}
+
+	tag.delete(req.body)
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(409).send(err);
+		})
+});
+
 module.exports = router;

@@ -49,3 +49,13 @@ exports.get = (tag) => {
 			})
 	});
 }
+
+exports.delete = (body) => {
+	return new Promise((resolve, reject) => {
+		tagModel.delete(body)
+			.then((res) => { 
+				console.log(res)
+				resolve(res); })
+			.catch((err) => { reject(err); })
+	});
+}
