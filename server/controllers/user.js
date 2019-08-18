@@ -96,7 +96,6 @@ exports.createUser = (data) => {
 
 exports.get = (id) => {
 	return new Promise((resolve, reject) => {
-		let data;
 
 		userModel.findUserById(id)
 			.then((user) => {

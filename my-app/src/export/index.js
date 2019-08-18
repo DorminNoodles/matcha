@@ -3,7 +3,6 @@ import User from "../container/User";
 import Confirm from "../container/Confirm";
 import Match from "../container/Match";
 import Chat from "../container/Chat";
-import Parameters from "../container/Parameters";
 import Signin from "../container/Signin";
 import SignupAndParams from "../container/SignupAndParams";
 import Password from "../container/Password";
@@ -25,18 +24,18 @@ import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
 import { Profil } from "../component/Profil";
 import { ModalPhoto, Modal } from "../component/Modal";
+import { SearchHeader } from "../component/Match";
 import { ForgotPassword, NewPassword } from "../component/Password";
 import { UserProfil } from "../component/User";
 import { BubbleTag } from "../component/Tags";
 import { ModifyTag } from "../component/Tags";
 
-export { 
+export {
     Home,
     User,
     Confirm,
     Match,
     Chat,
-    Parameters,
     Signin,
     SignupAndParams,
     Password,
@@ -57,10 +56,11 @@ export {
     Conversation,
     Profil,
     Modal,
+    SearchHeader,
     ModalPhoto,
     ForgotPassword,
     NewPassword,
     UserProfil,
     BubbleTag,
     ModifyTag
- };
+};

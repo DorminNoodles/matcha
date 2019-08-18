@@ -28,7 +28,7 @@ class Profil extends React.Component {
 
   render() {
     return (
-      <div className="profil">
+      <div id="profil">
         <Route />
         <Link to={{ pathname: "/user", search: "?id=1" }}>
 

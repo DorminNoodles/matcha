@@ -3,7 +3,6 @@ import UserProvider from '../context/UserProvider';
 import { UserProfil, Field, Modal, ModalPhoto } from '../export'
 import { getUser } from '../function/get'
 import queryString from 'query-string'
-import axios from 'axios';
 
 class User extends React.Component {
   state = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profil } from "../export";
+import { Profil, SearchHeader } from "../export";
 import UserProvider from '../context/UserProvider';
 import { getUser } from '../function/get'
 
@@ -14,10 +14,10 @@ class Match extends React.Component {
   componentDidMount() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
-    
+
   }
-  
-  getUsers(){
+
+  getUsers() {
 
   }
 
@@ -25,6 +25,7 @@ class Match extends React.Component {
 
     return (
       <div id="match">
+        <SearchHeader />
         <Profil />
       </div>);
   }

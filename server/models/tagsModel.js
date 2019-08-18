@@ -16,25 +16,27 @@ exports.user = (userId) => {
 	});
 }
 
-// exports.get = (userId) => {
-// 	return new Promise((resolve, reject) => {
-// 		database.connection()
-// 		.then((conn) => {
-// 			conn.query('SELECT `id`, `tag` FROM `tags` WHERE `userId` = ?', [userId])
-// 			.then((res) => {
-// 				console.log("OK >>>>>>>>>>>>>> ", res);
-// 				if (res[0])
-// 					resolve(res);
-// 				else
-// 					reject({status: 'error', msg: 'Tags not found'});
-// 			})
-// 			.catch((err) => {
-// 				reject({status: "error", key: "tags"});
-// 			})
-// 		})
-// 		.catch((err) => {
-// 			console.log(err);
-// 			reject(err);
-// 		})
-// 	});
-// }
+exports.get = (tag) => {
+	console.log(tag)
+	return new Promise((resolve, reject) => {
+		database.connection()
+		.then((conn) => {
+			conn.query('SELECT * from tags WHERE LOWER(tag) LIKE "c%";')
+			.then((res) => {
+				console.log("OK >>>>>>>>>>>>>> ", res);
+				if (res[0])
+					resolve(res);
+				else
+					reject({status: 'error', msg: 'Tags not found'});
+			})
+			.catch((err) => {
+ 					console.log(err);
+				reject({status: "error", key: "tags"});
+			})
+		})
+		.catch((err) => {
+			console.log(err);
+			reject(err);
+		})
+	});
+}

@@ -226,6 +226,7 @@ form > .inputfile {
   margin: 10px 0px; 
   min-height: max-content; 
   min-height: -moz-max-content;
+  margin: auto;
 }
 
 .rc-slider-track {
@@ -358,10 +359,20 @@ form > .inputfile {
 }
 
 #match{
-  padding: 10px;
   width: 100%;
   height: 100%;
 }
+
+#search-header{
+  width: 100%;
+  /* height: 50px; */
+  height: 100%;
+  background: white;
+  color: #B33070;
+  border: 1px solid;
+}
+
+
 /* ################################ CHAT ################################### */
 
 @media screen and (min-width: 480px) {
@@ -404,6 +415,9 @@ form > .inputfile {
 
 
 /* ################################ PROFIL ################################### */
+#profil{
+  padding: 10px;
+}
 
 .profil-image{
   border-radius: 8px;

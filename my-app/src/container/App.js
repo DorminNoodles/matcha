@@ -3,7 +3,6 @@ import Routers from './Routers';
 import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";
-import { withRouter } from "react-router";
 import UserProvider from "../context/UserProvider"
 
 class App extends React.Component {

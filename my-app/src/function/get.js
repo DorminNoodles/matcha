@@ -54,3 +54,13 @@ export function getUserTags(token, user_id) {
     }).then(response => { return response })
         .catch(error => { return error; });
 }
+
+export function getTags(token, tag) {
+    return axios({
+        method: 'GET',
+        params: { tag },
+        url: 'http://localhost:3300/api/tags',
+        headers: { 'Authorization': "bearer " + token }
+    }).then(response => { return response })
+        .catch(error => { return error; });
+}

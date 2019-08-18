@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Route, Link } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 
 class Header extends React.Component {
