@@ -21,7 +21,7 @@ export function getUser(token, id) {
 
     return axios({
         method: 'GET',
-        params: { id } ,
+        params: { id },
         url: 'http://localhost:3300/api/user/',
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {
@@ -61,6 +61,6 @@ export function getTags(token, tag) {
         params: { tag },
         url: 'http://localhost:3300/api/tags',
         headers: { 'Authorization': "bearer " + token }
-    }).then(response => { return response })
+    }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }

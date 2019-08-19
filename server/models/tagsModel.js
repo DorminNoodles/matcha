@@ -17,26 +17,15 @@ exports.user = (userId) => {
 }
 
 exports.get = (tag) => {
-	console.log(tag)
 	return new Promise((resolve, reject) => {
 		database.connection()
-		.then((conn) => {
-			conn.query('SELECT * from tags WHERE LOWER(tag) LIKE "c%";')
-			.then((res) => {
-				console.log("OK >>>>>>>>>>>>>> ", res);
-				if (res[0])
-					resolve(res);
-				else
-					reject({status: 'error', msg: 'Tags not found'});
+			.then((conn) => {
+				conn.query('SELECT id, tag as value from tags WHERE LOWER(tag) LIKE "' + tag + '%";')
+					.then((res) => {
+						resolve(res)
+					})
+					.catch((err) => { reject({ status: "error" }); })
 			})
-			.catch((err) => {
- 					console.log(err);
-				reject({status: "error", key: "tags"});
-			})
-		})
-		.catch((err) => {
-			console.log(err);
-			reject(err);
-		})
+			.catch((err) => { reject(err); })
 	});
 }

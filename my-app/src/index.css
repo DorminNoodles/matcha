@@ -363,14 +363,6 @@ form > .inputfile {
   height: 100%;
 }
 
-#search-header{
-  width: 100%;
-  /* height: 50px; */
-  height: 100%;
-  background: white;
-  color: #B33070;
-  border: 1px solid;
-}
 
 
 /* ################################ CHAT ################################### */
@@ -545,4 +537,61 @@ form > .inputfile {
 
 .notif{
 
+}
+
+/* #########################Tags########################################## */
+
+#search-header{
+  width: 100%;
+  background: white;
+  color: #B33070;
+  border: 1px solid;
+}
+
+@media screen and (min-width: 480px) {
+  #search-header{ height: fit-content; }
+}
+
+@media screen and (max-width: 479px) {
+  #search-header{ height: 100%; }
+}
+
+.react-autosuggest__input {
+  width: 240px;
+  height: 30px;
+  padding: 10px 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.react-autosuggest__container{
+  justify-content: center;
+  display: block;
+  text-align: center;
+  width: 240px;
+}
+
+.react-autosuggest__suggestions-container--open{
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  height: 100px;
+  overflow: scroll;
+  width: 240px;
+}
+
+.react-autosuggest__suggestion{
+  cursor:pointer;
+  width: 240px;
+  border-bottom:1px solid; 
+}
+
+.react-autosuggest__suggestion:hover{
+  cursor: pointer;
+  background:#B33070;
+  color: white;
+  width: 240px;
 }
