@@ -6,13 +6,15 @@ import Slider from 'rc-slider';
 
 const Handle = Slider.Handle;
 
-function SliderLocation(props) {
-  
-  const handle = (props, {distance, onChange}) => {
+function SliderOne(props) {
+  console.log(props)
+
+  const handle = (props, { unit, key, onChange }) => {
     const { value, dragging, index, ...restProps } = props;
 
-    if (value !== distance)
-      onChange({ distance: value });
+
+    if (value !== unit)
+      onChange({ [key] : value });
 
     return (
       <Tooltip
@@ -30,8 +32,8 @@ function SliderLocation(props) {
   return (
     <div className="field-param">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <p style={{ margin: "10px 0px" }}>Distance</p>
-        <p>{props.distance} km</p>
+        <p style={{ margin: "10px 0px" }}>{props.key}</p>
+        <p>{props.unit} km</p>
       </div>
       <Slider
         min={5}
@@ -43,4 +45,4 @@ function SliderLocation(props) {
   );
 }
 
-export { SliderLocation };
+export { SliderOne };

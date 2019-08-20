@@ -15,7 +15,7 @@ import ListMessage from "../container/ListMessage";
 
 import { SliderAge } from "../component/SliderAge";
 import { SliderAgeRange } from "../component/SliderAge";
-import { SliderLocation } from "../component/SliderLocation";
+import { SliderOne } from "../component/SliderOne";
 import { Gender } from "../component/Gender";
 import { SexualOrientation } from "../component/SexualOrientation";
 import { Field } from "../component/Field";
@@ -47,7 +47,7 @@ export {
     ListMessage,
     SliderAge,
     SliderAgeRange,
-    SliderLocation,
+    SliderOne,
     Gender,
     SexualOrientation,
     Field,

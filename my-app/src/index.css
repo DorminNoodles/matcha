@@ -585,7 +585,6 @@ form > .inputfile {
 
 .react-autosuggest__suggestion{
   cursor:pointer;
-  width: 240px;
   border-bottom:1px solid; 
 }
 
@@ -593,5 +592,13 @@ form > .inputfile {
   cursor: pointer;
   background:#B33070;
   color: white;
-  width: 240px;
+}
+
+.react-autosuggest__suggestion--highlighted{
+  background:#B33070;
+  color: white;
+}
+
+.react-autosuggest__suggestions-list{
+  width: 225px;
 }

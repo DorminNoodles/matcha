@@ -1,5 +1,5 @@
 import React from 'react';
-import { SliderLocation, SliderAgeRange } from "../export"
+import { SliderOne, SliderAgeRange } from "../export"
 import { getTags } from "../function/get"
 import Autosuggest from 'react-autosuggest';
 import UserProvider from '../context/UserProvider';
@@ -7,9 +7,7 @@ import UserProvider from '../context/UserProvider';
 const getSuggestionValue = suggestion => suggestion.value ? suggestion.value : "";
 
 const renderSuggestion = suggestion => (
-    <div style={{ borderBottom: "1px solid", width: "240px" }}>
-        {suggestion.value}
-    </div>
+    <div>{suggestion.value}</div>
 );
 
 class Tags extends React.Component {
@@ -20,6 +18,7 @@ class Tags extends React.Component {
             suggestions: []
         };
     }
+
     static contextType = UserProvider;
 
     onChange = (e, { newValue }) => {
@@ -75,12 +74,19 @@ class SearchHeader extends React.Component {
             age_min: 18,
             age_max: 25,
             distance: 25,
+            score: 25,
             tags: []
         }
         this.onChange = this.onChange.bind(this)
     }
+
     onChange = (e) => {
-        this.setState({ ...this.state, ...e }, () => { })
+
+        const key = [Object.keys(e)[0]]
+    
+        // if (this.state[key] !== e[key]){
+        //     this.setState({ ...this.state, ...e }, () => { console.log(this.state)})
+        // }
     }
 
     onChangeAge = (min, max) => {
@@ -99,8 +105,8 @@ class SearchHeader extends React.Component {
         return (
             <div id="search-header">
                 <SliderAgeRange onChangeAge={this.onChangeAge} age_min={this.state.age_min} age_max={this.state.age_max} />
-                <SliderLocation onChange={this.onChange} distance={this.state.distance} />
-                <SliderLocation onChange={this.onChange} distance={this.state.distance} />
+                <SliderOne onChange={this.onChange} unit={this.state.distance} key="distance"/>
+                <SliderOne onChange={this.onChange} unit={this.state.score} key="score"/>
                 <Tags />
             </div>
         );

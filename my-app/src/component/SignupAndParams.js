@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
-import { SliderAge, SliderLocation, Gender, SexualOrientation, SliderAgeRange } from '../export'
+import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange } from '../export'
 
 function ProfileImg({ image, sendFile, avatar }) {
 
@@ -62,7 +62,7 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
             <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
             <SliderAgeRange onChangeAge={onChangeAge} age_min={info.age_min.value} age_max={info.age_max.value} />
-            <SliderLocation onChange={onChange} distance={info.distance.value} />
+            <SliderOne onChange={onChange} distance={info.distance.value} />
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(1) }}>
