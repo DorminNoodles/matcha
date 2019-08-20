@@ -29,6 +29,7 @@ class Tags extends React.Component {
         let id = this.props.id > 0 ? this.props.id : this.context.user.id
 
         getUserTags(this.context.user.token, id).then((res) => {
+            console.log(res)
             if (res.data && res.data.data)
                 this.setState({ ...this.state, tags: res.data.data })
         })

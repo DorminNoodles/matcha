@@ -29,6 +29,7 @@ import { ForgotPassword, NewPassword } from "../component/Password";
 import { UserProfil } from "../component/User";
 import { BubbleTag } from "../component/Tags";
 import { ModifyTag } from "../component/Tags";
+import { TagsSuggest } from "../component/TagsSuggest";
 
 export {
     Home,
@@ -62,5 +63,6 @@ export {
     NewPassword,
     UserProfil,
     BubbleTag,
-    ModifyTag
+    ModifyTag,
+    TagsSuggest
 };

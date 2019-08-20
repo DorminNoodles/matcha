@@ -1,69 +1,17 @@
 import React from 'react';
-import { SliderOne, SliderAgeRange } from "../export"
-import { getTags } from "../function/get"
-import Autosuggest from 'react-autosuggest';
+import { SliderOne, SliderAgeRange, BubbleTag, TagsSuggest } from "../export"
 import UserProvider from '../context/UserProvider';
 
-const getSuggestionValue = suggestion => suggestion.value ? suggestion.value : "";
 
-const renderSuggestion = suggestion => (
-    <div>{suggestion.value}</div>
-);
+const listTags = (tags, onDelete) => {
 
-class Tags extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            value: '',
-            suggestions: []
-        };
-    }
-
-    static contextType = UserProvider;
-
-    onChange = (e, { newValue }) => {
-        this.setState({ value: newValue });
-    };
-
-    onSuggestionsFetchRequested = ({ value }) => {
-        getTags(this.context.user.token, value).then((res) => {
-            this.setState({ suggestions: res });
-        })
-    };
-
-    onSuggestionsClearRequested = (e) => {
-        this.setState({ suggestions: [] });
-    };
-
-    handleKeyDown = (e) => {
-        if (e.key === "Enter" || e.type === "click")
-            console.log("tada")
-    }
-
-    render() {
-        const { value, suggestions } = this.state;
-
-        const inputProps = {
-            placeholder: 'Looking for #tag',
-            value,
-            onChange: this.onChange,
-            onKeyDown: this.handleKeyDown
-        };
-
-        return (
-            <div className="center" style={{ margin: "20px auto", alignItems:"flex-start"}}>
-                <Autosuggest
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    getSuggestionValue={getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={inputProps}
-                />
-                <button className="button" style={{ height: "30px", fontSize: "small" }} onClick={this.handleKeyDown}>OK</button>
-            </div>
-        );
-    }
+    return (
+        <div className="center" style={{ padding: "15px 0px", flexWrap: "wrap" }}>
+            {Object.keys(tags).map((value, id) => {
+                return (<BubbleTag key={id} pos={id} value={tags[value]} onDelete={onDelete} />)
+            })}
+        </div>
+    )
 }
 
 class SearchHeader extends React.Component {
@@ -79,35 +27,43 @@ class SearchHeader extends React.Component {
         }
         this.onChange = this.onChange.bind(this)
     }
+    static contextType = UserProvider;
 
     onChange = (e) => {
-
-        const key = [Object.keys(e)[0]]
-    
-        // if (this.state[key] !== e[key]){
-        //     this.setState({ ...this.state, ...e }, () => { console.log(this.state)})
-        // }
+        this.setState({ ...this.state, ...e })
     }
 
     onChangeAge = (min, max) => {
-
         this.setState({
             ...this.state,
-            info: {
-                ...this.state.info,
-                age_min: { value: min, error: "" },
-                age_max: { value: max, error: "" }
-            }
+            age_min: min,
+            age_max: max
         })
     }
 
+    onDelete = (key) => {
+        this.state.tags.splice(key, 1)
+        this.setState({ ...this.state, tags: this.state.tags })
+    }
+
+
     render() {
+
+        let { age_min, age_max, distance, score, tags } = this.state
+
         return (
             <div id="search-header">
-                <SliderAgeRange onChangeAge={this.onChangeAge} age_min={this.state.age_min} age_max={this.state.age_max} />
-                <SliderOne onChange={this.onChange} unit={this.state.distance} key="distance"/>
-                <SliderOne onChange={this.onChange} unit={this.state.score} key="score"/>
-                <Tags />
+                <SliderAgeRange onChangeAge={this.onChangeAge} age_min={age_min} age_max={age_max} />
+                <SliderOne onChange={this.onChange} val={distance} i="Distance" unite="km" />
+                <SliderOne onChange={this.onChange} val={score} i="Score" unite="points" />
+                {listTags(this.state.tags, this.onDelete)}
+                <TagsSuggest onChange={this.onChange} tags={this.state.tags} />
+                <button className="button white-red">
+                    Search
+                    <span style={{ marginLeft: "5px" }}>
+                        <i className="fas fa-search"></i>
+                    </span>
+                </button>
             </div>
         );
     }

@@ -234,7 +234,7 @@ form > .inputfile {
 }
 
 .rc-slider-handle {
-  border: solid 2px white !important;
+  border: solid 2px #f1e8e8 !important;
 }
 
 #user {
@@ -546,6 +546,8 @@ form > .inputfile {
   background: white;
   color: #B33070;
   border: 1px solid;
+  text-align: center;
+  padding: 10px;
 }
 
 @media screen and (min-width: 480px) {
@@ -572,6 +574,7 @@ form > .inputfile {
   display: block;
   text-align: center;
   width: 240px;
+  overflow-x: hidden;
 }
 
 .react-autosuggest__suggestions-container--open{

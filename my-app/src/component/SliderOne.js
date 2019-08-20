@@ -7,14 +7,12 @@ import Slider from 'rc-slider';
 const Handle = Slider.Handle;
 
 function SliderOne(props) {
-  console.log(props)
 
-  const handle = (props, { unit, key, onChange }) => {
+  const handle = (props, { val, i, onChange }) => {
     const { value, dragging, index, ...restProps } = props;
 
-
-    if (value !== unit)
-      onChange({ [key] : value });
+    if (value !== val)
+      onChange({ [i.toLowerCase()] : value });
 
     return (
       <Tooltip
@@ -32,13 +30,13 @@ function SliderOne(props) {
   return (
     <div className="field-param">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <p style={{ margin: "10px 0px" }}>{props.key}</p>
-        <p>{props.unit} km</p>
+        <p style={{ margin: "10px 0px" }}>{props.i}</p>
+        <p>{props.value} {props.unite}</p>
       </div>
       <Slider
         min={5}
         max={300}
-        defaultValue={props.distance}
+        defaultValue={props.value}
         handle={(e) => handle(e, props)}
       />
     </div>
