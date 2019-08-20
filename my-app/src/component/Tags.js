@@ -4,6 +4,7 @@ import { Field } from '../export/index'
 function BubbleTag({ value, onDelete, pos }) {
     return (
         <div style={{
+            height: "fit-content",
             border: "1px solid",
             borderRadius: "5px",
             padding: "4px",

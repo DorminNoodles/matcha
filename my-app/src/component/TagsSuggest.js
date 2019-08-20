@@ -36,7 +36,7 @@ class TagsSuggest extends React.Component {
 
     handleKeyDown = (e) => {
         let { onChange, tags } = this.props
-        if (e.key === "Enter" || e.type === "click") {
+        if ((e.key === "Enter" || e.type === "click") && this.state.value.length > 0) {
             tags.push(this.state.value)
             this.setState({ value: "" }, () => {
                 onChange({ tags })
@@ -55,19 +55,16 @@ class TagsSuggest extends React.Component {
         };
 
         return (
-            <div>
-
-                <div className="center" style={{ margin: "20px auto", alignItems: "flex-start" }}>
-                    <Autosuggest
-                        suggestions={suggestions}
-                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                        getSuggestionValue={getSuggestionValue}
-                        renderSuggestion={renderSuggestion}
-                        inputProps={inputProps}
-                    />
-                    <button className="button" style={{ height: "30px", fontSize: "small" }} onClick={this.handleKeyDown}>OK</button>
-                </div>
+            <div style={{ margin: "20px auto", alignItems: "flex-start", display: "flex", justifyContent: "center", width: "80%", maxWidth: "240px" }}>
+                <Autosuggest
+                    suggestions={suggestions}
+                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                    getSuggestionValue={getSuggestionValue}
+                    renderSuggestion={renderSuggestion}
+                    inputProps={inputProps}
+                />
+                <button className="button" style={{ height: "30px", fontSize: "small" }} onClick={this.handleKeyDown}>OK</button>
             </div>
         );
     }

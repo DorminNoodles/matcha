@@ -31,12 +31,12 @@ function SliderOne(props) {
     <div className="field-param">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <p style={{ margin: "10px 0px" }}>{props.i}</p>
-        <p>{props.value} {props.unite}</p>
+        <p>{props.val} {props.unite}</p>
       </div>
       <Slider
         min={5}
         max={300}
-        defaultValue={props.value}
+        defaultValue={props.val}
         handle={(e) => handle(e, props)}
       />
     </div>

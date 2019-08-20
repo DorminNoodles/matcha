@@ -6,7 +6,7 @@ import UserProvider from '../context/UserProvider';
 const listTags = (tags, onDelete) => {
 
     return (
-        <div className="center" style={{ padding: "15px 0px", flexWrap: "wrap" }}>
+        <div style={{ padding: "15px 0px", flexWrap: "wrap", display: "flex", justifyContent: "center" }}>
             {Object.keys(tags).map((value, id) => {
                 return (<BubbleTag key={id} pos={id} value={tags[value]} onDelete={onDelete} />)
             })}
