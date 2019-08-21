@@ -249,7 +249,7 @@ form > .inputfile {
   color:  #B33070;
   min-width: 200px;
   max-width: 500px;
-  width: calc(100% - 150px);
+  width: fit-content;
   border-radius: 7px;
   padding: 17px;
   margin: 40px auto;
@@ -361,7 +361,7 @@ form > .inputfile {
 #match{
   width: 100%;
   height: 100%;
-  display: grid;
+  display: inline-table                                                                                                                                                                                    ;
 }
 
 
@@ -408,8 +408,11 @@ form > .inputfile {
 
 
 /* ################################ PROFIL ################################### */
+
 #profil{
-  padding: 10px;
+  width: 190px;
+  height: 250px;
+  margin: 10px;
 }
 
 .profil-image{
@@ -426,6 +429,7 @@ form > .inputfile {
 }
 
 .profil-bottom{
+  z-index: 5;
   width: 100%;
   bottom: 0px;
   display: flex;
@@ -436,12 +440,25 @@ form > .inputfile {
 }
 
 .profil-modal{
+  z-index: 2;
   background: rgba(0, 0, 0, 0.71);
   height: 100%;
   text-align: center;
   display: flex;
   flex-flow: column;
   color:#f5e7e7;
+  width: 190px;
+  height: 250px;
+  position: absolute;
+}
+
+#profil-modal{
+  height: 215px;
+  display: flex;
+  flex-flow: column;
+  color: #f5e7e7;
+  width: 190px;
+  justify-content: center;
 }
 
 /* ############################# MESSAGE ###################################### */
@@ -553,13 +570,20 @@ form > .inputfile {
   justify-content: center;
 }
 
+#list-profil{
+  display: flex;
+  height: 100%;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-content: start;
+  padding: 15px;
+}
+
 @media screen and (min-width: 480px) {
   #search-header{ height: fit-content; }
-  #profil{ display: initial;}
 }
 
 @media screen and (max-width: 479px) {
-  #profil{ display: none;}
   #search-header{ height: 100%; }
 }
 

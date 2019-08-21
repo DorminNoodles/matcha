@@ -14,6 +14,34 @@ const listTags = (tags, onDelete) => {
     )
 }
 
+const SearchOpen = ({ fct, props }) => {
+    let { age_min, age_max, distance, score, tags } = props
+    let { onChange, onChangeAge, onDelete } = fct
+
+    return (
+        <React.Fragment>
+            <span onClick={() => onChange({ open: false })} style={{ position: "absolute", right: "15px", cursor: "pointer" }}>
+                <i className="fas fa-times-circle fa-lg"></i>
+            </span>
+            <SliderAgeRange onChangeAge={onChangeAge} age_min={age_min} age_max={age_max} />
+            <SliderOne onChange={onChange} val={distance} i="Distance" unite="km" />
+            <SliderOne onChange={onChange} val={score} i="Score" unite="points" />
+            {listTags(tags, onDelete)}
+            <TagsSuggest onChange={onChange} tags={tags} />
+            <Button name="Search" />
+        </React.Fragment>
+    )
+}
+
+const Button = ({ onClick, name }) => (
+    <button className="button white-red" onClick={onClick}>
+        <p>{name}</p>
+        <span style={{ marginLeft: "5px" }}>
+            <i className="fas fa-search"></i>
+        </span>
+    </button>
+)
+
 class SearchHeader extends React.Component {
 
     constructor(props) {
@@ -23,9 +51,14 @@ class SearchHeader extends React.Component {
             age_max: 25,
             distance: 25,
             score: 25,
-            tags: []
+            tags: [],
+            open: false
         }
-        this.onChange = this.onChange.bind(this)
+        this.fct = {
+            onChange: this.onChange.bind(this),
+            onChangeAge: this.onChangeAge.bind(this),
+            onDelete: this.onDelete.bind(this)
+        }
     }
     static contextType = UserProvider;
 
@@ -49,21 +82,13 @@ class SearchHeader extends React.Component {
 
     render() {
 
-        let { age_min, age_max, distance, score, tags } = this.state
-
         return (
             <div id="search-header">
-                <SliderAgeRange onChangeAge={this.onChangeAge} age_min={age_min} age_max={age_max} />
-                <SliderOne onChange={this.onChange} val={distance} i="Distance" unite="km" />
-                <SliderOne onChange={this.onChange} val={score} i="Score" unite="points" />
-                {listTags(this.state.tags, this.onDelete)}
-                <TagsSuggest onChange={this.onChange} tags={this.state.tags} />
-                <button className="button white-red">
-                    Search
-                    <span style={{ marginLeft: "5px" }}>
-                        <i className="fas fa-search"></i>
-                    </span>
-                </button>
+                {
+                    this.state.open === false ?
+                        <Button onClick={() => this.fct.onChange({ open: true })} name="Filter" /> :
+                        <SearchOpen fct={this.fct} props={this.state} />
+                }
             </div>
         );
     }

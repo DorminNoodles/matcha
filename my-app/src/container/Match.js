@@ -26,7 +26,14 @@ class Match extends React.Component {
     return (
       <div id="match">
         <SearchHeader />
-        <Profil />
+        <div id="list-profil">
+          <Profil />
+          <Profil />
+          <Profil />
+          <Profil />
+          <Profil />
+          <Profil />
+        </div>
       </div>);
   }
 }
