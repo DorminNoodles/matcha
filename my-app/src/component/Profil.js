@@ -15,7 +15,10 @@ const Modal = () => {
           <i className="fas fa-venus-mars" style={{ marginRight: "5px" }} />
           Female
         </span>
-
+        <span>
+          <i className="fas fa-search" style={{ marginRight: "5px" }} />
+          Heterosexual
+        </span>
         <span>
           <i className="fas fa-map-marker-alt" style={{ marginRight: "5px" }} />
           Paris

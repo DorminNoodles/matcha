@@ -58,41 +58,59 @@ const addDistance = (userGps, data) => {
 exports.getUsers = (query, userId) => {
 	return new Promise((resolve, reject) => {
 
-		let userData;
-		let params = {
-			'distance': checkDistance(query.distance) * 0.0085,
-			'ageMin': checkAge(query.ageMin, 0)[0],// same fonction return array of two
-			'ageMax': checkAge(0, query.ageMax)[1]
-		}
 
 		userModel.findUserById(userId)
 		.then((res) => {
-			console.log('findUsers by id > ', res);
-			userData = res;//get data of self user
-			return usersModel.get({...params, originLat: res.latitude, originLong: res.longitude});
+			console.log('res', res);
+		
 		})
-		.then((res) => {
-			console.log('query > ', res);
-			return addDistance({lat: userData.latitude, long: userData.longitude}, res);
-		})
-		.then((res) => {
-			//sort is not always active change that please
-
-			console.log('res with distance > ', res);
-
-			if (!res[0]) {
-				reject({status: "error", code: 400, key: "getUsers", msg: "Nobody find !"});
-				return;
-			}
-			else
-				sortUsers(query.sort, res, userData, (sortData) => {
-					console.log(sortData);
-					resolve(sortData);
-				})
-		})
+		
 		.catch((err) => {
 			console.log('reject', err);
 			reject(err);
 		})
 	})
 }
+
+
+// exports.getUsers = (query, userId) => {
+// 	return new Promise((resolve, reject) => {
+
+// 		let userData;
+// 		let params = {
+// 			'distance': checkDistance(query.distance) * 0.0085,
+// 			'ageMin': checkAge(query.ageMin, 0)[0],// same fonction return array of two
+// 			'ageMax': checkAge(0, query.ageMax)[1]
+// 		}
+
+// 		userModel.findUserById(userId)
+// 		.then((res) => {
+// 			console.log('findUsers by id > ', res);
+// 			userData = res;//get data of self user
+// 			return usersModel.get({...params, originLat: res.latitude, originLong: res.longitude});
+// 		})
+// 		.then((res) => {
+// 			console.log('query > ', res);
+// 			return addDistance({lat: userData.latitude, long: userData.longitude}, res);
+// 		})
+// 		.then((res) => {
+// 			//sort is not always active change that please
+
+// 			console.log('res with distance > ', res);
+
+// 			if (!res[0]) {
+// 				reject({status: "error", code: 400, key: "getUsers", msg: "Nobody find !"});
+// 				return;
+// 			}
+// 			else
+// 				sortUsers(query.sort, res, userData, (sortData) => {
+// 					console.log(sortData);
+// 					resolve(sortData);
+// 				})
+// 		})
+// 		.catch((err) => {
+// 			console.log('reject', err);
+// 			reject(err);
+// 		})
+// 	})
+// }

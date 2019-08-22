@@ -5,21 +5,37 @@ import { Tags } from '../export'
 function UserProfil({ onChange, info, id }) {
     return (
         <React.Fragment>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
 
-            <span style={{ display: "flex", fontWeight: "bold" }}>
-                <p>{info.firstname} {info.lastname} (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</p>
-            </span>
+                <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", width: "50%" }}>
+                    <figure class="image is-square" style={{ width: "100%" }}>
+                        <img class="image is-rounded"
+                            alt="username" onClick={() => onChange({ modal: "modal is-active" })} src="https://data.whicdn.com/images/296905234/superthumb.png?t=1505109579" />
+                    </figure>
+                </div>
 
-            <br />
+                <div style={{ padding: "8px" }}>
+                    <span style={{ display: "flex", fontWeight: "bold", fontSize: "larger" }}>
+                        <p>{info.firstname} {info.lastname} (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</p>
+                    </span>
 
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
-                <img className="is-square" alt="username" onClick={() => onChange({ modal: "modal is-active" })} src="https://data.whicdn.com/images/296905234/superthumb.png?t=1505109579" />
+                    <span style={{ display: "flex", fontWeight: "bold", fontSize: "large", alignItems: "center" }}>
+                        <p>Paris</p>       <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <br />
+
+                    <span style={{ display: "flex", fontWeight: "bold", fontSize: "medium", alignItems: "center" }}>
+                        <p>Hetorosexual - Female</p> 
+                    </span>
+                    <br />
+                </div>
+
             </div>
             <br />
 
             <p>{info.bio}</p>
 
-            <Tags id={id}/>
+            <Tags id={id} />
             <br />
 
             {
@@ -29,7 +45,7 @@ function UserProfil({ onChange, info, id }) {
                         <button className="button red-white">Report</button>
                     </div> : <React.Fragment></React.Fragment>
             }
-        </React.Fragment>
+        </React.Fragment >
     )
 }
 

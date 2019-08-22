@@ -31,13 +31,15 @@ export function getUser(token, id) {
     });
 }
 
-export function getUsers(token) {
+export function getUsers(token, params) {
 
     return axios({
         method: 'GET',
         url: 'http://localhost:3300/api/users',
+        params,
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {
+        console.log(response)
         if (response.status === 200)
             return "ok";
     }).catch(error => {

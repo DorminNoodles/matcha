@@ -2,7 +2,6 @@ import React from 'react';
 import { SliderOne, SliderAgeRange, BubbleTag, TagsSuggest } from "../export"
 import UserProvider from '../context/UserProvider';
 
-
 const listTags = (tags, onDelete) => {
 
     return (
@@ -14,7 +13,16 @@ const listTags = (tags, onDelete) => {
     )
 }
 
-const SearchOpen = ({ fct, props }) => {
+const Button = ({ onClick, name, getUsers }) => (
+    <button className="button white-red" onClick={onClick}>
+        <p>{name}</p>
+        <span style={{ marginLeft: "5px" }}>
+            <i className="fas fa-search"></i>
+        </span>
+    </button>
+)
+
+const SearchOpen = ({ fct, props, getUsers }) => {
     let { age_min, age_max, distance, score, tags } = props
     let { onChange, onChangeAge, onDelete } = fct
 
@@ -28,19 +36,10 @@ const SearchOpen = ({ fct, props }) => {
             <SliderOne onChange={onChange} val={score} i="Score" unite="points" />
             {listTags(tags, onDelete)}
             <TagsSuggest onChange={onChange} tags={tags} />
-            <Button name="Search" />
+            <Button name="Search" onClick={getUsers} />
         </React.Fragment>
     )
 }
-
-const Button = ({ onClick, name }) => (
-    <button className="button white-red" onClick={onClick}>
-        <p>{name}</p>
-        <span style={{ marginLeft: "5px" }}>
-            <i className="fas fa-search"></i>
-        </span>
-    </button>
-)
 
 class SearchHeader extends React.Component {
 
@@ -79,7 +78,6 @@ class SearchHeader extends React.Component {
         this.setState({ ...this.state, tags: this.state.tags })
     }
 
-
     render() {
 
         return (
@@ -87,7 +85,7 @@ class SearchHeader extends React.Component {
                 {
                     this.state.open === false ?
                         <Button onClick={() => this.fct.onChange({ open: true })} name="Filter" /> :
-                        <SearchOpen fct={this.fct} props={this.state} />
+                        <SearchOpen fct={this.fct} props={this.state} getUsers={() => this.props.getUsers(this.state)} />
                 }
             </div>
         );

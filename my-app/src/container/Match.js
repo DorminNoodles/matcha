@@ -1,7 +1,7 @@
 import React from 'react';
 import { Profil, SearchHeader } from "../export";
 import UserProvider from '../context/UserProvider';
-import { getUser } from '../function/get'
+import { getUsers } from '../function/get'
 
 class Match extends React.Component {
   static contextType = UserProvider;
@@ -17,15 +17,18 @@ class Match extends React.Component {
 
   }
 
-  getUsers() {
-
+  getUsers(params) {
+    getUsers(this.context.user.token, params)
+      .then((res) => {
+        console.log(res)
+      })
   }
 
   render() {
 
     return (
       <div id="match">
-        <SearchHeader />
+        <SearchHeader getUsers={this.getUsers.bind(this)} />
         <div id="list-profil">
           <Profil />
           <Profil />

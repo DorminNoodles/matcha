@@ -14,11 +14,17 @@ class TagsSuggest extends React.Component {
         super();
         this.state = {
             value: '',
-            suggestions: []
+            suggestions: [],
+            error: ""
         };
     }
 
     static contextType = UserProvider;
+
+    componentWillReceiveProps(next) {
+        if (this.state.error !== "" && next.tags.length < 10)
+            this.setState({ error: "" });
+    }
 
     onChange = (e, { newValue }) => {
         this.setState({ value: newValue });
@@ -26,7 +32,11 @@ class TagsSuggest extends React.Component {
 
     onSuggestionsFetchRequested = ({ value }) => {
         getTags(this.context.user.token, value).then((res) => {
-            this.setState({ suggestions: res });
+            console.log(res)
+            if (typeof res === "object")
+                this.setState({ suggestions: res });
+            else
+                this.setState({ suggestions: [] });
         })
     };
 
@@ -37,10 +47,14 @@ class TagsSuggest extends React.Component {
     handleKeyDown = (e) => {
         let { onChange, tags } = this.props
         if ((e.key === "Enter" || e.type === "click") && this.state.value.length > 0) {
-            tags.push(this.state.value)
-            this.setState({ value: "" }, () => {
-                onChange({ tags })
-            });
+            if (this.props.tags.length === 10)
+                this.setState({ error: "10 tags maximum!" });
+            else {
+                tags.push(this.state.value)
+                this.setState({ value: "" }, () => {
+                    onChange({ tags })
+                });
+            }
         }
     }
 
@@ -55,17 +69,20 @@ class TagsSuggest extends React.Component {
         };
 
         return (
-            <div style={{ margin: "20px auto", alignItems: "flex-start", display: "flex", justifyContent: "center", width: "80%", maxWidth: "240px" }}>
-                <Autosuggest
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    getSuggestionValue={getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={inputProps}
-                />
-                <button className="button" style={{ height: "30px", fontSize: "small" }} onClick={this.handleKeyDown}>OK</button>
-            </div>
+            <React.Fragment>
+                <p className="error center">{this.state.error}</p>
+                <div style={{ margin: "20px auto", alignItems: "flex-start", display: "flex", justifyContent: "center", width: "80%", maxWidth: "240px" }}>
+                    <Autosuggest
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps}
+                    />
+                    <button className="button" style={{ height: "30px", fontSize: "small" }} onClick={this.handleKeyDown}>OK</button>
+                </div>
+            </React.Fragment>
         );
     }
 }
