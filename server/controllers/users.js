@@ -2,6 +2,7 @@ const geolib = require('geolib');
 
 const usersModel = require('../models/usersModel');
 const userModel = require('../models/userModel');
+const tags = require('../controllers/tags');
 
 
 
@@ -47,8 +48,8 @@ const addDistance = (userGps, data) => {
 	return data.map((elem) => {
 		console.log('elem latitude > ', elem.latitude);
 		elem.distance = geolib.getDistance(
-			{ latitude: userGps.lat, longitude : userGps.long},
-			{ latitude: elem.latitude, longitude : elem.longitude}
+			{ latitude: userGps.lat, longitude: userGps.long },
+			{ latitude: elem.latitude, longitude: elem.longitude }
 		) / 1000;
 		return elem;
 	})
@@ -58,17 +59,16 @@ const addDistance = (userGps, data) => {
 exports.getUsers = (query, userId) => {
 	return new Promise((resolve, reject) => {
 
+		usersModel.get()
+			.then((res) => {
+				console.log('res', res);
+				resolve(res)
 
-		userModel.findUserById(userId)
-		.then((res) => {
-			console.log('res', res);
-		
-		})
-		
-		.catch((err) => {
-			console.log('reject', err);
-			reject(err);
-		})
+			})
+			.catch((err) => {
+				console.log('reject', err);
+				reject(err);
+			})
 	})
 }
 

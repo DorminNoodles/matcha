@@ -8,8 +8,8 @@ function UserProfil({ onChange, info, id }) {
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
 
                 <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", width: "50%" }}>
-                    <figure class="image is-square" style={{ width: "100%" }}>
-                        <img class="image is-rounded"
+                    <figure className="image is-square" style={{ width: "100%" }}>
+                        <img className="image is-rounded"
                             alt="username" onClick={() => onChange({ modal: "modal is-active" })} src="https://data.whicdn.com/images/296905234/superthumb.png?t=1505109579" />
                     </figure>
                 </div>
@@ -20,12 +20,12 @@ function UserProfil({ onChange, info, id }) {
                     </span>
 
                     <span style={{ display: "flex", fontWeight: "bold", fontSize: "large", alignItems: "center" }}>
-                        <p>Paris</p>       <i class="fas fa-map-marker-alt"></i>
+                        <p>{info.location}</p><i className="fas fa-map-marker-alt"/>
                     </span>
                     <br />
 
                     <span style={{ display: "flex", fontWeight: "bold", fontSize: "medium", alignItems: "center" }}>
-                        <p>Hetorosexual - Female</p> 
+                        <p>{info.orientation} - {info.gender}</p>
                     </span>
                     <br />
                 </div>
@@ -45,7 +45,7 @@ function UserProfil({ onChange, info, id }) {
                         <button className="button red-white">Report</button>
                     </div> : <React.Fragment></React.Fragment>
             }
-        </React.Fragment >
+        </React.Fragment>
     )
 }
 

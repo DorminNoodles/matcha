@@ -15,12 +15,20 @@ class User extends React.Component {
 
     let params = queryString.parse(this.props.location.search)
 
-    getUser(this.context.user.token, !params.id ? this.context.user.id :params.id )
+    getUser(this.context.user.token, !params.id ? this.context.user.id : params.id)
       .then((res) => {
-        this.setState({ ...this.state, ...res.data }) })
+        this.setState({ ...this.state, ...res.data })
+      })
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(next) {
+    let params = queryString.parse(next.location.search)
+    if (!params.id)
+      getUser(this.context.user.token, this.context.user.id )
+        .then((res) => {
+          this.setState({ ...this.state, ...res.data })
+        })
+
     if (this.context.header !== "red-white")
       this.context.onChange("header", "red-white")
   }
@@ -37,13 +45,13 @@ class User extends React.Component {
 
   render() {
     let params = queryString.parse(this.props.location.search)
-    let id = !params.id ? 0 :params.id 
+    let id = !params.id ? 0 : params.id
 
     return (
       <div id="user">
 
         <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} id={id}/>
+          <UserProfil info={this.state} onChange={this.onChange} id={id} />
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
 
           <Modal index="modalInfo" modal={this.state.modalInfo} onChange={this.onChange}>

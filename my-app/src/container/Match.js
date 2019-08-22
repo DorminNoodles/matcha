@@ -4,6 +4,11 @@ import UserProvider from '../context/UserProvider';
 import { getUsers } from '../function/get'
 
 class Match extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { users: [] }
+  }
   static contextType = UserProvider;
 
   componentWillReceiveProps() {
@@ -14,28 +19,27 @@ class Match extends React.Component {
   componentDidMount() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
+    this.getUsers();
 
   }
 
   getUsers(params) {
     getUsers(this.context.user.token, params)
-      .then((res) => {
-        console.log(res)
-      })
+      .then((res) => { this.setState({ users: res.data }) })
   }
 
   render() {
-
+    let { users } = this.state
+    
     return (
       <div id="match">
         <SearchHeader getUsers={this.getUsers.bind(this)} />
         <div id="list-profil">
-          <Profil />
-          <Profil />
-          <Profil />
-          <Profil />
-          <Profil />
-          <Profil />
+          {
+            users.length > 0 && users.map((value, i) => {
+              return <Profil key={i} values={value} />
+            })
+          }
         </div>
       </div>);
   }

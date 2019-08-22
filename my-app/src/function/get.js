@@ -38,12 +38,11 @@ export function getUsers(token, params) {
         url: 'http://localhost:3300/api/users',
         params,
         headers: { 'Authorization': "bearer " + token }
-    }).then(response => {
-        console.log(response)
-        if (response.status === 200)
-            return "ok";
-    }).catch(error => {
-        return "not ok";
+    }).then(res => {
+        if (res.status === 200)
+            return res;
+    }).catch(err => {
+        return err;
     });
 }
 
