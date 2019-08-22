@@ -59,6 +59,29 @@ const addDistance = (userGps, data) => {
 exports.getUsers = (query, userId) => {
 	return new Promise((resolve, reject) => {
 
+
+
+		// Select *
+		// FROM users
+		// WHERE id=(
+
+			// SELECT usertags.user_id 
+			// FROM usertags 
+			// INNER JOIN tags
+			// ON usertags.tag_id=tags.id
+			// WHERE tags.tag="foot";
+		// )
+		// 
+
+		// SELECT * FROM users WHERE id IN (SELECT usertags.user_id FROM usertags INNER JOIN tags ON usertags.tag_id=tags.id WHERE tags.tag="foot");
+
+
+		// tags
+		// score
+		// age
+		// orientaion
+		// distance
+
 		usersModel.get()
 			.then((res) => {
 				console.log('res', res);
