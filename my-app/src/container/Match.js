@@ -24,13 +24,21 @@ class Match extends React.Component {
   }
 
   getUsers(params) {
+    console.log("params ===> ", params)
     getUsers(this.context.user.token, params)
-      .then((res) => { this.setState({ users: res.data }) })
+      .then((res) => {
+
+        console.log(res)
+        this.setState({ users: res.data })
+      })
+      .catch(() =>
+        this.setState({ users: [] })
+      )
   }
 
   render() {
     let { users } = this.state
-    
+
     return (
       <div id="match">
         <SearchHeader getUsers={this.getUsers.bind(this)} />

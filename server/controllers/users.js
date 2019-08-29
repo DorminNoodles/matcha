@@ -60,36 +60,38 @@ exports.getUsers = (query, userId) => {
 	return new Promise((resolve, reject) => {
 
 
-
-		// Select *
-		// FROM users
-		// WHERE id=(
-
-			// SELECT usertags.user_id 
-			// FROM usertags 
-			// INNER JOIN tags
-			// ON usertags.tag_id=tags.id
-			// WHERE tags.tag="foot";
-		// )
-		// 
-
-		// SELECT * FROM users WHERE id IN (SELECT usertags.user_id FROM usertags INNER JOIN tags ON usertags.tag_id=tags.id WHERE tags.tag="foot");
-
-
 		// tags
 		// score
 		// age
 		// orientaion
 		// distance
+		
+		// 	age_min: '18',
+		//   age_max: '51',
+		//   distance: '46',
+		//   score: '174',
+		//   open: 'true' 
 
-		usersModel.get()
+		let data = [
+			{ latitude: 48.8534, longitude: 2.3488 },
+			{ latitude: 48.7534, longitude: 2.3488 },
+			{ latitude: 48.6534, longitude: 2.3488 },
+			{ latitude: 48.5534, longitude: 2.3488 },
+			{ latitude: 48.5534, longitude: 2.3488 },
+			{ latitude: 48.5534, longitude: 2.3388 },
+			{ latitude: 48.5534, longitude: 2.3448 }
+		]
+
+		let userGps = { lat: 48.8534, long: 2.3488 }
+		
+		usersModel.get(query)
 			.then((res) => {
-				console.log('res', res);
+				// console.log('res', res);
 				resolve(res)
 
 			})
 			.catch((err) => {
-				console.log('reject', err);
+				// console.log('reject', err);
 				reject(err);
 			})
 	})
