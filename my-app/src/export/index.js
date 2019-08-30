@@ -30,6 +30,7 @@ import { UserProfil } from "../component/User";
 import { BubbleTag } from "../component/Tags";
 import { ModifyTag } from "../component/Tags";
 import { TagsSuggest } from "../component/TagsSuggest";
+import { Location } from "../component/Location";
 
 export {
     Home,
@@ -64,5 +65,6 @@ export {
     UserProfil,
     BubbleTag,
     ModifyTag,
-    TagsSuggest
+    TagsSuggest,
+    Location
 };

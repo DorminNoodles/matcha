@@ -65,3 +65,13 @@ export function getTags(token, tag) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function getLocation(token, city) {
+    return axios({
+        method: 'GET',
+        params: { city },
+        url: 'http://localhost:3300/api/location',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}

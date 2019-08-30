@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
-import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange } from '../export'
+import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
 function ProfileImg({ image, sendFile, avatar }) {
 
@@ -61,8 +61,8 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
 
             <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
-            <SliderAgeRange onChangeAge={onChangeAge} age_min={info.age_min.value} age_max={info.age_max.value} />
-            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km"/>
+            <SliderAgeRange onChangeAge={onChangeAge} ageMin={info.ageMin.value} ageMax={info.ageMax.value} />
+            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km" />
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(1) }}>
@@ -86,6 +86,8 @@ function ThirdPage({ info, onChange, changePage, error, status }) {
             <br />
             <SliderAge onChange={onChange} age={info.age.value} />
             <br />
+            <Location onChange={onChange} />
+            <br />
 
             <button className="button center" onClick={status.fct}>{status.text}</button>
             <p className="error-text center">{error}</p>
@@ -99,4 +101,4 @@ function ThirdPage({ info, onChange, changePage, error, status }) {
     )
 }
 
-export { ProfileImg, FirstPage, SecondPage, ThirdPage }
+export { ProfileImg, FirstPage, SecondPage, ThirdPage, Location }

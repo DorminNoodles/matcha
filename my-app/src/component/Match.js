@@ -23,7 +23,7 @@ const Button = ({ onClick, name, getUsers }) => (
 )
 
 const SearchOpen = ({ fct, props, getUsers }) => {
-    let { age_min, age_max, distance, score, tags } = props
+    let { ageMin, ageMax, distance, score, tags } = props
     let { onChange, onChangeAge, onDelete } = fct
 
     return (
@@ -31,7 +31,7 @@ const SearchOpen = ({ fct, props, getUsers }) => {
             <span onClick={() => onChange({ open: false })} style={{ position: "absolute", right: "15px", cursor: "pointer" }}>
                 <i className="fas fa-times-circle fa-lg"></i>
             </span>
-            <SliderAgeRange onChangeAge={onChangeAge} age_min={age_min} age_max={age_max} />
+            <SliderAgeRange onChangeAge={onChangeAge} ageMin={ageMin} ageMax={ageMax} />
             <SliderOne onChange={onChange} val={distance} i="Distance" unite="km" />
             <SliderOne onChange={onChange} val={score} i="Score" unite="points" />
             {listTags(tags, onDelete)}
@@ -46,8 +46,8 @@ class SearchHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            age_min: 18,
-            age_max: 25,
+            ageMin: 18,
+            ageMax: 25,
             distance: 25,
             score: 25,
             tags: [],
@@ -68,8 +68,8 @@ class SearchHeader extends React.Component {
     onChangeAge = (min, max) => {
         this.setState({
             ...this.state,
-            age_min: min,
-            age_max: max
+            ageMin: min,
+            ageMax: max
         })
     }
 

@@ -11,26 +11,6 @@ class Signup extends React.Component {
         super(props);
         this.state = {
             image: { value: "", error: "" },
-            // info: {
-            //     username: { value: "Dormin", error: "" },
-            //     password: { value: "Root123", error: "" },
-            //     confirmation: { value: "Root123", error: "" },
-            //     firstname: { value: "Loic", error: "" },
-            //     lastname: { value: "Chety", error: "" },
-            //     email: { value: "03b237b339@himail.online", error: "" },
-            //     orientation: { value: "bisexual", error: "" },
-            //     gender: { value: "male", error: "" },
-            //     age: { value: 18, error: "" },
-            //     bio: { value: "je suis s", error: "" },
-            //     desired: { value: { min: 18, max: 25 }, error: "" },
-            //     age_min: { value: 18, error: "" },
-            //     age_max: { value: 25, error: "" },
-            //     ageMin: { value: 18, error: "" },
-            //     ageMax: { value: 25, error: "" },
-            //     distance: { value: 25, error: "" },
-
-            //     location: { value: "Paris", error: "" },
-            // },
             info: {
                 username: { value: "", error: "" },
                 password: { value: "", error: "" },
@@ -42,11 +22,12 @@ class Signup extends React.Component {
                 gender: { value: "", error: "" },
                 age: { value: 18, error: "" },
                 bio: { value: "", error: "" },
-                age_min: { value: 18, error: "" },
-                age_max: { value: 25, error: "" },
+                ageMin: { value: 18, error: "" },
+                ageMax: { value: 25, error: "" },
+                latitude: { value: 0, error: "" },
+                longitude: { value: 0, error: "" },
                 distance: { value: 25, error: "" },
-
-                location: { value: "Paris", error: "" },
+                location: { value: "", error: "" },
             },
             page: 1,
             status: { value: "signup", text: "Create your account", fct: this.register },
@@ -121,8 +102,8 @@ class Signup extends React.Component {
             ...this.state,
             info: {
                 ...this.state.info,
-                age_min: { value: min, error: "" },
-                age_max: { value: max, error: "" }
+                ageMin: { value: min, error: "" },
+                ageMax: { value: max, error: "" }
             }
         })
     }
@@ -138,8 +119,10 @@ class Signup extends React.Component {
         if (!(this.state.data))
             this.setState({ ...this.state, image: { value: "", error: "Please choose your profile picture" } })
 
-        for (let index in info)
-            data.append(index, info[index].value);
+        for (let index in info) {
+            if (index !== "confirmation")
+                data.append(index, info[index].value);
+        }
 
         let rsl = check(this.state);
 
