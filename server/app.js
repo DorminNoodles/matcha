@@ -24,6 +24,7 @@ const gpsDistance = require("./routes/gpsDistance");
 const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
 const confirm = require("./routes/confirm");
+const location = require("./routes/location");
 
 
 //SERVICES
@@ -77,6 +78,7 @@ app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
 app.use('/api/confirm', confirm);
+app.use('/api/location', location);
 
 
 // test

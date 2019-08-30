@@ -16,7 +16,7 @@ exports.checkDataNew = (data) => {
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-			inputModel.location(data.location).catch(e => e),
+			// inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),

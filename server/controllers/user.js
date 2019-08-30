@@ -31,6 +31,7 @@ const avatarUpload = (data) => {
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 
+		console.log("coucou")
 		let filter = [
 			'username',
 			'firstname',
@@ -38,6 +39,8 @@ exports.new = (data) => {
 			'email',
 			'password',
 			'location',
+			'latitude',
+			'longitude',
 			'avatar',
 			'gender',
 			'orientation',
@@ -64,9 +67,6 @@ exports.new = (data) => {
 					...data,
 					avatar: data.avatar.name
 				});
-			})
-			.then((res) => {
-				return location.findGps(data);
 			})
 			.then((res) => {
 				myEmitter.emit('userRegistered', data);
@@ -266,8 +266,8 @@ exports.update = (id, data) => {
 			'gender',
 			'orientation',
 			'age',
-			'age_min',
-			'age_max',
+			'ageMin',
+			'ageMax',
 			'bio',
 			'distance',
 		]
@@ -279,7 +279,6 @@ exports.update = (id, data) => {
 		}
 
 		for (let elem in data) {
-			console.log(elem);
 			if (!validKeys.includes(elem)) {
 				reject({ status: 'error', code: 400, msg: 'Unhautorized key in data' });
 				return;
