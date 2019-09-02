@@ -33,7 +33,7 @@ class ListMessage extends React.Component {
                 <Link to={{ pathname: "/chat", search: "?id=1" }}>
                     <div className="message-active">
                         <figure className="image is-96x96">
-                            <div className="green-dot"/>
+                            <div className="green-dot dot-bottom"/>
                             <img className="is-rounded" alt="1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                         </figure>
                         <div>
@@ -46,7 +46,7 @@ class ListMessage extends React.Component {
                 <div className="white-red" style={{ display: "flex", padding: "5px" }}>
 
                     <figure className="image is-96x96">
-                        <div className="red-dot"/>
+                        <div className="red-dot dot-bottom"/>
                         <img className="is-rounded" alt="1"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
                     </figure>
                     <div>

@@ -180,22 +180,22 @@ form > .inputfile {
 }
 
 .green-dot{
-  bottom: 0px;
   background: #23d160;
-  width: 12px;
-  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
   border-radius: 15px;
-  position: absolute;
-  right: 0%;
 }
 
 .red-dot{
-  bottom: 0px;
   background: #ff3860;
-  width: 12px;
-  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
   border-radius: 15px;
+}
+
+.dot-bottom{
   position: absolute;
+  bottom: 0px;
   right: 0%;
 }
 

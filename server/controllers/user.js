@@ -31,7 +31,6 @@ const avatarUpload = (data) => {
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 
-		console.log("coucou")
 		let filter = [
 			'username',
 			'firstname',

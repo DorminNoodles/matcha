@@ -14,23 +14,53 @@ function UserProfil({ onChange, info, id }) {
                     </figure>
                 </div>
 
-                <div style={{ padding: "8px" }}>
-                    <span style={{ display: "flex", fontWeight: "bold", fontSize: "larger" }}>
-                        <p>{info.firstname} {info.lastname} (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</p>
+                <div style={{ padding: "8px", textAlign: "center" }}>
+
+                    <span style={{ display: "inline-flex", fontWeight: "bold", fontSize: "larger" }}>
+
+                        <p>
+                            <p style={{ display: "flex", alignItems: "center" }}>
+                                <div className="green-dot" style={{ marginRight: "5px" }} />
+                                <p>{info.firstname} {info.lastname}</p>
+                            </p>
+
+                            (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</p>
                     </span>
 
-                    <span style={{ display: "flex", fontWeight: "bold", fontSize: "large", alignItems: "center" }}>
-                        <p>{info.location}</p><i className="fas fa-map-marker-alt"/>
+                    <br />
+                    <br />
+
+                    <span style={{ display: "inline-flex", fontWeight: "bold", fontSize: "large", alignItems: "center" }}>
+                        <p style={{ marginRight: "5px" }}>{info.location}</p><i className="fas fa-map-marker-alt" />
+                    </span>
+                    <br />
+                    <br />
+
+                    <span style={{ display: "inline-flex", fontWeight: "bold", fontSize: "medium", alignItems: "center" }}>
+                        <p>{info.orientation} - {info.gender}</p>
                     </span>
                     <br />
 
-                    <span style={{ display: "flex", fontWeight: "bold", fontSize: "medium", alignItems: "center" }}>
-                        <p>{info.orientation} - {info.gender}</p>
+                    <span style={{ display: "inline-flex" }}>
+                        <i className="fas fa-trophy" style={{ marginRight: "5px" }} />
+                        {info.score}
                     </span>
+
+                    <br />
+
                     <br />
                 </div>
 
             </div>
+            <br />
+            <span style={{ display: "flex" }}>
+                <i class="fas fa-heart fa-lg"></i>
+                <p style={{ marginLeft: "5px" }}>1200 likes</p>
+            </span>
+
+            {/* <span>
+                <i class="far fa-heart fa-lg"></i>
+            </span> */}
             <br />
 
             <p>{info.bio}</p>
@@ -45,7 +75,7 @@ function UserProfil({ onChange, info, id }) {
                         <button className="button red-white">Report</button>
                     </div> : <React.Fragment></React.Fragment>
             }
-        </React.Fragment>
+        </React.Fragment >
     )
 }
 
