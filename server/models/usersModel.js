@@ -58,12 +58,11 @@ const database = require('../controllers/database');
 // })
 
 
-// 'SELECT * FROM users\
-// WHERE compatibility >= ? && age BETWEEN ? AND ? && id IN \
-//    (SELECT DISTINCT usertags.user_id \
-//    FROM usertags \
-//    INNER JOIN tags ON usertags.tag_id=tags.id \
-//    WHERE tags.tag="feu")', arg);
+// SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score, 
+// IF(likes.liker=12 & likes.liked IS NULL,FALSE, TRUE) as likes
+// FROM users LEFT JOIN likes ON (users.id = likes.liked)
+// WHERE score >= 23 && age BETWEEN 18 AND 60 &&
+//  id IN  (SELECT DISTINCT usertags.user_id  FROM usertags  INNER JOIN tags ON usertags.tag_id=tags.id WHERE tags.tag="feu");
 
 queryTags = (tags, arg) => {
 
@@ -80,7 +79,7 @@ queryTags = (tags, arg) => {
 
 }
 
-getQuery = ({ age_min, age_max, distance, score, tags }) => {
+getQuery = ({ ageMin, ageMax, distance, score, tags }) => {
 
 	let s_score = " compatibility >= ? "
 	let s_age = " age BETWEEN ? AND ? "
@@ -90,7 +89,7 @@ getQuery = ({ age_min, age_max, distance, score, tags }) => {
 
 	if (score && arg.push(score)) { query += s_score }
 
-	if (age_min && age_max && arg.push(age_min, age_max))
+	if (ageMin && ageMax && arg.push(ageMin, ageMax))
 		query += query.length > 0 ? "&&" + s_age : s_age
 
 	if (tags && tags.length > 0) {
@@ -105,13 +104,17 @@ getQuery = ({ age_min, age_max, distance, score, tags }) => {
 }
 
 
-exports.get = (params) => {
+exports.get = (params, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
+				const query = `\
+					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score, \
+					IF(likes.liker = ${id} & likes.liked IS NULL, FALSE, TRUE) as likes\
+					FROM users LEFT JOIN likes ON(users.id = likes.liked)`
 				rsl = getQuery(params)
 
-				return conn.query('SELECT * FROM users' + rsl.query, rsl.arg);
+				return conn.query(query + rsl.query, rsl.arg);
 			})
 			.then((res) => {
 				resolve(res);

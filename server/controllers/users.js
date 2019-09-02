@@ -84,7 +84,7 @@ exports.getUsers = (query, userId) => {
 
 		let userGps = { lat: 48.8534, long: 2.3488 }
 		
-		usersModel.get(query)
+		usersModel.get(query, userId)
 			.then((res) => {
 				// console.log('res', res);
 				resolve(res)

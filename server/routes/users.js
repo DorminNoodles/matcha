@@ -9,9 +9,6 @@ var urlencodedParser = bodyParser.urlencoded({extended : false})
 
 router.get('/', urlencodedParser, (req, res) => {
 
-	console.log(req.query);
-	console.log(req.token);
-
 	if (!req.token) {
 		res.status(401).send({"status": "error", "key": "token", "msg": "token missing"});
 		return;
