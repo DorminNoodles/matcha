@@ -18,13 +18,13 @@ function UserProfil({ onChange, info, id }) {
 
                     <span style={{ display: "inline-flex", fontWeight: "bold", fontSize: "larger" }}>
 
-                        <p>
-                            <p style={{ display: "flex", alignItems: "center" }}>
-                                <div className="green-dot" style={{ marginRight: "5px" }} />
+                        <div>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <p className="green-dot" style={{ marginRight: "5px" }} />
                                 <p>{info.firstname} {info.lastname}</p>
-                            </p>
+                            </div>
 
-                            (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</p>
+                            (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</div>
                     </span>
 
                     <br />
@@ -54,7 +54,7 @@ function UserProfil({ onChange, info, id }) {
             </div>
             <br />
             <span style={{ display: "flex" }}>
-                <i class="fas fa-heart fa-lg"></i>
+                <i className="fas fa-heart fa-lg"></i>
                 <p style={{ marginLeft: "5px" }}>1200 likes</p>
             </span>
 

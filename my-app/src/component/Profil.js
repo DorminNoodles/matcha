@@ -37,7 +37,9 @@ class Profil extends React.Component {
 
   render() {
 
-    let { username, id } = this.props.values
+    let { username, id, likes } = this.props.values
+    let heart = likes === 0 ? "far fa-heart" : "fa fa-heart has-text-danger"
+
     return (
       <div id="profil" onMouseEnter={() => this.setState({ modal: true })} onMouseLeave={() => this.setState({ modal: false })}>
         <Route />
@@ -49,7 +51,7 @@ class Profil extends React.Component {
             <div className="profil-bottom">
               <span><i className="fas fa-envelope" /></span>
               <p>{username}</p>
-              <span><i className="fas fa-heart" /></span>
+              <span><i className={heart} /></span>
             </div>
           </div>
         </Link>
