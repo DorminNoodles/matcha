@@ -25,6 +25,7 @@ const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
 const confirm = require("./routes/confirm");
 const location = require("./routes/location");
+const report = require("./routes/report");
 
 
 //SERVICES
@@ -79,6 +80,8 @@ app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
 app.use('/api/confirm', confirm);
 app.use('/api/location', location);
+app.use('/api/block', block);
+app.use('/api/report', report);
 
 
 // test
