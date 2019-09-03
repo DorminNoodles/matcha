@@ -2,6 +2,8 @@ import React from 'react';
 import { Profil, SearchHeader } from "../export";
 import UserProvider from '../context/UserProvider';
 import { getUsers } from '../function/get'
+import { like } from '../function/post'
+import { unlike } from '../function/delete'
 
 class Match extends React.Component {
   constructor(props) {
@@ -36,6 +38,28 @@ class Match extends React.Component {
       )
   }
 
+  likes(likes, id) {
+    let { users } = this.state
+
+    if (id && likes === 0) {
+
+      like(id, this.context.user.token).then((res) => {
+        let result = users.findIndex((obj => obj.id == id));
+
+        users[result].likes = 1;
+        this.setState({ users })
+      })
+    }
+    else if (id && likes === 1) {
+      unlike(id, this.context.user.token).then((res) => {
+        let result = users.findIndex((obj => obj.id == id));
+
+        users[result].likes = 0;
+        this.setState({ users })
+      })
+    }
+  }
+
   render() {
     let { users } = this.state
 
@@ -45,7 +69,7 @@ class Match extends React.Component {
         <div id="list-profil">
           {
             users.length > 0 && users.map((value, i) => {
-              return <Profil key={i} values={value} />
+              return <Profil key={i} values={value} likes={this.likes.bind(this)} />
             })
           }
         </div>

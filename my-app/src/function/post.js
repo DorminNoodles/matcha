@@ -79,8 +79,18 @@ export function addTag(value, token) {
         config: { headers: { 'Content-Type': 'multipart/form-data' } },
         headers: { 'Authorization': "bearer " + token }
     }).then(response => {
-        return ( response.data )
+        return (response.data)
     }).catch(error => {
         return (0)
     });
+}
+
+export function like(liked, token) {
+    return axios({
+        method: 'POST',
+        data: { liked },
+        url: 'http://localhost:3300/api/like',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
 }

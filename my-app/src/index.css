@@ -435,6 +435,7 @@ form > .inputfile {
   position: absolute;
   justify-content: space-around;
   background: #00000040;
+  font-size: larger;
 }
 
 .profil-modal{

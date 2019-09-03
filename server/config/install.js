@@ -100,18 +100,18 @@ async function db() {
 		)');
 
 		await connection.query(
-			'INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, bio, mailValidation, score, age, distance, ageMin, ageMax, latitude, longitude, avatar, active, reg_date)\
-			VALUES ("Lisouiw", "", "Lisa", "TRAN", "tran.lili.lili@gmail.com", "female", "heterosexual", "lo", 1, 63, 22, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw1", "", "Lisa1", "TRAN", "tran.lili1.lili@gmail.com", "female", "heterosexual", "je sais que je suis la", 1, 63, 23, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw2", "", "Lisa2", "TRAN", "tran.lili2.lili@gmail.com", "male", "heterosexual", "lo", 1, 63, 20, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw3", "", "Lisa3", "TRAN", "tran.lili3.lili@gmail.com", "female", "heterosexual", "test", 1, 63, 20, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw4", "", "Lisa4", "TRAN", "tran.lili4.lili@gmail.com", "male", "heterosexual", "lo", 1, 63, 20, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw5", "", "Lisa5", "TRAN", "tran.lili5.lili@gmail.com", "female", "heterosexual", "manger de la pasteque", 1, 63, 19, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw6", "", "Lisa6", "TRAN", "tran.lili6.lili@gmail.com", "male", "bisexual", "peace and love", 1, 63, 40, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw7", "", "Lisa7", "TRAN", "tran.lili7.lili@gmail.com", "female", "heterosexual", "rire", 1, 63, 18, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw8", "", "Lisa8", "TRAN", "tran.lili8.lili@gmail.com", "female", "heterosexual", "trop le fun", 1, 63, 20, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw9", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "viens ici", 1, 63, 30, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1),\
-			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, 1, 23, "photo.jpeg", 1, 1);'
+			'INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, bio, mailValidation, score, age, distance, ageMin, ageMax,location,  latitude, longitude, avatar, active)\
+			VALUES ("Lisouiw", "", "Lisa", "TRAN", "tran.lili.lili@gmail.com", "female", "heterosexual", "lo", 1, 63, 22, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw1", "", "Lisa1", "TRAN", "tran.lili1.lili@gmail.com", "female", "heterosexual", "je sais que je suis la", 1, 63, 23, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw2", "", "Lisa2", "TRAN", "tran.lili2.lili@gmail.com", "male", "heterosexual", "lo", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw3", "", "Lisa3", "TRAN", "tran.lili3.lili@gmail.com", "female", "heterosexual", "test", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw4", "", "Lisa4", "TRAN", "tran.lili4.lili@gmail.com", "male", "heterosexual", "lo", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw5", "", "Lisa5", "TRAN", "tran.lili5.lili@gmail.com", "female", "heterosexual", "manger de la pasteque", 1, 63, 19, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw6", "", "Lisa6", "TRAN", "tran.lili6.lili@gmail.com", "male", "bisexual", "peace and love", 1, 63, 40, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw7", "", "Lisa7", "TRAN", "tran.lili7.lili@gmail.com", "female", "heterosexual", "rire", 1, 63, 18, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw8", "", "Lisa8", "TRAN", "tran.lili8.lili@gmail.com", "female", "heterosexual", "trop le fun", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw9", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "viens ici", 1, 63, 30, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
+			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, "Paris", np1, 23, "photo.jpeg", 1);'
 		);
 		await connection.end();
 	} catch (error) {
