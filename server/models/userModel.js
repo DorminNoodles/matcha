@@ -211,11 +211,15 @@ exports.saveUser = (data) => {
 	})
 }
 
-exports.findUserById = (id) => {
+exports.findUserById = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
+				var result = conn.query(`\
+				SELECT id, username, firstname, lastname, gender, orientation, bio, age, location, avatar, score,
+				COUNT(liked) as nb_likes,
+				IF((likes.liker=${user_id} and likes.liked=${id}), TRUE, FALSE) as likes
+				FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=${user_id}) WHERE id=${id};`)
 				conn.end();
 				return (result);
 			}).then((result) => {

@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Route, Link } from "react-router-dom";
 
-const Modal = ({ gender, orientation, location, compatibility }) => {
+const Modal = ({ gender, orientation, location, score }) => {
   return (
 
     <div className="profil-modal">
       <div id="profil-modal">
         <span>
           <i className="fas fa-trophy" style={{ marginRight: "5px" }} />
-          {compatibility}
+          {score}
         </span>
 
         <span>

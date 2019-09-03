@@ -4,7 +4,7 @@ const userModel = require('../models/userModel');
 exports.new = (reporting, reported) => {
     return new Promise((resolve, reject) => {
 
-        userModel.findUserById(reported).then((res) => {
+        userModel.findUserById(reported, reporting).then((res) => {
             mysql.createConnection({
                 port: process.env.PORT,
                 host: 'localhost',

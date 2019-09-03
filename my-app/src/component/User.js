@@ -54,13 +54,22 @@ function UserProfil({ onChange, info, id }) {
             </div>
             <br />
             <span style={{ display: "flex" }}>
-                <i className="fas fa-heart fa-lg"></i>
-                <p style={{ marginLeft: "5px" }}>1200 likes</p>
+            {
+              info.likes === 0 &&
+              <span>
+                <i className="far fa-heart" />
+              </span>
+            }
+            {
+                info.likes === 1 &&
+              <span>
+              {/* <span onClick={this.like.bind(this)}> */}
+                <i className="fa fa-heart has-text-danger" />
+              </span>
+            }
+                <p style={{ marginLeft: "5px" }}>{info.nb_likes} likes</p>
             </span>
 
-            {/* <span>
-                <i class="far fa-heart fa-lg"></i>
-            </span> */}
             <br />
 
             <p>{info.bio}</p>

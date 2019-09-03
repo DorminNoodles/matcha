@@ -95,7 +95,7 @@ router.get('/', urlencodedParser, (req, res) => {
 	}
 
 	if (req.query.id) {
-		user.get(parseInt(req.query.id))
+		user.get(parseInt(req.query.id), req.token.id)
 		.then((user) => {
 			res.status(200).send({...user});
 		})

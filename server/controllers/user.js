@@ -93,14 +93,10 @@ exports.createUser = (data) => {
 	});
 }
 
-exports.get = (id) => {
+exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 
-		userModel.findUserById(id)
-			.then((user) => {
-				user.password = '';
-				return(user)
-			})
+		userModel.findUserById(id, user_id)
 			.then((res) => {resolve(res);})
 			.catch((err) => { reject(err);})
 	});

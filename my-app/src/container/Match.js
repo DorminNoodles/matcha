@@ -29,8 +29,6 @@ class Match extends React.Component {
     console.log("params ===> ", params)
     getUsers(this.context.user.token, params)
       .then((res) => {
-
-        console.log(res)
         this.setState({ users: res.data })
       })
       .catch(() =>
