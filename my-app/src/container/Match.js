@@ -26,7 +26,6 @@ class Match extends React.Component {
   }
 
   getUsers(params) {
-    console.log("params ===> ", params)
     getUsers(this.context.user.token, params)
       .then((res) => {
         this.setState({ users: res.data })
@@ -42,7 +41,7 @@ class Match extends React.Component {
     if (id && likes === 0) {
 
       like(id, this.context.user.token).then((res) => {
-        let result = users.findIndex((obj => obj.id == id));
+        let result = users.findIndex((obj => obj.id === id));
 
         users[result].likes = 1;
         this.setState({ users })
@@ -50,7 +49,7 @@ class Match extends React.Component {
     }
     else if (id && likes === 1) {
       unlike(id, this.context.user.token).then((res) => {
-        let result = users.findIndex((obj => obj.id == id));
+        let result = users.findIndex((obj => obj.id === id));
 
         users[result].likes = 0;
         this.setState({ users })

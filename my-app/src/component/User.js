@@ -2,7 +2,7 @@ import React from 'react';
 import { Tags } from '../export'
 
 
-function UserProfil({ onChange, info, id }) {
+function UserProfil({ onChange, info, id, like }) {
     return (
         <React.Fragment>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
@@ -54,24 +54,23 @@ function UserProfil({ onChange, info, id }) {
             </div>
             <br />
             <span style={{ display: "flex" }}>
-            {
-              info.likes === 0 &&
-              <span>
-                <i className="far fa-heart" />
-              </span>
-            }
-            {
-                info.likes === 1 &&
-              <span>
-              {/* <span onClick={this.like.bind(this)}> */}
-                <i className="fa fa-heart has-text-danger" />
-              </span>
-            }
-                <p style={{ marginLeft: "5px" }}>{info.nb_likes} likes</p>
-            </span>
-
+                {
+                    info.likes === 0 && id > 0 &&
+                    <span onClick={like}>
+                        <i className="far fa-heart" />
+                    </span>
+                }
+                {
+                    info.likes === 1 && id > 0 &&
+                    <span onClick={like}>
+                        <i className="fa fa-heart has-text-danger" />
+                    </span>
+                }
+                {id > 0 && <p style={{ marginLeft: "5px" }}>{info.nb_likes} likes</p>}
+            </span>   
+                        
             <br />
-
+                
             <p>{info.bio}</p>
 
             <Tags id={id} />
@@ -80,11 +79,11 @@ function UserProfil({ onChange, info, id }) {
             {
                 id > 0 ?
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <button className="button red-white">Bloquer</button>
-                        <button className="button red-white">Report</button>
+                        <button className="button red-white" onClick={() => onChange({ modalBlock: "modal is-active" })}>Bloquer</button>
+                        <button className="button red-white"  onClick={() => onChange({ modalReport: "modal is-active" })}>Report</button>
                     </div> : <React.Fragment></React.Fragment>
             }
-        </React.Fragment >
+        </React.Fragment>
     )
 }
 

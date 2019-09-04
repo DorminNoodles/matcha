@@ -1,5 +1,22 @@
 import React from 'react';
 
+function ModalBlockReport({ index, modal, onChange, name, fct }) {
+
+    let message = name === "block" ? "Are you sure to block this user?" : "Are you sure to report this user?"
+
+    return (
+        <Modal index={index} modal={modal} onChange={onChange}>
+            <div className="white-red div-modal">
+                <p style={{ margin: "10px 0px" }}>{message}</p>
+                <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+                    <button className="red-white button-modal"  onClick={() => {fct(name)}}>Yes</button>
+                    <button className="white-red button-modal" onClick={() => { onChange({ [index]: "modal" }) }}>No</button>
+                </div>
+            </div>
+        </Modal >
+    )
+}
+
 function ModalPhoto({ index, modal, onChange }) {
 
     return (
@@ -20,7 +37,7 @@ function ModalPhoto({ index, modal, onChange }) {
     )
 }
 
-function Modal( { index, modal, onChange, children } ) {
+function Modal({ index, modal, onChange, children }) {
 
     return (
 
@@ -34,4 +51,4 @@ function Modal( { index, modal, onChange, children } ) {
     )
 }
 
-export { ModalPhoto, Modal };
+export { ModalPhoto, Modal, ModalBlockReport };

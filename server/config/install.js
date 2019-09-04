@@ -111,7 +111,7 @@ async function db() {
 			("Lisouiw7", "", "Lisa7", "TRAN", "tran.lili7.lili@gmail.com", "female", "heterosexual", "rire", 1, 63, 18, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
 			("Lisouiw8", "", "Lisa8", "TRAN", "tran.lili8.lili@gmail.com", "female", "heterosexual", "trop le fun", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
 			("Lisouiw9", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "viens ici", 1, 63, 30, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, "Paris", np1, 23, "photo.jpeg", 1);'
+			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1);'
 		);
 		await connection.end();
 	} catch (error) {

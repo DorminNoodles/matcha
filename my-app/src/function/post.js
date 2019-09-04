@@ -94,3 +94,23 @@ export function like(liked, token) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function block(id, token) {
+    return axios({
+        method: 'POST',
+        data: { id },
+        url: 'http://localhost:3300/api/block',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}
+
+export function report(id, token) {
+    return axios({
+        method: 'POST',
+        data: { id },
+        url: 'http://localhost:3300/api/report',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}

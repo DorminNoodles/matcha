@@ -1,13 +1,16 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
-import { UserProfil, Field, Modal, ModalPhoto } from '../export'
+import { UserProfil, Field, Modal, ModalPhoto, ModalBlockReport } from '../export'
 import { getUser } from '../function/get'
 import queryString from 'query-string'
+import { like, report, block } from '../function/post'
+import { unlike } from '../function/delete'
 
 class User extends React.Component {
   state = {
     modal: "modal",
-    modalInfo: "modal"
+    modalReport: "modal",
+    modalBlock: "modal"
   }
   static contextType = UserProvider;
 
@@ -24,7 +27,7 @@ class User extends React.Component {
   componentWillReceiveProps(next) {
     let params = queryString.parse(next.location.search)
     if (!params.id)
-      getUser(this.context.user.token, this.context.user.id )
+      getUser(this.context.user.token, this.context.user.id)
         .then((res) => {
           this.setState({ ...this.state, ...res.data })
         })
@@ -40,7 +43,33 @@ class User extends React.Component {
   }
 
   onChange = (obj) => {
-    this.setState({ ...this.state, ...obj }, () => { console.log(this.state) })
+    this.setState({ ...this.state, ...obj })
+  }
+
+  likes() {
+    let { likes, id, nb_likes } = this.state
+
+    if (id && likes === 0) {
+      like(id, this.context.user.token).then(() => {
+        this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes })
+      })
+    }
+    else if (id && likes === 1) {
+      unlike(id, this.context.user.token).then(() => {
+        this.setState({ ...this.state, likes: 0, nb_likes: --nb_likes })
+      })
+    }
+  }
+
+  blockReport(index) {
+    if (index === "block")
+      block(this.state.id, this.context.user.token).then(() => {
+        this.props.history.push('/')
+      })
+    else if (index === "report")
+      report(this.state.id, this.context.user.token).then(() => {
+        this.props.history.push('/')
+      })
   }
 
   render() {
@@ -51,13 +80,10 @@ class User extends React.Component {
       <div id="user">
 
         <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} id={id} />
+          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} />
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
-
-          <Modal index="modalInfo" modal={this.state.modalInfo} onChange={this.onChange}>
-            <Field />
-          </Modal>
-
+          <ModalBlockReport index="modalBlock" name="block" modal={this.state.modalBlock} onChange={this.onChange} fct={this.blockReport.bind(this)} />
+          <ModalBlockReport index="modalReport" name="report" modal={this.state.modalReport} onChange={this.onChange} fct={this.blockReport.bind(this)} />
         </div>
       </div>
     );

@@ -23,7 +23,7 @@ import { Bubble } from "../component/Bubble";
 import { ListChat } from "../component/Chat";
 import { Conversation } from "../component/Chat";
 import { Profil } from "../component/Profil";
-import { ModalPhoto, Modal } from "../component/Modal";
+import { ModalPhoto, Modal, ModalBlockReport } from "../component/Modal";
 import { SearchHeader } from "../component/Match";
 import { ForgotPassword, NewPassword } from "../component/Password";
 import { UserProfil } from "../component/User";
@@ -60,6 +60,7 @@ export {
     Modal,
     SearchHeader,
     ModalPhoto,
+    ModalBlockReport,
     ForgotPassword,
     NewPassword,
     UserProfil,

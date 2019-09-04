@@ -461,6 +461,20 @@ form > .inputfile {
   font-size: 0.8em
 }
 
+.div-modal{
+  padding: 30px;
+  border-radius: 15px;
+  font-size: large;
+  margin: 10px;
+}
+
+.button-modal{
+  padding: 5px;
+  border-radius: 5px;
+  font-size: small;
+  width: 50px;
+}
+
 /* ############################# MESSAGE ###################################### */
 
 .list-message{
@@ -568,6 +582,7 @@ form > .inputfile {
   padding: 10px;
   display: grid;
   justify-content: center;
+  height: fit-content;
 }
 
 #list-profil{
@@ -577,14 +592,6 @@ form > .inputfile {
   justify-content: center;
   align-content: start;
   padding: 15px;
-}
-
-@media screen and (min-width: 480px) {
-  #search-header{ height: fit-content; }
-}
-
-@media screen and (max-width: 479px) {
-  #search-header{ height: 100%; }
 }
 
 .react-autosuggest__input {
