@@ -242,6 +242,8 @@ form > .inputfile {
   height: 100%;
   overflow: scroll;
   background: white;
+  align-items: center;
+  display: flex;
 }
 
 #info-user {
@@ -288,7 +290,6 @@ form > .inputfile {
 
 .text-ellipsis {
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 

@@ -218,8 +218,11 @@ exports.findUserById = (id, user_id) => {
 				var result = conn.query(`\
 				SELECT id, username, firstname, lastname, gender, orientation, bio, age, location, avatar, score,
 				COUNT(liked) as nb_likes,
+				IF(report.reported=users.id, TRUE, FALSE) as report,
 				IF((SELECT count(*) FROM likes WHERE liker=${user_id} and liked=${id}) = 1, TRUE, FALSE) as likes
-				FROM users LEFT JOIN likes ON(likes.liked=${id}) WHERE id=${id};`)
+				FROM users 
+				LEFT JOIN report ON(report.reported=${id})
+				LEFT JOIN likes ON(likes.liked=${id}) WHERE id=${id};`)
 				conn.end();
 				return (result);
 			}).then((result) => {

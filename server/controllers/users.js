@@ -86,12 +86,12 @@ exports.getUsers = (query, userId) => {
 		
 		usersModel.get(query, userId)
 			.then((res) => {
-				// console.log('res', res);
+				console.log('res', res);
 				resolve(res)
 
 			})
 			.catch((err) => {
-				// console.log('reject', err);
+				console.log('reject', err);
 				reject(err);
 			})
 	})

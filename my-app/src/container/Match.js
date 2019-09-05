@@ -65,7 +65,7 @@ class Match extends React.Component {
         <SearchHeader getUsers={this.getUsers.bind(this)} />
         <div id="list-profil">
           {
-            users.length > 0 && users.map((value, i) => {
+            users && users.length > 0 && users.map((value, i) => {
               return <Profil key={i} values={value} likes={this.likes.bind(this)} />
             })
           }

@@ -64,11 +64,11 @@ class User extends React.Component {
   blockReport(index) {
     if (index === "block")
       block(this.state.id, this.context.user.token).then(() => {
-        this.props.history.push('/')
+        this.props.history.push('/match')
       })
     else if (index === "report")
       report(this.state.id, this.context.user.token).then(() => {
-        this.props.history.push('/')
+        this.props.history.push('/match')
       })
   }
 

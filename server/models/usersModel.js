@@ -63,9 +63,11 @@ exports.get = (params, id) => {
 		database.connection()
 			.then((conn) => {
 				const query = `\
-					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score, \
+					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score,\
 					IF(likes.liker = ${id} & likes.liked IS NULL, FALSE, TRUE) as likes\
-					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=${id})`
+					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=${id})
+					LEFT JOIN block ON (blocked=users.id) 
+					WHERE blocker!=${id} or blocker IS NULL;`
 				rsl = getQuery(params)
 
 				return conn.query(query + rsl.query, rsl.arg);
@@ -75,7 +77,6 @@ exports.get = (params, id) => {
 			})
 			.catch((err) => {
 				reject({ status: "error", msg: "Query error !", data: [] });
-
 			})
 	})
 }

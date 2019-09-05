@@ -5,9 +5,9 @@ import { Tags } from '../export'
 function UserProfil({ onChange, info, id, like }) {
     return (
         <React.Fragment>
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-
-                <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", width: "50%" }}>
+            <div>
+                
+                <div style={{ width: "50%", margin: "auto" }}>
                     <figure className="image is-square" style={{ width: "100%" }}>
                         <img className="image is-rounded"
                             alt="username" onClick={() => onChange({ modal: "modal is-active" })} src="https://data.whicdn.com/images/296905234/superthumb.png?t=1505109579" />
@@ -67,10 +67,10 @@ function UserProfil({ onChange, info, id, like }) {
                     </span>
                 }
                 {id > 0 && <p style={{ marginLeft: "5px" }}>{info.nb_likes} likes</p>}
-            </span>   
-                        
+            </span>
+
             <br />
-                
+
             <p>{info.bio}</p>
 
             <Tags id={id} />
@@ -80,7 +80,7 @@ function UserProfil({ onChange, info, id, like }) {
                 id > 0 ?
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                         <button className="button red-white" onClick={() => onChange({ modalBlock: "modal is-active" })}>Bloquer</button>
-                        <button className="button red-white"  onClick={() => onChange({ modalReport: "modal is-active" })}>Report</button>
+                        {info.report === 0 && <button className="button red-white" onClick={() => onChange({ modalReport: "modal is-active" })}>Report</button>}
                     </div> : <React.Fragment></React.Fragment>
             }
         </React.Fragment>
