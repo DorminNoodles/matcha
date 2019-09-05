@@ -4,6 +4,7 @@ import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "../context/UserProvider"
+import socketIOClient from "socket.io-client";
 
 class App extends React.Component {
    constructor(props) {
@@ -22,7 +23,9 @@ class App extends React.Component {
             profil: "",
             token: ""
          },
-         header: "white-red"
+         header: "white-red",
+         response: false,
+         endpoint: "http://127.0.0.1:3300"
       }
       this.logout = this.logout.bind(this)
       this.onChange = this.onChange.bind(this)
@@ -31,12 +34,19 @@ class App extends React.Component {
 
    async componentWillMount() {
       let user = this.getObject("user");
-      let header = this.getObject("header") 
+      let header = this.getObject("header")
 
-      header = header === null ? "white-red": "red-white"
-      this.setState({ ...this.state, user: {...this.state.user, ...user}, header }, () => {
+      header = header === null ? "white-red" : "red-white"
+      this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
          console.log("restore ", this.state)
       })
+
+      const { endpoint } = this.state;
+      const socket = socketIOClient(endpoint);
+      socket.on("FromAPI", data => this.setState({ response: data }, () => {
+         console.log(this.state)
+      }));
+
    }
 
    setObject = (key, value) => {
@@ -80,7 +90,7 @@ class App extends React.Component {
 
       return (
          <BrowserRouter>
-
+            <div>{this.state.response}</div>
             <UserProvider.Provider value={{
                ...this.state,
                onChange: this.onChange,

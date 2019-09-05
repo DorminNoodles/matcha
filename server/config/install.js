@@ -92,11 +92,16 @@ async function db() {
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
         )');
 		await connection.query('CREATE TABLE chat (\
-        	id INT AUTO_INCREMENT PRIMARY KEY, \
+        	group_id INT NOT NULL, \
 			from_id INT NOT NULL, \
 			to_id INT NOT NULL, \
         	message TEXT, \
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
+		)');
+		await connection.query('CREATE TABLE userschat (\
+        	id INT AUTO_INCREMENT PRIMARY KEY, \
+			first_user INT NOT NULL, \
+			second_user INT NOT NULL \
 		)');
 
 		await connection.query(

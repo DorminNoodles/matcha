@@ -2,9 +2,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const app = express();
-const server = require('http').Server(app);
-
+var app = require('express')();
+var http = require('http').createServer(app);
 
 const user = require('./routes/user');
 const users = require('./routes/users');
@@ -29,7 +28,7 @@ const report = require("./routes/report");
 
 
 //SERVICES
-const socketIO = require("./services/socketIO")(server);
+const socketIO = require("./services/socketIO")(http);
 const activationMail = require('./services/activationMail');
 const changeEmail = require('./services/changeEmail');
 const geolocation = require('./services/geolocation');
@@ -84,33 +83,26 @@ app.use('/api/block', block);
 app.use('/api/report', report);
 
 
-// test
+// var io = require('socket.io')(http);
+// var io = require('socket.io')({ path: '/ws_website1'}).listen(http);
+var io = require('socket.io')().listen(http);
 
+io.on('connection', function(socket){
 
-app.get('/test', (req, res) => {
+	console.log('a user connected');
 
-	for (let i = 0; i < 200; i++) {
-		for (let j = 0; j < 4000000; j++) {
+	socket.emit("FromAPI", "message");
+	socket.on('helloworld', function(res){
+		console.log(res);
+	  });
+	socket.on('disconnect', function(){
+	  console.log('user disconnected');
+	});
+	
+  });
 
-		}
-	}
-
-	setTimeout(() => {
-		console.log("Hey");
-		res.send('ok');
-	}, 10);
-
+http.listen(3300, function(){
+  console.log('listening on *3300');
 });
 
-
-//   var geoip = require('geoip-lite');
-
-// var ip = "62.210.32.0";
-// var geo = geoip.lookup(ip);
-
-// console.log(geo);
-
-
-server.listen(3300);
-
-module.exports = server;
+module.exports = http;
