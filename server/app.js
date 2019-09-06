@@ -1,9 +1,14 @@
 "use strict";
-const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-var app = require('express')();
-var server = require('http').Server(app)
+
+const express = require('express');
+var app = express();
+var server = app.listen(3300, () => {console.log("listen on 3300")})
+var socket = require('socket.io');
+var io = socket(server);
+
+
 const user = require('./routes/user');
 const users = require('./routes/users');
 const messages = require('./routes/messages');
@@ -27,7 +32,6 @@ const report = require("./routes/report");
 
 
 //SERVICES
-var io = require('socket.io')(server);
 const activationMail = require('./services/activationMail');
 const changeEmail = require('./services/changeEmail');
 const geolocation = require('./services/geolocation');
@@ -65,6 +69,7 @@ app.use(jwtToken);
 /*ROUTES*/
 app.use('/api/user', user);
 app.use('/api/messages', messages);
+app.use('/api/chat', chat);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
 app.use('/api/like', like);
@@ -82,25 +87,14 @@ app.use('/api/block', block);
 app.use('/api/report', report);
 
 
+// server.listen(3300, () => {
+// 	console.log('listening on 3300');
+// });
 
-// io.on('connection', function(socket){
 
-// 	console.log('a user connected');
 
-// 	socket.emit("FromAPI", "message");
-// 	socket.on('helloworld', function(res){
-// 		console.log(res);
-// 	  });
-// 	socket.on('disconnect', function(){
-// 	  console.log('user disconnected');
-// 	});
+const sockets = require('./socket.js');
 
-//   });
-
-server.listen(3300, () => {
-	console.log('listening on 3300');
-});
-
-require('./socket/consumer.js')(io);
+sockets(io)
 
 module.exports = server;

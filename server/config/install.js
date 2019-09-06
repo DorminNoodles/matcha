@@ -101,7 +101,9 @@ async function db() {
 		await connection.query('CREATE TABLE userschat (\
         	id INT AUTO_INCREMENT PRIMARY KEY, \
 			first_user INT NOT NULL, \
-			second_user INT NOT NULL \
+			second_user INT NOT NULL, \
+			date DATETIME DEFAULT CURRENT_TIMESTAMP, \
+			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
 
 		await connection.query(

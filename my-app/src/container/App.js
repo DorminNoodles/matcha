@@ -25,6 +25,7 @@ class App extends React.Component {
          },
          header: "white-red",
          response: false,
+         responses: false,
          endpoint: "http://localhost:3300"
       }
       this.logout = this.logout.bind(this)
@@ -43,7 +44,12 @@ class App extends React.Component {
 
       const { endpoint } = this.state;
       const socket = socketIOClient(endpoint);
-      socket.on("FromAPI", data => this.setState({ response: data }, () => {
+      socket.on("chats", data => this.setState({ responses: data }, () => {
+         
+         console.log(this.state)
+      }));
+      socket.on("chat", data => this.setState({ response: data }, () => {
+         
          console.log(this.state)
       }));
 
@@ -91,6 +97,7 @@ class App extends React.Component {
       return (
          <BrowserRouter>
             <div>{this.state.response}</div>
+            <div>{this.state.responses}</div>
             <UserProvider.Provider value={{
                ...this.state,
                onChange: this.onChange,
