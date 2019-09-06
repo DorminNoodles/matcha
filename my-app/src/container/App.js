@@ -25,7 +25,7 @@ class App extends React.Component {
          },
          header: "white-red",
          response: false,
-         endpoint: "http://127.0.0.1:3300"
+         endpoint: "http://localhost:3300"
       }
       this.logout = this.logout.bind(this)
       this.onChange = this.onChange.bind(this)

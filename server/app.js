@@ -3,8 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 var app = require('express')();
-var http = require('http').createServer(app);
-
+var server = require('http').Server(app)
 const user = require('./routes/user');
 const users = require('./routes/users');
 const messages = require('./routes/messages');
@@ -28,7 +27,7 @@ const report = require("./routes/report");
 
 
 //SERVICES
-const socketIO = require("./services/socketIO")(http);
+var io = require('socket.io')(server);
 const activationMail = require('./services/activationMail');
 const changeEmail = require('./services/changeEmail');
 const geolocation = require('./services/geolocation');
@@ -58,7 +57,7 @@ app.use(function (req, res, next) {
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /*MIDDLEWARE*/
 app.use(jwtToken);
@@ -83,26 +82,25 @@ app.use('/api/block', block);
 app.use('/api/report', report);
 
 
-// var io = require('socket.io')(http);
-// var io = require('socket.io')({ path: '/ws_website1'}).listen(http);
-var io = require('socket.io')().listen(http);
 
-io.on('connection', function(socket){
+// io.on('connection', function(socket){
 
-	console.log('a user connected');
+// 	console.log('a user connected');
 
-	socket.emit("FromAPI", "message");
-	socket.on('helloworld', function(res){
-		console.log(res);
-	  });
-	socket.on('disconnect', function(){
-	  console.log('user disconnected');
-	});
-	
-  });
+// 	socket.emit("FromAPI", "message");
+// 	socket.on('helloworld', function(res){
+// 		console.log(res);
+// 	  });
+// 	socket.on('disconnect', function(){
+// 	  console.log('user disconnected');
+// 	});
 
-http.listen(3300, function(){
-  console.log('listening on *3300');
+//   });
+
+server.listen(3300, () => {
+	console.log('listening on 3300');
 });
 
-module.exports = http;
+require('./socket/consumer.js')(io);
+
+module.exports = server;
