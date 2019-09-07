@@ -7,37 +7,43 @@ const messages = require('../controllers/messages');
 const jwtToken = require('../services/jwtToken');
 
 
-var urlencodedParser = bodyParser.urlencoded({extended : false})
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.post('/', urlencodedParser, (req, res) => {
+// router.post('/', urlencodedParser, (req, res) => {
 
-	console.log(req.body);
-	console.log(req.body.from);
+// 	console.log(req.body);
+// 	console.log(req.body.from);
 
-	messages.new({
-		from : req.body.from,
-		to: req.body.to,
-		body: req.body.body
-	})
-	.then(() => {
+// 	messages.new({
+// 		from : req.body.from,
+// 		to: req.body.to,
+// 		body: req.body.body
+// 	})
+// 	.then(() => {
 
-	})
-	.catch(() => {
+// 	})
+// 	.catch(() => {
 
-	})
-	res.send('pouet');
+// 	})
+// 	res.send('pouet');
 
+// })
+
+router.get('/', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !" });
+
+	messages.listMessages()
+		.then((result) => {
+			res.send(result);
+		})
+		.catch((err) => {
+			res.send(err);
+		})
 })
 
-router.get('/recent', urlencodedParser, (req, res) => {
-	messages.getRecentsMessages({from: req.query.from, to: req.query.to})
-	.then((result) => {
-		res.send(result);
-	})
-	.catch((err) => {
-		res.send(err);
-	})
-})
+// messages.getRecentsMessages({from: req.query.from, to: req.query.to
 
 // router.get('/chat', urlencodedParser, (req, res) => {
 // 	if (req.query.id == 42) {
