@@ -13,7 +13,7 @@ router.post('/', urlencodedParser, (req, res) => {
 		return;
 	}
 
-	likes.new(req.token.id, req.body.liked)
+	likes.new(req.token.id, parseInt(req.body.liked))
 	.then((result) => {
 		res.send(result);
 	})
