@@ -58,3 +58,29 @@ exports.getRecentsMessages = (data) => {
 		})
 	})
 }
+
+exports.listMessages = (data) => {
+	return new Promise((resolve, reject) => {
+		mysql.createConnection({
+			port: process.env.PORT,
+			host: 'localhost',
+			user: 'root',
+			password: 'qwerty',
+			database: 'matcha'
+		})
+		.then((conn) => {
+			console.log(data)
+			return conn.query('SELECT * FROM `chat` WHERE \
+				(`from_id`=' + data.from + ' AND `to_id`=' + data.to + ') \
+				OR \
+				(`from_id`=' + data.to + ' AND `to_id`=' + data.from +')');
+			return result;
+		})
+		.then((rows) => {
+			resolve(rows);
+		})
+		.catch((err) => {
+			reject(err);
+		})
+	})
+}
