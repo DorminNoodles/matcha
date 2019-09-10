@@ -52,10 +52,15 @@ exports.new = (data) => {
 
 		for (let elem in data) {
 			if (!filter.includes(elem)) {
-				reject({ status: 'error', code: 400, msg: 'Unhautorized key in data' });
+				reject({ status: 'error', msg: 'Unhautorized key in data' });
 				return;
 			}
 		}
+
+		if (data.password !== data.confirmation)
+			reject({ status: 'error', key: "password", msg: 'Password not confirm' });
+		else
+			delete data['confirmation'];
 
 		userModel.checkDataNew(data)
 			.then((res) => {
@@ -69,13 +74,9 @@ exports.new = (data) => {
 			})
 			.then((res) => {
 				myEmitter.emit('userRegistered', data);
-				resolve(res);
+				resolve({ status: 'success', msg: "user created" });
 			})
-			.catch((err) => {
-				// console.log('out > ', err);
-				console.log('user controller check data error !!');
-				reject(err);
-			})
+			.catch((err) => { reject(err); })
 	})
 };
 
@@ -217,7 +218,7 @@ exports.getAvatar = (id) => {
 	})
 }
 
-exports.update = (data, id, token) => {
+exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
 
 		let validKeys = [
@@ -237,10 +238,10 @@ exports.update = (data, id, token) => {
 			'distance',
 		]
 
-		let filter = [];
-
-		for (let elem in data)
-			filter.push(elem);
+		if (data.password !== data.confirmation)
+			reject({ status: 'error', code: 400, key: "password", msg: 'Password not confirm' });
+		else
+			delete data['confirmation'];
 
 		for (let elem in data) {
 			if (!validKeys.includes(elem)) {
@@ -254,7 +255,7 @@ exports.update = (data, id, token) => {
 			.then((res) => { resolve(res); })
 			.catch((err) => {
 				console.log(err);
-				reject({ status: "error", code: 403, data: err });
+				reject({ status: "error", code: 400, data: err });
 			})
 	})
 }

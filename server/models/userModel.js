@@ -33,10 +33,7 @@ exports.checkDataNew = (data) => {
 			})
 
 			Object.entries(errors).length ? reject(errors) : resolve();
-		}).catch((err) => {
-			console.log(err);
-			reject(err);
-		})
+		}).catch((err) => { reject(err); })
 	})
 }
 
@@ -79,7 +76,6 @@ exports.checkDataUpdate = (data, id) => {
 		}).catch((err) => { reject(err); })
 	})
 }
-
 exports.findUserByUsername = (username, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
@@ -136,7 +132,7 @@ exports.saveUser = (data) => {
 
 		bcrypt.hash(data.password, 10)
 			.then((hash) => {
-				console.log('hash password > ', hash);
+				console.log(data)
 				data.password = hash;
 				return database.connection();
 			})
@@ -285,7 +281,6 @@ exports.update = (data, id) => {
 
 		bcrypt.hash(data.password, 10)
 			.then((hash) => {
-				console.log('hash password > ', hash);
 				data.password = hash;
 				return database.connection();
 			})
@@ -293,8 +288,6 @@ exports.update = (data, id) => {
 				return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
 			})
 			.then((res) => {
-
-				console.log(res)
 				if (res.affectedRows == 1) {
 					resolve({ "status": "success", "msg": "update user!" });
 				}

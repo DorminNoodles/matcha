@@ -16,10 +16,10 @@ router.post('/', urlencodedParser, (req, res) => {
 
 	user.new(req.body)
 	.then((result) => {
-		res.status(200).send({"status": "success", "msg": "user registered !"});
+		res.status(200).send(result);
 	})
 	.catch((err) => {
-		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
+		res.status(400).send(err);
 	})
 })
 

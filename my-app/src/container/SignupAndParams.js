@@ -119,10 +119,6 @@ class Signup extends React.Component {
         if (!(this.state.data))
             this.setState({ ...this.state, image: { value: "", error: "Please choose your profile picture" } })
 
-        for (let index in info) {
-            if (index !== "confirmation")
-                data.append(index, info[index].value);
-        }
 
         let rsl = check(this.state);
 
