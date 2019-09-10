@@ -45,7 +45,7 @@ exports.findGps = (data) => {
 			coordGps.lng = result.lng;
 			coordGps.lat = result.lat;
 
-			userModel.findUserByUsername(data.username)
+			userModel.findUserByUsername(data.username, 0)
 			.then((res) => {
 				console.log("findUSERBYUSERNAME : ");
 				console.log(res);
@@ -68,7 +68,7 @@ exports.findGps = (data) => {
 				coordGps.lat = res.ll[0];
 				coordGps.lng = res.ll[1];
 
-				userModel.findUserByUsername(data.username)
+				userModel.findUserByUsername(data.username, 0)
 				.then((res) => {
 					console.log("findUSERBYUSERNAME : ");
 					console.log(res);
