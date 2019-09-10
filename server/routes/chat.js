@@ -20,9 +20,13 @@ router.get('/', urlencodedParser, (req, res) => {
 })
 
 router.post('/', urlencodedParser, (req, res) => {
-	console.log(req.body)
 
-	res.status(200).send("chut");
+	if (!req.token)
+		res.status(401).send({ "status": "error", "msg": "bad authentification" });
+
+	chat.new({ from_id: req.token.id, ...req.body })
+		.then((response) => { res.status(200).send(response); })
+		.catch((err) => { res.status(409).send(err); })
 })
 
 module.exports = router;
