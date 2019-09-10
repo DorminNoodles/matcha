@@ -103,9 +103,9 @@ async function db() {
 			first_user INT NOT NULL, \
 			second_user INT NOT NULL, \
 			date DATETIME DEFAULT CURRENT_TIMESTAMP, \
+			active INT DEFAULT 1, \
 			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
-
 		await connection.query(
 			'INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, bio, mailValidation, score, age, distance, ageMin, ageMax,location,  latitude, longitude, avatar, active)\
 			VALUES ("Lisouiw", "", "Lisa", "TRAN", "tran.lili.lili@gmail.com", "female", "heterosexual", "lo", 1, 63, 22, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
@@ -120,6 +120,7 @@ async function db() {
 			("Lisouiw9", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "viens ici", 1, 63, 30, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
 			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1);'
 		);
+		
 		await connection.end();
 	} catch (error) {
 		console.error(error);

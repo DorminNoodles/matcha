@@ -13,7 +13,7 @@ router.post('/', urlencodedParser, (req, res) => {
 		return;
 	}
 
-	likes.new(req.token.id, parseInt(req.body.liked))
+	likes.new(req.token.id, parseInt(req.body.id))
 	.then((result) => {
 		res.send(result);
 	})
@@ -28,7 +28,7 @@ router.delete('/', urlencodedParser, (req, res) => {
 		return;
 	}
 
-	likes.delete(req.token.id, req.body.liked)
+	likes.delete(req.token.id, req.body.id)
 	.then((result) => {
 		res.status(200).send({"status": "success", "msg": "unlike success !"});
 	})
