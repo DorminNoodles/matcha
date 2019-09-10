@@ -79,39 +79,12 @@ exports.new = (data) => {
 	})
 };
 
-exports.createUser = (data) => {
-	return new Promise((resolve, reject) => {
-		userModel.checkData(data)
-			.then((res) => {
-				console.log("Hello");
-				resolve();
-			})
-			.catch((err) => {
-				console.log("Ouech");
-				reject();
-			})
-	});
-}
-
 exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 
 		userModel.findUserById(id, user_id)
-			.then((res) => {resolve(res);})
-			.catch((err) => { reject(err);})
-	});
-}
-
-exports.find = (data) => {
-	return new Promise((resolve, reject) => {
-		let user = new userService();
-		user.authenticate(data.username, data.password)
-			.then(() => {
-				resolve();
-			})
-			.catch(() => {
-				reject();
-			})
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
 	});
 }
 
@@ -244,11 +217,8 @@ exports.getAvatar = (id) => {
 	})
 }
 
-exports.update = (id, data) => {
+exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
-		console.log('user update !');
-		console.log(data);
-		console.log('hellooooooooo     ', data.length);
 
 		let validKeys = [
 			'username',
@@ -269,9 +239,8 @@ exports.update = (id, data) => {
 
 		let filter = [];
 
-		for (let elem in data) {
+		for (let elem in data)
 			filter.push(elem);
-		}
 
 		for (let elem in data) {
 			if (!validKeys.includes(elem)) {
@@ -280,19 +249,13 @@ exports.update = (id, data) => {
 			}
 		}
 
-		userModel.checkDataUpdate(data)
-			.then((res) => {
-				console.log('checkDataV2 resolve !');
-				console.log('send #########', id, data);
-				return userModel.update(id, data);
-			})
+		userModel.checkDataUpdate(data, id)
+			.then((res) => { return userModel.update(data, id); })
 			.then(() => {
-				console.log('update user');
 				resolve({ status: "success", code: 200 });
 			})
 			.catch((err) => {
 				console.log(err);
-				console.log('error in update controller');
 				reject({ status: "error", code: 403, data: err });
 			})
 	})

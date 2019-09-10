@@ -28,7 +28,7 @@ router.patch('/', urlencodedParser, (req, res) => {
 	if (!req.token)
 		res.status(401).send({ status: "error", msg: "access denied !"});
 
-	user.update(req.token.id, req.body)
+	user.update(req.body, req.token.id)
 	.then((result) => {
 		res.status(result.code).send(result);
 	})
@@ -104,5 +104,8 @@ router.get('/', urlencodedParser, (req, res) => {
 		})
 	}
 })
+
+
+
 
 module.exports = router;

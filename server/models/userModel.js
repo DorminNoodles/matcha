@@ -10,12 +10,12 @@ exports.checkDataNew = (data) => {
 	return new Promise((resolve, reject) => {
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username, 0).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email, 0).catch(e => e),
 			// inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
@@ -40,26 +40,23 @@ exports.checkDataNew = (data) => {
 	})
 }
 
-exports.checkDataUpdate = (data) => {
+exports.checkDataUpdate = (data, id) => {
 	return new Promise((resolve, reject) => {
-		console.log("CHECK DATA");
-		console.log("data ->> ", data);
 
 		let filter = [];
 
-		for (let elem in data) {
+		for (let elem in data)
 			filter.push(elem);
-		}
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username, id).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-			inputModel.location(data.location).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email, id).catch(e => e),
+			// inputModel.location(data.location).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
@@ -70,6 +67,7 @@ exports.checkDataUpdate = (data) => {
 		]).then((res) => {
 			let errors = {};
 
+			console.log(res)
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
 					if (filter.includes(elem.key))
@@ -77,64 +75,13 @@ exports.checkDataUpdate = (data) => {
 				}
 			})
 
-			// console.log('errors  ', errors);
-			// errors.username = 'fuck';
-
 			Object.entries(errors).length ? reject(errors) : resolve();
-		}).catch((err) => {
-			console.log(err);
-			reject(err);
-		})
+
+		}).catch((err) => { reject(err); })
 	})
 }
 
-// exports.checkData = (data) => {
-// 	return new Promise((resolve, reject) => {
-// 		console.log("CHECK DATA");
-// 		console.log("data ->> ", data);
-//
-// 		let error = false;
-// 		let json = {};
-//
-// 		Promise.all([
-// 			inputModel.username(data.username).catch(e => e),
-// 			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
-// 			inputModel.password(data.password).catch(e => e),
-// 			inputModel.firstname(data.firstname).catch(e => e),
-// 			inputModel.lastname(data.lastname).catch(e => e),
-// 			inputModel.email(data.email).catch(e => e),
-// 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-// 			inputModel.location(data.location).catch(e => e),
-// 			inputModel.gender(data.gender).catch(e => e),
-// 			inputModel.age(data.age).catch(e => e),
-// 			inputModel.orientation(data.orientation).catch(e => e),
-// 			inputModel.avatar(data.avatar).catch(e => e),
-// 			inputModel.bio(data.bio).catch(e => e),
-// 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
-// 			inputModel.distance(data.distance).catch(e => e),
-// 		]).then((res) => {
-// 			res.forEach((elem) => {
-// 				if (elem.status && elem.status === 'error') {
-// 					json[elem.key] = elem.msg;
-// 					error = true;
-// 				}
-// 			})
-//
-// 			console.log(json);
-//
-// 			if (error)
-// 				reject(json);
-// 			else
-// 				resolve({status: "success", key: "checkData"});
-// 		}).catch((err) => {
-// 			console.log(err);
-// 			reject(err);
-// 		})
-// 		console.log("ENDOOOO");
-// 	})
-// }
-
-exports.findUserByUsername = (username) => {
+exports.findUserByUsername = (username, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
@@ -150,7 +97,7 @@ exports.findUserByUsername = (username) => {
 									longitude, \
 									age, \
 									avatar \
-									FROM users WHERE username=?', [username]);
+									FROM users WHERE username=? and id NOT IN (?)', [username, id]);
 				conn.end();
 				return result;
 			}).then((result) => {
@@ -164,27 +111,24 @@ exports.findUserByUsername = (username) => {
 	})
 }
 
-exports.findUserByEmail = (email) => {
-	return new Promise((resolve, reject) => {
+exports.findUserByEmail = (email, id) => {
 
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
-			var result = conn.query('SELECT username, id, email FROM users WHERE email=\'' + email + '\'');
-			conn.end();
-			return result;
-		}).then((result) => {
-			if (result[0])
-				resolve(result[0]);
-			else
-				reject();
-		}).catch((error) => {
-			reject(error);
-		})
+	return new Promise((resolve, reject) => {
+		database.connection()
+			.then((conn) => {
+				var result = conn.query('SELECT username, id, email \
+									FROM users WHERE email=? AND id NOT IN (?)', [email, id]);
+				conn.end();
+				return result;
+			}).then((result) => {
+				console.log(result)
+				if (result[0])
+					resolve(result[0]);
+				else
+					reject();
+			}).catch((error) => {
+				reject(error);
+			})
 	})
 }
 
@@ -337,15 +281,8 @@ exports.changePwd = (email, username, pwd) => {
 	});
 }
 
-exports.update = (id, data) => {
+exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
-		console.log('### UPDATEUSER ###');
-
-		if (data.email) {
-			console.log('faire quelque chose');
-			data.tmp_email = data.email;
-			delete data['email'];
-		}
 
 		database.connection()
 			.then((conn) => {
@@ -353,10 +290,9 @@ exports.update = (id, data) => {
 			})
 			.then((res) => {
 
+				console.log(res)
 				if (res.affectedRows == 1) {
-					console.log('QUERY SUCCESS');
-					myEmitter.emit('userUpdate', { ...data, id });
-					resolve();;
+					resolve({ "status": "success", "msg": "update user!" });
 				}
 				else {
 					reject({ status: "error", msg: "User not found !" });

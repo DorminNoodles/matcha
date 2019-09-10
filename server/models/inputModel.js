@@ -16,9 +16,9 @@ exports.username = (username) => {
 	})
 }
 
-exports.usernameAlreadyTaken = (username) => {
+exports.usernameAlreadyTaken = (username, id) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByUsername(username)
+		userModel.findUserByUsername(username, id)
 			.then(() => {
 				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
 			})
@@ -75,10 +75,12 @@ exports.email = (email) => {
 	})
 }
 
-exports.emailAlreadyTaken = (email) => {
+exports.emailAlreadyTaken = (email, id) => {
+	console.log("===EMAIL====>",email, id)
 	return new Promise((resolve, reject) => {
-		userModel.findUserByEmail(email)
+		userModel.findUserByEmail(email, id)
 			.then(() => {
+				console.log("coucou")
 				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
 			})
 			.catch((err) => {
