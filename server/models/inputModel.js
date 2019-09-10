@@ -80,7 +80,6 @@ exports.emailAlreadyTaken = (email, id) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByEmail(email, id)
 			.then(() => {
-				console.log("coucou")
 				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
 			})
 			.catch((err) => {

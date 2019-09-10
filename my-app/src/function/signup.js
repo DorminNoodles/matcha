@@ -14,12 +14,12 @@ export const check = (obj) => {
         }
     }
 
-    
+
     if (obj.info.confirmation.value !== obj.info.password.value) {
         obj.info.password.error = ""
         obj.info.confirmation.error = "Your password and confirmation password do not match"
         error = 1;
     }
 
-    return (error === 1 ? obj : 0)
+    return (error === 1 ? { obj, status: 1 } : { obj, status: 0 })
 }

@@ -120,9 +120,12 @@ class Signup extends React.Component {
             this.setState({ ...this.state, image: { value: "", error: "Please choose your profile picture" } })
 
 
+        for (let index in info)
+            data.append(index, info[index].value);
+
         let rsl = check(this.state);
 
-        if (typeof rsl === 'object') { this.setState(rsl) }
+        if (typeof rsl.status === 0) { this.setState(rsl) }
         else {
             register(data, this.state.info).then(({ res, err }) => {
 
@@ -157,6 +160,7 @@ class Signup extends React.Component {
     render() {
         let { info, image, page, error, status } = this.state
         let signPage;
+
 
         if (page === 1)
             signPage = <FirstPage info={info} onChange={this.onChange} changePage={this.changePage} />

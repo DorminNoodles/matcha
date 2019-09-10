@@ -50,17 +50,17 @@ exports.new = (data) => {
 			'distance',
 		];
 
+		if (data.password !== data.confirmation)
+			reject({ status: 'error', key: "password", msg: 'Password not confirm' });
+		else
+			delete data['confirmation'];
+
 		for (let elem in data) {
 			if (!filter.includes(elem)) {
 				reject({ status: 'error', msg: 'Unhautorized key in data' });
 				return;
 			}
 		}
-
-		if (data.password !== data.confirmation)
-			reject({ status: 'error', key: "password", msg: 'Password not confirm' });
-		else
-			delete data['confirmation'];
 
 		userModel.checkDataNew(data)
 			.then((res) => {
@@ -76,7 +76,7 @@ exports.new = (data) => {
 				myEmitter.emit('userRegistered', data);
 				resolve({ status: 'success', msg: "user created" });
 			})
-			.catch((err) => { reject(err); })
+			.catch((err) => { reject({status: "error", data: err}); })
 	})
 };
 

@@ -44,7 +44,6 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 	})
 	.catch((err) => {
 		res.status(500).send({ "status": "error", "msg": "error" });
-		console.log(err);
 	})
 })
 
