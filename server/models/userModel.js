@@ -283,7 +283,12 @@ exports.changePwd = (email, username, pwd) => {
 exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
 
-		database.connection()
+		bcrypt.hash(data.password, 10)
+			.then((hash) => {
+				console.log('hash password > ', hash);
+				data.password = hash;
+				return database.connection();
+			})
 			.then((conn) => {
 				return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
 			})

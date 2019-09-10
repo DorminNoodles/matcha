@@ -6,10 +6,10 @@ const inputModel = require('../models/inputModel');
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByUsername(data.from)
+		userModel.findUserByUsername(data.from, 0)
 		.then((res) => {
 			data.from_id = res.id;
-			return userModel.findUserByUsername(data.to);
+			return userModel.findUserByUsername(data.to, 0);
 		})
 		.then((res) => {
 			data.to_id = res.id;

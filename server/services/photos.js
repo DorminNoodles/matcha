@@ -12,7 +12,7 @@ class Photos {
 	createUserFolder(data) {
 		return new Promise((resolve, reject) => {
 
-			userModel.findUserByUsername(data.username)
+			userModel.findUserByUsername(data.username, 0)
 			.then((res) => {
 				console.log(res.id);
 				mkdirp('public/pictures/user' + res.id, (err) => {

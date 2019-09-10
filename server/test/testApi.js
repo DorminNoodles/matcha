@@ -129,7 +129,7 @@ describe('post user', () => {
 	})
 
 	it ('Get user creating without optional fields', (done) => {
-		userModel.findUserByUsername('Soso')
+		userModel.findUserByUsername('Soso', 0)
 		.then((data) => {
 			// const body = response.body;
 

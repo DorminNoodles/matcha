@@ -28,7 +28,7 @@ router.patch('/', urlencodedParser, (req, res) => {
 	if (!req.token)
 		res.status(401).send({ status: "error", msg: "access denied !"});
 
-	user.update(req.body, req.token.id)
+	user.update(req.body, req.token.id, req.token)
 	.then((result) => {
 		res.status(200).send(result);
 	})

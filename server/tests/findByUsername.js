@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel');
 
-userModel.findUserByUsername('Grinch')
+userModel.findUserByUsername('Grinch', 0)
 .then((res) => {
 	console.log('Grinch existe');
 	console.log(res);
@@ -9,7 +9,7 @@ userModel.findUserByUsername('Grinch')
 	console.log('Grinch n existe pas');
 })
 
-userModel.findUserByUsername('Morpion')
+userModel.findUserByUsername('Morpion', 0)
 .then((res) => {
 	console.log('Morpion existe');
 })

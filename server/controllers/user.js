@@ -96,7 +96,7 @@ exports.authenticate = (data) => {
 			})
 			.then(() => {
 				console.log("hello authenticate");
-				return userModel.findUserByUsername(data.username);
+				return userModel.findUserByUsername(data.username, 0);
 			})
 			.then((result) => {
 				if (!result.mailValidation) {
@@ -142,7 +142,7 @@ exports.authenticate = (data) => {
 
 exports.forgot = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByEmail(data)
+		userModel.findUserByEmail(data, 0)
 			.then((res) => {
 				var token = jwt.sign({
 					id: res.id,
@@ -168,7 +168,7 @@ exports.updatePassword = (token, pwd, confirmPwd) => {
 			reject({ "status": "error password difference" });
 			return;
 		}
-		console.log("test :p");
+
 		bcrypt.hash(pwd, 10)
 			.then((hash) => {
 				passCrypted = hash;
@@ -217,7 +217,7 @@ exports.getAvatar = (id) => {
 	})
 }
 
-exports.update = (data, id) => {
+exports.update = (data, id, token) => {
 	return new Promise((resolve, reject) => {
 
 		let validKeys = [
