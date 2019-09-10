@@ -67,7 +67,6 @@ exports.checkDataUpdate = (data, id) => {
 		]).then((res) => {
 			let errors = {};
 
-			console.log(res)
 			res.forEach((elem) => {
 				if (elem.status && elem.status === 'error') {
 					if (filter.includes(elem.key))

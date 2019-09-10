@@ -1,23 +1,6 @@
 const mysql = require('promise-mysql');
 const database = require('../controllers/database');
 
-
-
-// .then((res) => {
-// 	console.log('succes ', res, res[0]);
-// })
-// .catch((err) => {
-// 	console.log('error query ', err);
-// 	reject();
-// })
-
-
-// SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score, 
-// IF(likes.liker=12 & likes.liked IS NULL,FALSE, TRUE) as likes
-// FROM users LEFT JOIN likes ON (users.id = likes.liked)
-// WHERE score >= 23 && age BETWEEN 18 AND 60 &&
-//  id IN  (SELECT DISTINCT usertags.user_id  FROM usertags  INNER JOIN tags ON usertags.tag_id=tags.id WHERE tags.tag="feu");
-
 queryTags = (tags, arg) => {
 
 	let query = " id IN (SELECT DISTINCT usertags.user_id FROM usertags INNER JOIN tags ON usertags.tag_id=tags.id WHERE "

@@ -30,7 +30,7 @@ router.patch('/', urlencodedParser, (req, res) => {
 
 	user.update(req.body, req.token.id)
 	.then((result) => {
-		res.status(result.code).send(result);
+		res.status(200).send(result);
 	})
 	.catch((err) => {
 		res.status(err.code).send({status: "error", msg: err.msg, data: err.data});

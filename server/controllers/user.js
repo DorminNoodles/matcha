@@ -250,10 +250,8 @@ exports.update = (data, id) => {
 		}
 
 		userModel.checkDataUpdate(data, id)
-			.then((res) => { return userModel.update(data, id); })
-			.then(() => {
-				resolve({ status: "success", code: 200 });
-			})
+			.then(() => { return userModel.update(data, id); })
+			.then((res) => { resolve(res); })
 			.catch((err) => {
 				console.log(err);
 				reject({ status: "error", code: 403, data: err });
