@@ -246,15 +246,6 @@ form > .inputfile {
   display: flex;
 }
 
-#info-user {
-  background: white;
-  color: #949092;
-  max-width: 500px;
-  border-radius: 7px;
-  padding: 17px;
-  margin: 40px auto;
-}
-
 .header-chat{
   height: 100px;
   color:white;
@@ -474,6 +465,26 @@ form > .inputfile {
   border-radius: 5px;
   font-size: small;
   width: 50px;
+}
+
+#info-user {
+  background: white;
+  color: #949092;
+  border-radius: 7px;
+  padding: 17px;
+  margin: 40px auto;
+}
+
+@media screen and (max-width: 425px) {
+  #info-user{
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 426px) {
+  #info-user{
+    width: 400px;
+  }
 }
 
 /* ############################# MESSAGE ###################################### */

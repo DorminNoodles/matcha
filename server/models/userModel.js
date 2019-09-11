@@ -140,8 +140,7 @@ exports.saveUser = (data) => {
 				return conn.query("INSERT INTO users SET ?", data);
 			})
 			.then((res) => {
-				console.log('query database > ', res);
-				resolve('User saved');
+				resolve({ status: "success", id: res.insertId});
 			})
 			.catch((err) => {
 				console.log('catch >', err);

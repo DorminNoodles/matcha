@@ -221,7 +221,7 @@ class Signup extends React.Component {
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} />
+                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} info={info}/>
                     {signPage}
                 </div>
             </div>

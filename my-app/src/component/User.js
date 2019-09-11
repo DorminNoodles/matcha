@@ -1,16 +1,19 @@
 import React from 'react';
 import { Tags } from '../export'
+import profile from "../image/profile.png"
 
-
-function UserProfil({ onChange, info, id, like }) {
+function UserProfil({ onChange, info, id, like, id_pic }) {
+    let imgProfil = info.avatar && info.avatar !== "" ?
+        process.env.REACT_APP_PUBLIC_URL + id_pic + "/avatar_" + id_pic + '_' + info.avatar.toLowerCase() : profile
+        
     return (
         <React.Fragment>
             <div>
-                
+
                 <div style={{ width: "50%", margin: "auto" }}>
                     <figure className="image is-square" style={{ width: "100%" }}>
                         <img className="image is-rounded"
-                            alt="username" onClick={() => onChange({ modal: "modal is-active" })} src="https://data.whicdn.com/images/296905234/superthumb.png?t=1505109579" />
+                            alt="username" onClick={() => onChange({ modal: "modal is-active" })} src={imgProfil} />
                     </figure>
                 </div>
 

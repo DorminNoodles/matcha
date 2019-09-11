@@ -13,13 +13,14 @@ const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
-const avatarUpload = (data) => {
+const avatarUpload = (data, id) => {
 	return new Promise((resolve, reject) => {
 		if (!data.avatar || !data.avatar.mv) {
 			reject({ status: "error", key: "avatar", msg: "Avatar upload error !" })
 			return;
 		}
-		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
+
+		data.avatar.mv('public/pictures/' + id + '/avatar_' + id + "_" + data.avatar.name, (err) => {
 			if (err)
 				reject({ status: "error", key: "avatar", msg: "Avatar upload error !" });
 			else
@@ -64,19 +65,19 @@ exports.new = (data) => {
 
 		userModel.checkDataNew(data)
 			.then((res) => {
-				return avatarUpload(data);
-			})
-			.then((res) => {
 				return userModel.saveUser({
 					...data,
 					avatar: data.avatar.name
 				});
 			})
 			.then((res) => {
+				return avatarUpload(data, res.id);
+			})
+			.then((res) => {
 				myEmitter.emit('userRegistered', data);
 				resolve({ status: 'success', msg: "user created" });
 			})
-			.catch((err) => { reject({status: "error", data: err}); })
+			.catch((err) => { reject({ status: "error", data: err }); })
 	})
 };
 

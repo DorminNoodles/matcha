@@ -80,7 +80,7 @@ class User extends React.Component {
       <div id="user">
 
         <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} />
+          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={this.context.user.id}/>
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
           <ModalBlockReport index="modalBlock" name="block" modal={this.state.modalBlock} onChange={this.onChange} fct={this.blockReport.bind(this)} />
           <ModalBlockReport index="modalReport" name="report" modal={this.state.modalReport} onChange={this.onChange} fct={this.blockReport.bind(this)} />

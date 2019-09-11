@@ -3,9 +3,12 @@ import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
-function ProfileImg({ image, sendFile, avatar }) {
 
-    let imgProfil = image.value !== "" ? image.value : (avatar && avatar.value !== "" ? process.env.REACT_APP_PUBLIC_URL + "pictures/lisouiw/" + avatar.value : profile)
+function ProfileImg({ image, sendFile, avatar, info }) {
+    let id = info.id && info.id.value > 0 ? info.id.value : 0
+    let imgProfil = id === 0 ? profile :
+        process.env.REACT_APP_PUBLIC_URL + id + "/avatar_" + id + "_" + avatar.value.toLowerCase()
+
     return (
 
         <div className="center" style={{ flexWrap: "wrap", flexDirection: "column" }}>
