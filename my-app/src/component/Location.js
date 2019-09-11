@@ -22,6 +22,13 @@ class Location extends React.Component {
 
     static contextType = UserProvider;
 
+    componentDidMount() {
+
+        this.setState({
+            ...this.state,
+            city: { text: this.props.city }
+        })
+    }
 
     onChange = (e, { newValue }) => {
         this.setState({ value: newValue });
@@ -41,13 +48,17 @@ class Location extends React.Component {
     };
 
     handleKeyDown = (e) => {
-        let { onChange, tags } = this.props
+        let { onChangeLocation } = this.props
         if ((e.key === "Enter" || e.type === "click") && this.state.value.length > 0) {
             getLocation(this.context.user.token, this.state.value).then((res) => {
                 res.map((e) => {
                     if (e.place_name === this.state.value) {
                         this.setState({ ...this.state, city: e });
-                        onChange({ location: e.text })
+                        onChangeLocation({
+                            location: { value: e.text, error: "" },
+                            latitude: { value: e.center[1], error: "" },
+                            longitude: { value: e.center[0], error: "" }
+                        })
                     }
                 })
             })
@@ -58,7 +69,7 @@ class Location extends React.Component {
         const { value, suggestions } = this.state;
 
         const inputProps = {
-            placeholder: 'Looking for #tag',
+            placeholder: 'Enter your city',
             value,
             onChange: this.onChange,
             onKeyDown: this.handleKeyDown

@@ -33,7 +33,7 @@ router.patch('/', urlencodedParser, (req, res) => {
 		res.status(200).send(result);
 	})
 	.catch((err) => {
-		res.status(err.code).send({status: "error", msg: err.msg, data: err.data});
+		res.status(400).send(err);
 	})
 })
 

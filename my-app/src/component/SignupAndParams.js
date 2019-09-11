@@ -34,7 +34,7 @@ function ProfileImg({ image, sendFile, avatar }) {
     )
 }
 
-function FirstPage({ info, onChange, changePage }) {
+function FirstPage({ info, onChange, changePage, status }) {
     let { firstname, lastname, username, email, password, confirmation } = info
     return (
 
@@ -43,9 +43,13 @@ function FirstPage({ info, onChange, changePage }) {
             <Field placeholder="Lastname" position="left" action={{ onChange: onChange }} error={lastname.error} value={lastname.value} />
             <br></br>
             <Field placeholder="Username" position="left" icon="fas fa-user" action={{ onChange: onChange }} error={username.error} value={username.value} />
-            <Field placeholder="Email" position="left" icon="fas fa-envelope" action={{ onChange: onChange }} error={email.error} value={email.value} />
-            <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={password.error} value={password.value} />
-            <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={confirmation.error} value={confirmation.value} />
+            <Field placeholder="Email" position="left" icon="fas fa-envelope" action={{ onChange: onChange }} error={email.error} value={email.value} />{
+                status.value === "signup" &&
+                <React.Fragment>
+                    <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={password.error} value={password.value} />
+                    <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={confirmation.error} value={confirmation.value} />
+                </React.Fragment>
+            }
             <button className="button" onClick={() => changePage(2)}>Continue</button>
         </React.Fragment>
 
@@ -73,7 +77,9 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
     )
 }
 
-function ThirdPage({ info, onChange, changePage, error, status }) {
+function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation, success }) {
+    let { location, latitude, longitude } = info
+
     return (
 
         <div className="">
@@ -86,11 +92,12 @@ function ThirdPage({ info, onChange, changePage, error, status }) {
             <br />
             <SliderAge onChange={onChange} age={info.age.value} />
             <br />
-            <Location onChange={onChange} />
+            <Location onChangeLocation={onChangeLocation} city={location.value} lat={latitude.value} long={longitude.value} />
             <br />
 
             <button className="button center" onClick={status.fct}>{status.text}</button>
             <p className="error-text center">{error}</p>
+            <p className="success center">{success}</p>
 
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(2) }}>
                 <i className="fas fa-arrow-circle-left fa-lg"></i>

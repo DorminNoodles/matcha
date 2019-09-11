@@ -114,3 +114,26 @@ export function report(id, token) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function update(data, info, token) {
+
+    return axios({
+        method: 'patch',
+        url: 'http://localhost:3300/api/user',
+        data,
+        headers: { 'Authorization': "bearer " + token },
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    }).then((res) => {
+        console.log("coucocu")
+        return res
+    }).catch((error) => {
+        var err = JSON.parse(error.request.response).data
+
+        for (var value in err) {
+            if (info[value])
+                info[value].error = err[value]
+        }
+
+        return ({ res: info, err: "Please complete your profile" })
+    });
+}

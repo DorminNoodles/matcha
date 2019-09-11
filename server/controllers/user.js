@@ -226,26 +226,26 @@ exports.update = (data, id) => {
 			'firstname',
 			'lastname',
 			'email',
-			'password',
-			'location',
-			'avatar',
-			'gender',
 			'orientation',
+			'gender',
 			'age',
+			'bio',
 			'ageMin',
 			'ageMax',
-			'bio',
 			'distance',
+			'location',
+			'latitude',
+			'longitude'
 		]
+		// if (!(data.password || data.confirmation) && data.password !== data.confirmation)
+		// 	reject({ status: 'error', code: 400, key: "password", msg: 'Password not confirm' });
+		// else
+		// 	delete data['confirmation'];
 
-		if (data.password !== data.confirmation)
-			reject({ status: 'error', code: 400, key: "password", msg: 'Password not confirm' });
-		else
-			delete data['confirmation'];
 
 		for (let elem in data) {
 			if (!validKeys.includes(elem)) {
-				reject({ status: 'error', code: 400, msg: 'Unhautorized key in data' });
+				reject({ status: 'error', msg: 'Unhautorized key in data' });
 				return;
 			}
 		}
@@ -254,8 +254,7 @@ exports.update = (data, id) => {
 			.then(() => { return userModel.update(data, id); })
 			.then((res) => { resolve(res); })
 			.catch((err) => {
-				console.log(err);
-				reject({ status: "error", code: 400, data: err });
+				reject({ status: "error", data: err });
 			})
 	})
 }

@@ -48,7 +48,7 @@ exports.checkDataUpdate = (data, id) => {
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
 			inputModel.usernameAlreadyTaken(data.username, id).catch(e => e),
-			inputModel.password(data.password).catch(e => e),
+			// inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
@@ -57,7 +57,7 @@ exports.checkDataUpdate = (data, id) => {
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
-			inputModel.avatar(data.avatar).catch(e => e),
+			// inputModel.avatar(data.avatar).catch(e => e),
 			inputModel.bio(data.bio).catch(e => e),
 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
 			inputModel.distance(data.distance).catch(e => e),
@@ -155,7 +155,7 @@ exports.findUserById = (id, user_id) => {
 		database.connection()
 			.then((conn) => {
 				var result = conn.query(`\
-				SELECT id, username, firstname, lastname, gender, orientation, bio, age, location, avatar, score,
+				SELECT id, username, firstname, lastname, email, gender, orientation, bio, age, distance, ageMin, ageMax, avatar, score, location, latitude, longitude,
 				COUNT(liked) as nb_likes,
 				IF(report.reported=users.id, TRUE, FALSE) as report,
 				IF((SELECT count(*) FROM likes WHERE liker=${user_id} and liked=${id}) = 1, TRUE, FALSE) as likes
@@ -207,13 +207,7 @@ exports.checkLogin = (username, password) => {
 
 exports.saveGps = (id, long, lat) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		})
+		database.connection()
 			.then((conn) => {
 				return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
 			})
@@ -230,13 +224,7 @@ exports.saveGps = (id, long, lat) => {
 exports.activateUser = (username, email) => {
 	return new Promise((resolve, reject) => {
 		console.log("hello");
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		})
+		database.connection()
 			.then((conn) => {
 				let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
 				conn.end();
@@ -255,13 +243,7 @@ exports.activateUser = (username, email) => {
 
 exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		})
+		database.connection()
 			.then((conn) => {
 				console.log("PUTAIN DE MERDE");
 				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
@@ -279,11 +261,11 @@ exports.changePwd = (email, username, pwd) => {
 exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
 
-		bcrypt.hash(data.password, 10)
-			.then((hash) => {
-				data.password = hash;
-				return database.connection();
-			})
+		// bcrypt.hash(data.password, 10)
+		// 	.then((hash) => {
+		// 		data.password = hash;
+		// 		return 
+		database.connection()
 			.then((conn) => {
 				return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
 			})
