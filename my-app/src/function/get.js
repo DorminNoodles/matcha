@@ -75,3 +75,22 @@ export function getLocation(token, city) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function getListMsg(token) {
+    return axios({
+        method: 'GET',
+        url: 'http://localhost:3300/api/chat/list',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}
+
+export function getMessages(id, token) {
+    return axios({
+        method: 'GET',
+        params: { id },
+        url: 'http://localhost:3300/api/chat/',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}

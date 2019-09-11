@@ -17,11 +17,11 @@ export function deleteTag(token, body, id) {
     });
 }
 
-export function unlike(liked, token) {
+export function unlike(id, token) {
 
     return axios({
         method: 'DELETE',
-        data: { liked },
+        data: { id },
         url: 'http://localhost:3300/api/like',
         headers: { 'Authorization': "bearer " + token }
     }).then((res) => { return (res.data) })

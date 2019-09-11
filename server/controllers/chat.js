@@ -6,25 +6,40 @@ const chatModel = require('../models/chatModel');
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 		chatModel.new(data)
-			.then((res) => { 
-				resolve(res); })
+			.then((res) => { resolve(res); })
 			.catch((err) => { reject(err); })
 	})
 }
 
-exports.chatSubscribe = (userID) => {
+exports.get = (user_id, id) => {
 	return new Promise((resolve, reject) => {
-		console.log(userID);
-		io.on('connection', (socket) => {
-			io.removeAllListeners();
-			console.log("Hello Connection");
-			socket.on('subscribeSendMsg' + userID, () => {
-				console.log("sendMSGTO => " + userID);
-				socket.emit('msg', 'hello 42');
-			})
-		});
+		chatModel.get(user_id, id)
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
 	})
 }
+
+exports.list = (id) => {
+	return new Promise((resolve, reject) => {
+		chatModel.list(id)
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
+	})
+}
+
+// exports.chatSubscribe = (userID) => {
+// 	return new Promise((resolve, reject) => {
+// 		console.log(userID);
+// 		io.on('connection', (socket) => {
+// 			io.removeAllListeners();
+// 			console.log("Hello Connection");
+// 			socket.on('subscribeSendMsg' + userID, () => {
+// 				console.log("sendMSGTO => " + userID);
+// 				socket.emit('msg', 'hello 42');
+// 			})
+// 		});
+// 	})
+// }
 
 io.on('connection', (socket) => {
 	console.log("socket.io connection : ");

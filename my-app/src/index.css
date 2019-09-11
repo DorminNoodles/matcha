@@ -295,6 +295,7 @@ form > .inputfile {
 .conversation-left{
   align-items: flex-end;
   display: flex;
+  margin: 10px;
 }
 
 .bubble-left{
@@ -394,6 +395,7 @@ form > .inputfile {
   height: 100%;
   display: flex;
   background: white;
+  overflow: hidden;
 }
 
 
@@ -586,7 +588,7 @@ form > .inputfile {
 /* #########################Tags########################################## */
 
 #search-header{
-  width: 100%;
+  width: calc(100% - 40px);
   background: white;
   color: #B33070;
   border: 1px solid;
@@ -594,7 +596,8 @@ form > .inputfile {
   padding: 10px;
   display: grid;
   justify-content: center;
-  height: fit-content;
+  position: fixed;
+  z-index: 20;
 }
 
 #list-profil{
@@ -604,6 +607,8 @@ form > .inputfile {
   justify-content: center;
   align-content: start;
   padding: 15px;
+  z-index: 1;
+  position: relative;
 }
 
 .react-autosuggest__input {

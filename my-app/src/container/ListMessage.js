@@ -1,12 +1,35 @@
 import React from 'react';
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
+import { getListMsg } from '../function/get'
 import { withRouter } from "react-router";
 
+const Contain = ({ key, value }) => {
+    return (
+
+        <Link key={key} to={{ pathname: "/chat", search: `?id=${value.id}` }}>
+            <div className="message-active">
+                {/* className="white-red */}
+                <figure className="image is-96x96">
+                    <div className="green-dot dot-bottom" />
+                    <img className="is-rounded" alt="1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
+                </figure>
+                <div>
+                    <p>{value.username}</p>
+                    <p>Message</p>
+                </div>
+            </div>
+        </Link>
+    )
+}
 
 class ListMessage extends React.Component {
-    static contextType = UserProvider;
+    constructor(props) {
+        super(props);
 
+        this.state = { users: [] }
+    }
+    static contextType = UserProvider;
 
     componentWillReceiveProps() {
         if (this.context.header !== "white-red")
@@ -16,6 +39,9 @@ class ListMessage extends React.Component {
     componentDidMount() {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+        getListMsg(this.context.user.token).then((res) => {
+            this.setState({ users: res })
+        })
 
     }
 
@@ -27,33 +53,12 @@ class ListMessage extends React.Component {
     render() {
         return (
             <div className="list-message">
-                <Route />
+                <Route />{
 
-
-                <Link to={{ pathname: "/chat", search: "?id=1" }}>
-                    <div className="message-active">
-                        <figure className="image is-96x96">
-                            <div className="green-dot dot-bottom"/>
-                            <img className="is-rounded" alt="1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
-                        </figure>
-                        <div>
-                            <p>Lisa</p>
-                            <p>Message</p>
-                        </div>
-                    </div>
-                </Link>
-
-                <div className="white-red" style={{ display: "flex", padding: "5px" }}>
-
-                    <figure className="image is-96x96">
-                        <div className="red-dot dot-bottom"/>
-                        <img className="is-rounded" alt="1"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
-                    </figure>
-                    <div>
-                        <p>Lisa</p>
-                        <p>Message</p>
-                    </div>
-                </div>
+                    this.state.users && this.state.users.map((value, i) => {
+                        return <Contain key={i} value={value} />
+                    })
+                }
 
             </div>
         )

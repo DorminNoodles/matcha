@@ -9,7 +9,7 @@ class Match extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { users: [] }
+    this.state = { users: [], filter: 0, height: "50px" }
   }
   static contextType = UserProvider;
 
@@ -28,10 +28,10 @@ class Match extends React.Component {
   getUsers(params) {
     getUsers(this.context.user.token, params)
       .then((res) => {
-        this.setState({ users: res.data })
+        this.setState({ ...this.state, users: res.data })
       })
       .catch(() =>
-        this.setState({ users: [] })
+        this.setState({ ...this.state, users: [] })
       )
   }
 
@@ -44,7 +44,7 @@ class Match extends React.Component {
         let result = users.findIndex((obj => obj.id === id));
 
         users[result].likes = 1;
-        this.setState({ users })
+        this.setState({ ...this.state, users })
       })
     }
     else if (id && likes === 1) {
@@ -52,18 +52,18 @@ class Match extends React.Component {
         let result = users.findIndex((obj => obj.id === id));
 
         users[result].likes = 0;
-        this.setState({ users })
+        this.setState({ ...this.state, users })
       })
     }
   }
 
-  render() {
-    let { users } = this.state
 
+  render() {
+    let { users, filter } = this.state
     return (
       <div id="match">
-        <SearchHeader getUsers={this.getUsers.bind(this)} />
-        <div id="list-profil">
+        <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.state.filter} />
+        <div id="list-profil" style={{ top: `${this.state.height}` }}>
           {
             users && users.length > 0 && users.map((value, i) => {
               return <Profil key={i} values={value} likes={this.likes.bind(this)} />

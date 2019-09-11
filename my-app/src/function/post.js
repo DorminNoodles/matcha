@@ -85,10 +85,10 @@ export function addTag(value, token) {
     });
 }
 
-export function like(liked, token) {
+export function like(id, token) {
     return axios({
         method: 'POST',
-        data: { liked },
+        data: { id },
         url: 'http://localhost:3300/api/like',
         headers: { 'Authorization': "bearer " + token }
     }).then((res) => { return (res.data) })

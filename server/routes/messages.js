@@ -9,26 +9,6 @@ const jwtToken = require('../services/jwtToken');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-// router.post('/', urlencodedParser, (req, res) => {
-
-// 	console.log(req.body);
-// 	console.log(req.body.from);
-
-// 	messages.new({
-// 		from : req.body.from,
-// 		to: req.body.to,
-// 		body: req.body.body
-// 	})
-// 	.then(() => {
-
-// 	})
-// 	.catch(() => {
-
-// 	})
-// 	res.send('pouet');
-
-// })
-
 router.get('/', urlencodedParser, (req, res) => {
 
 	if (!req.token)

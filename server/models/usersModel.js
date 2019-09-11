@@ -16,13 +16,13 @@ queryTags = (tags, arg) => {
 
 }
 
-getQuery = ({ ageMin, ageMax, distance, score, tags }) => {
+getQuery = ({ ageMin, ageMax, distance, score, tags }, id) => {
 
 	let s_score = " score >= ? "
 	let s_age = " age BETWEEN ? AND ? "
 
 	let query = ""
-	let arg = []
+	let arg = [id, id, id, id]
 
 	if (score && arg.push(score)) { query += s_score }
 
@@ -45,13 +45,13 @@ exports.get = (params, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				const query = `\
+				const query = "\
 					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score,\
-					IF(likes.liker = ${id} & likes.liked IS NULL, FALSE, TRUE) as likes\
-					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=${id})
-					LEFT JOIN block ON (blocked=users.id) 
-					WHERE blocker!=${id} or blocker IS NULL;`
-				rsl = getQuery(params)
+					IF(likes.liker = ? & likes.liked IS NULL, FALSE, TRUE) as likes\
+					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=?)\
+					LEFT JOIN block ON (blocked=users.id) \
+					WHERE (blocker!=? or blocker IS NULL) AND id NOT IN (?)"
+				rsl = getQuery(params, id)
 
 				return conn.query(query + rsl.query, rsl.arg);
 			})
