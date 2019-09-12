@@ -4,10 +4,10 @@ import UserProvider from '../context/UserProvider';
 import { getListMsg } from '../function/get'
 import { withRouter } from "react-router";
 
-const Contain = ({ key, value }) => {
+const Contain = ({ i, value }) => {
     return (
 
-        <Link key={key} to={{ pathname: "/chat", search: `?id=${value.id}` }}>
+        <Link  key={i} to={{ pathname: "/chat", search: `?id=${value.id}` }}>
             <div className="message-active">
                 {/* className="white-red */}
                 <figure className="image is-96x96">
@@ -39,10 +39,10 @@ class ListMessage extends React.Component {
     componentDidMount() {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+            
         getListMsg(this.context.user.token).then((res) => {
             this.setState({ users: res })
         })
-
     }
 
     logout = () => {

@@ -13,14 +13,13 @@ exports.new = ({ to_id, group_id, from_id, message }) => {
                     })
             })
             .catch((err) => {
-                reject(err);
+                reject({ "status": "error", "msg": "Bad query !" });
             })
     });
 }
 
 exports.get = (user_id, id) => {
     return new Promise((resolve, reject) => {
-
         database.connection()
             .then((conn) => {
                 conn.query('SELECT users.username, users.avatar, userschat.id, chat.date, message, from_id, to_id \
@@ -44,7 +43,7 @@ exports.list = (id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                conn.query('SELECT users.avatar, userschat.active, username, first_user, second_user, date, users.id \
+                conn.query('SELECT users.avatar, userschat.active, username, first_user, second_user, date, users.id, userschat.id as group_id \
                          FROM userschat \
                          LEFT JOIN users ON (users.id=IF(first_user=?, second_user, first_user) && users.id IS NOT NULL) \
                          WHERE (first_user=? OR second_user=?) \

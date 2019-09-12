@@ -137,7 +137,7 @@ class Signup extends React.Component {
 
         let rsl = check(this.state);
 
-        if (typeof rsl.status === 0) { this.setState(rsl) }
+        if (rsl.status === 0) { this.setState(rsl) }
         else {
             register(data, this.state.info).then(({ res, err }) => {
 

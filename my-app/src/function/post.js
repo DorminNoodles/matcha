@@ -124,7 +124,6 @@ export function update(data, info, token) {
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then((res) => {
-        console.log("coucocu")
         return res
     }).catch((error) => {
         var err = JSON.parse(error.request.response).data
@@ -136,4 +135,16 @@ export function update(data, info, token) {
 
         return ({ res: info, err: "Please complete your profile" })
     });
+}
+
+export function sendMsg(message, to_id, group_id, token) {
+
+    return axios({
+        method: 'post',
+        url: 'http://localhost:3300/api/chat',
+        data: { group_id, to_id, message },
+        headers: { 'Authorization': "bearer " + token },
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    }).then((res) => { return res })
+        .catch(error => { return error; });
 }

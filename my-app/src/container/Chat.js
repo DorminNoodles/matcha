@@ -1,14 +1,13 @@
 import React from 'react';
 import { Conversation, ListChat } from '../export'
 import UserProvider from '../context/UserProvider';
-import { getMessages } from '../function/get'
+import { getMessages, getListMsg } from '../function/get'
 import queryString from 'query-string';
-import { getListMsg } from '../function/get'
+import { sendMsg } from '../function/post'
 
 class Chat extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = { conversation: [], list: [] }
   }
   static contextType = UserProvider;
@@ -30,7 +29,7 @@ class Chat extends React.Component {
   }
 
   getConversation = (props) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let params = queryString.parse(props.location.search)
 
       getMessages(parseInt(params.id), this.context.user.token)
@@ -48,14 +47,19 @@ class Chat extends React.Component {
     })
   }
 
+  sendMsg = (message, id, group_id) => {
+    sendMsg(message, id, group_id, this.context.user.token)
+      .then((res) => { console.log(res) })
+      .catch((err) => { console.log(err) })
+  }
+
   render() {
-    let { list, conversation } = this.state
     let params = queryString.parse(this.props.location.search)
 
     return (
       <div id="chat">
-        <ListChat list={list} />
-        <Conversation {...this.state} id={parseInt(params.id)}/>
+        <ListChat list={this.state.list} />
+        <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} />
       </div>
     );
   }
