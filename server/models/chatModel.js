@@ -35,7 +35,7 @@ exports.get = (user_id, id) => {
                     })
             })
             .catch((err) => {
-                reject(err);
+                reject({ "status": "error", "msg": "Bad query !" });
             })
     });
 }
@@ -44,7 +44,7 @@ exports.list = (id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                conn.query('SELECT userschat.active, username, first_user, second_user, date, users.id \
+                conn.query('SELECT users.avatar, userschat.active, username, first_user, second_user, date, users.id \
                          FROM userschat \
                          LEFT JOIN users ON (users.id=IF(first_user=?, second_user, first_user) && users.id IS NOT NULL) \
                          WHERE (first_user=? OR second_user=?) \
@@ -56,7 +56,7 @@ exports.list = (id) => {
                     })
             })
             .catch((err) => {
-                reject(err);
+                reject({ "status": "error", "msg": "Bad query !" });;
             })
     });
 }

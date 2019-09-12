@@ -9,7 +9,7 @@ class Match extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { users: [], filter: 0, height: "50px" }
+    this.state = { users: [], height: "60px" }
   }
   static contextType = UserProvider;
 
@@ -57,12 +57,18 @@ class Match extends React.Component {
     }
   }
 
+  filter(filter) {
+    let height = filter === false ? "60px" : "400px"
+
+    this.setState({ ...this.state, height })
+  }
+
 
   render() {
-    let { users, filter } = this.state
+    let { users } = this.state
     return (
       <div id="match">
-        <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.state.filter} />
+        <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
         <div id="list-profil" style={{ top: `${this.state.height}` }}>
           {
             users && users.length > 0 && users.map((value, i) => {

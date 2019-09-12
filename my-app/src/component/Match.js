@@ -28,7 +28,7 @@ const SearchOpen = ({ fct, props, getUsers }) => {
 
     return (
         <React.Fragment>
-            <span onClick={() => onChange({ open: false })} style={{ position: "absolute", right: "15px", cursor: "pointer" }}>
+            <span onClick={() => fct.filter(false)} style={{ position: "absolute", right: "15px", cursor: "pointer", top: "15px" }}>
                 <i className="fas fa-times-circle fa-lg"></i>
             </span>
             <SliderAgeRange onChangeAge={onChangeAge} ageMin={ageMin} ageMax={ageMax} />
@@ -56,7 +56,8 @@ class SearchHeader extends React.Component {
         this.fct = {
             onChange: this.onChange.bind(this),
             onChangeAge: this.onChangeAge.bind(this),
-            onDelete: this.onDelete.bind(this)
+            onDelete: this.onDelete.bind(this),
+            filter: this.filter.bind(this)
         }
     }
     static contextType = UserProvider;
@@ -78,13 +79,19 @@ class SearchHeader extends React.Component {
         this.setState({ ...this.state, tags: this.state.tags })
     }
 
+    filter = (i) => {
+        this.setState({ ...this.state, open: i }, () => {
+            this.props.filter(i)
+        })
+    }
+
     render() {
 
         return (
-            <div id="search-header">
+            <div id="search-header" style={{ height: `${this.props.height}` }}>
                 {
                     this.state.open === false ?
-                        <Button onClick={() => this.fct.onChange({ open: true })} name="Filter" /> :
+                        <Button onClick={() => this.filter(true)} name="Filter" /> :
                         <SearchOpen fct={this.fct} props={this.state} getUsers={() => this.props.getUsers(this.state)} />
                 }
             </div>
