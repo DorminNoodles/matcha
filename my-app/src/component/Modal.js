@@ -13,12 +13,11 @@ function ModalBlockReport({ index, modal, onChange, name, fct }) {
                     <button className="white-red button-modal" onClick={() => { onChange({ [index]: "modal" }) }}>No</button>
                 </div>
             </div>
-        </Modal >
+        </Modal>
     )
 }
 
 function ModalPhoto({ index, modal, onChange }) {
-
     return (
 
         <div className={modal}>
@@ -38,7 +37,6 @@ function ModalPhoto({ index, modal, onChange }) {
 }
 
 function Modal({ index, modal, onChange, children }) {
-
     return (
 
         <div className={modal}>

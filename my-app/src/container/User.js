@@ -75,12 +75,13 @@ class User extends React.Component {
   render() {
     let params = queryString.parse(this.props.location.search)
     let id = !params.id ? 0 : params.id
-
+    let id_pic = !params.id ? this.context.user.id : params.id
+    
     return (
       <div id="user">
 
         <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={this.context.user.id}/>
+          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={id_pic}/>
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
           <ModalBlockReport index="modalBlock" name="block" modal={this.state.modalBlock} onChange={this.onChange} fct={this.blockReport.bind(this)} />
           <ModalBlockReport index="modalReport" name="report" modal={this.state.modalReport} onChange={this.onChange} fct={this.blockReport.bind(this)} />
