@@ -14,9 +14,11 @@ export const signupInfo = {
         ageMin: { value: 18, error: "" },
         ageMax: { value: 25, error: "" },
         distance: { value: 25, error: "" },
-
-        location: { value: "Paris", error: "" },
+        location: { value: "", error: "" },
+        latitude: { value: 0, error: "" },
+        longitude: { value: 0, error: "" },
     },
     page: 1,
-    error: ""
+    error: "",
+    success: ""
 }

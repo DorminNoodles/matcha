@@ -24,10 +24,10 @@ class Signup extends React.Component {
                 bio: { value: "", error: "" },
                 ageMin: { value: 18, error: "" },
                 ageMax: { value: 25, error: "" },
-                latitude: { value: 0, error: "" },
-                longitude: { value: 0, error: "" },
                 distance: { value: 25, error: "" },
                 location: { value: "", error: "" },
+                latitude: { value: 0, error: "" },
+                longitude: { value: 0, error: "" },
             },
             page: 1,
             status: { value: "signup", text: "Create your account", fct: this.register },
@@ -221,7 +221,7 @@ class Signup extends React.Component {
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} info={info}/>
+                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} info={info} />
                     {signPage}
                 </div>
             </div>
