@@ -343,7 +343,7 @@ form > .inputfile {
 
 #list-message { 
   height: calc(100% - 150px);
-  overflow: scroll;
+  overflow: auto;
 }
 
 #list-message::-webkit-scrollbar { 

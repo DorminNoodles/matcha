@@ -5,20 +5,6 @@ const chat = require('../controllers/chat');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-// router.get('/', urlencodedParser, (req, res) => {
-// 	console.log("chat route");
-// 	console.log(req.body);
-// 	chat.chatSubscribe(req.body.userID)
-// 		.then(() => {
-// 			console.log("then");
-// 		})
-
-// 	chat.chatSubscribe(req.body.userID)
-
-
-// 	res.send("chut");
-// })
-
 router.post('/', urlencodedParser, (req, res) => {
 
 	if (!req.token)

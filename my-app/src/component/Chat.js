@@ -4,43 +4,51 @@ import { Bubble } from '../export'
 import profile from "../image/profile.png"
 import { BrowserRouter as Route, Link } from "react-router-dom";
 
-class HeaderChat extends React.Component {
-    render() {
-        let { user } = this.props
-        let imgProfil = user.id > 0 && user.avatar ?
-            process.env.REACT_APP_PUBLIC_URL + user.id + "/avatar_" + user.id + "_" + user.avatar.toLowerCase() : profile
+function HeaderChat(props) {
 
-        return (
-            <div className="header-chat center">
-                <img className="rounded-60" alt="username" src={imgProfil} />
-                <p>{user.username}</p>
-            </div>
-        );
-    }
+    let { user } = props
+    let imgProfil = user.id > 0 && user.avatar ?
+        process.env.REACT_APP_PUBLIC_URL + user.id + "/avatar_" + user.id + "_" + user.avatar.toLowerCase() : profile
+
+    return (
+        <div className="header-chat center">
+            <img className="rounded-60" alt="username" src={imgProfil} />
+            <p>{user.username}</p>
+        </div>
+    );
 }
 
 class ConversationChat extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = { input: "" }
+        super(props)
+        this.myRef = React.createRef();
     }
+
     static contextType = UserProvider;
 
-    componentWillReceiveProps(next) {
-        if (next.user.id !== this.props.user.id)
-            this.setState({ ...this.state, input: "" })
+    componentDidMount(){
+        this.scrollToBottom()
+    }
+    componentDidUpdate(){
+        this.scrollToBottom()
     }
 
-    onChange = (e) => {
-        this.setState({ ...this.state, input: e.target.value })
-    }
+
+    scrollToBottom = () => {
+        var n = ReactDOM.findDOMNode(this);
+        // n.offsetTop=500
+        console.log(n.offsetTop);
+        window.scrollTo(0, 0);
+        console.log({...n});
+    };
 
     render() {
-        let { conversation } = this.props
+        let { conversation, message, sendMsg, onInput } = this.props
+
         return (
             <React.Fragment>
                 <div id="conversation-chat" >
-                    <div id="list-message">
+                    <div id="list-message" ref={this.myRef}>
                         {
                             conversation && conversation.length > 0 && conversation.map((value, id) => {
                                 return <Bubble conversation={value} key={id} user={this.context.user} />
@@ -49,8 +57,8 @@ class ConversationChat extends React.Component {
                     </div>
                 </div>
                 <div style={{ width: "75%", margin: "auto", height: "150px", position: "sticky", bottom: "0px" }}>
-                    <textarea className="textarea has-fixed-size" style={{ zIndex: "-1" }} id="connversation-text" value={this.state.input} placeholder="write a message..." onChange={this.onChange}></textarea>
-                    <span style={{ color: "#B33070", right: "22px", position: "absolute", bottom: "25px" }} onClick={() => this.props.sendMsg(this.state.input, this.props.user.id, this.props.user.group_id)}>
+                    <textarea className="textarea has-fixed-size" style={{ zIndex: "-1" }} value={message} placeholder="write a message..." onChange={onInput}></textarea>
+                    <span style={{ color: "#B33070", right: "22px", position: "absolute", bottom: "25px" }} onClick={() => sendMsg()}>
                         <i className="fas fa-paper-plane"></i>
                     </span>
                 </div>
@@ -59,8 +67,8 @@ class ConversationChat extends React.Component {
     }
 }
 
-function Conversation({ conversation, list, id, sendMsg }) {
-
+function Conversation(props) {
+    let { list, id } = props
     let user = ""
     for (var i in list) {
         if (list[i].id === id) {
@@ -72,7 +80,7 @@ function Conversation({ conversation, list, id, sendMsg }) {
     return (
         <div id="conversation" >
             <HeaderChat user={user} />
-            <ConversationChat conversation={conversation} user={user} sendMsg={sendMsg} />
+            <ConversationChat {...props} />
         </div>
     );
 }
