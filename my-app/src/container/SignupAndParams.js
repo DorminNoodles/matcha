@@ -137,7 +137,7 @@ class Signup extends React.Component {
 
         let rsl = check(this.state);
 
-        if (rsl.status === 0) { this.setState(rsl) }
+        if (rsl.status === 0) { this.setState({ ...this.state, info: { ...rsl.obj } }) }
         else {
             register(data, this.state.info).then(({ res, err }) => {
 
@@ -209,7 +209,6 @@ class Signup extends React.Component {
     render() {
         let { info, image, page, error, status, success } = this.state
         let signPage;
-
 
         if (page === 1)
             signPage = <FirstPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} />

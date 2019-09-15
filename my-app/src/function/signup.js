@@ -21,5 +21,5 @@ export const check = (obj) => {
         error = 1;
     }
 
-    return (error === 1 ? { obj, status: 1 } : { obj, status: 0 })
+    return (error === 1 ?  { obj, status: 0 } : { obj, status: 1 } )
 }

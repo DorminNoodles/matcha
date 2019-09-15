@@ -46,7 +46,7 @@ class ActivationMail {
 							<div style="text-align:center;font-size:20px;color:white;">\
 								<p> Welcome ' + data.firstname + '!	</p> \
 								<p>Click on the following link to validate your account </p>\
-								<a style="color:white;" href=http://localhost:'+ process.env.PORT_FRONT + '/user/confirm?login=' + data.username + '&key=' + token + '>Confirm your Account</a>\
+								<a style="color:white;" href='+ process.env.PORT_FRONT + 'user/confirm?login=' + data.username + '&key=' + token + '>Confirm your Account</a>\
 							</div>\
 							<footer style="margin-top:200px;margin-bottom:50px;">\
 								<hr />\
@@ -93,7 +93,7 @@ class ActivationMail {
         						Forgot your password?\
 								<br />\
            						No worries, here is a new one:<br />\
-           						<a href=http://localhost:'+ process.env.PORT_FRONT + 'user/password?token=' + token + '>RESET MY PASSWORD</a>\
+           						<a href='+ process.env.PORT_FRONT + 'user/password?token=' + token + '>RESET MY PASSWORD</a>\
            					</div>\
         					<footer style="margin-top:200px;margin-bottom:50px;">\
             					<hr />\

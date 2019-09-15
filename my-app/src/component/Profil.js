@@ -50,7 +50,7 @@ class Profil extends React.Component {
 
   render() {
     let { username, id, avatar } = this.props.values
- 
+
     let imgProfil = id === 0 && avatar ? profile :
         process.env.REACT_APP_PUBLIC_URL + id + "/avatar_" + id + "_" + avatar.toLowerCase()
 

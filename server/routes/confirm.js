@@ -6,7 +6,6 @@ const user = require('../controllers/user');
 
 router.get('/changeEmailConfirm', (req, res) => {
 
-	console.log(req.query);
 	if (!req.query.key) {
 		res.status(200).send({status: 'success'});
 		return;
