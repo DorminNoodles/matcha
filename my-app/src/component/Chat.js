@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import UserProvider from '../context/UserProvider';
 import { Bubble } from '../export'
 import profile from "../image/profile.png"
@@ -26,20 +27,14 @@ class ConversationChat extends React.Component {
 
     static contextType = UserProvider;
 
-    componentDidMount(){
-        this.scrollToBottom()
-    }
-    componentDidUpdate(){
-        this.scrollToBottom()
-    }
+    componentDidMount() { this.scrollToBottom() }
+
+    componentDidUpdate() { this.scrollToBottom() }
 
 
     scrollToBottom = () => {
-        var n = ReactDOM.findDOMNode(this);
-        // n.offsetTop=500
-        console.log(n.offsetTop);
-        window.scrollTo(0, 0);
-        console.log({...n});
+        const listMessage = document.getElementById('list-message');
+        listMessage.scrollTop = listMessage.scrollHeight;
     };
 
     render() {
@@ -48,7 +43,7 @@ class ConversationChat extends React.Component {
         return (
             <React.Fragment>
                 <div id="conversation-chat" >
-                    <div id="list-message" ref={this.myRef}>
+                    <div id="list-message">
                         {
                             conversation && conversation.length > 0 && conversation.map((value, id) => {
                                 return <Bubble conversation={value} key={id} user={this.context.user} />

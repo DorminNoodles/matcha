@@ -15,10 +15,13 @@ class Chat extends React.Component {
   static contextType = UserProvider;
 
   componentWillReceiveProps(next) {
+
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
+
     if (this.props.location.search !== next.location.search)
       this.getConversation(next)
+
   }
 
   async componentDidMount() {
@@ -28,6 +31,13 @@ class Chat extends React.Component {
     await this.getConversation(this.props).then(() => {
       this.getListMsg()
     })
+
+    let { conversation } = this.state
+
+    socket.on("new message", data => {
+      conversation.push(data)
+      this.setState({ ...this.state, message: "", conversation })
+    })
   }
 
   getConversation = (props) => {
@@ -36,11 +46,10 @@ class Chat extends React.Component {
 
       getMessages(parseInt(params.id), this.context.user.token)
         .then(({ conversation, group_id }) => {
+          socket.emit('subscribe', group_id);
+
           this.setState({ ...this.state, conversation, group_id }
-            , () => {
-              socket.emit('subscribe', group_id);
-              resolve()
-            })
+            , () => { resolve() })
         })
     })
   }
@@ -52,13 +61,9 @@ class Chat extends React.Component {
     })
   }
 
-  onInput = (e) => {
-    this.setState({ ...this.state, message: e.target.value })
-  }
-
+  onInput = (e) => this.setState({ ...this.state, message: e.target.value })
 
   sendMsg = () => {
-
     let { group_id, message } = this.state
     let params = queryString.parse(this.props.location.search)
 
@@ -85,7 +90,6 @@ class Chat extends React.Component {
 
   render() {
     let params = queryString.parse(this.props.location.search)
-    console.log(this.state)
 
     return (
       <div id="chat">

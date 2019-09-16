@@ -1,31 +1,23 @@
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        // socket.join('some room');
-        // io.to('some room').emit('chat', "Vagues");
-        // socket.broadcast.to('some room').emit('chat', "cocuo" );
-        // socket.emit("chats", "Va")
-        // console.log('made socket con: ', socket.id)
-
-        socket.on('subscribe', function(room) {
+        socket.on('subscribe', function (room) {
             console.log('joining room', room);
             socket.join(room);
         });
-        
-        socket.on('send message', function(data) {
-            console.log(data)
-            socket.broadcast.to(data.room).emit('conversation private post', {
-                message: data.message
-            });
+
+        socket.on('send message', function (data) {
+            socket.to(data.id).broadcast.emit('new message', { ...data });
         });
 
-        socket.on('unsubscribe', function(room) {  
+        socket.on('unsubscribe', function (room) {
             console.log('leaving room', room);
-            socket.leave(room); 
+            socket.leave(room);
         })
-        
+
+        socket.on("disconnect", () => console.log("Client disconnected"));
         // var clients = io.sockets.clients();
         // var clients = io.sockets.clients();
-// console.log(clients)
+        // console.log(clients)
     })
 }
