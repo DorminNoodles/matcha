@@ -80,9 +80,17 @@ class Chat extends React.Component {
           username: username
         }
 
+        let notif = {
+          from_id: id,
+          to_id: params.id,
+          type: 1,
+          username: username
+        }
+
         conversation.push(data)
         this.setState({ ...this.state, message: "", conversation }, () => {
           socket.emit('send message', data);
+          socket.emit('notif', notif);
         })
       })
       .catch((err) => { console.log(err) })

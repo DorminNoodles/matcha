@@ -84,11 +84,9 @@ async function db() {
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
         )');
 		await connection.query('CREATE TABLE notifs (\
-        	id INT AUTO_INCREMENT PRIMARY KEY, \
-        	user_id INT NOT NULL, \
-        	his_id INT NOT NULL, \
-        	notif TEXT, \
-        	seen INT NOT NULL DEFAULT 0, \
+        	type INT NOT NULL, \
+        	from_id INT NOT NULL, \
+        	to_id INT NOT NULL, \
         	date DATETIME DEFAULT CURRENT_TIMESTAMP \
         )');
 		await connection.query('CREATE TABLE chat (\

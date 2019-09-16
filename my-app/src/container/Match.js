@@ -4,6 +4,8 @@ import UserProvider from '../context/UserProvider';
 import { getUsers } from '../function/get'
 import { like } from '../function/post'
 import { unlike } from '../function/delete'
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3300');
 
 class Match extends React.Component {
   constructor(props) {
@@ -44,7 +46,12 @@ class Match extends React.Component {
         let result = users.findIndex((obj => obj.id === id));
 
         users[result].likes = 1;
-        this.setState({ ...this.state, users })
+        this.setState({ ...this.state, users }, () => {
+          if (res.match > 0)
+            socket.emit('notif', { type: 2 });
+          else
+            socket.emit('notif', { type: 3 });
+        })
       })
     }
     else if (id && likes === 1) {
@@ -52,7 +59,9 @@ class Match extends React.Component {
         let result = users.findIndex((obj => obj.id === id));
 
         users[result].likes = 0;
-        this.setState({ ...this.state, users })
+        this.setState({ ...this.state, users }, () => {
+          socket.emit('notif', { type: 4 });
+        })
       })
     }
   }

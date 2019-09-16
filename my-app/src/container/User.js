@@ -5,6 +5,8 @@ import { getUser } from '../function/get'
 import queryString from 'query-string'
 import { like, report, block } from '../function/post'
 import { unlike } from '../function/delete'
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3300');
 
 class User extends React.Component {
   state = {
@@ -50,13 +52,20 @@ class User extends React.Component {
     let { likes, id, nb_likes } = this.state
 
     if (id && likes === 0) {
-      like(id, this.context.user.token).then(() => {
-        this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes })
+      like(id, this.context.user.token).then((res) => {
+        this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes }, () => {
+          if (res.match > 0)
+            socket.emit('notif', { type: 2 });
+          else
+            socket.emit('notif', { type: 3 });
+        })
       })
     }
     else if (id && likes === 1) {
       unlike(id, this.context.user.token).then(() => {
-        this.setState({ ...this.state, likes: 0, nb_likes: --nb_likes })
+        this.setState({ ...this.state, likes: 0, nb_likes: --nb_likes }, () => {
+          socket.emit('notif', { type: 4 });
+        })
       })
     }
   }
@@ -76,12 +85,12 @@ class User extends React.Component {
     let params = queryString.parse(this.props.location.search)
     let id = !params.id ? 0 : params.id
     let id_pic = !params.id ? this.context.user.id : params.id
-    
+
     return (
       <div id="user">
 
         <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={id_pic}/>
+          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={id_pic} />
           <ModalPhoto index="modal" modal={this.state.modal} onChange={this.onChange} />
           <ModalBlockReport index="modalBlock" name="block" modal={this.state.modalBlock} onChange={this.onChange} fct={this.blockReport.bind(this)} />
           <ModalBlockReport index="modalReport" name="report" modal={this.state.modalReport} onChange={this.onChange} fct={this.blockReport.bind(this)} />

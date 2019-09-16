@@ -6,6 +6,11 @@ module.exports = (io) => {
             socket.join(room);
         });
 
+        socket.on('notif_subscribe', function (room) {
+            console.log('joining room', room);
+            socket.join(room);
+        });
+
         socket.on('send message', function (data) {
             socket.to(data.id).broadcast.emit('new message', { ...data });
         });
@@ -13,6 +18,13 @@ module.exports = (io) => {
         socket.on('unsubscribe', function (room) {
             console.log('leaving room', room);
             socket.leave(room);
+        })
+
+        socket.on('notif', function (data) {
+            console.log(data)
+            console.log('HEYYYY')
+            // socket.to(data.id).broadcast.emit('new message', { ...data });
+            socket.broadcast.emit('notif', { ...data });
         })
 
         socket.on("disconnect", () => console.log("Client disconnected"));

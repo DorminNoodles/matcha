@@ -18,14 +18,6 @@ class Password extends React.Component {
   }
   static contextType = UserProvider;
 
-  componentWillReceiveProps() {
-
-  }
-
-  componentDidMount() {
-
-  }
-
   onChange = (value) => {
     this.setState({ ...this.state, ...value })
   }

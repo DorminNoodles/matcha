@@ -5,19 +5,26 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 
 class Routers extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.state = { open: false }
+  }
   static contextType = UserProvider;
+
+  icon = () => {
+    this.setState({ open: !this.state.open })
+  }
 
   render() {
     let { token } = this.context && this.context.user ? this.context.user : 0
     return (
       <Router>
 
-        {token && token !== "" ? <Header /> : <React.Fragment></React.Fragment>}
+        {token && token !== "" ? <Header icon={this.icon.bind(this)} /> : <React.Fragment></React.Fragment>}
         <HeaderSide />
 
         <div id="main">
-          {/* <Notification/> */}
+          <Notification {...this.state} />
 
           <Switch>
             <Route exact path="/" component={Home} />

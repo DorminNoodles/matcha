@@ -14,11 +14,10 @@ exports.new = (liker, liked) => {
 			.then((res) => {
 				console.log(res.affectedRows) // SEND Notif Match
 				console.log('like add !');
-				resolve({ "status": "success", "msg": "like added !" });
+				resolve({ "status": "success", "msg": "like added !", "match": res.affectedRows });
 			})
-			.catch((err) => {
-				console.log(err);
-				reject(err);
+			.catch(() => {
+				reject({ "status": "error", "msg": "request failed" });
 			})
 	})
 }
