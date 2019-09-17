@@ -20,7 +20,7 @@ exports.get = (id) => {
                 (SELECT count(*) FROM notifs WHERE to_id=?) as count \
                 FROM notifs \
                 INNER JOIN users ON (users.id = from_id) \
-                WHERE to_id=? ORDER BY date ASC', [id, id])
+                WHERE to_id=? ORDER BY date DESC', [id, id])
                     .then((res) => { resolve({ "status": "success", data: res }) })
                     .catch((err) => reject({ "status": "error", "msg": "Bad query !" }))
             })

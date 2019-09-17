@@ -4,13 +4,13 @@ const notificationModel = require('./models/notificationModel.js');
 module.exports = (io) => {
     io.on('connection', (socket) => {
         socket.on('subscribe', function (room) {
-            console.log('joining room', room);
+            // console.log('joining room', room);
             if (room)
                 socket.join(room);
         });
 
         socket.on('notif_subscribe', function (room) {
-            console.log('joining room notif_subscribe', room);
+            // console.log('joining room notif_subscribe', room);
             if (room)
                 socket.join(room);
         });
@@ -21,7 +21,7 @@ module.exports = (io) => {
         });
 
         socket.on('unsubscribe', function (room) {
-            console.log('leaving room', room);
+            // console.log('leaving room', room);
             socket.leave(room);
         })
 

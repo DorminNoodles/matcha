@@ -20,10 +20,11 @@ var upload = multer({ storage: storage });
 
 // send token + photo file
 router.post('/', upload.single('photo'), urlencodedParser, (req, res) => {
-	if (!req.file)
+	
+	if (!req.files)
 		res.status(400).send({"status": "error", "msg" : "No photo"});
 	else if (req.token) {
-		photos.new(req.token.id, req.file.filename)
+		photos.new(req.token.id, req.files.file)
 		.then((result) => {
 			res.status(200).send(result);
 		})

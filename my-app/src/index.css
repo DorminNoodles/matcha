@@ -358,6 +358,40 @@ form > .inputfile {
 
 
 
+/* ################################ HOME ################################### */
+
+.home-picture{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bloc-picture{
+  display: flex;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+}
+
+.home-upload{
+  background: white;
+  margin: 8px;
+  height: 30vw;
+  width: 30vw;
+  max-height: 300px;
+  max-width: 250px;
+  min-height: 200px;
+  min-width: 150px;
+}
+
+.list-picture{
+  display: flex;
+  flex-direction: column;
+}
+
 /* ################################ CHAT ################################### */
 
 @media screen and (min-width: 480px) {

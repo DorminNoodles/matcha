@@ -148,3 +148,15 @@ export function sendMsg(message, to_id, group_id, token) {
     }).then((res) => { return res })
         .catch(error => { return error; });
 }
+
+export function uploadPicture(data, token) {
+
+    return axios({
+        method: 'POST',
+        url: 'http://localhost:3300/api/user/pictures',
+        data,
+        headers: { 'Authorization': "bearer " + token },
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    }).then((res) => { return res })
+    .catch(error => { return error; });
+}

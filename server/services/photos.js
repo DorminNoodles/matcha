@@ -13,44 +13,41 @@ class Photos {
 		return new Promise((resolve, reject) => {
 
 			userModel.findUserByUsername(data.username, 0)
-			.then((res) => {
-				console.log(res.id);
-				mkdirp('public/pictures/user' + res.id, (err) => {
-					if (err)
-						reject({'status': 'error', 'msg': 'Photo UserFolder not created !'});
-					else
-						resolve();
-				});
-			})
-			.catch(() => {
-				console.log("error");
-				reject();
-			})
+				.then((res) => {
+					console.log(res.id);
+					mkdirp('public/pictures/user' + res.id, (err) => {
+						if (err)
+							reject({ 'status': 'error', 'msg': 'Photo UserFolder not created !' });
+						else
+							resolve();
+					});
+				})
+				.catch(() => {
+					console.log("error");
+					reject();
+				})
 		})
 	}
 
-	static move(id, filename) {
-		var oldPath = 'uploads/' + filename;
-		var newPath = 'public/pictures/user' + id + '/' + filename;
-
-		fs.rename(oldPath, newPath, function (err) {
-			if (err) throw err
-				console.log('Successfully renamed - AKA moved!')
-		})
-	}
-
-	static countPhotos(id, callback) {
-		fs.readdir('./public/pictures/user' + id, (err, files) => {
+	static move(id, data, nb) {
+		data.mv('public/pictures/' + id + '/avatar_' + id + "_" + nb + "_" + data.name, (err) => {
 			if (err)
-				return (0);
+				return ({ status: "error", key: "avatar", msg: "Avatar upload error !" });
+			else
+				return ({ status: "success" });
+		})
+	}
 
-			console.log(files.length);
+	static countPhotos = (id, callback) => {
+		fs.readdir('./public/pictures/' + id, (err, files) => {
+			if (err)
+				callback(0);
 			callback(files.length);
 		});
 	}
 
-	static removeTMP(filename) {
-		fs.unlink('uploads/' + filename);
+	static removeTMP(data) {
+		fs.unlink('uploads/' + data.name);
 	}
 }
 

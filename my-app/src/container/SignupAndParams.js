@@ -27,7 +27,7 @@ class Signup extends React.Component {
                 distance: { value: 25, error: "" },
                 location: { value: "", error: "" },
                 latitude: { value: 0, error: "" },
-                longitude: { value: 0, error: "" },
+                longitude: { value: 0, error: "" }
             },
             page: 1,
             status: { value: "signup", text: "Create your account", fct: this.register },
@@ -212,6 +212,9 @@ class Signup extends React.Component {
     render() {
         let { info, image, page, error, status, success } = this.state
         let signPage;
+        let upload = status && status.value && status.value === "signup" ? true : false
+        let id = status && status.value && status.value === "signup" ? 0 : this.context.user.id
+        let avatar = status && status.value && status.value === "signup" ? image.value : ""
 
         if (page === 1)
             signPage = <FirstPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} />
@@ -223,7 +226,7 @@ class Signup extends React.Component {
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg image={image} sendFile={this.sendFile} avatar={info.avatar} info={info} />
+                    <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id} />
                     {signPage}
                 </div>
             </div>

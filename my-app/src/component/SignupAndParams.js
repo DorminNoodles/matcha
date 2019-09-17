@@ -4,34 +4,37 @@ import profile from "../image/profile.png"
 import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
 
-function ProfileImg({ image, sendFile, avatar, info }) {
-    let id = info.id && info.id.value > 0 ? info.id.value : 0
-    let imgProfil = id === 0 ? profile :
-        process.env.REACT_APP_PUBLIC_URL + id + "/avatar_" + id + "_" + avatar.value.toLowerCase()
+const ProfileImg = ({ error, sendFile, avatar, upload, id, className}) => {
+    let imgProfil = id === 0 || !avatar ? profile :
+        process.env.REACT_APP_PUBLIC_URL + id + "/avatar_" + id + "_" + avatar.toLowerCase()
 
     return (
 
         <div className="center" style={{ flexWrap: "wrap", flexDirection: "column" }}>
-            <figure className="image is-128x128">
+            <figure className="image is-128x128" style={{ margin: "20px 0px" }}>
                 <img className="is-rounded"
                     style={{ width: "128px", height: "128px" }}
                     src={imgProfil} alt="profil" />
             </figure>
-            <p className="error">{image.error}</p>
-            <p style={{
-                fontFamily: "LadylikeBB",
-                fontSize: "xx-large",
-                textAlign: "center"
-            }}>Matcha</p>
-
-            <form encType="multipart/form-data">
-                <input className="inputfile"
-                    onChange={sendFile}
-                    name="avatar"
-                    placeholder="Choose avatar"
-                    type="file"
-                />
-            </form>
+            {
+                upload === true && 
+                <React.Fragment>
+                    <p className="error">{error}</p>
+                    <p style={{
+                        fontFamily: "LadylikeBB",
+                        fontSize: "xx-large",
+                        textAlign: "center"
+                    }}>Matcha</p>
+                    <form encType="multipart/form-data">
+                        <input className="inputfile"
+                            onChange={sendFile}
+                            name="avatar"
+                            placeholder="Choose avatar"
+                            type="file"
+                        />
+                    </form>
+                </React.Fragment>
+            }
         </div>
 
     )

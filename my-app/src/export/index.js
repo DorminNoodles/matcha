@@ -31,7 +31,7 @@ import { BubbleTag } from "../component/Tags";
 import { ModifyTag } from "../component/Tags";
 import { TagsSuggest } from "../component/TagsSuggest";
 import { Location } from "../component/Location";
-import { Notif } from "../component/Notif";
+import { ProfileImg } from "../component/SignupAndParams";
 
 export {
     Home,
@@ -69,5 +69,5 @@ export {
     ModifyTag,
     TagsSuggest,
     Location,
-    Notif
+    ProfileImg
 };

@@ -7,9 +7,7 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
-const tagsModel = require('../models/tagsModel');
 const inputModel = require('../models/inputModel');
-const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
