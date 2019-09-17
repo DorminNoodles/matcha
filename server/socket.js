@@ -28,19 +28,20 @@ module.exports = (io) => {
         socket.on('notif', function (data) {
 
             if (data.to_id)
-                sendNotification(data, socket)
+                sendNotification(data, socket, data.to_id)
 
             if (data.type === 2)
-                sendNotification(data, socket)
+                sendNotification({ type: 2, from_id: data.to_id, to_id: data.from_id, username: data.username }, socket, data.from_id)
         })
 
         socket.on("disconnect", () => console.log("Client disconnected"));
     })
 }
 
-sendNotification = (data, socket) => {
+sendNotification = (data, socket, id) => {
     notificationModel.new(data)
-        .then(() => {
-            socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
+        .then((res) => {
+            console.log(res)
+            socket.to(id + "_notif").broadcast.emit('notif', { ...data });
         }).catch(() => { })
 }

@@ -16,13 +16,30 @@ exports.get = (id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                return conn.query('SELECT type, from_id, to_id, date, users.username \
+                return conn.query('SELECT type, from_id, to_id, date, users.username,\
+                (SELECT count(*) FROM notifs WHERE to_id=?) as count \
                 FROM notifs \
                 INNER JOIN users ON (users.id = from_id) \
-                WHERE to_id=? ORDER BY date ASC', [id])
+                WHERE to_id=? ORDER BY date ASC', [id, id])
                     .then((res) => { resolve({ "status": "success", data: res }) })
                     .catch((err) => reject({ "status": "error", "msg": "Bad query !" }))
             })
             .catch((err) => reject({ "status": "error", "msg": "Bad query !" }))
     });
 }
+
+// exports.delete = (id) => {
+//     return new Promise((resolve, reject) => {
+//         database.connection()
+//             .then((conn) => {
+//                 return conn.query('SELECT type, from_id, to_id, date, users.username,\
+//                 (SELECT count(*) FROM notifs WHERE to_id=?) as count \
+//                 FROM notifs \
+//                 INNER JOIN users ON (users.id = from_id) \
+//                 WHERE to_id=? ORDER BY date ASC', [id, id])
+//                     .then((res) => { resolve({ "status": "success", data: res }) })
+//                     .catch((err) => reject({ "status": "error", "msg": "Bad query !" }))
+//             })
+//             .catch((err) => reject({ "status": "error", "msg": "Bad query !" }))
+//     });
+// }

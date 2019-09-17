@@ -67,13 +67,12 @@ class Chat extends React.Component {
   onInput = (e) => this.setState({ ...this.state, message: e.target.value })
 
   sendMsg = () => {
-    let { group_id, message } = this.state
+    let { group_id, message, conversation } = this.state
     let params = queryString.parse(this.props.location.search)
+    let { id, username, avatar, token } = this.context.user
 
-    sendMsg(message, params.id, group_id, this.context.user.token)
+    sendMsg(message, params.id, group_id,token)
       .then((res) => {
-        let { conversation } = this.state
-        let { id, username, avatar } = this.context.user
         let data = {
           avatar,
           from_id: id,

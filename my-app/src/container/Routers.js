@@ -7,7 +7,7 @@ import UserProvider from '../context/UserProvider';
 class Routers extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false }
+    this.state = { open: false, number: 0 }
   }
   static contextType = UserProvider;
 
@@ -15,16 +15,20 @@ class Routers extends React.Component {
     this.setState({ open: !this.state.open })
   }
 
+  numberNotifs = (i) => {
+    this.setState({ number: i })
+  }
+
   render() {
     let { token } = this.context && this.context.user ? this.context.user : 0
     return (
       <Router>
 
-        {token && token !== "" ? <Header icon={this.icon.bind(this)} /> : <React.Fragment></React.Fragment>}
+        {token && token !== "" ? <Header icon={this.icon.bind(this)} number={this.state.number} /> : <React.Fragment></React.Fragment>}
         <HeaderSide />
 
         <div id="main">
-          <Notification {...this.state} />
+          <Notification {...this.state} numberNotifs={this.numberNotifs.bind(this)} />
 
           <Switch>
             <Route exact path="/" component={Home} />

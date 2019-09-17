@@ -576,7 +576,7 @@ form > .inputfile {
 #list-notif{
   width: 90%;
   max-width: 300px;
-  position: absolute;
+  position: fixed;
   z-index: 30;
   right: 0px;
   background: rgba(10, 10, 10, 0.37);

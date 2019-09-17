@@ -9,7 +9,10 @@ class Header extends React.Component {
 
         return (
             <div id="header" className={header}>
-                <span style={{ position: "absolute", right: "11px" }} onClick={() => { this.props.icon() }}><i className="fas fa-bell fa-lg" /></span>
+                <div style={{ position: "absolute", right: "11px" }}>
+                    <p>{this.props.number}</p>
+                    <span onClick={() => { this.props.icon() }}><i className="fas fa-bell fa-lg" /></span>
+                </div>
                 <div style={{ position: "absolute", right: "62px" }}>{user.username}</div>
             </div >
         )
