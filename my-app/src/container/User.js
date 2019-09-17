@@ -1,6 +1,6 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
-import { UserProfil, Field, Modal, ModalPhoto, ModalBlockReport } from '../export'
+import { UserProfil, ModalPhoto, ModalBlockReport } from '../export'
 import { getUser } from '../function/get'
 import queryString from 'query-string'
 import { like, report, block } from '../function/post'

@@ -60,6 +60,7 @@ class Location extends React.Component {
                             longitude: { value: e.center[0], error: "" }
                         })
                     }
+                    return 0;
                 })
             })
         }

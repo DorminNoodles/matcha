@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import UserProvider from '../context/UserProvider';
 import { Bubble } from '../export'
 import profile from "../image/profile.png"

@@ -3,7 +3,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
-const messages = require('../controllers/messages');
+const notification = require('../controllers/notification');
 const jwtToken = require('../services/jwtToken');
 
 
@@ -14,13 +14,11 @@ router.get('/', urlencodedParser, (req, res) => {
 	if (!req.token)
 		res.status(401).send({ status: "error", msg: "access denied !" });
 
-	messages.listMessages()
-		.then((result) => {
-			res.send(result);
-		})
-		.catch((err) => {
-			res.send(err);
-		})
+        // notification.listMessages()
+		// .then((result) => {
+		// 	res.send(result);
+		// })
+		// .catch((err) => {
+		// 	res.send(err);
+		// })
 })
-
-module.exports = router;

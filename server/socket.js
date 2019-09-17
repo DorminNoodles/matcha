@@ -3,12 +3,14 @@ module.exports = (io) => {
     io.on('connection', (socket) => {
         socket.on('subscribe', function (room) {
             console.log('joining room', room);
-            socket.join(room);
+            if (room)
+                socket.join(room);
         });
 
         socket.on('notif_subscribe', function (room) {
-            console.log('joining room', room);
-            socket.join(room);
+            console.log('joining room notif_subscribe', room);
+            if (room)
+                socket.join(room);
         });
 
         socket.on('send message', function (data) {

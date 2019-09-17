@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import profile from "../image/profile.png"
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3300');
 
 const Modal = ({ gender, orientation, location, score }) => {
   return (
@@ -36,8 +38,9 @@ class Profil extends React.Component {
     this.state = { modal: false, heart: 0 }
   }
 
-  componentWillMount() {
+  componentDidMount(){
     this.setState({ modal: false, heart: this.props.values.likes })
+    socket.emit('notif', { type: 5 });
   }
 
   like() {
