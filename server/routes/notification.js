@@ -14,7 +14,7 @@ router.get('/', urlencodedParser, (req, res) => {
 	if (!req.token)
 		res.status(401).send({ status: "error", msg: "access denied !" });
 
-	notification.get()
+	notification.get(req.token.id)
 		.then((response) => { res.status(200).send(response); })
 		.catch((err) => { res.status(400).send(err); })
 })

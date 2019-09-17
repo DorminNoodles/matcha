@@ -94,3 +94,12 @@ export function getMessages(id, token) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function getNotifications(token) {
+    return axios({
+        method: 'GET',
+        url: 'http://localhost:3300/api/notification/',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}

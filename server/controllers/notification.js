@@ -8,9 +8,9 @@ exports.new = (data) => {
 	})
 }
 
-exports.get = (user_id, id) => {
+exports.get = (id) => {
 	return new Promise((resolve, reject) => {
-		notificationModel.get(user_id, id)
+		notificationModel.get(id)
 			.then((res) => { resolve(res); })
 			.catch((err) => { reject(err); })
 	})

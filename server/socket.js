@@ -27,20 +27,18 @@ module.exports = (io) => {
 
         socket.on('notif', function (data) {
 
-            console.log(data)
             if (data.to_id)
-                sendNotif(data, socket)
+                sendNotification(data, socket)
 
             if (data.type === 2)
-                sendNotif(data, socket)
-
+                sendNotification(data, socket)
         })
 
         socket.on("disconnect", () => console.log("Client disconnected"));
     })
 }
 
-sendNotif = ({ data, socket }) => {
+sendNotification = (data, socket) => {
     notificationModel.new(data)
         .then(() => {
             socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });

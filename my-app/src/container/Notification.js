@@ -1,10 +1,12 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
 import openSocket from 'socket.io-client';
+import { getNotifications } from '../function/get';
 const socket = openSocket('http://localhost:3300');
 
-function NotifMessage() {
+function NotifMessage({ username, type, date }) {
     const messages = [
+        "error",
         "You received a new message from ",
         "You have a match with ",
         "Your profil have been liked by ",
@@ -13,29 +15,55 @@ function NotifMessage() {
     ]
     return (
         <div className="notification is-primary notif">
-            <button class="delete"></button>
-            {messages[1]} <strong>Lisa</strong>
+            <button className="delete"></button>
+            {messages[type]} <strong>{username}</strong>
+            <p className="notif-date">{date}</p>
         </div>
     )
 }
 
 class Notification extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { notifications: [] }
+    }
     static contextType = UserProvider;
-
 
     async componentDidMount() {
         socket.emit('notif_subscribe', this.context.user.id + "_notif");
         socket.on("notif", data => {
-            console.log(data)
+
+            let notifications = this.state.notifications;
+            console.log(notifications)
+            notifications.unshift(data);
+            console.log(notifications)
+
+            this.setState({ ...this.state, notifications})
+
+        })
+
+        await getNotifications(this.context.user.token).then((res) => {
+            this.setState({ ...this.state, notifications: res.data })
         })
     }
 
 
     render() {
+        let { notifications } = this.state
         return (
-            <div id="list-notif">
-                {this.props.open && <NotifMessage />}
-            </div >
+            <React.Fragment>
+                {
+                    this.props.open &&
+                    <div id="list-notif">
+                        {
+                            notifications && notifications.length > 0 &&
+                            notifications.map((value, i) => {
+                                return <NotifMessage {...value} key={i} />
+                            })
+                        }
+                    </div>
+                }
+            </React.Fragment>
         )
     }
 }
