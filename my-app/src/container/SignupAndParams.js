@@ -61,6 +61,9 @@ class Signup extends React.Component {
     }
 
     setting(pathname) {
+        if (!(this.context.user.token) && pathname === "/parameters")
+            this.props.history.push('/');
+
         if (pathname === "/parameters")
             this.setState({ ...this.state, ...signupInfo, status: { value: "parameters", text: "Modify Your Informations", fct: this.modify } },
                 () => {

@@ -14,7 +14,7 @@ function NotifMessage() {
     return (
         <div className="notification is-primary notif">
             <button class="delete"></button>
-            Vous avez reçu un message de <strong>Lisa</strong>
+            {messages[1]} <strong>Lisa</strong>
         </div>
     )
 }

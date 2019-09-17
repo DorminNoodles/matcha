@@ -1,4 +1,6 @@
 
+const notificationModel = require('./models/notificationModel.js');
+
 module.exports = (io) => {
     io.on('connection', (socket) => {
         socket.on('subscribe', function (room) {
@@ -14,7 +16,8 @@ module.exports = (io) => {
         });
 
         socket.on('send message', function (data) {
-            socket.to(data.id).broadcast.emit('new message', { ...data });
+            if (data.id)
+                socket.to(data.id).broadcast.emit('new message', { ...data });
         });
 
         socket.on('unsubscribe', function (room) {
@@ -23,15 +26,23 @@ module.exports = (io) => {
         })
 
         socket.on('notif', function (data) {
+
             console.log(data)
-            console.log('HEYYYY')
-            // socket.to(data.id).broadcast.emit('new message', { ...data });
-            socket.broadcast.emit('notif', { ...data });
+            if (data.to_id)
+                sendNotif(data, socket)
+
+            if (data.type === 2)
+                sendNotif(data, socket)
+
         })
 
         socket.on("disconnect", () => console.log("Client disconnected"));
-        // var clients = io.sockets.clients();
-        // var clients = io.sockets.clients();
-        // console.log(clients)
     })
+}
+
+sendNotif = ({ data, socket }) => {
+    notificationModel.new(data)
+        .then(() => {
+            socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
+        }).catch(() => { })
 }

@@ -86,7 +86,7 @@ exports.getUsers = (query, userId) => {
 		
 		usersModel.get(query, userId)
 			.then((res) => {
-				console.log('res', res);
+				// console.log('res', res);
 				resolve(res)
 
 			})

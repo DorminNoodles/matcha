@@ -21,7 +21,9 @@ class Match extends React.Component {
   }
 
   componentDidMount() {
-    if (this.context.header !== "white-red")
+    if (!(this.context.user.token))
+      this.props.history.push('/');
+    else if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
     this.getUsers();
 
@@ -48,9 +50,9 @@ class Match extends React.Component {
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
           if (res.match > 0)
-            socket.emit('notif', { type: 2 });
+            socket.emit('notif', { type: 2, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
           else
-            socket.emit('notif', { type: 3 });
+          socket.emit('notif', { type: 3, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
         })
       })
     }
@@ -60,7 +62,7 @@ class Match extends React.Component {
 
         users[result].likes = 0;
         this.setState({ ...this.state, users }, () => {
-          socket.emit('notif', { type: 4 });
+          socket.emit('notif', { type:4, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
         })
       })
     }

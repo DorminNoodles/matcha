@@ -20,6 +20,9 @@ class User extends React.Component {
 
     let params = queryString.parse(this.props.location.search)
 
+    if (!(this.context.user.token))
+      this.props.history.push('/');
+
     getUser(this.context.user.token, !params.id ? this.context.user.id : params.id)
       .then((res) => {
         this.setState({ ...this.state, ...res.data })
@@ -28,6 +31,7 @@ class User extends React.Component {
 
   componentWillReceiveProps(next) {
     let params = queryString.parse(next.location.search)
+
     if (!params.id)
       getUser(this.context.user.token, this.context.user.id)
         .then((res) => {
@@ -39,9 +43,13 @@ class User extends React.Component {
   }
 
   componentDidMount() {
+    let params = queryString.parse(this.props.location.search)
+
     if (this.context.header !== "red-white")
       this.context.onChange("header", "red-white")
 
+    if (params.id)
+      socket.emit('notif', { type: 5, from_id: this.context.user.id, to_id: params.id, username: this.context.user.username });
   }
 
   onChange = (obj) => {
@@ -55,16 +63,16 @@ class User extends React.Component {
       like(id, this.context.user.token).then((res) => {
         this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes }, () => {
           if (res.match > 0)
-            socket.emit('notif', { type: 2 });
+            socket.emit('notif', { type: 2, from_id: this.context.user.id, to_id: id, username: this.context.user.username  });
           else
-            socket.emit('notif', { type: 3 });
+            socket.emit('notif', { type: 3,  from_id: this.context.user.id, to_id: id, username: this.context.user.username  });
         })
       })
     }
     else if (id && likes === 1) {
       unlike(id, this.context.user.token).then(() => {
         this.setState({ ...this.state, likes: 0, nb_likes: --nb_likes }, () => {
-          socket.emit('notif', { type: 4 });
+          socket.emit('notif', { type: 4, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
         })
       })
     }

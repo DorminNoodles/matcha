@@ -25,6 +25,9 @@ class Chat extends React.Component {
   }
 
   async componentDidMount() {
+    if (!(this.context.user.token))
+      this.props.history.push('/');
+
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
 

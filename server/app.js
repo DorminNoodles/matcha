@@ -4,14 +4,15 @@ const fileUpload = require('express-fileupload');
 
 const express = require('express');
 var app = express();
-var server = app.listen(3300, () => {console.log("listen on 3300")})
+var server = app.listen(3300, () => { console.log("listen on 3300") })
 var socket = require('socket.io');
 var io = socket(server);
 
 
 const user = require('./routes/user');
 const users = require('./routes/users');
-const messages = require('./routes/messages');
+// const messages = require('./routes/messages');
+const notification = require('./routes/notification');
 const likes = require('./routes/likes');
 const like = require('./routes/like');
 const block = require('./routes/block');
@@ -68,7 +69,7 @@ app.use(jwtToken);
 
 /*ROUTES*/
 app.use('/api/user', user);
-app.use('/api/messages', messages);
+// app.use('/api/messages', messages);
 app.use('/api/chat', chat);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
@@ -85,13 +86,7 @@ app.use('/api/confirm', confirm);
 app.use('/api/location', location);
 app.use('/api/block', block);
 app.use('/api/report', report);
-
-
-// server.listen(3300, () => {
-// 	console.log('listening on 3300');
-// });
-
-
+app.use('/api/notification', notification);
 
 const sockets = require('./socket.js');
 

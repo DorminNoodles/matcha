@@ -42,16 +42,14 @@ class App extends React.Component {
          console.log("restore ", this.state)
       })
 
-      const { endpoint } = this.state;
-      const socket = socketIOClient(endpoint);
-      socket.on("chats", data => this.setState({ responses: data }, () => {
-         
-         console.log(this.state)
-      }));
-      socket.on("chat", data => this.setState({ response: data }, () => {
-         
-         console.log(this.state)
-      }));
+      // const { endpoint } = this.state;
+      // const socket = socketIOClient(endpoint);
+      // socket.on("chats", data => this.setState({ responses: data }, () => {
+      //    console.log(this.state)
+      // }));
+      // socket.on("chat", data => this.setState({ response: data }, () => {
+      //    console.log(this.state)
+      // }));
 
    }
 

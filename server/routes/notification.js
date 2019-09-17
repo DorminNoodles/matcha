@@ -14,11 +14,19 @@ router.get('/', urlencodedParser, (req, res) => {
 	if (!req.token)
 		res.status(401).send({ status: "error", msg: "access denied !" });
 
-        // notification.listMessages()
-		// .then((result) => {
-		// 	res.send(result);
-		// })
-		// .catch((err) => {
-		// 	res.send(err);
-		// })
+	notification.get()
+		.then((response) => { res.status(200).send(response); })
+		.catch((err) => { res.status(400).send(err); })
 })
+
+router.post('/', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !" });
+
+	notification.new()
+		.then((response) => { res.status(200).send(response); })
+		.catch((err) => { res.status(400).send(err); })
+})
+
+module.exports = router;

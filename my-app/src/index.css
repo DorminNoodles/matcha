@@ -609,7 +609,7 @@ form > .inputfile {
   height: 100%;
   flex-wrap: wrap;
   justify-content: center;
-  align-content: start;
+  align-content: flex;
   padding: 15px;
   z-index: 1;
   position: relative;
