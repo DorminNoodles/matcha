@@ -57,10 +57,10 @@ router.delete('/', urlencodedParser, (req, res) => {
 
 	if (!req.token)
 		res.status(401).send({ "status": "error", "msg": "bad authentification" });
-	else if (!req.query.filename)
+	else if (!req.body.filename)
 		res.status(400).send({ "status": "error", "msg": "no query" });
 	else {
-		photos.delete(req.token.id, req.query.filename)
+		photos.delete(req.token.id, req.body.filename)
 			.then((result) => { res.status(200).send(result); })
 			.catch((err) => { res.status(500).send(err); })
 	}

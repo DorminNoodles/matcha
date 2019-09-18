@@ -32,6 +32,8 @@ import { ModifyTag } from "../component/Tags";
 import { TagsSuggest } from "../component/TagsSuggest";
 import { Location } from "../component/Location";
 import { ProfileImg } from "../component/SignupAndParams";
+import { Gallery } from "../component/Gallery";
+import { HomePassword } from "../component/HomePassword";
 
 export {
     Home,
@@ -69,5 +71,7 @@ export {
     ModifyTag,
     TagsSuggest,
     Location,
-    ProfileImg
+    ProfileImg,
+    Gallery,
+    HomePassword
 };

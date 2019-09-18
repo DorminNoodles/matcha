@@ -27,3 +27,13 @@ export function unlike(id, token) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function deletePhoto(filename, token) {
+    return axios({
+        method: 'DELETE',
+        data: { filename },
+        url: 'http://localhost:3300/api/photos',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}
