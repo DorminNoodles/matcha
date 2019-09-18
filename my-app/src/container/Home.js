@@ -2,57 +2,77 @@ import React from 'react';
 import UserProvider from '../context/UserProvider';
 import { Modal, Field, ProfileImg } from '../export'
 import { password } from '../function/post'
+import { getPhotos } from '../function/get'
+import profile from "../image/profile.png"
 
-const Picture = ({ i, sendFile }) => {
+const Picture = ({ photo, id }) => {
+  let imgProfil = id === 0 || !photo ? profile :
+    process.env.REACT_APP_PUBLIC_URL + id + "/" + photo
+
+  return (
+    <figure className="home-upload" >
+      <img style={{ objectFit: "contain", width: "100%", height: "100%", position: "absolute" }}
+        src={imgProfil} alt="profil" />
+      <div style={{ background: "rgba(10, 10, 10, 0.37)", position: "absolute", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <button className="button white-red">delete</button>
+      </div>
+    </figure>
+  )
+}
+
+const addPicture = ({ sendFile }) => {
+  return (
+
+    <form className="home-upload" encType="multipart/form-data">
+      <input style={{ width: "100%", height: "100%" }}
+        onChange={sendFile}
+        name="avatar"
+        placeholder="Choose avatar"
+        type="file"
+      />
+    </form>
+  )
+}
+
+
+const Block = ({ list, photos, id }) => {
   return (
     <React.Fragment>
-      {i === "1" ?
 
-        <div className="home-upload">cou</div>
-        :
-        <div>
-
-          <form className="home-upload" encType="multipart/form-data">
-
-            <input style={{ width: "100%", height: "100%" }}
-              onChange={sendFile}
-              name="avatar"
-              placeholder="Choose avatar"
-              type="file"
-            />
-          </form>
-        </div>
-      }
-
+      <div className="bloc-picture">
+        <Picture photo={list[photos[0]]} id={id} />
+        <Picture photo={list[photos[1]]} id={id} />
+      </div>
+      <div className="bloc-picture">
+        <Picture photo={list[photos[2]]} id={id} />
+        <Picture photo={list[photos[3]]} id={id} />
+      </div>
     </React.Fragment>
   )
 }
 
-class Gallery extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      password: "",
-      confirmation: "",
-      modal: "modal",
-      error: "",
-      success: ""
-    }
+class Gallery extends React.Component {
+  state = {
+    loading: true
   }
   static contextType = UserProvider;
 
+  componentWillReceiveProps(next) {
+    if (next.list && next.photos)
+      this.setState({ loading: false })
+
+  }
+  componentDidMount() { }
+
   render() {
+
     return (
       <div className="list-picture">
-        <div className="bloc-picture">
-          <Picture i="0" {...this.props} />
-          <Picture i="0" {...this.props} />
-        </div>
-        <div className="bloc-picture">
-          <Picture i="1" {...this.props} />
-          <Picture i="1" {...this.props} />
-        </div>
+        {
+          this.state.loading === true ?
+            <div>Loading</div> : <Block {...this.props} />
+        }
       </div>
     );
   }
@@ -95,7 +115,7 @@ class Password extends React.Component {
     return (
       <div style={{ textAlign: "center", margin: "20px" }}>
         <button className="button white-red" style={{ textAlign: "center" }} onClick={() => { this.onChange({ modal: "modal is-active" }) }}>
-          Change Password
+          <span>Change password<i className="fas fa-key" style={{ marginLeft: "5px" }}></i></span>
         </button>
         <Modal modal={modal} onChange={this.onChange} index="modal">
           <div className="white-red" style={{ padding: "25px", borderRadius: "5px" }}>
@@ -103,15 +123,15 @@ class Password extends React.Component {
             <br />
             <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: this.onChangeTxt }} value={password} />
             <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" action={{ onChange: this.onChangeTxt }} value={confirmation} error={error} success={success} />
-            <button className="button white-red" onClick={() => { this.password() }}>Change password</button>
+            <button className="button white-red" onClick={() => { this.password() }}>
+              <span>Change password</span>
+            </button>
           </div>
         </Modal>
       </div>
     );
   }
 }
-
-
 
 class Home extends React.Component {
   constructor(props) {
@@ -133,6 +153,8 @@ class Home extends React.Component {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
     this.setState({ ...this.state, avatar: this.context.user.avatar })
+
+    this.getPicture()
   }
 
   sendFile = (e) => {
@@ -143,28 +165,44 @@ class Home extends React.Component {
     }
 
     if (e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-        console.log(e.target.files[0])
-        let data = new FormData();
+      reader.readAsDataURL(e.target.files[0]);
+      let data = new FormData();
 
-        data.append("avatar", e.target.files[0]);
+      data.append("avatar", e.target.files[0]);
     }
-};
+  };
 
 
-render() {
-  return (
-    <div style={{ margin: "auto", display: "flex", width: "90%", flexDirection: "column", alignItems: "center" }}>
-      <Password />
-      <div style={{ width: "100%" }}>
+  getPicture = (e) => {
+
+    let { token, id, avatar } = this.context.user
+    let avatar_pic = "avatar_" + id + "_" + avatar.toLowerCase()
+
+    getPhotos(token).then(res => {
+      let photos = Object.keys(res).filter((i) => {
+        if (res[i] !== avatar_pic)
+          return (res[i])
+      })
+
+      this.setState({ ...this.state, photos, list: res })
+    })
+  };
+
+
+
+  render() {
+    return (
+      <div style={{ margin: "auto", display: "flex", width: "90%", flexDirection: "column", alignItems: "center" }}>
         <div style={{ width: "100%" }}>
-          <ProfileImg {...this.state} sendFile={this.sendFile.bind(this)} upload={true} id={this.context.user.id} className="home-picture" />
+          <div style={{ width: "100%" }}>
+            <ProfileImg {...this.state} sendFile={this.sendFile.bind(this)} upload={true} id={this.context.user.id} className="home-picture" />
+          </div>
+          <Password />
+          <Gallery  {...this.state} sendFile={this.sendFile.bind(this)} id={this.context.user.id} />
         </div>
-        <Gallery  {...this.state} sendFile={this.sendFile.bind(this)} />
       </div>
-    </div>
-  );
-}
+    );
+  }
 }
 
 export default Home;

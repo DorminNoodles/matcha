@@ -3,7 +3,6 @@ import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
-
 const ProfileImg = ({ error, sendFile, avatar, upload, id, className}) => {
     let imgProfil = id === 0 || !avatar ? profile :
         process.env.REACT_APP_PUBLIC_URL + id + "/avatar_" + id + "_" + avatar.toLowerCase()

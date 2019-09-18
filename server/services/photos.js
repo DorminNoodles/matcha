@@ -15,7 +15,7 @@ class Photos {
 			userModel.findUserByUsername(data.username, 0)
 				.then((res) => {
 					console.log(res.id);
-					mkdirp('public/pictures/user' + res.id, (err) => {
+					mkdirp('public/pictures/' + res.id, (err) => {
 						if (err)
 							reject({ 'status': 'error', 'msg': 'Photo UserFolder not created !' });
 						else
@@ -46,9 +46,9 @@ class Photos {
 		});
 	}
 
-	static removeTMP(data) {
-		fs.unlink('uploads/' + data.name);
-	}
+	// static removeTMP(data) {
+	// 	fs.unlink('uploads/' + data.name);
+	// }
 }
 
 module.exports = Photos;

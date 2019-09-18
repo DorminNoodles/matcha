@@ -32,7 +32,7 @@ exports.get = (id) => {
 exports.delete = (id, filename) => {
 	return new Promise((resolve, reject) => {
 		const fs = require('fs');
-		fs.unlink('./public/pictures/user' + id + '/' + filename, (err) => {
+		fs.unlink('./public/pictures/' + id + '/' + filename, (err) => {
 			if (err)
 				reject({ "status": "error", "msg": "file not deleted check filename" });
 			else
