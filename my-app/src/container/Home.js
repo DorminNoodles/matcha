@@ -2,12 +2,13 @@ import React from 'react';
 import UserProvider from '../context/UserProvider';
 import { ProfileImg, Gallery, HomePassword } from '../export'
 import { getPhotos } from '../function/get'
+import { uploadPicture } from "../function/post"
+import { deletePhoto } from "../function/delete"
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: "",
       avatar: "",
       error: ""
     }
@@ -28,34 +29,52 @@ class Home extends React.Component {
       this.getPicture()
   }
 
-  sendFile = (e, position) => {
-    this.setState({ ...this.state, image: e.target.files[0], position })
+  sendFile = (e) => {
+    const data = new FormData();
+    let number = this.state.photos.length + 1
+
+    data.append('file', e.target.files[0]);
+    data.append('position', number);
+
+    uploadPicture(data, this.context.user.token)
+      .then((res) => {
+
+        let photos = this.state.photos
+        photos.push(res.data.photo)
+        this.setState({ ...this.state, photos })
+      }) .catch(() => { this.setState({ ...this.state, error: "upload failed" }) })
   };
 
-  upload = () => {
-
-  }
 
   getPicture = (e) => {
-
     let { token, id, avatar } = this.context.user
     let avatar_pic = "avatar_" + id + "_" + avatar.toLowerCase()
+    let photos = []
 
     getPhotos(token).then(res => {
-      let photos = Object.keys(res).filter((i) => {
+      for (var i in res)
         if (res[i] !== avatar_pic)
-          return (res[i])
-      })
-
-      this.setState({ ...this.state, photos, list: res })
+          photos.push(res[i])
+      this.setState({ ...this.state, photos })
     })
   };
 
-  deletePicture = () => {
+  deletePhoto = (photo) => {
+    let photos = []
 
+    deletePhoto(photo, this.context.user.token).then((res) => {
+      if (res.status === "success") {
+        for (var i in this.state.photos)
+          if (this.state.photos[i] !== photo)
+            photos.push(this.state.photos[i])
+      }
+
+      this.setState({ ...this.state, photos })
+    })
   }
 
   render() {
+    console.log(this.state)
     return (
       <div style={{ margin: "auto", display: "flex", width: "90%", flexDirection: "column", alignItems: "center" }}>
         <div style={{ width: "100%" }}>
@@ -63,7 +82,7 @@ class Home extends React.Component {
             <ProfileImg {...this.state} sendFile={this.sendFile.bind(this)} upload={true} id={this.context.user.id} className="home-picture" />
           </div>
           <HomePassword />
-          <Gallery  {...this.state} sendFile={this.sendFile.bind(this)} upload={this.upload.bind(this)} />
+          <Gallery  {...this.state} sendFile={this.sendFile.bind(this)} deletePhoto={this.deletePhoto.bind(this)} />
         </div>
       </div>
     );

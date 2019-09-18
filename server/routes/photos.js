@@ -18,14 +18,14 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 // send token + photo file
-router.post('/', upload.single('photo'), urlencodedParser, (req, res) => {
+router.post('/', urlencodedParser, (req, res) => {
 	if (!req.token)
 		res.status(401).send({ "status": "error", "msg": "bad authentification" });
 
 	if (!req.files)
 		res.status(400).send({ "status": "error", "msg": "No photo" });
 	else
-		photos.new(req.token.id, req.files.file)
+		photos.new(req.token.id, req.files.file, req.body.position)
 			.then((result) => {
 				res.status(200).send(result);
 			})

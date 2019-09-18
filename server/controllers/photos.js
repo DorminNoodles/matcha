@@ -1,15 +1,16 @@
 const express = require('express');
 const Photos = require('../services/photos');
 
-exports.new = (id, photo) => {
+exports.new = (id, photo, position) => {
 	return new Promise((resolve, reject) => {
 
 		Photos.countPhotos(id, function (nb) {
 			if (nb < 5) {
-				Photos.move(id, photo, nb);
-				resolve({ "status": "success", "msg": "Photo added" });
+				var name = 'avatar_' + id + "_" + nb + "_" + photo.name
+				Photos.move(id, photo, position)
+				resolve({ "status": "success", "msg": "Photo added", "photo": name });
 			}
-			else 
+			else
 				reject({ "status": "error", "msg": "photo limit reached" });
 		})
 	});
