@@ -25,7 +25,7 @@ router.post('/', urlencodedParser, (req, res) => {
 	if (!req.files)
 		res.status(400).send({ "status": "error", "msg": "No photo" });
 	else
-		photos.new(req.token.id, req.files.file, req.body.position)
+		photos.new(req.token.id, req.files.file, req.body.position, req.body.prev)
 			.then((result) => {
 				res.status(200).send(result);
 			})
