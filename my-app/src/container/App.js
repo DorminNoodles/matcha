@@ -4,7 +4,6 @@ import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "../context/UserProvider"
-import socketIOClient from "socket.io-client";
 
 class App extends React.Component {
    constructor(props) {
@@ -41,16 +40,6 @@ class App extends React.Component {
       this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
          console.log("restore ", this.state)
       })
-
-      // const { endpoint } = this.state;
-      // const socket = socketIOClient(endpoint);
-      // socket.on("chats", data => this.setState({ responses: data }, () => {
-      //    console.log(this.state)
-      // }));
-      // socket.on("chat", data => this.setState({ response: data }, () => {
-      //    console.log(this.state)
-      // }));
-
    }
 
    setObject = (key, value) => {

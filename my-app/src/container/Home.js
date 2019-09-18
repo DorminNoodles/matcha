@@ -24,12 +24,11 @@ class Home extends React.Component {
       this.context.onChange("header", "white-red")
     this.setState({ ...this.state, avatar: this.context.user.avatar })
 
-    this.getPicture()
+    if (this.context.user && this.context.user.token)
+      this.getPicture()
   }
 
-
   sendFile = (e, position) => {
-
     this.setState({ ...this.state, image: e.target.files[0], position })
   };
 

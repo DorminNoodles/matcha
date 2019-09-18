@@ -149,11 +149,12 @@ export function sendMsg(message, to_id, group_id, token) {
         .catch(error => { return error; });
 }
 
-export function uploadPicture(data, position, token) {
+export function uploadPicture(data, token) {
+
     return axios({
         method: 'post',
         url: 'http://localhost:3300/api/photos',
-        data: { filename : data, position },
+        data,
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then((res) => { return res })

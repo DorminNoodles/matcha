@@ -140,7 +140,7 @@ class Signup extends React.Component {
 
         let rsl = check(this.state);
 
-        if (rsl.status === 0) { this.setState({ ...this.state, info: { ...rsl.obj } }) }
+        if (rsl.status === 0) { this.setState({ ...this.state, info: { ...rsl.obj.info } }) }
         else {
             register(data, this.state.info).then(({ res, err }) => {
 
@@ -207,7 +207,6 @@ class Signup extends React.Component {
             this.setState({ ...this.state, data: e.target.files[0] }, () => { })
         }
     };
-
 
     render() {
         let { info, image, page, error, status, success } = this.state
