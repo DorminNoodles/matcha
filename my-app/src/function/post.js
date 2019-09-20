@@ -160,15 +160,3 @@ export function uploadPicture(data, token) {
     }).then((res) => { return res })
         .catch(error => { return error; });
 }
-
-export function uploadAvatar(data, token) {
-
-    return axios({
-        method: 'post',
-        url: 'http://localhost:3300/api/photos',
-        data,
-        headers: { 'Authorization': "bearer " + token },
-        config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then((res) => { return res })
-        .catch(error => { return error; });
-}

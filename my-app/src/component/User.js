@@ -4,8 +4,8 @@ import profile from "../image/profile.png"
 
 function UserProfil({ onChange, info, id, like, id_pic }) {
     let imgProfil = info.avatar && info.avatar !== "" ?
-        process.env.REACT_APP_PUBLIC_URL + id_pic + "/avatar_" + id_pic + '_' + info.avatar.toLowerCase() : profile
-        
+        process.env.REACT_APP_PUBLIC_URL + id_pic + "/" + info.avatar.toLowerCase() : profile
+
     return (
         <React.Fragment>
             <div>

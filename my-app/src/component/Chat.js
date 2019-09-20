@@ -8,7 +8,7 @@ function HeaderChat(props) {
 
     let { user } = props
     let imgProfil = user.id > 0 && user.avatar ?
-        process.env.REACT_APP_PUBLIC_URL + user.id + "/avatar_" + user.id + "_" + user.avatar.toLowerCase() : profile
+        process.env.REACT_APP_PUBLIC_URL + user.id + "/" + user.avatar.toLowerCase() : profile
 
     return (
         <div className="header-chat center">
@@ -85,7 +85,7 @@ class MessageBox extends React.Component {
 
         let { value } = this.props
         let imgProfil = value.id > 0 ?
-            process.env.REACT_APP_PUBLIC_URL + value.id + "/avatar_" + value.id + "_" + value.avatar.toLowerCase() : profile;
+            process.env.REACT_APP_PUBLIC_URL + value.id + "/" + value.avatar.toLowerCase() : profile;
 
         return (
             <Link to={{ pathname: "/chat", search: `?id=${value.id}` }} className="message-box center">

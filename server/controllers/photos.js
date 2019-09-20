@@ -2,44 +2,41 @@ const Photos = require('../services/photos');
 const photosModel = require('../models/photosModel');
 const fs = require('fs');
 
-exports.new = (id, photo, position, prev) => {
+exports.move = (id, photo, name) => {
 	return new Promise((resolve, reject) => {
-		// console.log(id, photo, position, prev)
-		if (position === "0") {
-			var name = 'avatar_' + id + "_" + position + "_" + photo.name
-			var prevName = 'avatar_' + id + "_0_" + prev
-			const path = './public/pictures/' + id + '/' + prevName
+		photosModel.new(name, id)
+			.then(() => {
+				try {
+					Photos.move(id, photo, name)
+					resolve({ "status": "success", "msg": "Photo added", "photo": name });
+				}
+				catch (err) { reject({ "status": "error", "msg": "upload failed" }); }
+			}).catch(() => {
+				fs.unlink('./public/pictures/' + id + '/' + name)
+				reject({ "status": "error", "msg": "bad query" });
+			})
+	})
+}
 
-			try {
-				// fs.unlinkSync(path)
-				photosModel.new(photo.name, id)
-					.then(() => {
-							Photos.move(id, photo, position)
-							resolve({ "status": "success", "msg": "Photo added", "photo": name });
-					}).catch(() => {
-						fs.unlink('./public/pictures/' + id + '/' + name)
-						reject({ "status": "error", "msg": "bad query" });
-					})
-			} catch (err) {
-				console.error(err)
-			}
-
+exports.new = (id, photo, prev) => {
+	return new Promise((resolve, reject) => {
+		let date = new Date().getTime()
+		let name = date + photo.name
+		name = name.toLowerCase()
+		
+		if (prev) {
+			photosModel.deleteFile(id, prev).then(() => {
+				this.move(id, photo, name)
+					.then((res) => { resolve(res) })
+					.catch((err) => { reject(err) })
+			}).catch((err) => { reject(err); })
 		}
-
-
-		// }
-		// else {
-		// 	Photos.countPhotos(id, function (nb) {
-		// 		if (nb < 5 || (position === "0" && nb === 5)) {
-		// 			var name = 'avatar_' + id + "_" + position + "_" + photo.name
-		// 			Photos.move(id, photo, position)
-		// 			resolve({ "status": "success", "msg": "Photo added", "photo": name });
-		// 		}
-		// 		else { reject({ "status": "error", "msg": "photo limit reached" }) }
-		// 	})
-		// }
-		resolve({ "status": "success", "msg": "Photo added" });
-	});
+		else {
+			this.move(id, photo, name)
+				.then((res) => { resolve(res) })
+				.catch((err) => { reject(err); })
+		}
+	})
 }
 
 exports.get = (id) => {

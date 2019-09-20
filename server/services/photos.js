@@ -29,8 +29,8 @@ class Photos {
 		})
 	}
 
-	static move(id, data, nb) {
-		data.mv('public/pictures/' + id + '/avatar_' + id + "_" + nb + "_" + data.name, (err) => {
+	static move(id, data, name) {
+		data.mv('public/pictures/' + id + '/' + name, (err) => {
 			if (err)
 				return ({ status: "error", key: "avatar", msg: "Avatar upload error !" });
 			else
@@ -38,17 +38,13 @@ class Photos {
 		})
 	}
 
-	static countPhotos = (id, callback) => {
+	static countPhotos(id, callback) {
 		fs.readdir('./public/pictures/' + id, (err, files) => {
 			if (err)
 				callback(0);
 			callback(files.length);
 		});
 	}
-
-	// static removeTMP(data) {
-	// 	fs.unlink('uploads/' + data.name);
-	// }
 }
 
 module.exports = Photos;

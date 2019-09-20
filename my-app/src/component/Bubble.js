@@ -9,7 +9,7 @@ class Bubble extends React.Component {
         let avatar = user.id === conversation.from_id ? this.context.user.avatar : conversation.avatar
         let bubble = user.id === conversation.from_id ? "right" : "left"
 
-        let imgProfil = process.env.REACT_APP_PUBLIC_URL + conversation.from_id + "/avatar_" + conversation.from_id + "_" + avatar.toLowerCase()
+        let imgProfil = process.env.REACT_APP_PUBLIC_URL + conversation.from_id + "/" + avatar.toLowerCase()
 
         return (
             <React.Fragment>

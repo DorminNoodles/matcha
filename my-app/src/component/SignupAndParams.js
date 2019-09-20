@@ -5,7 +5,7 @@ import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Locati
 
 const ProfileImg = ({ error, sendFile, avatar, upload, id, className}) => {
     let imgProfil = id === 0 || !avatar ? profile :
-        process.env.REACT_APP_PUBLIC_URL + id + "/avatar_" + id + "_0_" + avatar.toLowerCase()
+        process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
 
     return (
 
