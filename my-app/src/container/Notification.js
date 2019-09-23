@@ -16,7 +16,7 @@ function NotifMessage({ username, type, date }) {
     return (
         <div className="notification is-primary notif">
             <button className="delete"></button>
-            {messages[type]} { type!== 6 && <strong>{username}</strong>}
+            {messages[type]} {type !== 6 && <strong>{username}</strong>}
             <p className="notif-date">{date}</p>
         </div>
     )
@@ -32,7 +32,6 @@ class Notification extends React.Component {
     async componentDidMount() {
         socket.emit('notif_subscribe', this.context.user.id + "_notif");
         socket.on("notif", data => {
-
             let notifications = this.state.notifications;
             notifications.unshift(data);
             this.setState({ ...this.state, notifications }, () => {
@@ -48,7 +47,6 @@ class Notification extends React.Component {
             }
         })
     }
-
 
     render() {
         let { notifications } = this.state

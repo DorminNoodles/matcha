@@ -11,7 +11,8 @@ exports.new = (liker, liked) => {
 				return conn.query('INSERT INTO likes (liker, liked) VALUES (?, ?) ', [liker, liked])
 					.then(() => {
 						return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 3, date])
-							.then(() => {
+							.then((res) => {
+								const id_notifs = res.insertId
 								return conn.query('UPDATE userschat SET active=1 \
 									WHERE first_user=LEAST(?, ?) \
 									AND second_user=GREATEST(?,?)', [liker, liked, liker, liked])
@@ -24,17 +25,17 @@ exports.new = (liker, liked) => {
 												.then((res) => {
 													if (res.changedRows > 0) {
 														return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-															.then(() => { return { res, data: { like, match } } })
+															.then((res) => { return { res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } } })
 													}
 													else if (res.affectedRows > 0)
-														return { res, data: { like, match } }
+														return { res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }
 													else
-														return { res, data: { like } }
+														return { res, like: { ...like, id: id_notifs } }
 												});
 										}
 										else {
 											return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-												.then(() => { return { res, data: { like, match } } })
+												.then((res) => { return { res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } } })
 										}
 									});
 							});
@@ -58,7 +59,7 @@ exports.delete = (liker, liked) => {
 						 AND second_user = GREATEST(?,?);', [liker, liked, liker, liked])
 							.then(() => {
 								return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 4, date])
-									.then(() => ({ unlike: { to_id: liked, from_id: liker, type: 4, date } }))
+									.then((res) => ({ unlike: { to_id: liked, from_id: liker, type: 4, date, id: res.insertId } }))
 							})
 					})
 					.then((res) => resolve({ "status": "success", ...res }))

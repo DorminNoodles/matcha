@@ -15,3 +15,11 @@ exports.get = (id) => {
 			.catch((err) => { reject(err); })
 	})
 }
+
+exports.delete = (id) => {
+	return new Promise((resolve, reject) => {
+		notificationModel.delete(id)
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
+	})
+}

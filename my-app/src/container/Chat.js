@@ -39,7 +39,8 @@ class Chat extends React.Component {
 
     socket.on("new message", data => {
       conversation.push(data)
-      this.setState({ ...this.state, message: "", conversation })
+
+      this.setState({ ...this.state, message: "", conversation }, () => { })
     })
   }
 
@@ -53,8 +54,7 @@ class Chat extends React.Component {
             this.props.history.push('/messages');
           else {
             socket.emit('subscribe', group_id);
-            this.setState({ ...this.state, conversation, group_id }
-              , () => { resolve() })
+            this.setState({ ...this.state, conversation, group_id }, () => { resolve() })
           }
         })
     })
@@ -76,20 +76,19 @@ class Chat extends React.Component {
 
     sendMsg(message, params.id, group_id, token)
       .then((res) => {
+
         let data = {
           avatar,
           from_id: id,
-          to_id: params.id,
+          to_id: parseInt(params.id),
           id: group_id,
           message: message,
-          username: username
+          username: username,
         }
 
         let notif = {
-          from_id: id,
-          to_id: params.id,
-          type: 1,
-          username: username
+          ...res.data.data,
+          username: username,
         }
 
         conversation.push(data)

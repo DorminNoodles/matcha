@@ -4,7 +4,7 @@ const notificationModel = require('./models/notificationModel.js');
 module.exports = (io) => {
     io.on('connection', (socket) => {
         socket.on('subscribe', function (room) {
-            // console.log('joining room', room);
+            console.log('joining room', room);
             if (room)
                 socket.join(room);
         });
@@ -30,7 +30,7 @@ module.exports = (io) => {
             if (data.to_id)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
 
-            })
+        })
 
         socket.on("disconnect", () => console.log("Client disconnected"));
     })

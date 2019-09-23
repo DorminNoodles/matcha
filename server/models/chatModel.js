@@ -2,15 +2,19 @@ const database = require('../controllers/database');
 
 exports.new = ({ to_id, group_id, from_id, message }) => {
     return new Promise((resolve, reject) => {
+        let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
         database.connection()
             .then((conn) => {
-                conn.query('INSERT INTO chat (group_id, from_id, to_id, message) VALUES(?, ?, ?, ?)', [group_id, from_id, to_id, message])
-                    .then((res) => {
-                        conn.query('UPDATE userschat SET date=(NOW()) WHERE id=?', [group_id])
-                    }).then((res) => { resolve({ "status": "success", "msg": 'sending message succeed' }); })
-                    .catch((err) => {
-                        reject({ "status": "error", "msg": "Bad query !" });
-                    })
+                return conn.query('INSERT INTO chat (group_id, from_id, to_id, message) VALUES(?, ?, ?, ?)', [group_id, from_id, to_id, message])
+                    .then(() => {
+                        return conn.query('UPDATE userschat SET date=(NOW()) WHERE id=?', [group_id])
+                            .then(() => {
+                                return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [to_id, from_id, 1, date])
+                                    .then((res) => { return { to_id, from_id, type: 1, date, id: res.insertId } })
+                            })
+                    }).then((data) => { resolve({ "status": "success", data }); })
+                    .catch((err) => { reject({ "status": "error", "msg": "Bad query !" }) })
             })
             .catch((err) => {
                 reject({ "status": "error", "msg": "Bad query !" });

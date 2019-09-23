@@ -48,8 +48,8 @@ class Match extends React.Component {
       like(id, token).then((res) => {
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
-          socket.emit('notif', { ...res.data.like, username });
-          socket.emit('notif', { ...res.data.match, username });
+          socket.emit('notif', { ...res.like, username });
+          socket.emit('notif', { ...res.match, username });
         })
       })
     }
