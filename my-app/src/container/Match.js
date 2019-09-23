@@ -45,9 +45,7 @@ class Match extends React.Component {
     let result = users.findIndex((obj => obj.id === id));
 
     if (id && likes === 0) {
-
       like(id, token).then((res) => {
-
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
           socket.emit('notif', { ...res.data.like, username });
