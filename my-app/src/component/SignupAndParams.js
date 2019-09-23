@@ -19,11 +19,7 @@ const ProfileImg = ({ error, sendFile, avatar, upload, id, className}) => {
                 upload === true && 
                 <React.Fragment>
                     <p className="error">{error}</p>
-                    <p style={{
-                        fontFamily: "LadylikeBB",
-                        fontSize: "xx-large",
-                        textAlign: "center"
-                    }}>Matcha</p>
+                    <p className="title-matcha">Matcha</p>
                     <form encType="multipart/form-data">
                         <input className="inputfile"
                             onChange={sendFile}

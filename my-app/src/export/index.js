@@ -34,6 +34,7 @@ import { Location } from "../component/Location";
 import { ProfileImg } from "../component/SignupAndParams";
 import { Gallery } from "../component/Gallery";
 import { HomePassword } from "../component/HomePassword";
+import { HomePage, HomeUser } from "../component/Home";
 
 export {
     Home,
@@ -73,5 +74,7 @@ export {
     Location,
     ProfileImg,
     Gallery,
-    HomePassword
+    HomePassword,
+    HomePage,
+    HomeUser
 };

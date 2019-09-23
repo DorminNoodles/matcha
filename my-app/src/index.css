@@ -54,6 +54,12 @@ img {
   color:white !important;
 }
 
+.title-matcha{
+  font-family:"LadylikeBB";
+  font-size:xx-large;
+  text-align: center;
+}
+
 /* ################################################################### */
 
 .inputfile::-webkit-file-upload-button {
