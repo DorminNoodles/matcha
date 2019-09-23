@@ -10,7 +10,7 @@ module.exports = (io) => {
         });
 
         socket.on('notif_subscribe', function (room) {
-            // console.log('joining room notif_subscribe', room);
+            console.log('joining room notif_subscribe: ', room);
             if (room)
                 socket.join(room);
         });
@@ -28,20 +28,10 @@ module.exports = (io) => {
         socket.on('notif', function (data) {
 
             if (data.to_id)
-                sendNotification(data, socket, data.to_id)
+                socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
 
-            if (data.type === 2)
-                sendNotification({ type: 2, from_id: data.to_id, to_id: data.from_id, username: data.username }, socket, data.from_id)
-        })
+            })
 
         socket.on("disconnect", () => console.log("Client disconnected"));
     })
-}
-
-sendNotification = (data, socket, id) => {
-    notificationModel.new(data)
-        .then((res) => {
-            console.log(res)
-            socket.to(id + "_notif").broadcast.emit('notif', { ...data });
-        }).catch(() => { })
 }

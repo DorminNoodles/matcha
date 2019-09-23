@@ -41,28 +41,26 @@ class Match extends React.Component {
 
   likes(likes, id) {
     let { users } = this.state
+    let { username, token } = this.context.user
+    let result = users.findIndex((obj => obj.id === id));
 
     if (id && likes === 0) {
 
-      like(id, this.context.user.token).then((res) => {
-        let result = users.findIndex((obj => obj.id === id));
+      like(id, token).then((res) => {
 
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
-          if (res.match > 0)
-            socket.emit('notif', { type: 2, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
-          else
-            socket.emit('notif', { type: 3, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
+          socket.emit('notif', { ...res.data.like, username });
+          socket.emit('notif', { ...res.data.match, username });
         })
       })
     }
     else if (id && likes === 1) {
-      unlike(id, this.context.user.token).then((res) => {
-        let result = users.findIndex((obj => obj.id === id));
+      unlike(id, token).then((res) => {
 
         users[result].likes = 0;
         this.setState({ ...this.state, users }, () => {
-          socket.emit('notif', { type: 4, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
+          socket.emit('notif', { ...res.unlike, username });
         })
       })
     }

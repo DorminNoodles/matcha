@@ -25,12 +25,8 @@ router.delete('/', urlencodedParser, (req, res) => {
 	}
 
 	likes.delete(req.token.id, req.body.id)
-		.then((result) => {
-			res.status(200).send({ "status": "success", "msg": "unlike success !" });
-		})
-		.catch((err) => {
-			res.status(409).send({ "status": "error", "msg": "unlike failed !" });
-		})
+		.then((result) => { res.status(200).send(result); })
+		.catch(() => { res.status(409).send({ "status": "error", "msg": "unlike failed !" }) })
 })
 
 module.exports = router;

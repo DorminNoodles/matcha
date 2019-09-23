@@ -2,9 +2,11 @@ const database = require('../controllers/database');
 
 exports.new = (data) => {
     return new Promise((resolve, reject) => {
+        let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
         database.connection()
             .then((conn) => {
-                return conn.query('INSERT INTO notifs (to_id, from_id, type ) VALUES(?, ?, ?)', [data.to_id, data.from_id, data.type])
+                return conn.query('INSERT INTO notifs (to_id, from_id, type, date ) VALUES(?, ?, ?)', [data.to_id, data.from_id, data.type, date])
                     .then((res) => { resolve({ "status": "success", "msg": 'notif saved' }); })
                     .catch((err) => { reject({ "status": "error", "msg": "Bad query !" }); })
             })
