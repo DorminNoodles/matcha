@@ -8,7 +8,7 @@ const router = express.Router();
 var urlencodedParser = bodyParser.urlencoded({extended : false})
 
 router.get('/', urlencodedParser, (req, res) => {
-
+	
 	if (!req.token) {
 		res.status(401).send({"status": "error", "key": "token", "msg": "token missing"});
 		return;

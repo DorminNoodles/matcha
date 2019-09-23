@@ -27,6 +27,25 @@ const avatarUpload = (data, id) => {
 	})
 }
 
+exports.identity = (gender, orientation) => {
+
+	let identity = 000000
+	let mask = 000000
+
+	if (gender === "male")
+		identity = orientation === "heterosexual" ? "010001" : orientation === "homosexual" ? "001010" : "011011";
+	else if (gender === "female")
+		identity = orientation === "heterosexual" ? "100010" : orientation === "homosexual" ? "000101" : "100111";
+
+
+	if (gender === "male")
+		mask = orientation === "heterosexual" ? "100000" : orientation === "homosexual" ? "001000" : "000010";
+	else if (gender === "female")
+		mask = orientation === "heterosexual" ? "010000" : orientation === "homosexual" ? "000100" : "000001";
+
+	return { identity, mask }
+}
+
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
 
@@ -61,10 +80,13 @@ exports.new = (data) => {
 			}
 		}
 
+		let binary = this.identity(data.gender, data.orientation)
+
 		userModel.checkDataNew(data)
 			.then((res) => {
 				return userModel.saveUser({
 					...data,
+					...binary,
 					avatar: data.avatar.name
 				});
 			})

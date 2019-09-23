@@ -140,7 +140,7 @@ exports.saveUser = (data) => {
 				return conn.query("INSERT INTO users SET ?", data);
 			})
 			.then((res) => {
-				resolve({ status: "success", id: res.insertId});
+				resolve({ status: "success", id: res.insertId });
 			})
 			.catch((err) => {
 				console.log('catch >', err);
@@ -153,16 +153,17 @@ exports.findUserById = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				var result = conn.query(`\
-				SELECT id, username, firstname, lastname, email, gender, orientation, bio, age, distance, ageMin, ageMax, avatar, score, location, latitude, longitude,
-				COUNT(liked) as nb_likes,
-				IF(report.reported=users.id, TRUE, FALSE) as report,
-				IF((SELECT count(*) FROM likes WHERE liker=${user_id} and liked=${id}) = 1, TRUE, FALSE) as likes
-				FROM users 
-				LEFT JOIN report ON(report.reported=${id})
-				LEFT JOIN likes ON(likes.liked=${id}) WHERE id=${id};`)
-				conn.end();
-				return (result);
+				return conn.query('SELECT id, username, firstname, lastname, email, gender, orientation,\
+				 bio, age, distance, ageMin, ageMax, avatar, score, location, latitude, longitude,\
+				((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
+				((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
+				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
+				COUNT(liked) as nb_likes,\
+				IF(report.reported=users.id, TRUE, FALSE) as report,\
+				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes\
+				FROM users \
+				LEFT JOIN report ON(report.reported=?)\
+				LEFT JOIN likes ON(likes.liked=?) WHERE id=?', [user_id, id, id, id, id])
 			}).then((result) => {
 				if (result[0])
 					resolve(result[0]);

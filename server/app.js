@@ -30,6 +30,7 @@ const avatar = require("./routes/avatar");
 const confirm = require("./routes/confirm");
 const location = require("./routes/location");
 const report = require("./routes/report");
+const test = require("./routes/test");
 
 
 //SERVICES
@@ -87,6 +88,7 @@ app.use('/api/location', location);
 app.use('/api/block', block);
 app.use('/api/report', report);
 app.use('/api/notification', notification);
+app.use('/api/test', test);
 
 const sockets = require('./socket.js');
 

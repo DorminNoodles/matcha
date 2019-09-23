@@ -43,7 +43,8 @@ async function db() {
 			location VARCHAR(255),\
 			avatar VARCHAR(255) NOT NULL, \
 			mailValidation INT DEFAULT 0,\
-			score INT DEFAULT 0, \
+			identity LONGBLOB, \
+			mask LONGBLOB, \
 			age INT, \
 			distance INT DEFAULT 100, \
 			ageMin INT DEFAULT 18, \
@@ -113,7 +114,7 @@ async function db() {
 			("Lisouiw9", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "viens ici", 1, 63, 30, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
 			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1);'
 		);
-		
+
 		await connection.end();
 	} catch (error) {
 		console.error(error);
