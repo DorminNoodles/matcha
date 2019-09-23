@@ -49,10 +49,13 @@ class Chat extends React.Component {
 
       getMessages(parseInt(params.id), this.context.user.token)
         .then(({ conversation, group_id }) => {
-          socket.emit('subscribe', group_id);
-
-          this.setState({ ...this.state, conversation, group_id }
-            , () => { resolve() })
+          if (!(conversation && group_id))
+            this.props.history.push('/messages');
+          else {
+            socket.emit('subscribe', group_id);
+            this.setState({ ...this.state, conversation, group_id }
+              , () => { resolve() })
+          }
         })
     })
   }
@@ -71,7 +74,7 @@ class Chat extends React.Component {
     let params = queryString.parse(this.props.location.search)
     let { id, username, avatar, token } = this.context.user
 
-    sendMsg(message, params.id, group_id,token)
+    sendMsg(message, params.id, group_id, token)
       .then((res) => {
         let data = {
           avatar,

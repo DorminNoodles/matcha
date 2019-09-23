@@ -15,6 +15,7 @@ class Home extends React.Component {
     this.fct = {
       sendFile: this.sendFile.bind(this),
       sendAvatar: this.sendAvatar.bind(this),
+      deletePhoto: this.deletePhoto.bind(this)
     }
   }
   static contextType = UserProvider;
@@ -96,7 +97,7 @@ class Home extends React.Component {
       <React.Fragment>
         {
           this.context.user && this.context.user.token ?
-            <HomeUser {...this.fct} />
+            <HomeUser {...this.fct} data={this.state} id={this.context.user.id}/>
             : <HomePage />
         }
       </React.Fragment>
