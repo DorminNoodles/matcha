@@ -2,7 +2,6 @@ import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
-import { getGeocalisation } from '../function/get'
 
 const ProfileImg = ({ error, sendFile, avatar, upload, id, className }) => {
     let imgProfil = id === 0 || !avatar ? profile :
@@ -79,7 +78,7 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
     )
 }
 
-function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation, success }) {
+function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation, success, getGeocalisation }) {
     let { location, latitude, longitude } = info
 
     return (
@@ -97,7 +96,7 @@ function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation
 
             <Location onChangeLocation={onChangeLocation} city={location.value} lat={latitude.value} long={longitude.value} />
             <p className="center">or</p>
-            <button className="button white-red" style={{ width: "auto", borderRadius: "31px", margin: "20px auto", display: "flex" }} onClick={() => { onChangeLocation(getGeocalisation) }}>
+            <button className="button white-red" style={{ width: "auto", borderRadius: "31px", margin: "20px auto", display: "flex" }} onClick={() => { getGeocalisation() }}>
                 <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
                 <p>Geocalisation</p>
                 <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
