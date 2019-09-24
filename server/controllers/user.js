@@ -18,7 +18,8 @@ const avatarUpload = (data, id) => {
 			return;
 		}
 
-		data.avatar.mv('public/pictures/' + id + '/avatar_' + id + "_" + data.avatar.name, (err) => {
+		let name = data.avatar.name.toLowerCase()
+		data.avatar.mv('public/pictures/' + id + '/' + name, (err) => {
 			if (err)
 				reject({ status: "error", key: "avatar", msg: "Avatar upload error !" });
 			else
@@ -105,7 +106,10 @@ exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 
 		userModel.findUserById(id, user_id)
-			.then((res) => { resolve(res); })
+			.then((res) => { 
+				
+				console.log(res)
+				resolve(res); })
 			.catch((err) => { reject(err); })
 	});
 }

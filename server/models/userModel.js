@@ -154,7 +154,7 @@ exports.findUserById = (id, user_id) => {
 		database.connection()
 			.then((conn) => {
 				return conn.query('SELECT id, username, firstname, lastname, email, gender, orientation,\
-				 bio, age, distance, ageMin, ageMax, avatar, score, location, latitude, longitude,\
+				 bio, age, distance, ageMin, ageMax, avatar, location, latitude, longitude,\
 				((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
 				((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
 				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
@@ -169,11 +169,7 @@ exports.findUserById = (id, user_id) => {
 					resolve(result[0]);
 				else
 					reject();
-			}).catch((error) => {
-				console.log("findUserByName failed");
-				reject(error);
-				return;
-			})
+			}).catch((error) => { reject(error); })
 	})
 }
 

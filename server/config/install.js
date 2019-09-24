@@ -37,7 +37,6 @@ async function db() {
 			firstname VARCHAR(255) NOT NULL,	\
 			lastname VARCHAR(255) NOT NULL,	\
 			email VARCHAR(255) NOT NULL,\
-			tmp_email VARCHAR(255),\
 			gender VARCHAR(255) NOT NULL,\
 			orientation VARCHAR(255) DEFAULT \'bisexual\',\
 			location VARCHAR(255),\
@@ -101,18 +100,18 @@ async function db() {
 			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
 		await connection.query(
-			'INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, bio, mailValidation, score, age, distance, ageMin, ageMax,location,  latitude, longitude, avatar, active)\
-			VALUES ("Lisouiw", "", "Lisa", "TRAN", "tran.lili.lili@gmail.com", "female", "heterosexual", "lo", 1, 63, 22, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw1", "", "Lisa1", "TRAN", "tran.lili1.lili@gmail.com", "female", "heterosexual", "je sais que je suis la", 1, 63, 23, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw2", "", "Lisa2", "TRAN", "tran.lili2.lili@gmail.com", "male", "heterosexual", "lo", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw3", "", "Lisa3", "TRAN", "tran.lili3.lili@gmail.com", "female", "heterosexual", "test", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw4", "", "Lisa4", "TRAN", "tran.lili4.lili@gmail.com", "male", "heterosexual", "lo", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw5", "", "Lisa5", "TRAN", "tran.lili5.lili@gmail.com", "female", "heterosexual", "manger de la pasteque", 1, 63, 19, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw6", "", "Lisa6", "TRAN", "tran.lili6.lili@gmail.com", "male", "bisexual", "peace and love", 1, 63, 40, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw7", "", "Lisa7", "TRAN", "tran.lili7.lili@gmail.com", "female", "heterosexual", "rire", 1, 63, 18, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw8", "", "Lisa8", "TRAN", "tran.lili8.lili@gmail.com", "female", "heterosexual", "trop le fun", 1, 63, 20, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw9", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "viens ici", 1, 63, 30, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1),\
-			("Lisouiw10", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "heterosexual", "nul", 1, 63, 26, 200, 18, 25, "Paris", 1, 23, "photo.jpeg", 1);'
+			'INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, bio, mailValidation, age, distance, ageMin, ageMax,location,  latitude, longitude, avatar, active, identity, mask)\
+			VALUES ("David", "", "Lisa", "TRAN", "tran.lili.lili0@gmail.com", "male", "heterosexual", "Jai une seconde vie", 1, 22, 200, 18, 25, "Paris", 48.864716, 2.349014, "kneth_pls.jpg", 1, "010001", "100000"),\
+			("Lyana", "", "Lisa1", "TRAN", "tran.lili1.lili@gmail.com", "female", "heterosexual", "je sais que je suis la", 1, 23, 200, 18, 25, "Saint-Denis", 48.56818, 2.62007, "kneth_pls.jpg", 1, "100010", "010000"),\
+			("Eric", "", "Lisa2", "TRAN", "tran.lili2.lili@gmail.com", "male", "homosexual", "Je suis juste Eric", 1, 20, 200, 18, 25, "Clichy", 48.904526, 2.304768, "kneth_pls.jpg", 1, "001010", "001000"),\
+			("Alix", "", "Lisa3", "TRAN", "tran.lili3.lili@gmail.com", "female", "homosexual", "la tapenade cest bon", 1, 20, 200, 18, 25, "Pontault-Combault", 48.801255,2.6075980000000527, "kneth_pls.jpg", 1, "000101","000100"),\
+			("Kneth", "", "Lisa4", "TRAN", "tran.lili4.lili@gmail.com", "male", "bisexual", "Si jetais dans Dragon Ball Z, Je serais Krillin: inutile", 1, 20, 200, 18, 25, "Marne-la-Vallee", 48.859276, 2.598504999999932, "kneth_pls.jpg", 1, "011011","000010"),\
+			("Paloma", "", "Lisa5", "TRAN", "tran.lili5.lili@gmail.com", "female", "bisexual", "Je suis du Perou", 1, 19, 200, 18, 25, "Poissy", 48.929584, 2.046982000000071, "kneth_pls.jpg", 1, "100111", "000001" ),\
+			("Maxime", "", "Lisa6", "TRAN", "tran.lili6.lili@gmail.com", "male", "bisexual", "peace and love", 1, 40, 200, 18, 25, "Andresy", 48.979048, 2.0510329999999612, "kneth_pls.jpg", 1, "011011","000010"),\
+			("Lisa", "", "Lisa7", "TRAN", "tran.lili7.lili@gmail.com", "female", "heterosexual", "LOve PastEque", 1, 18, 200, 18, 25, "Charenton",  48.8193107, 2.4162804999999707, "kneth_pls.jpg", 1,"100010", "010000"),\
+			("Pierre", "", "Lisa8", "TRAN", "tran.lili8.lili@gmail.com", "male", "heterosexual", "J aime les meme", 1, 20, 200, 18, 25, "Paris", 48.8469373, 2.344468000000006, "kneth_pls.jpg", 1,"010001", "100000" ),\
+			("Marie", "", "Lisa9", "TRAN", "tran.lili9.lili@gmail.com", "female", "homosexual", "Je suis allergique", 1, 30, 200, 18, 25, "Paris", 48.8462217, 2.3371604999999818, "kneth_pls.jpg", 1,"000101","000100"),\
+			("Justine", "", "Lisa10", "TRAN", "tran.lili10.lili@gmail.com", "female", "bisexual", "Mes cuisses se dechirent", 1, 26, 200, 18, 25, "Paris", 48.8331048, 2.3268889999999374, "kneth_pls.jpg", 1, "100111", "000001");'
 		);
 
 		await connection.end();
