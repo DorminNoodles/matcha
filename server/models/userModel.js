@@ -89,7 +89,11 @@ exports.findUserByUsername = (username, id) => {
 									latitude, \
 									longitude, \
 									age, \
-									avatar \
+									avatar,\
+									ageMin,\
+									ageMax,\
+									distance, \
+									identity \
 									FROM users WHERE username=? and id NOT IN (?)', [username, id]);
 				conn.end();
 				return result;

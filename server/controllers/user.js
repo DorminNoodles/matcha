@@ -34,9 +34,9 @@ exports.identity = (gender, orientation) => {
 	let mask = 000000
 
 	if (gender === "male")
-		identity = orientation === "heterosexual" ? "010001" : orientation === "homosexual" ? "001010" : "011011";
+		identity = orientation === "heterosexual" ? 17 : orientation === "homosexual" ? 10 : 27;
 	else if (gender === "female")
-		identity = orientation === "heterosexual" ? "100010" : orientation === "homosexual" ? "000101" : "100111";
+		identity = orientation === "heterosexual" ? 34 : orientation === "homosexual" ? 5 : 39;
 
 
 	if (gender === "male")
@@ -106,10 +106,11 @@ exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 
 		userModel.findUserById(id, user_id)
-			.then((res) => { 
-				
+			.then((res) => {
+
 				console.log(res)
-				resolve(res); })
+				resolve(res);
+			})
 			.catch((err) => { reject(err); })
 	});
 }
@@ -152,7 +153,11 @@ exports.authenticate = (data) => {
 							latitude: result.latitude,
 							longitude: result.longitude,
 							age: result.age,
-							avatar: result.avatar
+							avatar: result.avatar,
+							ageMin: result.ageMin,
+							ageMax: result.ageMax,
+							distance: result.distance,
+							identity: result.identity
 						};
 						resolve(datas);
 					}).catch((error) => {

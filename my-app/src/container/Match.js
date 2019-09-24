@@ -25,7 +25,14 @@ class Match extends React.Component {
       this.props.history.push('/');
     else if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
-    this.getUsers();
+    this.getUsers({
+      ageMin: this.context.user.ageMin,
+      ageMax: this.context.user.ageMax,
+      distance: this.context.user.distance,
+      identity: this.context.user.identity,
+      longitude: this.context.user.longitude,
+      latitude: this.context.user.latitude
+    });
 
   }
 
@@ -73,6 +80,8 @@ class Match extends React.Component {
 
   render() {
     let { users } = this.state
+
+    console.log(this.state)
     return (
       <div id="match">
         <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
