@@ -99,6 +99,15 @@ async function db() {
 			active INT DEFAULT 1, \
 			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
+		await connection.query('INSERT INTO tags (tag) \
+			VALUES ("foot"), ("fruits"), ("chien"), ("chat"), ("chiot"), ("chaton"), ("peche"), ("fraise"), ("hiver"), ("ete"), ("vacances");'
+		);
+		await connection.query('INSERT INTO usertags (user_id, tag_id) \
+			VALUES (1,1), (1,4), (1,5), (1,8), (2,1), (2,2), (2,4), (2,5), (3,7), (3,8), (4,1), (4,2), (4,5), (4,10), (5,10), (6,5), (6,3), (6,8), (7,3),(7,4), (8,5), (9,4),(9,9), (10,7), (10,9), (11,4), (11,8);'
+		);
+		await connection.query('INSERT INTO likes (liker, liked) \
+			VALUES (1,1), (1,4), (1,5), (1,8), (2,1), (2,2), (2,4), (2,5), (3,7), (3,8), (4,1), (4,2), (4,5), (4,10), (5,10), (6,5), (6,3), (6,8), (7,3),(7,4), (8,5), (9,4),(9,9), (10,7), (10,9), (11,4), (11,8);'
+		);
 		await connection.query(
 			'INSERT INTO users (username, password, firstname, lastname, email, gender, orientation, bio, mailValidation, age, distance, ageMin, ageMax,location,  latitude, longitude, avatar, active, identity, mask)\
 			VALUES ("David", "", "Lisa", "TRAN", "tran.lili.lili0@gmail.com", "male", "heterosexual", "Jai une seconde vie", 1, 22, 200, 18, 25, "Paris", 48.864716, 2.349014, "kneth_pls.jpg", 1, "010001", "100000"),\

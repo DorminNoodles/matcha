@@ -1,12 +1,11 @@
 const express = require('express');
+const router = express.Router();
 const bodyParser = require('body-parser');
 
-const users = require('../controllers/users');
+const location = require('../controllers/location');
 const axios = require('axios');
 
-const router = express.Router();
 require('dotenv').config()
-
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
@@ -27,6 +26,13 @@ router.get('/', urlencodedParser, (req, res) => {
     }).catch(error => {
         res.status(500).send(error)
     });
+})
+
+router.get('/position', urlencodedParser, (req, res) => {
+
+    location.findLocationByIp()
+        .then((response) => { res.status(200).send(response) })
+        .catch((err) => { res.status(500).send(err) })
 })
 
 module.exports = router;

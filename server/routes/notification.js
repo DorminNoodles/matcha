@@ -30,7 +30,7 @@ router.post('/', urlencodedParser, (req, res) => {
 })
 
 router.delete('/', urlencodedParser, (req, res) => {
-
+	
 	if (!req.token)
 		res.status(401).send({ status: "error", msg: "access denied !" });
 

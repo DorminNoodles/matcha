@@ -48,7 +48,6 @@ exports.checkDataUpdate = (data, id) => {
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
 			inputModel.usernameAlreadyTaken(data.username, id).catch(e => e),
-			// inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
@@ -57,7 +56,6 @@ exports.checkDataUpdate = (data, id) => {
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
-			// inputModel.avatar(data.avatar).catch(e => e),
 			inputModel.bio(data.bio).catch(e => e),
 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
 			inputModel.distance(data.distance).catch(e => e),

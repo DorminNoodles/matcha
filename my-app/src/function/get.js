@@ -76,6 +76,14 @@ export function getLocation(token, city) {
         .catch(error => { return error; });
 }
 
+export function getGeocalisation() {
+    return axios({
+        method: 'GET',
+        url: 'http://localhost:3300/api/location/position',
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}
+
 export function getListMsg(token) {
     return axios({
         method: 'GET',
