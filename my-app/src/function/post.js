@@ -45,7 +45,6 @@ export function register(data, info) {
         return ({ res: info, err: "" })
     }).catch((error) => {
         var err = JSON.parse(error.request.response).data
-
         for (var value in err) {
             if (info[value])
                 info[value].error = err[value]
@@ -123,18 +122,17 @@ export function update(data, info, token) {
         data,
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then((res) => {
-        return res
-    }).catch((error) => {
-        var err = JSON.parse(error.request.response).data
+    }).then((res) => { return (res.data) })
+        .catch((error) => {
+            var err = JSON.parse(error.request.response).data
 
-        for (var value in err) {
-            if (info[value])
-                info[value].error = err[value]
-        }
+            for (var value in err) {
+                if (info[value])
+                    info[value].error = err[value]
+            }
 
-        return ({ res: info, err: "Please complete your profile" })
-    });
+            return ({ res: info, err: "Please complete your profile" })
+        });
 }
 
 export function sendMsg(message, to_id, group_id, token) {

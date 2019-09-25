@@ -15,46 +15,42 @@ router.post('/', urlencodedParser, (req, res) => {
 		req.body.avatar = req.files.avatar;
 
 	user.new(req.body)
-	.then((result) => {
-		res.status(200).send(result);
-	})
-	.catch((err) => {
-		res.status(400).send(err);
-	})
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(400).send(err);
+		})
 })
 
 router.patch('/', urlencodedParser, (req, res) => {
 
 	if (!req.token)
-		res.status(401).send({ status: "error", msg: "access denied !"});
+		res.status(401).send({ status: "error", msg: "access denied !" });
 
 	user.update(req.body, req.token.id, req.token)
-	.then((result) => {
-		res.status(200).send(result);
-	})
-	.catch((err) => {
-		res.status(400).send(err);
-	})
+		.then((result) => { res.status(200).send(result); })
+		.catch((err) => { res.status(400).send(err); })
 })
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-	.then(() => {
-		res.status(200).send({ "status": "success" });
-	})
-	.catch((err) => {
-		res.status(500).send({ "status": "error", "msg": "error" });
-	})
+		.then(() => {
+			res.status(200).send({ "status": "success" });
+		})
+		.catch((err) => {
+			res.status(500).send({ "status": "error", "msg": "error" });
+		})
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
 	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
-	.then((result) => {
-		res.status(200).send({ "status": "success" });
-	})
-	.catch((err) => {
-		res.status(400).send({ "status": "error", "msg": err.msg });
-	})
+		.then((result) => {
+			res.status(200).send({ "status": "success" });
+		})
+		.catch((err) => {
+			res.status(400).send({ "status": "error", "msg": err.msg });
+		})
 })
 
 
@@ -76,31 +72,31 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 
 router.get('/avatar', urlencodedParser, (req, res) => {
 	user.getAvatar(req.query.id)
-	.then((filename) => {
-		var img = require('fs').readFileSync(filename);
-		res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-		res.end(img, 'binary');
-	})
-	.catch((err) => {
-		console.log(err);
-		res.status(500).send(err);
-	})
+		.then((filename) => {
+			var img = require('fs').readFileSync(filename);
+			res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+			res.end(img, 'binary');
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).send(err);
+		})
 })
 
 router.get('/', urlencodedParser, (req, res) => {
-	if (!req.token){
+	if (!req.token) {
 		res.status(401).send({ "status": "error", "msg": "User Unauthorized" });
 		return;
 	}
 
 	if (req.query.id) {
 		user.get(parseInt(req.query.id), req.token.id)
-		.then((user) => {
-			res.status(200).send({...user});
-		})
-		.catch(() => {
-			res.status(400).send({ "status": "error", "msg": "" });
-		})
+			.then((user) => {
+				res.status(200).send({ ...user });
+			})
+			.catch(() => {
+				res.status(400).send({ "status": "error", "msg": "" });
+			})
 	}
 })
 

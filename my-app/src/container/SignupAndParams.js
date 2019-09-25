@@ -45,14 +45,14 @@ class Signup extends React.Component {
 
     static contextType = UserProvider;
 
-
     // get the page's type
     // if param init info
 
     componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
-        this.setting(next.location.pathname)
+        if (this.state.success !== "Update succeed")
+            this.setting(next.location.pathname)
     }
 
     componentDidMount() {
@@ -186,20 +186,19 @@ class Signup extends React.Component {
         for (let index in filtered)
             data.append(index, filtered[index]);
 
-        update(filtered, this.state.info, this.context.user.token).then(({ res, err }) => {
-            if (err && err !== "") {
-                this.setState({
-                    ...this.state,
-                    info: { ...res },
-                    error: err
+        update(filtered, this.state.info, this.context.user.token).then((res) => {
+            this.setState({ ...this.state, success: "Update succeed" },
+                () => {
+                    this.context.onChange("user", { token: this.context.user.token, ...res.data })
+                    getUser(this.context.user.token, this.context.user.id)
+                        .then((res) => this.initInfo(res.data))
                 })
-            }
-            else {
-                this.setState({
-                    ...this.state,
-                    success: "Update succeed"
-                })
-            }
+        }).catch(() => {
+            this.setState({
+                ...this.state,
+                // info: { ...res },
+                error: "error"
+            })
         })
     }
 
@@ -221,7 +220,7 @@ class Signup extends React.Component {
         let signPage;
         let upload = status && status.value && status.value === "signup" ? true : false
         let id = status && status.value && status.value === "signup" ? 0 : this.context.user.id
-        let avatar = status && status.value && status.value === "signup" ? image.value : ""
+        let avatar = status && status.value && status.value === "signup" ? image.value : this.context.user.avatar
 
         if (page === 1)
             signPage = <FirstPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} />
@@ -233,7 +232,7 @@ class Signup extends React.Component {
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id} />
+                    <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id}/>
                     {signPage}
                 </div>
             </div>

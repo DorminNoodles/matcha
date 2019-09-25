@@ -106,11 +106,7 @@ exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 
 		userModel.findUserById(id, user_id)
-			.then((res) => {
-
-				console.log(res)
-				resolve(res);
-			})
+			.then((res) => { resolve(res); })
 			.catch((err) => { reject(err); })
 	});
 }
@@ -267,11 +263,8 @@ exports.update = (data, id) => {
 			'latitude',
 			'longitude'
 		]
-		// if (!(data.password || data.confirmation) && data.password !== data.confirmation)
-		// 	reject({ status: 'error', code: 400, key: "password", msg: 'Password not confirm' });
-		// else
-		// 	delete data['confirmation'];
 
+		let binary = this.identity(data.gender, data.orientation)
 
 		for (let elem in data) {
 			if (!validKeys.includes(elem)) {
@@ -281,11 +274,9 @@ exports.update = (data, id) => {
 		}
 
 		userModel.checkDataUpdate(data, id)
-			.then(() => { return userModel.update(data, id); })
+			.then(() => { return userModel.update({ ...data, ...binary }, id) })
 			.then((res) => { resolve(res); })
-			.catch((err) => {
-				reject({ status: "error", data: err });
-			})
+			.catch((err) => { reject({ status: "error", data: err }); })
 	})
 }
 

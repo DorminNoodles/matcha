@@ -76,11 +76,10 @@ exports.email = (email) => {
 }
 
 exports.emailAlreadyTaken = (email, id) => {
-	console.log("===EMAIL====>",email, id)
 	return new Promise((resolve, reject) => {
 		userModel.findUserByEmail(email, id)
 			.then(() => {
-				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
+				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400 });
 			})
 			.catch((err) => {
 				resolve({ "status": "success", "key": "email", "msg": '' });
@@ -88,18 +87,12 @@ exports.emailAlreadyTaken = (email, id) => {
 	})
 }
 
-exports.location = (location) => {
+exports.location = (location, latidute, longitude) => {
 	return new Promise((resolve, reject) => {
-		var reg = /^[a-zA-Z]+$/
-		if (location) {
-			if (!location.match(reg))
-				reject({ "status": "error", "key": "location", "msg": "Bad location !" })
-			else
-				resolve({ "status": "success", "key": "location", "msg": '' });
-		}
+		if (!location || !latidute || latidute < 0 || !longitude || longitude < 0)
+			reject({ "status": "error", "key": "location", "msg": "Bad location !" })
 		else
-			resolve({ "status": "success", "key": "location" });
-
+			resolve({ "status": "success", "key": "location", "msg": '' });
 	})
 }
 

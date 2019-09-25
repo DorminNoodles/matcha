@@ -3,8 +3,8 @@ import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
-const ProfileImg = ({ error, sendFile, avatar, upload, id, className }) => {
-    let imgProfil = id === 0 || !avatar ? profile :
+const ProfileImg = ({ error, sendFile, avatar, upload, id, photo }) => {
+    let imgProfil = id === 0 || !avatar ? photo :
         process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
 
     return (
@@ -101,6 +101,7 @@ function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation
                 <p>Geocalisation</p>
                 <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
             </button>
+            <p className="error-text center">{info.location.error}</p>
 
             <br />
 

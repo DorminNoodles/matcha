@@ -16,7 +16,7 @@ exports.checkDataNew = (data) => {
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email, 0).catch(e => e),
-			// inputModel.location(data.location).catch(e => e),
+			inputModel.location(data.location, data.latitude, data.longitude).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
@@ -52,7 +52,7 @@ exports.checkDataUpdate = (data, id) => {
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
 			inputModel.emailAlreadyTaken(data.email, id).catch(e => e),
-			// inputModel.location(data.location).catch(e => e),
+			inputModel.location(data.location, data.latitude, data.longitude).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
@@ -74,11 +74,30 @@ exports.checkDataUpdate = (data, id) => {
 		}).catch((err) => { reject(err); })
 	})
 }
+
+exports.findUser = (id) => {
+	return new Promise((resolve, reject) => {
+		database.connection()
+			.then((conn) => {
+				return conn.query('SELECT username, id, email, gender, orientation, \
+					location, latitude, longitude, age, avatar, ageMin, ageMax,	distance, identity \
+					FROM users WHERE id=? ', [id])
+			}).then((result) => {
+				if (result[0]){resolve(result[0]);}
+				else
+					reject({ "status": "error", "msg": "User does not exist" });
+			})
+			.catch(() => {
+				reject({ "status": "error", "msg": "Internal Server Error" });
+			})
+	})
+}
+
 exports.findUserByUsername = (username, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				var result = conn.query('SELECT \
+				return conn.query('SELECT \
 									username,\
 									id, \
 									mailValidation, \
@@ -94,9 +113,7 @@ exports.findUserByUsername = (username, id) => {
 									ageMax,\
 									distance, \
 									identity \
-									FROM users WHERE username=? and id NOT IN (?)', [username, id]);
-				conn.end();
-				return result;
+									FROM users WHERE username=? AND id NOT IN (?)', [username, id]);
 			}).then((result) => {
 				if (result[0])
 					resolve(result[0]);
@@ -118,7 +135,6 @@ exports.findUserByEmail = (email, id) => {
 				conn.end();
 				return result;
 			}).then((result) => {
-				console.log(result)
 				if (result[0])
 					resolve(result[0]);
 				else
@@ -134,7 +150,6 @@ exports.saveUser = (data) => {
 
 		bcrypt.hash(data.password, 10)
 			.then((hash) => {
-				console.log(data)
 				data.password = hash;
 				return database.connection();
 			})
@@ -259,26 +274,18 @@ exports.changePwd = (email, username, pwd) => {
 exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
 
-		// bcrypt.hash(data.password, 10)
-		// 	.then((hash) => {
-		// 		data.password = hash;
-		// 		return 
 		database.connection()
 			.then((conn) => {
-				return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
+				return conn.query('UPDATE users SET ? WHERE id=?', [data, id])
+					.then(() => { return this.findUser(id) })
 			})
-			.then((res) => {
-				if (res.affectedRows == 1) {
-					resolve({ "status": "success", "msg": "update user!" });
-				}
-				else {
-					reject({ status: "error", msg: "User not found !" });
-				}
+			.then((data) => {
+				if (data)
+					resolve({ "status": "success", "msg": "update user", data });
+				else
+					reject({ status: "error", msg: "update failed" });
 			})
-			.catch((err) => {
-				console.log(err);
-				reject({ status: "error", code: 502, msg: 'database error !' });
-			})
+			.catch((err) => { reject(err); })
 	})
 }
 
