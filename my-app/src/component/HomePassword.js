@@ -29,7 +29,7 @@ class HomePassword extends React.Component {
     password = () => {
         password(this.state.password, this.state.confirmation, this.context.user.token).then((value) => {
             if (value === "ok")
-                this.setState({ ...this.state, success: "Your email has been changed successfully", error: "" })
+                this.setState({ ...this.state, success: "Your password has been changed successfully", error: "" })
             else
                 this.setState({ ...this.state, success: "", error: "error" })
         })

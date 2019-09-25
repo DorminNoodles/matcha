@@ -3,7 +3,7 @@ import { Field } from "../export"
 import profile from "../image/profile.png"
 import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
-const ProfileImg = ({ error, sendFile, avatar, upload, id, className}) => {
+const ProfileImg = ({ error, sendFile, avatar, upload, id, className }) => {
     let imgProfil = id === 0 || !avatar ? profile :
         process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
 
@@ -16,14 +16,10 @@ const ProfileImg = ({ error, sendFile, avatar, upload, id, className}) => {
                     src={imgProfil} alt="profil" />
             </figure>
             {
-                upload === true && 
+                upload === true &&
                 <React.Fragment>
                     <p className="error">{error}</p>
-                    <p style={{
-                        fontFamily: "LadylikeBB",
-                        fontSize: "xx-large",
-                        textAlign: "center"
-                    }}>Matcha</p>
+                    <p className="title-matcha">Matcha</p>
                     <form encType="multipart/form-data">
                         <input className="inputfile"
                             onChange={sendFile}
@@ -82,12 +78,12 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
     )
 }
 
-function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation, success }) {
+function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation, success, getGeocalisation }) {
     let { location, latitude, longitude } = info
 
     return (
 
-        <div className="">
+        <div>
 
             <div className="control">
                 <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => { onChange({ "bio": e.target.value }) }} value={info.bio.value}></textarea>
@@ -97,10 +93,19 @@ function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation
             <br />
             <SliderAge onChange={onChange} age={info.age.value} />
             <br />
+
             <Location onChangeLocation={onChangeLocation} city={location.value} lat={latitude.value} long={longitude.value} />
+            <p className="center">or</p>
+            <button className="button white-red" style={{ width: "auto", borderRadius: "31px", margin: "20px auto", display: "flex" }} onClick={() => { getGeocalisation() }}>
+                <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
+                <p>Geocalisation</p>
+                <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
+            </button>
+
             <br />
 
             <button className="button center" onClick={status.fct}>{status.text}</button>
+
             <p className="error-text center">{error}</p>
             <p className="success center">{success}</p>
 

@@ -1,4 +1,3 @@
-const mysql = require('promise-mysql');
 const database = require('../controllers/database');
 
 queryTags = (tags, arg) => {
@@ -16,49 +15,51 @@ queryTags = (tags, arg) => {
 
 }
 
-getQuery = ({ ageMin, ageMax, distance, score, tags }, id) => {
+getQuery = ({ ageMin, ageMax, distance, score, tags, identity, longitude, latitude }, id) => {
 
-	let s_score = " score >= ? "
-	let s_age = " age BETWEEN ? AND ? "
+	// let s_score = " HAVING score >= ? AND distance >= ? "
 
+	let arg = [ parseInt(identity),latitude, longitude, latitude, id, id, id, id, ageMin, ageMax]
 	let query = ""
-	let arg = [id, id, id, id]
 
-	if (score && arg.push(score)) { query += s_score }
-
-	if (ageMin && ageMax && arg.push(ageMin, ageMax))
-		query += query.length > 0 ? "&&" + s_age : s_age
-
-	if (tags && tags.length > 0) {
-		r_tags = queryTags(tags, arg)
-		arg = r_tags.arg
-		query += query.length > 0 ? "&&" + r_tags.query : r_tags.query
-	}
-
-	if (query.length > 0) { query = " WHERE" + query }
+	// if (tags && tags.length > 0) {
+	// 	r_tags = queryTags(tags, arg)
+	// 	arg = r_tags.arg
+	// 	query += query.length > 0 ? "&&" + r_tags.query : r_tags.query
+	// }
 
 	return { query, arg }
 }
 
 
-exports.get = (params, id) => {
+exports.get = (params, id ) => {
 	return new Promise((resolve, reject) => {
+		console.log(params)
 		database.connection()
 			.then((conn) => {
 				const query = "\
-					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, score,\
+					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude, bin( ? & users.mask) as la ,\
+					((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
+					((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
+					(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score, \
+					(6371 * acos( cos( radians(latitude) ) * cos( radians(?) ) * \
+					 cos( radians( ? ) - radians(longitude) ) + sin( radians(latitude) ) \
+					  * sin( radians( ? ) )	) ) as distance ,\
 					IF(likes.liker = ? & likes.liked IS NULL, FALSE, TRUE) as likes\
 					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=?)\
 					LEFT JOIN block ON (blocked=users.id) \
-					WHERE (blocker!=? or blocker IS NULL) AND id NOT IN (?)"
+					WHERE (blocker!=? or blocker IS NULL) AND id NOT IN (?) AND age BETWEEN ? AND ? "
 				rsl = getQuery(params, id)
 
+				console.log(query + rsl.query, rsl.arg)
 				return conn.query(query + rsl.query, rsl.arg);
 			})
 			.then((res) => {
+				console.log(res)
 				resolve(res);
 			})
 			.catch((err) => {
+				console.log(err)
 				reject({ status: "error", msg: "Query error !", data: [] });
 			})
 	})

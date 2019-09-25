@@ -17,10 +17,13 @@ class App extends React.Component {
             orientation: "",
             gender: "",
             location: "",
-            distance: "",
             age: "",
             profil: "",
-            token: ""
+            token: "",
+            ageMin: "",
+            ageMax: "",
+            distance: "",
+            identity: ""
          },
          header: "white-red",
          response: false,
@@ -69,10 +72,13 @@ class App extends React.Component {
             orientation: "",
             gender: "",
             location: "",
-            distance: "",
             age: "",
             profil: "",
-            token: ""
+            token: "",
+            ageMin: "",
+            ageMax: "",
+            distance: "",
+            identity: ""
          }
       }, () => {
          this.setObject("user", this.state)

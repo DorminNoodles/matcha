@@ -2,12 +2,24 @@ import React from 'react';
 import { isEmpty } from "../function/utils.js"
 import { forgot, password } from "../function/post"
 import queryString from 'query-string'
+import UserProvider from '../context/UserProvider';
 import { ForgotPassword, NewPassword } from '../export/'
 
 class Password extends React.Component {
     constructor(props) {
         super(props);
         this.state = { value: "", confirm: "", error: "", success: "" }
+    }
+    static contextType = UserProvider;
+
+    componentWillReceiveProps() {
+        if (this.context.header !== "white-red")
+            this.context.onChange("header", "white-red")
+    }
+
+    componentDidMount() {
+        if (this.context.header !== "white-red")
+            this.context.onChange("header", "white-red")
     }
 
     onChange = (e, index) => {
@@ -35,7 +47,7 @@ class Password extends React.Component {
         else if (value !== confirm)
             this.setState({ ...this.state, success: "", error: "Your password and confirmation password do not match" })
         else
-            password(value, confirm, params.token ).then((value) => {
+            password(value, confirm, params.token).then((value) => {
                 if (value === "ok")
                     this.setState({ ...this.state, success: "Your email has been changed successfully", error: "" })
                 else

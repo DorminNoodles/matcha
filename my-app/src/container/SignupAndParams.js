@@ -3,7 +3,7 @@ import { check } from "../function/signup.js"
 import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/SignupAndParams.js"
 import UserProvider from '../context/UserProvider';
 import { register, update } from "../function/post"
-import { getUser } from '../function/get'
+import { getUser, getGeocalisation } from '../function/get'
 import { signupInfo } from '../export/object'
 
 class Signup extends React.Component {
@@ -40,6 +40,7 @@ class Signup extends React.Component {
         this.register = this.register.bind(this)
         this.initInfo = this.initInfo.bind(this)
         this.onChangeLocation = this.onChangeLocation.bind(this)
+        this.getGeocalisation = this.getGeocalisation.bind(this)
     }
 
     static contextType = UserProvider;
@@ -93,21 +94,28 @@ class Signup extends React.Component {
             ...state,
             info: {
                 ...info,
-                [key]: {
-                    ...info[key],
-                    value: value
-                }
+                [key]: { ...info[key], value: value }
             }
         })
     }
 
     onChangeLocation = (location) => {
-
         let { state, state: { info } } = this
 
         this.setState({
             ...state,
             info: { ...info, ...location }
+        })
+    }
+
+    getGeocalisation = () => {
+        getGeocalisation().then((res) => {
+            let data = {
+                location: { value: res.city, error: "" },
+                latitude: { value: res.latitude, error: "" },
+                longitude: { value: res.longitude, error: "" }
+            }
+            this.onChangeLocation(data)
         })
     }
 
@@ -220,7 +228,7 @@ class Signup extends React.Component {
         else if (page === 2)
             signPage = <SecondPage info={info} onChange={this.onChange} changePage={this.changePage} onChangeAge={this.onChangeAge} />
         else
-            signPage = <ThirdPage status={status} info={info} onChange={this.onChange} onChangeLocation={this.onChangeLocation} changePage={this.changePage} error={error} success={success} />
+            signPage = <ThirdPage status={status} info={info} onChange={this.onChange} onChangeLocation={this.onChangeLocation} changePage={this.changePage} error={error} success={success} getGeocalisation={this.getGeocalisation} />
 
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >

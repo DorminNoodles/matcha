@@ -58,21 +58,20 @@ class User extends React.Component {
 
   likes() {
     let { likes, id, nb_likes } = this.state
+    let { username, token } = this.context.user
 
     if (id && likes === 0) {
-      like(id, this.context.user.token).then((res) => {
+      like(id, token).then((res) => {
         this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes }, () => {
-          if (res.match > 0)
-            socket.emit('notif', { type: 2, from_id: this.context.user.id, to_id: id, username: this.context.user.username  });
-          else
-            socket.emit('notif', { type: 3,  from_id: this.context.user.id, to_id: id, username: this.context.user.username  });
+          socket.emit('notif', { ...res.data.like, username });
+          socket.emit('notif', { ...res.data.match, username });
         })
       })
     }
     else if (id && likes === 1) {
-      unlike(id, this.context.user.token).then(() => {
+      unlike(id, token).then((res) => {
         this.setState({ ...this.state, likes: 0, nb_likes: --nb_likes }, () => {
-          socket.emit('notif', { type: 4, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
+          socket.emit('notif', { ...res.unlike, username });
         })
       })
     }

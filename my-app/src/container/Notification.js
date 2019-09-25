@@ -16,7 +16,7 @@ function NotifMessage({ username, type, date }) {
     return (
         <div className="notification is-primary notif">
             <button className="delete"></button>
-            {messages[type]} { type!== 6 && <strong>{username}</strong>}
+            {messages[type]} {type !== 6 && <strong>{username}</strong>}
             <p className="notif-date">{date}</p>
         </div>
     )
@@ -30,25 +30,25 @@ class Notification extends React.Component {
     static contextType = UserProvider;
 
     async componentDidMount() {
-        socket.emit('notif_subscribe', this.context.user.id + "_notif");
-        socket.on("notif", data => {
-
-            let notifications = this.state.notifications;
-            notifications.unshift(data);
-            this.setState({ ...this.state, notifications }, () => {
-                this.props.numberNotifs(this.props.number + 1)
-            })
-        })
-
-        await getNotifications(this.context.user.token).then((res) => {
-            if (res && res.data && res.data.length > 0) {
-                this.setState({ ...this.state, notifications: res.data }, () => {
-                    this.props.numberNotifs(res.data[0].count)
+        if (this.context.user.token){
+            socket.emit('notif_subscribe', this.context.user.id + "_notif");
+            socket.on("notif", data => {
+                let notifications = this.state.notifications;
+                notifications.unshift(data);
+                this.setState({ ...this.state, notifications }, () => {
+                    this.props.numberNotifs(this.props.number + 1)
                 })
-            }
-        })
+            })
+            
+            await getNotifications(this.context.user.token).then((res) => {
+                if (res && res.data && res.data.length > 0) {
+                    this.setState({ ...this.state, notifications: res.data }, () => {
+                        this.props.numberNotifs(res.data[0].count)
+                    })
+                }
+            })
+        }
     }
-
 
     render() {
         let { notifications } = this.state

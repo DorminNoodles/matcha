@@ -49,7 +49,7 @@ class SearchHeader extends React.Component {
             ageMin: 18,
             ageMax: 25,
             distance: 25,
-            score: 25,
+            score: 0,
             tags: [],
             open: false
         }
@@ -61,6 +61,18 @@ class SearchHeader extends React.Component {
         }
     }
     static contextType = UserProvider;
+
+    componentDidMount = () => {
+        this.setState({
+            ...this.state, 
+            ageMin: this.context.user.ageMin,
+            ageMax: this.context.user.ageMax,
+            distance: this.context.user.distance,
+            identity: this.context.user.identity,
+            longitude: this.context.user.longitude,
+            latitude: this.context.user.latitude
+        })
+    }
 
     onChange = (e) => {
         this.setState({ ...this.state, ...e })

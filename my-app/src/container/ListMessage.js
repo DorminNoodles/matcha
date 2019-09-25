@@ -5,7 +5,6 @@ import { getListMsg } from '../function/get'
 
 const Contain = ({ i, value }) => {
     return (
-
         <Link key={i} to={{ pathname: "/chat", search: `?id=${value.id}` }}>
             <div className="message-active">
                 {/* className="white-red */}
@@ -55,9 +54,9 @@ class ListMessage extends React.Component {
     render() {
         return (
             <div className="list-message">
-                <Route />{
-
-                    this.state.users && this.state.users.map((value, i) => {
+                <Route />
+                {
+                    this.state.users && this.state.users.length && this.state.users.map((value, i) => {
                         return <Contain key={i} value={value} />
                     })
                 }

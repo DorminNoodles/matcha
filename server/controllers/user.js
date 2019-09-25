@@ -18,13 +18,33 @@ const avatarUpload = (data, id) => {
 			return;
 		}
 
-		data.avatar.mv('public/pictures/' + id + '/avatar_' + id + "_" + data.avatar.name, (err) => {
+		let name = data.avatar.name.toLowerCase()
+		data.avatar.mv('public/pictures/' + id + '/' + name, (err) => {
 			if (err)
 				reject({ status: "error", key: "avatar", msg: "Avatar upload error !" });
 			else
 				resolve({ status: "success" });
 		})
 	})
+}
+
+exports.identity = (gender, orientation) => {
+
+	let identity = 000000
+	let mask = 000000
+
+	if (gender === "male")
+		identity = orientation === "heterosexual" ? 17 : orientation === "homosexual" ? 10 : 27;
+	else if (gender === "female")
+		identity = orientation === "heterosexual" ? 34 : orientation === "homosexual" ? 5 : 39;
+
+
+	if (gender === "male")
+		mask = orientation === "heterosexual" ? "100000" : orientation === "homosexual" ? "001000" : "000010";
+	else if (gender === "female")
+		mask = orientation === "heterosexual" ? "010000" : orientation === "homosexual" ? "000100" : "000001";
+
+	return { identity, mask }
 }
 
 exports.new = (data) => {
@@ -61,10 +81,13 @@ exports.new = (data) => {
 			}
 		}
 
+		let binary = this.identity(data.gender, data.orientation)
+
 		userModel.checkDataNew(data)
 			.then((res) => {
 				return userModel.saveUser({
 					...data,
+					...binary,
 					avatar: data.avatar.name
 				});
 			})
@@ -83,7 +106,11 @@ exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 
 		userModel.findUserById(id, user_id)
-			.then((res) => { resolve(res); })
+			.then((res) => {
+
+				console.log(res)
+				resolve(res);
+			})
 			.catch((err) => { reject(err); })
 	});
 }
@@ -126,7 +153,11 @@ exports.authenticate = (data) => {
 							latitude: result.latitude,
 							longitude: result.longitude,
 							age: result.age,
-							avatar: result.avatar
+							avatar: result.avatar,
+							ageMin: result.ageMin,
+							ageMax: result.ageMax,
+							distance: result.distance,
+							identity: result.identity
 						};
 						resolve(datas);
 					}).catch((error) => {

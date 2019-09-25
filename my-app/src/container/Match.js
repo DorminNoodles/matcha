@@ -25,7 +25,14 @@ class Match extends React.Component {
       this.props.history.push('/');
     else if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
-    this.getUsers();
+    this.getUsers({
+      ageMin: this.context.user.ageMin,
+      ageMax: this.context.user.ageMax,
+      distance: this.context.user.distance,
+      identity: this.context.user.identity,
+      longitude: this.context.user.longitude,
+      latitude: this.context.user.latitude
+    });
 
   }
 
@@ -41,28 +48,24 @@ class Match extends React.Component {
 
   likes(likes, id) {
     let { users } = this.state
+    let { username, token } = this.context.user
+    let result = users.findIndex((obj => obj.id === id));
 
     if (id && likes === 0) {
-
-      like(id, this.context.user.token).then((res) => {
-        let result = users.findIndex((obj => obj.id === id));
-
+      like(id, token).then((res) => {
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
-          if (res.match > 0)
-            socket.emit('notif', { type: 2, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
-          else
-            socket.emit('notif', { type: 3, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
+          socket.emit('notif', { ...res.like, username });
+          socket.emit('notif', { ...res.match, username });
         })
       })
     }
     else if (id && likes === 1) {
-      unlike(id, this.context.user.token).then((res) => {
-        let result = users.findIndex((obj => obj.id === id));
+      unlike(id, token).then((res) => {
 
         users[result].likes = 0;
         this.setState({ ...this.state, users }, () => {
-          socket.emit('notif', { type: 4, from_id: this.context.user.id, to_id: id, username: this.context.user.username });
+          socket.emit('notif', { ...res.unlike, username });
         })
       })
     }
@@ -77,6 +80,8 @@ class Match extends React.Component {
 
   render() {
     let { users } = this.state
+
+    console.log(this.state)
     return (
       <div id="match">
         <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />

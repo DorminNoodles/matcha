@@ -82,7 +82,7 @@ class Location extends React.Component {
                 <p className="error center">{this.state.error}</p>
                 <div style={{ justifyContent: "space-between", display: "flex" }}>
                     <p>City</p>
-                    <p>{this.state.city.text}</p>
+                    <p>{this.props.city}</p>
                 </div>
 
                 <div style={{ margin: "20px auto", alignItems: "flex-start", display: "flex", justifyContent: "center" }}>

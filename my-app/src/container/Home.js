@@ -1,6 +1,6 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
-import { ProfileImg, Gallery, HomePassword } from '../export'
+import { HomePage, HomeUser } from '../export'
 import { getPhotos } from '../function/get'
 import { uploadPicture } from "../function/post"
 import { deletePhoto } from "../function/delete"
@@ -11,6 +11,11 @@ class Home extends React.Component {
     this.state = {
       avatar: "",
       error: ""
+    }
+    this.fct = {
+      sendFile: this.sendFile.bind(this),
+      sendAvatar: this.sendAvatar.bind(this),
+      deletePhoto: this.deletePhoto.bind(this)
     }
   }
   static contextType = UserProvider;
@@ -84,21 +89,18 @@ class Home extends React.Component {
             photos.push(this.state.photos[i])
       }
       this.setState({ ...this.state, photos })
-
     })
   }
 
   render() {
     return (
-      <div style={{ margin: "auto", display: "flex", width: "90%", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ width: "100%" }}>
-          <div style={{ width: "100%" }}>
-            <ProfileImg {...this.state} sendFile={this.sendAvatar.bind(this)} upload={true} id={this.context.user.id} className="home-picture" />
-          </div>
-          <HomePassword />
-          <Gallery  {...this.state} sendFile={this.sendFile.bind(this)} deletePhoto={this.deletePhoto.bind(this)} />
-        </div>
-      </div>
+      <React.Fragment>
+        {
+          this.context.user && this.context.user.token ?
+            <HomeUser {...this.fct} data={this.state} id={this.context.user.id}/>
+            : <HomePage />
+        }
+      </React.Fragment>
     );
   }
 }
