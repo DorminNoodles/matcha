@@ -45,12 +45,8 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 
 router.put('/password', urlencodedParser, (req, res) => {
 	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
-		.then((result) => {
-			res.status(200).send({ "status": "success" });
-		})
-		.catch((err) => {
-			res.status(400).send({ "status": "error", "msg": err.msg });
-		})
+		.then((result) => { res.status(200).send(result); })
+		.catch((err) => { res.status(400).send(err) })
 })
 
 

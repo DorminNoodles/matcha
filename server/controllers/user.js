@@ -192,29 +192,25 @@ exports.updatePassword = (token, pwd, confirmPwd) => {
 	return new Promise((resolve, reject) => {
 		let passCrypted;
 		if (pwd != confirmPwd) {
-			reject({ "status": "error password difference" });
+			reject({ "status": "error", "msg": "Password and confirmation does not match" });
 			return;
 		}
 
-		bcrypt.hash(pwd, 10)
-			.then((hash) => {
-				passCrypted = hash;
-				console.log("OK_1");
-				return jwt.verify(token, process.env.JWT_KEY);
-			})
-			.then((decoded) => {
-				console.log("OK_2");
-				console.log("HERE+++++++");
-				return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-			})
-			.then((res) => {
-				console.log("GOOD");
-				resolve();
-			})
-			.catch((err) => {
-				console.log("LAST CATCH ***********");
-				reject(err);
-			})
+		inputModel.password(pwd)
+			.then(() => {
+				bcrypt.hash(pwd, 10)
+					.then((hash) => {
+						passCrypted = hash;
+						return jwt.verify(token, process.env.JWT_KEY);
+					})
+					.then((decoded) => {
+						return userModel.changePwd(decoded.email, decoded.username, passCrypted)
+					})
+					.then((res) => { resolve({ "status": "success" }); })
+					.catch((err) => {
+						reject({ "status": "error", "msg": "Change password failed. Please try again" });
+					})
+			}).catch((err) => { reject(err); })
 	})
 }
 

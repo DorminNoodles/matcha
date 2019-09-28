@@ -32,7 +32,7 @@ exports.password = (password) => {
 	return new Promise((resolve, reject) => {
 		const passwordRegex = RegExp(/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/);
 		if (passwordRegex.test(password))
-			resolve({ "status": "success", "key": "password", "msg": '' });
+			resolve({ "status": "success", "key": "password" });
 		else
 			reject({ "status": "error", "key": "password", "msg": "Bad Password !" });
 	})

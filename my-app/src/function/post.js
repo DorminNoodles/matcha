@@ -28,10 +28,8 @@ export function password(password, confirmPassword, token) {
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {
         if (response.status === 200)
-            return "ok";
-    }).catch(error => {
-        return "not ok";
-    });
+            return response.data;
+    }).catch(error => { return error; });
 }
 
 export function register(data, info) {

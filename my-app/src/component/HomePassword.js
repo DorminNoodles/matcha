@@ -1,7 +1,7 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
 import { Modal, Field } from '../export'
-import { password } from '../function/post'
+import { password as changePassword } from '../function/post'
 
 class HomePassword extends React.Component {
     constructor(props) {
@@ -27,12 +27,20 @@ class HomePassword extends React.Component {
     }
 
     password = () => {
-        password(this.state.password, this.state.confirmation, this.context.user.token).then((value) => {
-            if (value === "ok")
-                this.setState({ ...this.state, success: "Your password has been changed successfully", error: "" })
-            else
-                this.setState({ ...this.state, success: "", error: "error" })
-        })
+        const { password, confirmation } = this.state
+
+        if (!password || password.length === 0 || !confirmation || confirmation.length === 0)
+            this.setState({ ...this.state, success: "", error: "Please complete all required fields" })
+        else if (password !== confirmation)
+            this.setState({ ...this.state, success: "", error: "Password and confirmation does not match" })
+        else {
+            changePassword(password, confirmation, this.context.user.token).then((value) => {
+                if (value.status === "success")
+                    this.setState({ ...this.state, success: "Your password has been changed successfully", error: "" })
+                else
+                    this.setState({ ...this.state, success: "", error: value.msg })
+            })
+        }
     }
 
     render() {
