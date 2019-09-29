@@ -66,7 +66,7 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
             <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
             <SliderAgeRange onChangeAge={onChangeAge} ageMin={info.ageMin.value} ageMax={info.ageMax.value} />
-            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km" />
+            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km"  min={5}/>
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(1) }}>

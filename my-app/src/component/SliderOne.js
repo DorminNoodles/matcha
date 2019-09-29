@@ -34,7 +34,7 @@ function SliderOne(props) {
         <p>{props.val} {props.unite}</p>
       </div>
       <Slider
-        min={5}
+        min={props.min}
         max={300}
         defaultValue={props.val}
         handle={(e) => handle(e, props)}

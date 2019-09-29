@@ -81,7 +81,6 @@ class Match extends React.Component {
   render() {
     let { users } = this.state
 
-    console.log(this.state)
     return (
       <div id="match">
         <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
