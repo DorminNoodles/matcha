@@ -56,7 +56,7 @@ class ListMessage extends React.Component {
             <div className="list-message">
                 <Route />
                 {
-                    this.state.users && this.state.users.length && this.state.users.map((value, i) => {
+                    this.state.users && this.state.users.length > 0 && this.state.users.map((value, i) => {
                         return <Contain key={i} value={value} />
                     })
                 }

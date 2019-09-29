@@ -102,10 +102,7 @@ class Signup extends React.Component {
     onChangeLocation = (location) => {
         let { state, state: { info } } = this
 
-        this.setState({
-            ...state,
-            info: { ...info, ...location }
-        })
+        this.setState({ ...state, info: { ...info, ...location } })
     }
 
     getGeocalisation = () => {
@@ -142,13 +139,12 @@ class Signup extends React.Component {
         if (!(this.state.data))
             this.setState({ ...this.state, image: { value: "", error: "Please choose your profile picture" } })
 
-
         for (let index in info)
             data.append(index, info[index].value);
 
         let rsl = check(this.state);
 
-        if (rsl.status === 0) { this.setState({ ...this.state, info: { ...rsl.obj.info } }) }
+        if (rsl.status === 0) { this.setState({ ...this.state, info: { ...rsl.obj.info }, error: "Please complete your profil" }) }
         else {
             register(data, this.state.info).then(({ res, err }) => {
 
@@ -160,7 +156,7 @@ class Signup extends React.Component {
                     })
                 }
                 else
-                    this.props.history.push("/")
+                    this.props.history.push("/?key=signup")
 
             })
         }
@@ -220,7 +216,7 @@ class Signup extends React.Component {
         let signPage;
         let upload = status && status.value && status.value === "signup" ? true : false
         let id = status && status.value && status.value === "signup" ? 0 : this.context.user.id
-        let avatar = status && status.value && status.value === "signup" ? image.value : this.context.user.avatar
+        let avatar = status && status.value && status.value === "signup" ? image.value : process.env.REACT_APP_PUBLIC_URL + id + "/" + this.context.user.avatar.toLowerCase()
 
         if (page === 1)
             signPage = <FirstPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} />
@@ -232,7 +228,7 @@ class Signup extends React.Component {
         return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
-                    <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id}/>
+                    <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id} />
                     {signPage}
                 </div>
             </div>

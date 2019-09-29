@@ -4,14 +4,12 @@ import { HomePage, HomeUser } from '../export'
 import { getPhotos } from '../function/get'
 import { uploadPicture } from "../function/post"
 import { deletePhoto } from "../function/delete"
+import queryString from 'query-string'
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      avatar: "",
-      error: ""
-    }
+    this.state = { error: "" }
     this.fct = {
       sendFile: this.sendFile.bind(this),
       sendAvatar: this.sendAvatar.bind(this),
@@ -93,12 +91,16 @@ class Home extends React.Component {
   }
 
   render() {
+    const params = queryString.parse(this.props.location.search)
+    const { id, avatar } = this.context.user
+    let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
+
     return (
       <React.Fragment>
         {
           this.context.user && this.context.user.token ?
-            <HomeUser {...this.fct} data={this.state} id={this.context.user.id}/>
-            : <HomePage />
+            <HomeUser {...this.fct} data={this.state} id={this.context.user.id} avatar={img} />
+            : <HomePage params={params} />
         }
       </React.Fragment>
     );

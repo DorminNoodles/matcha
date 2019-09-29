@@ -40,9 +40,9 @@ exports.identity = (gender, orientation) => {
 
 
 	if (gender === "male")
-		mask = orientation === "heterosexual" ? "100000" : orientation === "homosexual" ? "001000" : "000010";
+		mask = orientation === "heterosexual" ? 32 : orientation === "homosexual" ? 8 : 2;
 	else if (gender === "female")
-		mask = orientation === "heterosexual" ? "010000" : orientation === "homosexual" ? "000100" : "000001";
+		mask = orientation === "heterosexual" ? 16 : orientation === "homosexual" ? 4 : 1;
 
 	return { identity, mask }
 }

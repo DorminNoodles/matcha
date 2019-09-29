@@ -37,7 +37,7 @@ exports.get = (params, id ) => {
 		database.connection()
 			.then((conn) => {
 				const query = "\
-					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude, bin(CONVERT(?, SIGNED INTEGER) & users.mask) as sexuality ,\
+					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude, bin(? & users.mask) as sexuality ,\
 					((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
 					((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
 					(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score, \
@@ -47,7 +47,10 @@ exports.get = (params, id ) => {
 					IF(likes.liker = ? & likes.liked IS NULL, FALSE, TRUE) as likes\
 					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=?)\
 					LEFT JOIN block ON (blocked=users.id) \
-					WHERE (blocker!=? or blocker IS NULL) AND id NOT IN (?) AND age BETWEEN ? AND ? HAVING sexuality > 0 "
+					WHERE (blocker!=? or blocker IS NULL) \
+					AND id NOT IN (?) AND age BETWEEN ? AND ? \
+					HAVING sexuality > 0 "
+					
 				rsl = getQuery(params, id)
 
 				// console.log(query + rsl.query, rsl.arg)
