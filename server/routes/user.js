@@ -49,6 +49,19 @@ router.put('/password', urlencodedParser, (req, res) => {
 		.catch((err) => { res.status(400).send(err) })
 })
 
+router.post('/logout', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !" });
+
+	user.logout(req.token.id)
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(400).send(err);
+		})
+})
 
 router.get('/confirm', urlencodedParser, (req, res) => {
 
