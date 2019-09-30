@@ -36,7 +36,7 @@ class Profil extends React.Component {
     this.state = { modal: false, heart: 0 }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({ modal: false, heart: this.props.values.likes })
   }
 
@@ -49,10 +49,10 @@ class Profil extends React.Component {
   }
 
   render() {
-    let { username, id, avatar } = this.props.values
+    let { username, id, avatar, active } = this.props.values
 
     let imgProfil = id === 0 && avatar ? profile :
-        process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
+      process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
 
     return (
       <div id="profil" onMouseEnter={() => this.setState({ ...this.state, modal: true })} onMouseLeave={() => this.setState({ ...this.state, modal: false })}>
@@ -64,7 +64,11 @@ class Profil extends React.Component {
             {this.state.modal === true && <Modal {...this.props.values} />}
           </Link>
           <div className="profil-bottom">
-            <span><i className="fas fa-envelope" /></span>
+
+            <span style={{ display: "flex", alignItems: "center" }}>
+              {!(Date.parse(active)) ? <p className="green-dot"></p> : <p className="red-dot"></p>}
+            </span>
+            
             <p>{username}</p>
             {
               this.state.heart === 0 &&

@@ -25,7 +25,13 @@ class User extends React.Component {
 
     getUser(this.context.user.token, !params.id ? this.context.user.id : params.id)
       .then((res) => {
-        this.setState({ ...this.state, ...res.data })
+        if (res) {
+
+          let date = new Date(res.data.active)
+          let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
+
+          this.setState({ ...this.state, ...res.data, date_active }, () => { })
+        }
       })
   }
 
@@ -93,6 +99,7 @@ class User extends React.Component {
     let id = !params.id ? 0 : params.id
     let id_pic = !params.id ? this.context.user.id : params.id
 
+    console.log(this.state)
     return (
       <div id="user">
 

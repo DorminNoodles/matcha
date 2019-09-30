@@ -83,7 +83,7 @@ exports.findUser = (id) => {
 					location, latitude, longitude, age, avatar, ageMin, ageMax,	distance, identity \
 					FROM users WHERE id=? ', [id])
 			}).then((result) => {
-				if (result[0]){resolve(result[0]);}
+				if (result[0]) { resolve(result[0]); }
 				else
 					reject({ "status": "error", "msg": "User does not exist" });
 			})
@@ -171,7 +171,7 @@ exports.findUserById = (id, user_id) => {
 		database.connection()
 			.then((conn) => {
 				return conn.query('SELECT id, username, firstname, lastname, email, gender, orientation,\
-				 bio, age, distance, ageMin, ageMax, avatar, location, latitude, longitude,\
+				 bio, age, distance, ageMin, ageMax, avatar, location, latitude, longitude, active,\
 				((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
 				((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
 				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
@@ -192,28 +192,31 @@ exports.findUserById = (id, user_id) => {
 
 exports.checkLogin = (username, password) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
-			let result = conn.query('SELECT password FROM users WHERE username=?', [username]);
-			return result;
-		}).then((result) => {
-			bcrypt.compare(password, result[0].password)
-				.then((res) => {
-					if (res)
-						resolve(res);
-					else
-						reject({ "status": "error", "key": "password", "msg": "Wrong password" });
-				}).catch((error) => {
-					reject();
-					console.log(error);
-				})
-		}).catch((error) => {
-			reject(error);
+		database.connection()
+			.then((conn) => {
+				return conn.query('SELECT password FROM users WHERE username=?', [username]);
+			}).then((result) => {
+				bcrypt.compare(password, result[0].password)
+					.then((res) => {
+						if (res)
+							this.setActive(username)
+								.then((res) => resolve(res))
+								.catch((error) => { reject(error); })
+						else
+							reject({ "status": "error", "key": "password", "msg": "Wrong password" });
+
+					}).catch(() => { reject({ "status": "error" }); })
+			}).catch(() => { reject({ "status": "error" }); })
+	})
+}
+
+exports.setActive = (username, password) => {
+	return new Promise((resolve, reject) => {
+
+		database.connection().then((conn) => {
+			conn.query('UPDATE users SET active=0 WHERE username=?', [username])
+				.then(() => { resolve({ "status": "success" }) })
+				.catch((error) => { reject({ "status": "error" }) })
 		})
 	})
 }
@@ -292,8 +295,6 @@ exports.update = (data, id) => {
 exports.changeEmail = (id, tmp_email) => {
 	return new Promise((resolve, reject) => {
 
-		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
 		database.connection()
 			.then((conn) => {
 				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
@@ -305,5 +306,16 @@ exports.changeEmail = (id, tmp_email) => {
 				console.log(err)
 				reject();
 			})
+	})
+}
+
+exports.logout = (id) => {
+	return new Promise((resolve, reject) => {
+
+		var d = new Date();
+		database.connection()
+			.then((conn) => { return conn.query('UPDATE users SET active=? WHERE id=?', [d, id]); })
+			.then(() => { resolve({ "status": "success" }); })
+			.catch((err) => { reject({ "status": "error" }); })
 	})
 }

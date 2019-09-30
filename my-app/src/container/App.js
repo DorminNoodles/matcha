@@ -4,6 +4,7 @@ import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "../context/UserProvider"
+import { logout } from '../function/post'
 
 class App extends React.Component {
    constructor(props) {
@@ -62,26 +63,29 @@ class App extends React.Component {
    }
 
    logout = () => {
-      this.setState({
-         ...this.state,
-         user: {
-            username: "",
-            firstname: "",
-            lastname: "",
-            email: "",
-            orientation: "",
-            gender: "",
-            location: "",
-            age: "",
-            profil: "",
-            token: "",
-            ageMin: "",
-            ageMax: "",
-            distance: "",
-            identity: ""
+      
+      logout(this.state.user.token).then(({ data }) => {
+         if (data.status === "success") {
+            this.setState({
+               ...this.state,
+               user: {
+                  username: "",
+                  firstname: "",
+                  lastname: "",
+                  email: "",
+                  orientation: "",
+                  gender: "",
+                  location: "",
+                  age: "",
+                  profil: "",
+                  token: "",
+                  ageMin: "",
+                  ageMax: "",
+                  distance: "",
+                  identity: ""
+               }
+            }, () => { this.setObject("user", this.state) })
          }
-      }, () => {
-         this.setObject("user", this.state)
       })
    }
 

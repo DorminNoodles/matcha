@@ -114,13 +114,8 @@ exports.get = (id, user_id) => {
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		inputModel.username(data.username)
-			.then(() => {
-				return inputModel.password(data.password)
-			})
-			.then(() => {
-				console.log("hello authenticate");
-				return userModel.findUserByUsername(data.username, 0);
-			})
+			.then(() => { return inputModel.password(data.password) })
+			.then(() => { return userModel.findUserByUsername(data.username, 0) })
 			.then((result) => {
 				if (!result.mailValidation) {
 					reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
@@ -161,7 +156,6 @@ exports.authenticate = (data) => {
 						reject(error);
 					})
 			}).catch((err) => {
-				// console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
 				reject(err);
 			})
 	})
@@ -301,5 +295,13 @@ exports.changeEmail = (token) => {
 		});
 
 		// resolve();
+	})
+}
+
+exports.logout = (id) => {
+	return new Promise((resolve, reject) => {
+		userModel.logout(id)
+			.then((res) => resolve(res))
+			.catch((err) => reject(err))
 	})
 }

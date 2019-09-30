@@ -12,7 +12,14 @@ const HomePage = ({ params }) => {
                 <Link className="button white-red" style={{ margin: "10px" }} to="/signin">Signin</Link>
             </div>
             <br />
-            {params.key === "signup" && <p className="success">You have successfully create an account</p>}
+            {
+                params.key === "signup" &&
+                <p className="success">
+                    <span>You have successfully create an account</span>
+                    <br/>
+                    <span>A confirmation email has been sent to you</span>
+                </p>
+            }
         </div>
     )
 }

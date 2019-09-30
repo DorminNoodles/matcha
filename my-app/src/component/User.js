@@ -2,7 +2,7 @@ import React from 'react';
 import { Tags } from '../export'
 import profile from "../image/profile.png"
 
-function UserProfil({ onChange, info, id, like, id_pic }) {
+function UserProfil({ onChange, info, id, like, id_pic, date_active }) {
     let imgProfil = info.avatar && info.avatar !== "" ?
         process.env.REACT_APP_PUBLIC_URL + id_pic + "/" + info.avatar.toLowerCase() : profile
 
@@ -23,13 +23,23 @@ function UserProfil({ onChange, info, id, like, id_pic }) {
 
                         <div>
                             <div style={{ display: "flex", alignItems: "center" }}>
-                                <p className="green-dot" style={{ marginRight: "5px" }} />
+                                {
+                                    !(Date.parse(info.active)) ?
+                                        <p className="green-dot" style={{ marginRight: "5px" }}></p> :
+                                        <p className="red-dot" style={{ marginRight: "5px" }}></p>
+                                }
                                 <p>{info.firstname} {info.lastname}</p>
                             </div>
 
                             (<span style={{ fontStyle: "italic", fontWeight: 600 }}>{info.username}</span>), {info.age}</div>
                     </span>
 
+                    <br />
+                    <br />
+                    {
+                        !(Date.parse(info.active)) ? <React.Fragment />
+                            : <span>   Last connection: {info.date_active}</span>
+                    }
                     <br />
                     <br />
 

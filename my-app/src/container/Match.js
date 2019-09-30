@@ -31,12 +31,14 @@ class Match extends React.Component {
       distance: this.context.user.distance,
       identity: this.context.user.identity,
       longitude: this.context.user.longitude,
-      latitude: this.context.user.latitude
+      latitude: this.context.user.latitude,
+      score: 0
     });
 
   }
 
   getUsers(params) {
+
     getUsers(this.context.user.token, params)
       .then((res) => {
         this.setState({ ...this.state, users: res.data })

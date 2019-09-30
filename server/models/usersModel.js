@@ -17,27 +17,26 @@ queryTags = (tags, arg) => {
 
 getQuery = ({ ageMin, ageMax, distance, score, tags, identity, longitude, latitude }, id) => {
 
-	// let s_score = " HAVING score >= ? AND distance >= ? "
-
-	let arg = [ parseInt(identity),latitude, longitude, latitude, id, id, id, id, ageMin, ageMax]
+	let arg = [parseInt(identity), latitude, longitude, latitude, id, id, id, id, ageMin, ageMax, score, distance]
 	let query = ""
 
-	// if (tags && tags.length > 0) {
-	// 	r_tags = queryTags(tags, arg)
-	// 	arg = r_tags.arg
-	// 	query += query.length > 0 ? "&&" + r_tags.query : r_tags.query
-	// }
+	if (tags && tags.length > 0) {
+		r_tags = queryTags(tags, arg)
+		arg = r_tags.arg
+		query +=  "&&" + r_tags.query 
+	}
 
-	return { query, arg }
+	query += " HAVING score >= ? AND distance <= ? AND sexuality > 0 " 
+
+	return {  query, arg }
 }
 
-
-exports.get = (params, id ) => {
+exports.get = (params, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
 				const query = "\
-					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude, bin(? & users.mask) as sexuality ,\
+					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude,active, bin(? & users.mask) as sexuality ,\
 					((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
 					((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
 					(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score, \
@@ -48,9 +47,8 @@ exports.get = (params, id ) => {
 					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=?)\
 					LEFT JOIN block ON (blocked=users.id) \
 					WHERE (blocker!=? or blocker IS NULL) \
-					AND id NOT IN (?) AND age BETWEEN ? AND ? \
-					HAVING sexuality > 0 "
-					
+					AND id NOT IN (?) AND age BETWEEN ? AND ? "
+
 				rsl = getQuery(params, id)
 
 				// console.log(query + rsl.query, rsl.arg)

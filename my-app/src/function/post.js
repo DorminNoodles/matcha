@@ -156,3 +156,14 @@ export function uploadPicture(data, token) {
     }).then((res) => { return res })
         .catch(error => { return error; });
 }
+
+export function logout(token) {
+
+    return axios({
+        method: 'post',
+        url: 'http://localhost:3300/api/user/logout',
+        headers: { 'Authorization': "bearer " + token },
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    }).then((res) => { return res })
+        .catch(error => { return error; });
+}
