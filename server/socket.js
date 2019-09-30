@@ -1,5 +1,6 @@
 
 const notificationModel = require('./models/notificationModel.js');
+const database = require('./controllers/database');
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
@@ -27,7 +28,22 @@ module.exports = (io) => {
 
         socket.on('notif', function (data) {
 
-            if (data.to_id)
+            if (data.type === 5) {
+                let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                database.connection()
+                    .then((conn) => {
+                        return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [data.to_id, data.from_id, data.type, date])
+                            .then((res) => {
+                                socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
+                                conn.end();
+                            }).catch()
+                    })
+            }
+            else if(data.type === 2) {
+                socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
+                socket.to(data.from_id + "_notif").broadcast.emit('notif', { username: data.second, type: data.type, date: data.date });
+            }
+            else if (data.to_id)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
 
         })

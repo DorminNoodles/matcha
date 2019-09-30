@@ -4,6 +4,7 @@ import { ProfileImg, FirstPage, SecondPage, ThirdPage } from "../component/Signu
 import UserProvider from '../context/UserProvider';
 import { register, update } from "../function/post"
 import { getUser, getGeocalisation } from '../function/get'
+import profile from "../image/profile.png"
 import { signupInfo } from '../export/object'
 
 class Signup extends React.Component {
@@ -183,18 +184,17 @@ class Signup extends React.Component {
             data.append(index, filtered[index]);
 
         update(filtered, this.state.info, this.context.user.token).then((res) => {
-            this.setState({ ...this.state, success: "Update succeed" },
-                () => {
-                    this.context.onChange("user", { token: this.context.user.token, ...res.data })
-                    getUser(this.context.user.token, this.context.user.id)
-                        .then((res) => this.initInfo(res.data))
-                })
-        }).catch(() => {
-            this.setState({
-                ...this.state,
-                // info: { ...res },
-                error: "error"
-            })
+            if (res.status === "success") {
+                this.setState({ ...this.state, success: "Update succeed" },
+                    () => {
+                        this.context.onChange("user", { token: this.context.user.token, ...res.data })
+                        getUser(this.context.user.token, this.context.user.id)
+                            .then((res) => this.initInfo(res.data))
+                    })
+            } else { this.setState({ ...this.state, error: "error" }) }
+
+        }).catch((err) => {
+            this.setState({ ...this.state, error: "error" })
         })
     }
 
@@ -216,7 +216,7 @@ class Signup extends React.Component {
         let signPage;
         let upload = status && status.value && status.value === "signup" ? true : false
         let id = status && status.value && status.value === "signup" ? 0 : this.context.user.id
-        let avatar = status && status.value && status.value === "signup" ? image.value : process.env.REACT_APP_PUBLIC_URL + id + "/" + this.context.user.avatar.toLowerCase()
+        let avatar = status && status.value && status.value === "signup" ? image.value : this.context.user.avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + this.context.user.avatar.toLowerCase() : profile
 
         if (page === 1)
             signPage = <FirstPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} />

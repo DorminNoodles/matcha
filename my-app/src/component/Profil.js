@@ -44,7 +44,7 @@ class Profil extends React.Component {
     let { id, likes } = this.props.values
     let nw_like = likes === 0 ? 1 : 0
 
-    this.props.likes(likes, id)
+    this.props.likes(likes, id, this.props.values.username)
     this.setState({ ...this.state, heart: nw_like })
   }
 

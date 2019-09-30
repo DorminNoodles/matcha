@@ -12,11 +12,13 @@ exports.new = (liker, liked) => {
 					.then(() => {
 						return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 3, date])
 							.then((res) => {
+
 								const id_notifs = res.insertId
 								return conn.query('UPDATE userschat SET active=1 \
 									WHERE first_user=LEAST(?, ?) \
 									AND second_user=GREATEST(?,?)', [liker, liked, liker, liked])
 									.then((res) => {
+
 										if (res.changedRows === 0) {
 											return conn.query('INSERT INTO userschat (first_user, second_user, active)\
 													(SELECT liker, liked, TRUE as active FROM likes \
@@ -24,25 +26,25 @@ exports.new = (liker, liked) => {
 													HAVING COUNT(*) = 2 ORDER BY liker ASC)', [liker, liked, liker, liked])
 												.then((res) => {
 													if (res.changedRows > 0) {
-														return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-															.then((res) => { return { res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } } })
+														return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
+															.then((res) => { resolve({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }) })
 													}
 													else if (res.affectedRows > 0)
-														return { res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }
+														return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
+															.then((res) => { resolve({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }) })
 													else
-														return { res, like: { ...like, id: id_notifs } }
+														resolve({ like: { ...like, id: id_notifs } })
 												});
-										}
-										else {
-											return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-												.then((res) => { return { res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } } })
+										} else {
+											return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
+												.then((res) => { resolve({ res, like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }) })
 										}
 									});
-							});
+							})
 					})
 			})
-			.then((res) => { resolve({ "status": "success", "msg": "like added !", data: res.data }) })
-			.catch(() => { reject({ "status": "error", "msg": "request failed" }); })
+			.then((res) => { resolve({ "status": "success", "msg": "like added !", data: res }) })
+			.catch(() => { reject({ "status": "error", "msg": "request failed" }) })
 	})
 }
 

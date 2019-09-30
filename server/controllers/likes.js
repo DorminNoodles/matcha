@@ -10,7 +10,7 @@ exports.new = (liker, liked) => {
 				likesModel.new(liker, liked)
 					.then((res) => { resolve(res); })
 					.catch((err) => {
-						reject('error when adding like');
+						reject({ "status": "error", "msg": "error" });
 					})
 			})
 	});

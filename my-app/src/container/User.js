@@ -17,7 +17,6 @@ class User extends React.Component {
   static contextType = UserProvider;
 
   componentWillMount() {
-
     let params = queryString.parse(this.props.location.search)
 
     if (!(this.context.user.token))
@@ -25,7 +24,7 @@ class User extends React.Component {
 
     getUser(this.context.user.token, !params.id ? this.context.user.id : params.id)
       .then((res) => {
-        if (res) {
+        if (res && res.data) {
 
           let date = new Date(res.data.active)
           let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
@@ -69,8 +68,10 @@ class User extends React.Component {
     if (id && likes === 0) {
       like(id, token).then((res) => {
         this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes }, () => {
-          socket.emit('notif', { ...res.data.like, username });
-          socket.emit('notif', { ...res.data.match, username });
+          if (res.like)
+            socket.emit('notif', { ...res.like, username });
+          if (res.match) 
+            socket.emit('notif', { ...res.match, username, second: this.state.username });
         })
       })
     }
