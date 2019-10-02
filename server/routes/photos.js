@@ -38,11 +38,10 @@ router.post('/', urlencodedParser, (req, res) => {
 //acces with localhost:3000/pictures/user6/avatar-1549917933804.jpg
 router.get('/', urlencodedParser, (req, res) => {
 
-
 	if (!req.token)
 		res.status(401).send({ "status": "error", "msg": "bad authentification" });
 	else {
-		photos.get(req.token.id)
+		photos.get(req.query.id)
 			.then((result) => {
 				res.status(200).send(result);
 			})

@@ -112,10 +112,11 @@ export function getNotifications(token) {
         .catch(error => { return error; });
 }
 
-export function getPhotos(token) {
+export function getPhotos(id, token) {
     return axios({
         method: 'GET',
         url: 'http://localhost:3300/api/photos',
+        params: { id },
         headers: { 'Authorization': "bearer " + token }
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
