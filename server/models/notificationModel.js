@@ -30,12 +30,17 @@ exports.get = (id) => {
     });
 }
 
-exports.delete = (id) => {
+exports.delete = (user_id, id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                return conn.query('DELETE FROM notifs WHERE id=?;', [id])
-                    .then(() => { resolve({ "status": "success" }) })
+                return conn.query('DELETE FROM notifs WHERE id=? AND to_id=?;', [id, user_id])
+                    .then((res) => {
+                        if (res.affectedRows === 1)
+                            resolve({ "status": "success" })
+                        else
+                            reject({ "status": "error", "msg": "Bad query !" })
+                    })
                     .catch(() => reject({ "status": "error", "msg": "Bad query !" }))
             })
             .catch(() => reject({ "status": "error", "msg": "Bad query !" }))

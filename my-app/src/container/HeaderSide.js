@@ -37,8 +37,8 @@ class HeaderSide extends React.Component {
                                 <Link to="/messages" className={header}><i className="fas fa-comments header-link"></i></Link>
                             </li>
                             <li>
-                                <button className={header} style={{ border: "none" }} onClick={this.logout}>
-                                    <a className={header}><i className="fas fa-sign-out-alt header-link" /></a>
+                                <button className={header} style={{ border: "none", fontSize: "x-large" }} onClick={this.logout}>
+                                    <i className="fas fa-sign-out-alt header-link" />
                                 </button>
                             </li>
                             <Link to="/parameters" className={header}><i className="fas fa-cog header-link"></i></Link>

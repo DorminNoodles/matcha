@@ -1,7 +1,6 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
 import profile from "../image/profile.png"
-import { deletePhoto } from "../function/delete"
 
 const AddPicture = ({ sendFile, position }) => (
     <form >

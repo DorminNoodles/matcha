@@ -66,10 +66,10 @@ class Home extends React.Component {
 
 
   getPicture = (e) => {
-    let { token, avatar } = this.context.user
+    let { token, avatar, id } = this.context.user
     let photos = []
 
-    getPhotos(token).then(res => {
+    getPhotos(id, token).then(res => {
       for (var i in res)
         if (res[i] !== avatar)
           photos.push(res[i])

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfileImg, Gallery, HomePassword, Field } from '../export'
+import { ProfileImg, Gallery, HomePassword } from '../export'
 import { BrowserRouter as Route, Link } from "react-router-dom";
 
 const HomePage = ({ params }) => {
@@ -16,7 +16,7 @@ const HomePage = ({ params }) => {
                 params.key === "signup" &&
                 <p className="success">
                     <span>You have successfully create an account</span>
-                    <br/>
+                    <br />
                     <span>A confirmation email has been sent to you</span>
                 </p>
             }

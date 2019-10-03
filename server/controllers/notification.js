@@ -16,9 +16,9 @@ exports.get = (id) => {
 	})
 }
 
-exports.delete = (id) => {
+exports.delete = (user_id, id) => {
 	return new Promise((resolve, reject) => {
-		notificationModel.delete(id)
+		notificationModel.delete(user_id, id)
 			.then((res) => { resolve(res); })
 			.catch((err) => { reject(err); })
 	})

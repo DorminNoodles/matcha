@@ -37,3 +37,13 @@ export function deletePhoto(filename, token) {
     }).then((res) => { return (res.data) })
         .catch(error => { return error; });
 }
+
+export function deleteNotifs(id, token) {
+    return axios({
+        method: 'DELETE',
+        data: { id },
+        url: 'http://localhost:3300/api/notification',
+        headers: { 'Authorization': "bearer " + token }
+    }).then((res) => { return (res.data) })
+        .catch(error => { return error; });
+}
