@@ -62,7 +62,10 @@ export function connect(username, password) {
         },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {
-        return ({ res: 1, data: response.data })
+        if (response.data.status === "error" && response.data.msg === "ban")
+            return ({ res: 0, data: "You have been banned" })
+        else
+            return ({ res: 1, data: response.data })
     }).catch(error => {
         return ({ res: 0, data: error.response.data.msg })
     });

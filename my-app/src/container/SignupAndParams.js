@@ -57,8 +57,11 @@ class Signup extends React.Component {
     }
 
     componentDidMount() {
+        if (this.context.user.token)
+            this.props.history.push("/")
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
+            
         this.setting(this.props.location.pathname)
     }
 

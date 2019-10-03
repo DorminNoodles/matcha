@@ -112,7 +112,8 @@ exports.findUserByUsername = (username, id) => {
 									ageMin,\
 									ageMax,\
 									distance, \
-									identity \
+									identity,\
+									IF((SELECT id FROM ban WHERE id=users.id), TRUE, FALSE) as ban \
 									FROM users WHERE username=? AND id NOT IN (?)', [username, id]);
 			}).then((result) => {
 				if (result[0])

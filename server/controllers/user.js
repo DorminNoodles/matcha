@@ -121,10 +121,11 @@ exports.authenticate = (data) => {
 					reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
 					return;
 				}
+				else if (result.ban === 1)
+					resolve({ status: 'error', msg: 'ban'});
+
 				userModel.checkLogin(data.username, data.password)
 					.then(() => {
-						console.log("HUMMM");
-						console.log(result);
 						let datas = {};
 
 						datas.token = jwt.sign({
@@ -150,11 +151,10 @@ exports.authenticate = (data) => {
 							distance: result.distance,
 							identity: result.identity
 						};
-						resolve(datas);
-					}).catch((error) => {
-						console.log(error);
-						reject(error);
-					})
+
+						resolve({ status: 'success', msg: 'connected !', ...datas });
+
+					}).catch((error) => { reject(error) })
 			}).catch((err) => {
 				reject(err);
 			})
