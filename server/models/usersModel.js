@@ -23,12 +23,12 @@ getQuery = ({ ageMin, ageMax, distance, score, tags, identity, longitude, latitu
 	if (tags && tags.length > 0) {
 		r_tags = queryTags(tags, arg)
 		arg = r_tags.arg
-		query +=  "&&" + r_tags.query 
+		query += "&&" + r_tags.query
 	}
 
-	query += " HAVING score >= ? AND distance <= ? AND sexuality > 0 " 
+	query += " HAVING score >= ? AND distance <= ? AND sexuality > 0 "
 
-	return {  query, arg }
+	return { query, arg }
 }
 
 exports.get = (params, id) => {
@@ -36,7 +36,7 @@ exports.get = (params, id) => {
 		database.connection()
 			.then((conn) => {
 				const query = "\
-					SELECT id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude,active, bin(? & users.mask) as sexuality ,\
+					SELECT users.id as id, username, firstname, lastname, gender, orientation, age, location, avatar, latitude, longitude,active, bin(? & users.mask) as sexuality ,\
 					((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
 					((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
 					(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score, \
@@ -46,20 +46,16 @@ exports.get = (params, id) => {
 					IF(likes.liker = ? & likes.liked IS NULL, FALSE, TRUE) as likes\
 					FROM users LEFT JOIN likes ON(users.id = likes.liked AND liker=?)\
 					LEFT JOIN block ON (blocked=users.id) \
+					LEFT JOIN ban ON (ban.id=users.id) \
 					WHERE (blocker!=? or blocker IS NULL) \
-					AND id NOT IN (?) AND age BETWEEN ? AND ? "
+					AND (ban.id IS NULL)\
+					AND users.id NOT IN (?) AND age BETWEEN ? AND ? "
 
 				rsl = getQuery(params, id)
 
-				// console.log(query + rsl.query, rsl.arg)
 				return conn.query(query + rsl.query, rsl.arg);
 			})
-			.then((res) => {
-				resolve(res);
-			})
-			.catch((err) => {
-				console.log(err)
-				reject({ status: "error", msg: "Query error !", data: [] });
-			})
+			.then((res) => { resolve(res); })
+			.catch(() => { reject({ status: "error", msg: "Query error !", data: [] }); })
 	})
 }

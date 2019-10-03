@@ -172,6 +172,7 @@ exports.findUserById = (id, user_id) => {
 			.then((conn) => {
 				return conn.query('SELECT id, username, firstname, lastname, email, gender, orientation,\
 				 bio, age, distance, ageMin, ageMax, avatar, location, latitude, longitude, active,\
+				 IF((SELECT * FROM ban WHERE id=?), TRUE, FALSE ) as ban, \
 				((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
 				((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
 				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
@@ -179,8 +180,9 @@ exports.findUserById = (id, user_id) => {
 				IF(report.reported=users.id, TRUE, FALSE) as report,\
 				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes\
 				FROM users \
-				LEFT JOIN report ON(report.reported=?)\
-				LEFT JOIN likes ON(likes.liked=?) WHERE id=?', [user_id, id, id, id, id])
+				LEFT JOIN report ON(report.reported=? AND report.reporting=?)\
+				LEFT JOIN likes ON (likes.liked=?) \
+				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
 			}).then((result) => {
 				if (result[0])
 					resolve(result[0]);

@@ -114,17 +114,19 @@ class User extends React.Component {
     let id = !params.id ? 0 : params.id
     let id_pic = !params.id ? this.context.user.id : params.id
 
-    return (
-      <div id="user">
-
-        <div id="info-user">
-          <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={id_pic} />
-          <ModalPhoto index="modal" photos={this.state.photos} number={this.state.number} modal={this.state.modal} onChange={this.onChange} onChangePicture={this.onChangePicture.bind(this)} id={id_pic} />
-          <ModalBlockReport index="modalBlock" name="block" modal={this.state.modalBlock} onChange={this.onChange} fct={this.blockReport.bind(this)} />
-          <ModalBlockReport index="modalReport" name="report" modal={this.state.modalReport} onChange={this.onChange} fct={this.blockReport.bind(this)} />
+    if (this.state.ban && this.state.ban === 1)
+      return <div>ban</div>
+    else
+      return (
+        <div id="user" >
+          <div id="info-user">
+            <UserProfil info={this.state} onChange={this.onChange} id={id} like={this.likes.bind(this)} id_pic={id_pic} />
+            <ModalPhoto index="modal" photos={this.state.photos} number={this.state.number} modal={this.state.modal} onChange={this.onChange} onChangePicture={this.onChangePicture.bind(this)} id={id_pic} />
+            <ModalBlockReport index="modalBlock" name="block" modal={this.state.modalBlock} onChange={this.onChange} fct={this.blockReport.bind(this)} />
+            <ModalBlockReport index="modalReport" name="report" modal={this.state.modalReport} onChange={this.onChange} fct={this.blockReport.bind(this)} />
+          </div>
         </div>
-      </div>
-    );
+      );
   }
 }
 

@@ -9,9 +9,13 @@ exports.new = (reporting, reported) => {
             database.connection()
                 .then((conn) => {
                     return conn.query('INSERT INTO report (`reporting`, `reported`) \
-							VALUES (?, ?)', [reporting, reported]);
-                }).then((res) => {
-                    resolve({ "status": "success", "msg": "report success" });
+                            VALUES (?, ?)', [reporting, reported])
+                        .then(() => {
+                            return conn.query("INSERT INTO ban (id) \
+                                (SELECT reported as id from report \
+                                WHERE (reported=?) HAVING COUNT(*)=8)", [reported])
+                                .then((res) => { resolve({ "status": "success", "msg": "report success" }); })
+                        })
                 }).catch((err) => {
                     reject({ "status": "error", "msg": "error db" });
                 })

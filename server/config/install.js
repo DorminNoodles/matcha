@@ -99,6 +99,7 @@ async function db() {
 			active INT DEFAULT 1, \
 			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
+		await connection.query('CREATE TABLE ban (id INT UNSIGNED NOT NULL)');
 		await connection.query('INSERT INTO tags (tag) \
 			VALUES ("foot"), ("fruits"), ("chien"), ("chat"), ("chiot"), ("chaton"), ("peche"), ("fraise"), ("hiver"), ("ete"), ("vacances");'
 		);
