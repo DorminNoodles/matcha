@@ -51,7 +51,8 @@ async function db() {
 			latitude DOUBLE DEFAULT 0, \
 			longitude DOUBLE DEFAULT 0, \
 			bio TEXT, \
-			active DATETIME \
+			active DATETIME, \
+			tmp_email BIGINT \
 		)');
 		await connection.query('CREATE TABLE tags (\
         	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, \

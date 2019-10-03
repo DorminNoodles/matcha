@@ -64,9 +64,7 @@ class ActivationMail {
 		});
 	}
 
-	sendNewPass(data, token) {
-		console.log(data);
-
+	sendNewPass(data, key, token) {
 		nodemailer.createTestAccount(() => {
 			let transporter = nodemailer.createTransport({
 				host: 'smtp.gmail.com',
@@ -92,7 +90,7 @@ class ActivationMail {
         						Forgot your password?\
 								<br />\
            						No worries, here is a new one:<br />\
-           						<a href='+ process.env.PORT_FRONT + 'user/password?token=' + token + '>RESET MY PASSWORD</a>\
+           						<a href='+ process.env.PORT_FRONT + 'user/password?token=' + token + '&key=' + key + '>RESET MY PASSWORD</a>\
            					</div>\
         					<footer style="margin-top:200px;margin-bottom:50px;">\
             					<hr />\

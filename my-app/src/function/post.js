@@ -15,7 +15,7 @@ export function forgot(email) {
     });
 }
 
-export function password(password, confirmPassword, token) {
+export function password(password, confirmPassword, token, key) {
 
     return axios({
         method: 'PUT',
@@ -23,11 +23,13 @@ export function password(password, confirmPassword, token) {
         data: {
             password,
             confirmPassword,
-            token
+            token,
+            key
         },
+        headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {
-        if (response.status === 200)
+        if (response.data.status === "success")
             return response.data;
     }).catch(error => { return error; });
 }

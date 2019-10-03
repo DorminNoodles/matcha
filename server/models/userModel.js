@@ -97,28 +97,13 @@ exports.findUserByUsername = (username, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT \
-									username,\
-									id, \
-									mailValidation, \
-									email, \
-									gender, \
-									orientation, \
-									location, \
-									latitude, \
-									longitude, \
-									age, \
-									avatar,\
-									ageMin,\
-									ageMax,\
-									distance, \
-									identity,\
+				return conn.query('SELECT username, id, mailValidation, email, \
+									gender, orientation, location, latitude, \
+									longitude, age, avatar, ageMin, ageMax, distance, identity,\
 									IF((SELECT id FROM ban WHERE id=users.id), TRUE, FALSE) as ban \
 									FROM users WHERE username=? AND id NOT IN (?)', [username, id]);
 			}).then((result) => {
-				if (result[0])
-					resolve(result[0]);
-				else
+				result[0] ? resolve(result[0]) :
 					reject({ "status": "error", "key": "user", "msg": "User does not exist" });
 			}).catch((error) => {
 				reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
@@ -136,13 +121,8 @@ exports.findUserByEmail = (email, id) => {
 				conn.end();
 				return result;
 			}).then((result) => {
-				if (result[0])
-					resolve(result[0]);
-				else
-					reject();
-			}).catch((error) => {
-				reject(error);
-			})
+				result[0] ? resolve(result[0]) : reject();
+			}).catch((error) => { reject(error); })
 	})
 }
 
@@ -157,13 +137,8 @@ exports.saveUser = (data) => {
 			.then((conn) => {
 				return conn.query("INSERT INTO users SET ?", data);
 			})
-			.then((res) => {
-				resolve({ status: "success", id: res.insertId });
-			})
-			.catch((err) => {
-				console.log('catch >', err);
-				reject(err);
-			})
+			.then((res) => { resolve({ status: "success", id: res.insertId }); })
+			.catch((err) => { reject(err); })
 	})
 }
 
@@ -185,10 +160,7 @@ exports.findUserById = (id, user_id) => {
 				LEFT JOIN likes ON (likes.liked=?) \
 				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
 			}).then((result) => {
-				if (result[0])
-					resolve(result[0]);
-				else
-					reject();
+				result[0] ? resolve(result[0]) : reject();
 			}).catch((error) => { reject(error); })
 	})
 }
@@ -224,25 +196,8 @@ exports.setActive = (username, password) => {
 	})
 }
 
-exports.saveGps = (id, long, lat) => {
-	return new Promise((resolve, reject) => {
-		database.connection()
-			.then((conn) => {
-				return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
-			})
-			.then((res) => {
-				resolve('Gps saved');
-			})
-			.catch((err) => {
-				console.log("ERRRO");
-				reject(err);
-			})
-	})
-}
-
 exports.activateUser = (username, email) => {
 	return new Promise((resolve, reject) => {
-		console.log("hello");
 		database.connection()
 			.then((conn) => {
 				let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
@@ -250,28 +205,24 @@ exports.activateUser = (username, email) => {
 				return query;
 			})
 			.then((res) => {
-				console.log(res);
 				resolve({ "status": "success", "msg": "UserActivated !" });
 			})
-			.catch((err) => {
-				console.log("ERROR ++++++++++++++++++++++++");
-				reject(err);
-			})
+			.catch((err) => { reject(err); })
 	})
 }
 
 exports.changePwd = (email, username, pwd) => {
+	console.log("CHangeusername")
+	console.log(username)
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				console.log("PUTAIN DE MERDE");
-				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+				return conn.query('UPDATE users SET password=?, hjtmp_email="" WHERE email=? AND username=?', [pwd, email, username]);
 			})
 			.then((res) => {
 				resolve({ "status": "success", "msg": "Password changed!" });
 			})
 			.catch((err) => {
-				console.log("Error !");
 				reject({ status: "error", msg: "error db !" });
 			})
 	});
@@ -295,22 +246,21 @@ exports.update = (data, id) => {
 	})
 }
 
-exports.changeEmail = (id, tmp_email) => {
-	return new Promise((resolve, reject) => {
+// exports.changeEmail = (id, tmp_email) => {
+// 	return new Promise((resolve, reject) => {
 
-		database.connection()
-			.then((conn) => {
-				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
-			})
-			.then((conn) => {
-				resolve();
-			})
-			.catch((err) => {
-				console.log(err)
-				reject();
-			})
-	})
-}
+// 		database.connection()
+// 			.then((conn) => {
+// 				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
+// 			})
+// 			.then((conn) => {
+// 				resolve();
+// 			})
+// 			.catch((err) => {
+// 				reject();
+// 			})
+// 	})
+// }
 
 exports.logout = (id) => {
 	return new Promise((resolve, reject) => {
@@ -320,5 +270,33 @@ exports.logout = (id) => {
 			.then((conn) => { return conn.query('UPDATE users SET active=? WHERE id=?', [d, id]); })
 			.then(() => { resolve({ "status": "success" }); })
 			.catch((err) => { reject({ "status": "error" }); })
+	})
+}
+
+exports.setKeyPassword = (key, id) => {
+	return new Promise((resolve, reject) => {
+
+		database.connection()
+			.then((conn) => { return conn.query('UPDATE users SET tmp_email=? WHERE id=?', [key, id]); })
+			.then(() => { resolve({ "status": "success" }); })
+			.catch((err) => { reject({ "status": "error" }); })
+	})
+}
+
+exports.checkKeyPassword = (key, id) => {
+	return new Promise((resolve, reject) => {
+		database.connection()
+			.then((conn) => {
+				return conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
+					.then((res) => {
+						if (res && res.length)
+							resolve({ "status": "success" });
+						else
+							reject({ "status": "error", "msg": "key email not valid" });
+					})
+			})
+			.catch((err) => { 
+				console.log(err)
+				reject({ "status": "error", "msg": "Internal Server Error" }); })
 	})
 }

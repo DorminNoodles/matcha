@@ -47,12 +47,13 @@ class Password extends React.Component {
         else if (value !== confirm)
             this.setState({ ...this.state, success: "", error: "Your password and confirmation password do not match" })
         else
-            password(value, confirm, params.token).then((value) => {
-                if (value === "ok")
-                    this.setState({ ...this.state, success: "Your email has been changed successfully", error: "" })
-                else
-                    this.setState({ ...this.state, success: "", error: "error" })
-            })
+            password(value, confirm, params.token, params.key)
+                .then((value) => {
+                    if (value.status === "success")
+                        this.setState({ ...this.state, success: value.msg, error: "" })
+                    else
+                        this.setState({ ...this.state, success: "", error: "error" })
+                })
     }
 
     render() {

@@ -44,7 +44,11 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
-	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !" });
+
+	user.updatePassword({ ...req.body, id: req.token.id })
 		.then((result) => { res.status(200).send(result); })
 		.catch((err) => { res.status(400).send(err) })
 })

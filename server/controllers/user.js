@@ -122,7 +122,7 @@ exports.authenticate = (data) => {
 					return;
 				}
 				else if (result.ban === 1)
-					resolve({ status: 'error', msg: 'ban'});
+					resolve({ status: 'error', msg: 'ban' });
 
 				userModel.checkLogin(data.username, data.password)
 					.then(() => {
@@ -165,44 +165,49 @@ exports.forgot = (data) => {
 	return new Promise((resolve, reject) => {
 		userModel.findUserByEmail(data, 0)
 			.then((res) => {
-				var token = jwt.sign({
-					id: res.id,
-					username: res.username,
-					email: res.email
-				}, process.env.JWT_KEY);
-				myEmitter.emit('forgotPass', {
-					username: res.username,
-					email: res.email
-				}, token);
-				resolve();
-			}).catch((error) => {
-				console.log("Not a registered email address !");
-				reject();
-			})
+
+				var key = Math.floor(Math.random() * 900000000) + 100000000;
+				userModel.setKeyPassword(key, res.id).then(() => {
+					var token = jwt.sign({
+						id: res.id,
+						username: res.username,
+						email: res.email
+					}, process.env.JWT_KEY);
+
+					myEmitter.emit('forgotPass', {
+						username: res.username,
+						email: res.email
+					}, key, token);
+
+					resolve();
+				}).catch((error) => { reject(); })
+			}).catch((error) => { reject(); })
 	})
 }
 
-exports.updatePassword = (token, pwd, confirmPwd) => {
+exports.updatePassword = ({ token, password, confirmPassword, id, key }) => {
 	return new Promise((resolve, reject) => {
 		let passCrypted;
-		if (pwd != confirmPwd) {
+		if (password != confirmPassword) {
 			reject({ "status": "error", "msg": "Password and confirmation does not match" });
 			return;
 		}
 
-		inputModel.password(pwd)
-			.then(() => {
-				bcrypt.hash(pwd, 10)
-					.then((hash) => {
-						passCrypted = hash;
-						return jwt.verify(token, process.env.JWT_KEY);
-					})
-					.then((decoded) => {
-						return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-					})
-					.then((res) => { resolve({ "status": "success" }); })
-					.catch((err) => {
-						reject({ "status": "error", "msg": "Change password failed. Please try again" });
+		userModel.checkKeyPassword(key, id)
+			.then((res) => {
+				inputModel.password(password)
+					.then((res) => {
+						bcrypt.hash(password, 10)
+							.then((hash) => {
+								passCrypted = hash;
+								return jwt.verify(token, process.env.JWT_KEY);
+							})
+							.then((decoded) => {
+								return userModel.changePwd(decoded.email, decoded.username, passCrypted)
+							})
+							.then((res) => {
+								resolve({ "status": "success", "msg": "The password is successfully change " });
+							})
 					})
 			}).catch((err) => { reject(err); })
 	})
@@ -270,33 +275,33 @@ exports.update = (data, id) => {
 	})
 }
 
-exports.changeEmail = (token) => {
-	return new Promise((resolve, reject) => {
+// exports.changeEmail = (token) => {
+// 	return new Promise((resolve, reject) => {
 
-		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-			if (err)
-				reject({ status: 'error', msg: 'Token false !' });
-			else {
-				console.log(decoded);
-				console.log('decode Ok !');
+// 		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+// 			if (err)
+// 				reject({ status: 'error', msg: 'Token false !' });
+// 			else {
+// 				console.log(decoded);
+// 				console.log('decode Ok !');
 
-				userModel.changeEmail(decoded.id, decoded.email)
-					.then((result) => {
-						console.log('OK');
-						resolve();
-					})
-					.catch(() => {
-						console.log('ERROR 457');
-						reject();
+// 				userModel.changeEmail(decoded.id, decoded.email)
+// 					.then((result) => {
+// 						console.log('OK');
+// 						resolve();
+// 					})
+// 					.catch(() => {
+// 						console.log('ERROR 457');
+// 						reject();
 
-					})
+// 					})
 
-			}
-		});
+// 			}
+// 		});
 
-		// resolve();
-	})
-}
+// 		// resolve();
+// 	})
+// }
 
 exports.logout = (id) => {
 	return new Promise((resolve, reject) => {
