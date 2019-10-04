@@ -39,6 +39,7 @@ class Signin extends Component {
   connect = () => {
     connect(this.state.username, this.state.password).then((res) => {
       if (res.res === 1) {
+        document.cookie = JSON.stringify({ token: res.data.token, ...res.data.user })
         this.context.onChange("user", { token: res.data.token, ...res.data.user })
         this.props.history.push("/")
       }

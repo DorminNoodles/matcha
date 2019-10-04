@@ -2,7 +2,7 @@ const database = require('../controllers/database');
 
 queryTags = (tags, arg) => {
 
-	let query = " id IN (SELECT DISTINCT usertags.user_id FROM usertags INNER JOIN tags ON usertags.tag_id=tags.id WHERE "
+	let query = " users.id IN (SELECT DISTINCT usertags.user_id FROM usertags INNER JOIN tags ON usertags.tag_id=tags.id WHERE "
 
 	for (i = 0; i < tags.length; i++) {
 		query += 'tags.tag=?'
@@ -17,15 +17,16 @@ queryTags = (tags, arg) => {
 
 getQuery = ({ ageMin, ageMax, distance, score, tags, identity, longitude, latitude }, id) => {
 
-	let arg = [parseInt(identity), latitude, longitude, latitude, id, id, id, id, ageMin, ageMax, score, distance]
+	let arg = [parseInt(identity), latitude, longitude, latitude, id, id, id, id, ageMin, ageMax]
 	let query = ""
 
 	if (tags && tags.length > 0) {
 		r_tags = queryTags(tags, arg)
 		arg = r_tags.arg
-		query += "&&" + r_tags.query
+		query += " AND " + r_tags.query
 	}
 
+	arg = arg.concat([score, distance])
 	query += " HAVING score >= ? AND distance <= ? AND sexuality > 0 "
 
 	return { query, arg }
@@ -56,6 +57,8 @@ exports.get = (params, id) => {
 				return conn.query(query + rsl.query, rsl.arg);
 			})
 			.then((res) => { resolve(res); })
-			.catch(() => { reject({ status: "error", msg: "Query error !", data: [] }); })
+			.catch(() => {
+				reject({ status: "error", msg: "Query error !", data: [] });
+			})
 	})
 }

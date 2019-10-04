@@ -11,9 +11,6 @@ class ActivationMail {
 	}
 
 	sendActivationMail(data) {
-		console.log("les datas => ", data);
-
-		console.log("SEND ACTIVATION MAIL");
 
 		let token = jwt.sign({
 			"username": data.username,
@@ -31,8 +28,6 @@ class ActivationMail {
 				}
 			});
 
-			var key = Math.floor(Math.random() * 900000000) + 100000000;
-			console.log(token);
 			let mailOptions = {
 				from: '"Matcha 🔥" <matchaducancer@gmail.com>',
 				to: data.email,
@@ -58,8 +53,6 @@ class ActivationMail {
 				if (error) {
 					return console.log(error);
 				}
-				console.log('Message sent: %s', info.messageId);
-				console.log('Message sent to: %s', data.email);
 			});
 		});
 	}
@@ -103,7 +96,6 @@ class ActivationMail {
 				if (error) {
 					return console.log(error);
 				}
-				console.log('Message sent: %s', info.messageId);
 			});
 		});
 	}

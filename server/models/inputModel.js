@@ -31,10 +31,10 @@ exports.usernameAlreadyTaken = (username, id) => {
 exports.password = (password) => {
 	return new Promise((resolve, reject) => {
 		const passwordRegex = RegExp(/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/);
-		if (passwordRegex.test(password))
+		if (passwordRegex.test(password) && password.length > 6)
 			resolve({ "status": "success", "key": "password" });
 		else
-			reject({ "status": "error", "key": "password", "msg": "Bad Password !" });
+			reject({ "status": "error", "key": "password", "msg": "The password must contain 1 uppercase, 1 lowercase and a minimum of 7 characters" });
 	})
 }
 

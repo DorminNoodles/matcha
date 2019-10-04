@@ -41,9 +41,16 @@ class App extends React.Component {
       let header = this.getObject("header")
 
       header = header === null ? "white-red" : "red-white"
-      this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
-         console.log("restore ", this.state)
-      })
+      if (document.cookie !== "")
+         this.setState({ ...this.state, user: JSON.parse(document.cookie), header }, () => {
+            console.log("restore ", this.state)
+         })
+      else if (document.cookie === "")
+         this.logout()
+      else
+         this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
+            console.log("restore ", this.state)
+         })
    }
 
    setObject = (key, value) => {
@@ -63,30 +70,31 @@ class App extends React.Component {
    }
 
    logout = () => {
-      
-      logout(this.state.user.token).then(({ data }) => {
-         if (data.status === "success") {
-            this.setState({
-               ...this.state,
-               user: {
-                  username: "",
-                  firstname: "",
-                  lastname: "",
-                  email: "",
-                  orientation: "",
-                  gender: "",
-                  location: "",
-                  age: "",
-                  profil: "",
-                  token: "",
-                  ageMin: "",
-                  ageMax: "",
-                  distance: "",
-                  identity: ""
-               }
-            }, () => { this.setObject("user", this.state) })
-         }
-      })
+
+      if (this.state.user.token)
+         logout(this.state.user.token).then(({ data }) => {
+            if (data.status === "success") {
+               this.setState({
+                  ...this.state,
+                  user: {
+                     username: "",
+                     firstname: "",
+                     lastname: "",
+                     email: "",
+                     orientation: "",
+                     gender: "",
+                     location: "",
+                     age: "",
+                     profil: "",
+                     token: "",
+                     ageMin: "",
+                     ageMax: "",
+                     distance: "",
+                     identity: ""
+                  }
+               }, () => { this.setObject("user", this.state) })
+            }
+         })
    }
 
    render() {

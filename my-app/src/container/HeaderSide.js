@@ -7,6 +7,7 @@ class HeaderSide extends React.Component {
     static contextType = UserProvider;
 
     logout = () => {
+        document.cookie="";
         this.context.logout();
         this.props.history.push('/');
     }

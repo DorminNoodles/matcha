@@ -24,18 +24,15 @@ const score = require("./routes/score");
 const visit = require("./routes/visit");
 const tag = require("./routes/tag");
 const tags = require("./routes/tags");
-// const gpsDistance = require("./routes/gpsDistance");
 const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
-const confirm = require("./routes/confirm");
+// const confirm = require("./routes/confirm");
 const location = require("./routes/location");
 const report = require("./routes/report");
-const test = require("./routes/test");
 
 
 //SERVICES
 const activationMail = require('./services/activationMail');
-const changeEmail = require('./services/changeEmail');
 const geolocation = require('./services/geolocation');
 
 
@@ -83,12 +80,11 @@ app.use('/api/tags', tags);
 // app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
-app.use('/api/confirm', confirm);
+// app.use('/api/confirm', confirm);
 app.use('/api/location', location);
 app.use('/api/block', block);
 app.use('/api/report', report);
 app.use('/api/notification', notification);
-app.use('/api/test', test);
 
 const sockets = require('./socket.js');
 
