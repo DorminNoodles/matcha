@@ -84,7 +84,6 @@ class ActivationMail {
 				html: '<html>\
     						<body style="background-color: #B33070 ;font-family: Helvetica, sans-serif;font-style:oblique;">\
         					<h1 style="color:white;text-align:center;padding-top:100px;font-size:70px;">Matcha</h1>\
-        					<img src="https://pngimage.net/wp-content/uploads/2018/06/forgot-password-images-png-2.png" alt="Paris" style="width:50%;display: block;margin-left: auto;margin-right: auto;">\
         					<div style="text-align:center;font-size:25px;">\
         						<br />\
         						Forgot your password?\

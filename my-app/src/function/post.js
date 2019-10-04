@@ -28,10 +28,8 @@ export function password(password, confirmPassword, token, key) {
         },
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then(response => {
-        if (response.data.status === "success")
-            return response.data;
-    }).catch(error => { return error; });
+    }).then(response => { return response.data; })
+        .catch(error => { return error; });
 }
 
 export function register(data, info) {

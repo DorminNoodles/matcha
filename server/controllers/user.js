@@ -163,11 +163,12 @@ exports.authenticate = (data) => {
 
 exports.forgot = (data) => {
 	return new Promise((resolve, reject) => {
+
 		userModel.findUserByEmail(data, 0)
 			.then((res) => {
-
 				var key = Math.floor(Math.random() * 900000000) + 100000000;
 				userModel.setKeyPassword(key, res.id).then(() => {
+
 					var token = jwt.sign({
 						id: res.id,
 						username: res.username,
@@ -179,24 +180,23 @@ exports.forgot = (data) => {
 						email: res.email
 					}, key, token);
 
-					resolve();
-				}).catch((error) => { reject(); })
-			}).catch((error) => { reject(); })
+					resolve({ "status": "success" });
+				})
+			}).catch(() => { reject(); })
 	})
 }
 
 exports.updatePassword = ({ token, password, confirmPassword, id, key }) => {
 	return new Promise((resolve, reject) => {
+
 		let passCrypted;
-		if (password != confirmPassword) {
+		if (password !== confirmPassword)
 			reject({ "status": "error", "msg": "Password and confirmation does not match" });
-			return;
-		}
 
 		userModel.checkKeyPassword(key, id)
-			.then((res) => {
+			.then(() => {
 				inputModel.password(password)
-					.then((res) => {
+					.then(() => {
 						bcrypt.hash(password, 10)
 							.then((hash) => {
 								passCrypted = hash;
@@ -204,26 +204,26 @@ exports.updatePassword = ({ token, password, confirmPassword, id, key }) => {
 							})
 							.then((decoded) => {
 								return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-							})
-							.then((res) => {
-								resolve({ "status": "success", "msg": "The password is successfully change " });
+									.then(() => {
+										resolve({ "status": "success", "msg": "The password is successfully change " });
+									})
 							})
 					})
-			}).catch((err) => { reject(err); })
+			}).catch((err) => {
+				if (err.msg === "key email not valid")
+					resolve(err )
+				else
+					reject(err);
+			})
 	})
 }
 
 exports.activate = (token) => {
 	return new Promise((resolve, reject) => {
 		let decoded = jwt.verify(token, process.env.JWT_KEY);
-		console.log(decoded);
 		userModel.activateUser(decoded.username, decoded.email)
-			.then((res) => {
-				resolve(res);
-			})
-			.catch((err) => {
-				reject(err);
-			})
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
 	})
 }
 

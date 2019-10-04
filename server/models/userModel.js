@@ -116,10 +116,8 @@ exports.findUserByEmail = (email, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				var result = conn.query('SELECT username, id, email \
+				return conn.query('SELECT username, id, email \
 									FROM users WHERE email=? AND id NOT IN (?)', [email, id]);
-				conn.end();
-				return result;
 			}).then((result) => {
 				result[0] ? resolve(result[0]) : reject();
 			}).catch((error) => { reject(error); })
@@ -212,17 +210,16 @@ exports.activateUser = (username, email) => {
 }
 
 exports.changePwd = (email, username, pwd) => {
-	console.log("CHangeusername")
-	console.log(username)
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('UPDATE users SET password=?, hjtmp_email="" WHERE email=? AND username=?', [pwd, email, username]);
+				return conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username]);
 			})
 			.then((res) => {
 				resolve({ "status": "success", "msg": "Password changed!" });
 			})
 			.catch((err) => {
+				console.log(err)
 				reject({ status: "error", msg: "error db !" });
 			})
 	});
@@ -289,14 +286,13 @@ exports.checkKeyPassword = (key, id) => {
 			.then((conn) => {
 				return conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
 					.then((res) => {
-						if (res && res.length)
+						if (res && res.length > 0)
 							resolve({ "status": "success" });
 						else
 							reject({ "status": "error", "msg": "key email not valid" });
 					})
 			})
 			.catch((err) => { 
-				console.log(err)
 				reject({ "status": "error", "msg": "Internal Server Error" }); })
 	})
 }

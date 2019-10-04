@@ -35,8 +35,8 @@ router.patch('/', urlencodedParser, (req, res) => {
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-		.then(() => {
-			res.status(200).send({ "status": "success" });
+		.then((response) => {
+			res.status(200).send(response);
 		})
 		.catch((err) => {
 			res.status(500).send({ "status": "error", "msg": "error" });
@@ -45,12 +45,16 @@ router.post('/forgot', urlencodedParser, (req, res) => {
 
 router.put('/password', urlencodedParser, (req, res) => {
 
-	if (!req.token)
+	if (!req.token || req.body.key === 0)
 		res.status(401).send({ status: "error", msg: "access denied !" });
 
 	user.updatePassword({ ...req.body, id: req.token.id })
-		.then((result) => { res.status(200).send(result); })
-		.catch((err) => { res.status(400).send(err) })
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(400).send(err)
+		})
 })
 
 router.post('/logout', urlencodedParser, (req, res) => {
@@ -91,7 +95,6 @@ router.get('/avatar', urlencodedParser, (req, res) => {
 			res.end(img, 'binary');
 		})
 		.catch((err) => {
-			console.log(err);
 			res.status(500).send(err);
 		})
 })
