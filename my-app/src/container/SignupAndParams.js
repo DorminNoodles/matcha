@@ -57,11 +57,14 @@ class Signup extends React.Component {
     }
 
     componentDidMount() {
-        if (this.context.user.token)
+        let { token } = this.context.user
+        let { pathname } = this.props.location
+
+        if ((!token && pathname === "/parameters") || (token && pathname === "/signup"))
             this.props.history.push("/")
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
-            
+
         this.setting(this.props.location.pathname)
     }
 
@@ -188,16 +191,16 @@ class Signup extends React.Component {
 
         update(filtered, this.state.info, this.context.user.token).then((res) => {
             if (res.status === "success") {
-                this.setState({ ...this.state, success: "Update succeed" },
+                this.setState({ ...this.state, success: "Update succeed", error: "" },
                     () => {
                         this.context.onChange("user", { token: this.context.user.token, ...res.data })
                         getUser(this.context.user.token, this.context.user.id)
                             .then((res) => this.initInfo(res.data))
                     })
-            } else { this.setState({ ...this.state, error: "error" }) }
+            } else { this.setState({ ...this.state, error: "error", success: "" }) }
 
         }).catch((err) => {
-            this.setState({ ...this.state, error: "error" })
+            this.setState({ ...this.state, error: "error", success: "" })
         })
     }
 

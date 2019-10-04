@@ -4,6 +4,7 @@ import UserProvider from '../context/UserProvider';
 import { getMessages, getListMsg } from '../function/get'
 import queryString from 'query-string';
 import { sendMsg } from '../function/post'
+import { isEmpty } from '../function/utils'
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:3300');
 
@@ -38,9 +39,10 @@ class Chat extends React.Component {
     let { conversation } = this.state
 
     socket.on("new message", data => {
-      conversation.push(data)
-
-      this.setState({ ...this.state, message: "", conversation }, () => { })
+      if (this.state.group_id === data.id) {
+        conversation.push(data)
+        this.setState({ ...this.state, message: "", conversation }, () => { })
+      }
     })
   }
 
@@ -74,30 +76,31 @@ class Chat extends React.Component {
     let params = queryString.parse(this.props.location.search)
     let { id, username, avatar, token } = this.context.user
 
-    sendMsg(message, params.id, group_id, token)
-      .then((res) => {
+    if (isEmpty(message) === 0)
+      sendMsg(message, params.id, group_id, token)
+        .then((res) => {
 
-        let data = {
-          avatar,
-          from_id: id,
-          to_id: parseInt(params.id),
-          id: group_id,
-          message: message,
-          username: username,
-        }
+          let data = {
+            avatar,
+            from_id: id,
+            to_id: parseInt(params.id),
+            id: group_id,
+            message: message,
+            username: username,
+          }
 
-        let notif = {
-          ...res.data.data,
-          username: username,
-        }
+          let notif = {
+            ...res.data.data,
+            username: username,
+          }
 
-        conversation.push(data)
-        this.setState({ ...this.state, message: "", conversation }, () => {
-          socket.emit('send message', data);
-          socket.emit('notif', notif);
+          conversation.push(data)
+          this.setState({ ...this.state, message: "", conversation }, () => {
+            socket.emit('send message', data);
+            socket.emit('notif', notif);
+          })
         })
-      })
-      .catch((err) => { console.log(err) })
+        .catch((err) => { console.log(err) })
   }
 
   render() {
