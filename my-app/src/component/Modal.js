@@ -1,3 +1,4 @@
+import profile from "../image/profile.png"
 import React from 'react';
 
 function ModalBlockReport({ index, modal, onChange, name, fct }) {
@@ -18,7 +19,7 @@ function ModalBlockReport({ index, modal, onChange, name, fct }) {
 }
 
 function ModalPhoto({ index, photos, modal, onChange, number, id, onChangePicture }) {
-    let img = process.env.REACT_APP_PUBLIC_URL + id + "/" + photos[number]
+    let img = id && photos[number] ? process.env.REACT_APP_PUBLIC_URL + id + "/" + photos[number] : profile
 
     return (
         <div className={modal}>

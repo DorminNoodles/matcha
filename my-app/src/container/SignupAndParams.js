@@ -175,7 +175,7 @@ class Signup extends React.Component {
         let data = new FormData();
 
         const allowed = ["username", "firstname", "lastname", "email", "gender",
-            "orientation", "bio", "age", "distance", "ageMin", "ageMax",
+            "orientation", "bio", "age", "distance", "ageMin", "ageMax", "bio",
             "location", "latitude", "longitude"]
 
         const filtered = Object.keys(info)
