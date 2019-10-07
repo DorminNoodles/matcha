@@ -10,13 +10,13 @@ exports.checkDataNew = (data) => {
 	return new Promise((resolve, reject) => {
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username, 0).catch(e => e),
 			inputModel.password(data.password).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-			inputModel.location(data.location).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email, 0).catch(e => e),
+			inputModel.location(data.location, data.latitude, data.longitude).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
@@ -33,37 +33,29 @@ exports.checkDataNew = (data) => {
 			})
 
 			Object.entries(errors).length ? reject(errors) : resolve();
-		}).catch((err) => {
-			console.log(err);
-			reject(err);
-		})
+		}).catch((err) => { reject(err); })
 	})
 }
 
-exports.checkDataUpdate = (data) => {
+exports.checkDataUpdate = (data, id) => {
 	return new Promise((resolve, reject) => {
-		console.log("CHECK DATA");
-		console.log("data ->> ", data);
 
 		let filter = [];
 
-		for (let elem in data) {
+		for (let elem in data)
 			filter.push(elem);
-		}
 
 		Promise.all([
 			inputModel.username(data.username).catch(e => e),
-			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
-			inputModel.password(data.password).catch(e => e),
+			inputModel.usernameAlreadyTaken(data.username, id).catch(e => e),
 			inputModel.firstname(data.firstname).catch(e => e),
 			inputModel.lastname(data.lastname).catch(e => e),
 			inputModel.email(data.email).catch(e => e),
-			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-			inputModel.location(data.location).catch(e => e),
+			inputModel.emailAlreadyTaken(data.email, id).catch(e => e),
+			inputModel.location(data.location, data.latitude, data.longitude).catch(e => e),
 			inputModel.gender(data.gender).catch(e => e),
 			inputModel.age(data.age).catch(e => e),
 			inputModel.orientation(data.orientation).catch(e => e),
-			inputModel.avatar(data.avatar).catch(e => e),
 			inputModel.bio(data.bio).catch(e => e),
 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
 			inputModel.distance(data.distance).catch(e => e),
@@ -77,86 +69,41 @@ exports.checkDataUpdate = (data) => {
 				}
 			})
 
-			// console.log('errors  ', errors);
-			// errors.username = 'fuck';
-
 			Object.entries(errors).length ? reject(errors) : resolve();
-		}).catch((err) => {
-			console.log(err);
-			reject(err);
-		})
+
+		}).catch((err) => { reject(err); })
 	})
 }
 
-// exports.checkData = (data) => {
-// 	return new Promise((resolve, reject) => {
-// 		console.log("CHECK DATA");
-// 		console.log("data ->> ", data);
-//
-// 		let error = false;
-// 		let json = {};
-//
-// 		Promise.all([
-// 			inputModel.username(data.username).catch(e => e),
-// 			inputModel.usernameAlreadyTaken(data.username).catch(e => e),
-// 			inputModel.password(data.password).catch(e => e),
-// 			inputModel.firstname(data.firstname).catch(e => e),
-// 			inputModel.lastname(data.lastname).catch(e => e),
-// 			inputModel.email(data.email).catch(e => e),
-// 			inputModel.emailAlreadyTaken(data.email).catch(e => e),
-// 			inputModel.location(data.location).catch(e => e),
-// 			inputModel.gender(data.gender).catch(e => e),
-// 			inputModel.age(data.age).catch(e => e),
-// 			inputModel.orientation(data.orientation).catch(e => e),
-// 			inputModel.avatar(data.avatar).catch(e => e),
-// 			inputModel.bio(data.bio).catch(e => e),
-// 			inputModel.ageRange(data.ageMin, data.ageMax).catch(e => e),
-// 			inputModel.distance(data.distance).catch(e => e),
-// 		]).then((res) => {
-// 			res.forEach((elem) => {
-// 				if (elem.status && elem.status === 'error') {
-// 					json[elem.key] = elem.msg;
-// 					error = true;
-// 				}
-// 			})
-//
-// 			console.log(json);
-//
-// 			if (error)
-// 				reject(json);
-// 			else
-// 				resolve({status: "success", key: "checkData"});
-// 		}).catch((err) => {
-// 			console.log(err);
-// 			reject(err);
-// 		})
-// 		console.log("ENDOOOO");
-// 	})
-// }
-
-exports.findUserByUsername = (username) => {
+exports.findUser = (id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				var result = conn.query('SELECT \
-									username,\
-									id, \
-									mailValidation, \
-									email, \
-									gender, \
-									orientation, \
-									location, \
-									latitude, \
-									longitude, \
-									age, \
-									avatar \
-									FROM users WHERE username=?', [username]);
-				conn.end();
-				return result;
+				return conn.query('SELECT username, id, email, gender, orientation, \
+					location, latitude, longitude, age, avatar, ageMin, ageMax,	distance, identity \
+					FROM users WHERE id=? ', [id])
 			}).then((result) => {
-				if (result[0])
-					resolve(result[0]);
+				if (result[0]) { resolve(result[0]); }
 				else
+					reject({ "status": "error", "msg": "User does not exist" });
+			})
+			.catch(() => {
+				reject({ "status": "error", "msg": "Internal Server Error" });
+			})
+	})
+}
+
+exports.findUserByUsername = (username, id) => {
+	return new Promise((resolve, reject) => {
+		database.connection()
+			.then((conn) => {
+				return conn.query('SELECT username, id, mailValidation, email, \
+									gender, orientation, location, latitude, \
+									longitude, age, avatar, ageMin, ageMax, distance, identity,\
+									IF((SELECT id FROM ban WHERE id=users.id), TRUE, FALSE) as ban \
+									FROM users WHERE username=? AND id NOT IN (?)', [username, id]);
+			}).then((result) => {
+				result[0] ? resolve(result[0]) :
 					reject({ "status": "error", "key": "user", "msg": "User does not exist" });
 			}).catch((error) => {
 				reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
@@ -164,27 +111,16 @@ exports.findUserByUsername = (username) => {
 	})
 }
 
-exports.findUserByEmail = (email) => {
-	return new Promise((resolve, reject) => {
+exports.findUserByEmail = (email, id) => {
 
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
-			var result = conn.query('SELECT username, id, email FROM users WHERE email=\'' + email + '\'');
-			conn.end();
-			return result;
-		}).then((result) => {
-			if (result[0])
-				resolve(result[0]);
-			else
-				reject();
-		}).catch((error) => {
-			reject(error);
-		})
+	return new Promise((resolve, reject) => {
+		database.connection()
+			.then((conn) => {
+				return conn.query('SELECT username, id, email \
+									FROM users WHERE email=? AND id NOT IN (?)', [email, id]);
+			}).then((result) => {
+				result[0] ? resolve(result[0]) : reject();
+			}).catch((error) => { reject(error); })
 	})
 }
 
@@ -193,190 +129,170 @@ exports.saveUser = (data) => {
 
 		bcrypt.hash(data.password, 10)
 			.then((hash) => {
-				console.log('hash password > ', hash);
 				data.password = hash;
 				return database.connection();
 			})
 			.then((conn) => {
 				return conn.query("INSERT INTO users SET ?", data);
 			})
-			.then((res) => {
-				console.log('query database > ', res);
-				resolve('User saved');
-			})
-			.catch((err) => {
-				console.log('catch >', err);
-				reject(err);
-			})
+			.then((res) => { resolve({ status: "success", id: res.insertId }); })
+			.catch((err) => { reject(err); })
 	})
 }
 
-exports.findUserById = (id) => {
+exports.findUserById = (id, user_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				var result = conn.query('SELECT * FROM users WHERE id=\'' + id + '\'');
-				conn.end();
-				return (result);
+				return conn.query('SELECT id, username, firstname, lastname, email, gender, orientation,\
+				 bio, age, distance, ageMin, ageMax, avatar, location, latitude, longitude, active,\
+				 IF((SELECT * FROM ban WHERE id=?), TRUE, FALSE ) as ban, \
+				((SELECT COUNT(*) FROM likes WHERE likes.liked=users.id) * 10) + \
+				((SELECT COUNT(*) FROM usertags WHERE tag_id IN \
+				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
+				COUNT(liked) as nb_likes,\
+				IF(report.reported=users.id, TRUE, FALSE) as report,\
+				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes\
+				FROM users \
+				LEFT JOIN report ON(report.reported=? AND report.reporting=?)\
+				LEFT JOIN likes ON (likes.liked=?) \
+				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
 			}).then((result) => {
-				if (result[0])
-					resolve(result[0]);
-				else
-					reject();
-			}).catch((error) => {
-				console.log("findUserByName failed");
-				reject(error);
-				return;
-			})
+				result[0] ? resolve(result[0]) : reject();
+			}).catch((error) => { reject(error); })
 	})
 }
 
 exports.checkLogin = (username, password) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		}).then((conn) => {
-			let result = conn.query('SELECT password FROM users WHERE username=?', [username]);
-			return result;
-		}).then((result) => {
-			bcrypt.compare(password, result[0].password)
-				.then((res) => {
-					if (res)
-						resolve(res);
-					else
-						reject({ "status": "error", "key": "password", "msg": "Wrong password" });
-				}).catch((error) => {
-					reject();
-					console.log(error);
-				})
-		}).catch((error) => {
-			reject(error);
-		})
+		database.connection()
+			.then((conn) => {
+				return conn.query('SELECT password FROM users WHERE username=?', [username]);
+			}).then((result) => {
+				bcrypt.compare(password, result[0].password)
+					.then((res) => {
+						if (res)
+							this.setActive(username)
+								.then((res) => resolve(res))
+								.catch((error) => { reject(error); })
+						else
+							reject({ "status": "error", "key": "password", "msg": "Wrong password" });
+
+					}).catch(() => { reject({ "status": "error" }); })
+			}).catch(() => { reject({ "status": "error" }); })
 	})
 }
 
-exports.saveGps = (id, long, lat) => {
+exports.setActive = (username, password) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
+
+		database.connection().then((conn) => {
+			conn.query('UPDATE users SET active=0 WHERE username=?', [username])
+				.then(() => { resolve({ "status": "success" }) })
+				.catch((error) => { reject({ "status": "error" }) })
 		})
-			.then((conn) => {
-				return conn.query("UPDATE users SET latitude=?, longitude=? WHERE id=?", [long, lat, id]);
-			})
-			.then((res) => {
-				resolve('Gps saved');
-			})
-			.catch((err) => {
-				console.log("ERRRO");
-				reject(err);
-			})
 	})
 }
 
 exports.activateUser = (username, email) => {
 	return new Promise((resolve, reject) => {
-		console.log("hello");
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		})
+		database.connection()
 			.then((conn) => {
 				let query = conn.query('UPDATE users SET mailValidation=? WHERE email=? AND username=?', [true, email, username]);
 				conn.end();
 				return query;
 			})
 			.then((res) => {
-				console.log(res);
 				resolve({ "status": "success", "msg": "UserActivated !" });
 			})
-			.catch((err) => {
-				console.log("ERROR ++++++++++++++++++++++++");
-				reject(err);
-			})
+			.catch((err) => { reject(err); })
 	})
 }
 
 exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
-		mysql.createConnection({
-			port: process.env.PORT,
-			host: 'localhost',
-			user: 'root',
-			password: 'qwerty',
-			database: 'matcha'
-		})
+		database.connection()
 			.then((conn) => {
-				console.log("PUTAIN DE MERDE");
-				return conn.query('UPDATE users SET password=? WHERE email=? AND username=?', [pwd, email, username]);
+				return conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username]);
 			})
 			.then((res) => {
 				resolve({ "status": "success", "msg": "Password changed!" });
 			})
 			.catch((err) => {
-				console.log("Error !");
+				console.log(err)
 				reject({ status: "error", msg: "error db !" });
 			})
 	});
 }
 
-exports.update = (id, data) => {
+exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
-		console.log('### UPDATEUSER ###');
-
-		if (data.email) {
-			console.log('faire quelque chose');
-			data.tmp_email = data.email;
-			delete data['email'];
-		}
 
 		database.connection()
 			.then((conn) => {
-				return conn.query('UPDATE users SET ? WHERE id=?', [data, id]);
+				return conn.query('UPDATE users SET ? WHERE id=?', [data, id])
+					.then(() => { return this.findUser(id) })
 			})
-			.then((res) => {
-
-				if (res.affectedRows == 1) {
-					console.log('QUERY SUCCESS');
-					myEmitter.emit('userUpdate', { ...data, id });
-					resolve();;
-				}
-				else {
-					reject({ status: "error", msg: "User not found !" });
-				}
+			.then((data) => {
+				if (data)
+					resolve({ "status": "success", "msg": "update user", data });
+				else
+					reject({ status: "error", msg: "update failed" });
 			})
-			.catch((err) => {
-				console.log(err);
-				reject({ status: "error", code: 502, msg: 'database error !' });
-			})
+			.catch((err) => { reject(err); })
 	})
 }
 
-exports.changeEmail = (id, tmp_email) => {
+// exports.changeEmail = (id, tmp_email) => {
+// 	return new Promise((resolve, reject) => {
+
+// 		database.connection()
+// 			.then((conn) => {
+// 				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
+// 			})
+// 			.then((conn) => {
+// 				resolve();
+// 			})
+// 			.catch((err) => {
+// 				reject();
+// 			})
+// 	})
+// }
+
+exports.logout = (id) => {
 	return new Promise((resolve, reject) => {
 
-		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+		var d = new Date();
+		database.connection()
+			.then((conn) => { return conn.query('UPDATE users SET active=? WHERE id=?', [d, id]); })
+			.then(() => { resolve({ "status": "success" }); })
+			.catch((err) => { reject({ "status": "error" }); })
+	})
+}
+
+exports.setKeyPassword = (key, id) => {
+	return new Promise((resolve, reject) => {
 
 		database.connection()
+			.then((conn) => { return conn.query('UPDATE users SET tmp_email=? WHERE id=?', [key, id]); })
+			.then(() => { resolve({ "status": "success" }); })
+			.catch((err) => { reject({ "status": "error" }); })
+	})
+}
+
+exports.checkKeyPassword = (key, id) => {
+	return new Promise((resolve, reject) => {
+		database.connection()
 			.then((conn) => {
-				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
+				return conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
+					.then((res) => {
+						if (res && res.length > 0)
+							resolve({ "status": "success" });
+						else
+							reject({ "status": "error", "msg": "key email not valid" });
+					})
 			})
-			.then((conn) => {
-				resolve();
-			})
-			.catch((err) => {
-				console.log(err)
-				reject();
-			})
+			.catch((err) => { 
+				reject({ "status": "error", "msg": "Internal Server Error" }); })
 	})
 }

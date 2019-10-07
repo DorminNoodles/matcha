@@ -7,25 +7,44 @@ const myEmitter = require('../emitter');
 const events = require('events');
 
 const userModel = require('../models/userModel');
-const tagsModel = require('../models/tagsModel');
 const inputModel = require('../models/inputModel');
-const location = require('../controllers/location');
 
 var eventEmitter = new events.EventEmitter();
 
-const avatarUpload = (data) => {
+const avatarUpload = (data, id) => {
 	return new Promise((resolve, reject) => {
 		if (!data.avatar || !data.avatar.mv) {
 			reject({ status: "error", key: "avatar", msg: "Avatar upload error !" })
 			return;
 		}
-		data.avatar.mv('public/pictures/' + data.username.toLowerCase() + '/avatar_' + data.username.toLowerCase() + '_' + data.avatar.name, (err) => {
+
+		let name = data.avatar.name.toLowerCase()
+		data.avatar.mv('public/pictures/' + id + '/' + name, (err) => {
 			if (err)
 				reject({ status: "error", key: "avatar", msg: "Avatar upload error !" });
 			else
 				resolve({ status: "success" });
 		})
 	})
+}
+
+exports.identity = (gender, orientation) => {
+
+	let identity = 000000
+	let mask = 000000
+
+	if (gender === "male")
+		identity = orientation === "heterosexual" ? 17 : orientation === "homosexual" ? 10 : 27;
+	else if (gender === "female")
+		identity = orientation === "heterosexual" ? 34 : orientation === "homosexual" ? 5 : 39;
+
+
+	if (gender === "male")
+		mask = orientation === "heterosexual" ? 32 : orientation === "homosexual" ? 8 : 2;
+	else if (gender === "female")
+		mask = orientation === "heterosexual" ? 16 : orientation === "homosexual" ? 4 : 1;
+
+	return { identity, mask }
 }
 
 exports.new = (data) => {
@@ -38,6 +57,8 @@ exports.new = (data) => {
 			'email',
 			'password',
 			'location',
+			'latitude',
+			'longitude',
 			'avatar',
 			'gender',
 			'orientation',
@@ -48,103 +69,63 @@ exports.new = (data) => {
 			'distance',
 		];
 
+		if (data.password !== data.confirmation)
+			reject({ status: 'error', key: "password", msg: 'Password not confirm' });
+		else
+			delete data['confirmation'];
+
 		for (let elem in data) {
 			if (!filter.includes(elem)) {
-				reject({ status: 'error', code: 400, msg: 'Unhautorized key in data' });
+				reject({ status: 'error', msg: 'Unhautorized key in data' });
 				return;
 			}
 		}
 
+		let binary = this.identity(data.gender, data.orientation)
+
 		userModel.checkDataNew(data)
-			.then((res) => {
-				return avatarUpload(data);
-			})
 			.then((res) => {
 				return userModel.saveUser({
 					...data,
+					...binary,
 					avatar: data.avatar.name
 				});
 			})
 			.then((res) => {
-				return location.findGps(data);
+				return avatarUpload(data, res.id);
 			})
 			.then((res) => {
 				myEmitter.emit('userRegistered', data);
-				resolve(res);
+				resolve({ status: 'success', msg: "user created" });
 			})
-			.catch((err) => {
-				// console.log('out > ', err);
-				console.log('user controller check data error !!');
-				reject(err);
-			})
+			.catch((err) => { reject({ status: "error", data: err }); })
 	})
 };
 
-exports.createUser = (data) => {
+exports.get = (id, user_id) => {
 	return new Promise((resolve, reject) => {
-		userModel.checkData(data)
-			.then((res) => {
-				console.log("Hello");
-				resolve();
-			})
-			.catch((err) => {
-				console.log("Ouech");
-				reject();
-			})
-	});
-}
 
-exports.get = (userId) => {
-	return new Promise((resolve, reject) => {
-		let data;
-
-		userModel.findUserById(userId)
-			.then((user) => {
-				user.password = '';
-				data = user;
-				return tagsModel.get(userId);
-			})
-			.then((tags) => {
-				resolve({ ...data, tags: tags });
-			})
-			.catch((err) => {
-				reject(err);
-			})
-	});
-}
-
-exports.find = (data) => {
-	return new Promise((resolve, reject) => {
-		let user = new userService();
-		user.authenticate(data.username, data.password)
-			.then(() => {
-				resolve();
-			})
-			.catch(() => {
-				reject();
-			})
+		userModel.findUserById(id, user_id)
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
 	});
 }
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		inputModel.username(data.username)
-			.then(() => {
-				return inputModel.password(data.password)
-			})
-			.then(() => {
-				console.log("hello authenticate");
-				return userModel.findUserByUsername(data.username);
-			})
+			.then(() => { return inputModel.password(data.password) })
+			.then(() => { return userModel.findUserByUsername(data.username, 0) })
 			.then((result) => {
 				if (!result.mailValidation) {
 					reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
 					return;
 				}
+				else if (result.ban === 1)
+					resolve({ status: 'error', msg: 'ban' });
+
 				userModel.checkLogin(data.username, data.password)
 					.then(() => {
-						console.log("HUMMM");
-						console.log(result);
 						let datas = {};
 
 						datas.token = jwt.sign({
@@ -164,15 +145,17 @@ exports.authenticate = (data) => {
 							latitude: result.latitude,
 							longitude: result.longitude,
 							age: result.age,
-							avatar: result.avatar
+							avatar: result.avatar,
+							ageMin: result.ageMin,
+							ageMax: result.ageMax,
+							distance: result.distance,
+							identity: result.identity
 						};
-						resolve(datas);
-					}).catch((error) => {
-						console.log(error);
-						reject(error);
-					})
+
+						resolve({ status: 'success', msg: 'connected !', ...datas });
+
+					}).catch((error) => { reject(error) })
 			}).catch((err) => {
-				// console.log({"status": "error", "key": "database", "msg": "Connexion error !"});
 				reject(err);
 			})
 	})
@@ -180,51 +163,57 @@ exports.authenticate = (data) => {
 
 exports.forgot = (data) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByEmail(data)
+
+		userModel.findUserByEmail(data, 0)
 			.then((res) => {
-				var token = jwt.sign({
-					id: res.id,
-					username: res.username,
-					email: res.email
-				}, process.env.JWT_KEY);
-				myEmitter.emit('forgotPass', {
-					username: res.username,
-					email: res.email
-				}, token);
-				resolve();
-			}).catch((error) => {
-				console.log("Not a registered email address !");
-				reject();
-			})
+				var key = Math.floor(Math.random() * 900000000) + 100000000;
+				userModel.setKeyPassword(key, res.id).then(() => {
+
+					var token = jwt.sign({
+						id: res.id,
+						username: res.username,
+						email: res.email
+					}, process.env.JWT_KEY);
+
+					myEmitter.emit('forgotPass', {
+						username: res.username,
+						email: res.email
+					}, key, token);
+
+					resolve({ "status": "success" });
+				})
+			}).catch(() => { reject(); })
 	})
 }
 
-exports.updatePassword = (token, pwd, confirmPwd) => {
+exports.updatePassword = ({ token, password, confirmPassword, id, key }) => {
 	return new Promise((resolve, reject) => {
+
 		let passCrypted;
-		if (pwd != confirmPwd) {
-			reject({ "status": "error password difference" });
-			return;
-		}
-		console.log("test :p");
-		bcrypt.hash(pwd, 10)
-			.then((hash) => {
-				passCrypted = hash;
-				console.log("OK_1");
-				return jwt.verify(token, process.env.JWT_KEY);
-			})
-			.then((decoded) => {
-				console.log("OK_2");
-				console.log("HERE+++++++");
-				return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-			})
-			.then((res) => {
-				console.log("GOOD");
-				resolve();
-			})
-			.catch((err) => {
-				console.log("LAST CATCH ***********");
-				reject(err);
+		if (password !== confirmPassword)
+			reject({ "status": "error", "msg": "Password and confirmation does not match" });
+
+		userModel.checkKeyPassword(key, id)
+			.then(() => {
+				inputModel.password(password)
+					.then(() => {
+						bcrypt.hash(password, 10)
+							.then((hash) => {
+								passCrypted = hash;
+								return jwt.verify(token, process.env.JWT_KEY);
+							})
+							.then((decoded) => {
+								return userModel.changePwd(decoded.email, decoded.username, passCrypted)
+									.then(() => {
+										resolve({ "status": "success", "msg": "The password is successfully change " });
+									})
+							})
+					})
+			}).catch((err) => {
+				if (err.msg === "key email not valid")
+					resolve(err )
+				else
+					reject(err);
 			})
 	})
 }
@@ -232,14 +221,9 @@ exports.updatePassword = (token, pwd, confirmPwd) => {
 exports.activate = (token) => {
 	return new Promise((resolve, reject) => {
 		let decoded = jwt.verify(token, process.env.JWT_KEY);
-		console.log(decoded);
 		userModel.activateUser(decoded.username, decoded.email)
-			.then((res) => {
-				resolve(res);
-			})
-			.catch((err) => {
-				reject(err);
-			})
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject(err); })
 	})
 }
 
@@ -255,85 +239,74 @@ exports.getAvatar = (id) => {
 	})
 }
 
-exports.update = (id, data) => {
+exports.update = (data, id) => {
 	return new Promise((resolve, reject) => {
-		console.log('user update !');
-		console.log(data);
-		console.log('hellooooooooo     ', data.length);
 
 		let validKeys = [
 			'username',
 			'firstname',
 			'lastname',
 			'email',
-			'password',
-			'location',
-			'avatar',
-			'gender',
 			'orientation',
+			'gender',
 			'age',
-			'age_min',
-			'age_max',
 			'bio',
+			'ageMin',
+			'ageMax',
 			'distance',
+			'location',
+			'latitude',
+			'longitude'
 		]
 
-		let filter = [];
+		let binary = this.identity(data.gender, data.orientation)
 
 		for (let elem in data) {
-			filter.push(elem);
-		}
-
-		for (let elem in data) {
-			console.log(elem);
 			if (!validKeys.includes(elem)) {
-				reject({ status: 'error', code: 400, msg: 'Unhautorized key in data' });
+				reject({ status: 'error', msg: 'Unhautorized key in data' });
 				return;
 			}
 		}
 
-		userModel.checkDataUpdate(data)
-			.then((res) => {
-				console.log('checkDataV2 resolve !');
-				console.log('send #########', id, data);
-				return userModel.update(id, data);
-			})
-			.then(() => {
-				console.log('update user');
-				resolve({ status: "success", code: 200 });
-			})
-			.catch((err) => {
-				console.log(err);
-				console.log('error in update controller');
-				reject({ status: "error", code: 403, data: err });
-			})
+		userModel.checkDataUpdate(data, id)
+			.then(() => { return userModel.update({ ...data, ...binary }, id) })
+			.then((res) => { resolve(res); })
+			.catch((err) => { reject({ status: "error", data: err }); })
 	})
 }
 
-exports.changeEmail = (token) => {
+// exports.changeEmail = (token) => {
+// 	return new Promise((resolve, reject) => {
+
+// 		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+// 			if (err)
+// 				reject({ status: 'error', msg: 'Token false !' });
+// 			else {
+// 				console.log(decoded);
+// 				console.log('decode Ok !');
+
+// 				userModel.changeEmail(decoded.id, decoded.email)
+// 					.then((result) => {
+// 						console.log('OK');
+// 						resolve();
+// 					})
+// 					.catch(() => {
+// 						console.log('ERROR 457');
+// 						reject();
+
+// 					})
+
+// 			}
+// 		});
+
+// 		// resolve();
+// 	})
+// }
+
+exports.logout = (id) => {
 	return new Promise((resolve, reject) => {
-
-		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-			if (err)
-				reject({ status: 'error', msg: 'Token false !' });
-			else {
-				console.log(decoded);
-				console.log('decode Ok !');
-
-				userModel.changeEmail(decoded.id, decoded.email)
-					.then((result) => {
-						console.log('OK');
-						resolve();
-					})
-					.catch(() => {
-						console.log('ERROR 457');
-						reject();
-
-					})
-
-			}
-		});
-
-		// resolve();
+		userModel.logout(id)
+			.then((res) => resolve(res))
+			.catch((err) => reject(err))
 	})
 }

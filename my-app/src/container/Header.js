@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Route, Link } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 
 class Header extends React.Component {
@@ -10,7 +9,10 @@ class Header extends React.Component {
 
         return (
             <div id="header" className={header}>
-                <span style={{ position: "absolute", right: "11px" }}><i className="fas fa-bell fa-lg"/></span>
+                <div style={{ position: "absolute", right: "11px" }}>
+                    <p>{this.props.number}</p>
+                    <span onClick={() => { this.props.icon() }}><i className="fas fa-bell fa-lg" /></span>
+                </div>
                 <div style={{ position: "absolute", right: "62px" }}>{user.username}</div>
             </div >
         )

@@ -10,63 +10,68 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 router.post('/', urlencodedParser, (req, res) => {
-	console.log("new user route");
 
 	if (req.files && req.files.avatar)
 		req.body.avatar = req.files.avatar;
 
 	user.new(req.body)
-	.then((result) => {
-		res.status(200).send({"status": "success", "msg": "user registered !"});
-	})
-	.catch((err) => {
-		res.status(500).send({"status": "error", "key": err.key, "msg": err.msg, 'data': err});
-	})
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(400).send(err);
+		})
 })
 
 router.patch('/', urlencodedParser, (req, res) => {
 
 	if (!req.token)
-		res.status(401).send({ status: "error", msg: "access denied !"});
+		res.status(401).send({ status: "error", msg: "access denied !" });
 
-	user.update(req.token.id, req.body)
-	.then((result) => {
-		console.log('ROUTE SUCCESS');
-		console.log(result.code);
-		res.status(result.code).send(result);
-
-	})
-	.catch((err) => {
-		console.log(' => ', err.data);
-		res.status(err.code).send({status: "error", msg: err.msg, data: err.data});
-	})
+	user.update(req.body, req.token.id, req.token)
+		.then((result) => { res.status(200).send(result); })
+		.catch((err) => { res.status(400).send(err); })
 })
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-	.then(() => {
-		res.status(200).send({ "status": "success" });
-	})
-	.catch((err) => {
-		res.status(500).send({ "status": "error", "msg": "error" });
-		console.log(err);
-	})
+		.then((response) => {
+			res.status(200).send(response);
+		})
+		.catch((err) => {
+			res.status(500).send({ "status": "error", "msg": "error" });
+		})
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
-	user.updatePassword(req.body.token, req.body.password, req.body.confirmPassword)
-	.then((result) => {
-		res.status(200).send({ "status": "success" });
-	})
-	.catch((err) => {
-		res.status(400).send({ "status": "error", "msg": err.msg });
-	})
+
+	if (!req.token || req.body.key === 0)
+		res.status(401).send({ status: "error", msg: "access denied !" });
+
+	user.updatePassword({ ...req.body, id: req.token.id })
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(400).send(err)
+		})
 })
 
+router.post('/logout', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ status: "error", msg: "access denied !" });
+
+	user.logout(req.token.id)
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(400).send(err);
+		})
+})
 
 router.get('/confirm', urlencodedParser, (req, res) => {
-
-	console.log(req.query.key);
 
 	if (req.query.key) {
 		user.activate(req.query.key)
@@ -84,32 +89,34 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 
 router.get('/avatar', urlencodedParser, (req, res) => {
 	user.getAvatar(req.query.id)
-	.then((filename) => {
-		var img = require('fs').readFileSync(filename);
-		res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-		res.end(img, 'binary');
-	})
-	.catch((err) => {
-		console.log(err);
-		res.status(500).send(err);
-	})
+		.then((filename) => {
+			var img = require('fs').readFileSync(filename);
+			res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+			res.end(img, 'binary');
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		})
 })
 
 router.get('/', urlencodedParser, (req, res) => {
-	if (!req.token){
+	if (!req.token) {
 		res.status(401).send({ "status": "error", "msg": "User Unauthorized" });
 		return;
 	}
-	if (!req.params.userId) {
-		user.get(req.token.id)
-		.then((user) => {
-			console.log(user);
-			res.status(200).send({...user});
-		})
-		.catch(() => {
-			res.status(400).send({ "status": "error", "msg": "" });
-		})
+
+	if (req.query.id) {
+		user.get(parseInt(req.query.id), req.token.id)
+			.then((user) => {
+				res.status(200).send({ ...user });
+			})
+			.catch(() => {
+				res.status(400).send({ "status": "error", "msg": "" });
+			})
 	}
 })
+
+
+
 
 module.exports = router;

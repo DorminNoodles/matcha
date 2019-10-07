@@ -24,6 +24,8 @@ class Signin extends Component {
   }
 
   componentDidMount() {
+    if (this.context.user.token)
+      this.props.history.push("/")
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
   }
@@ -35,11 +37,13 @@ class Signin extends Component {
   }
 
   connect = () => {
-    connect(this.state.username, this.state.password).then(({ res, data }) => {
-      if (res === 1) {
-        this.context.onChange("user", { token: data.token, ...data.user })
+    connect(this.state.username, this.state.password).then((res) => {
+      if (res.res === 1) {
+        document.cookie = JSON.stringify({ token: res.data.token, ...res.data.user })
+        this.context.onChange("user", { token: res.data.token, ...res.data.user })
         this.props.history.push("/")
-      } else { this.setState({ ...this.state, error: data }) }
+      }
+      else { this.setState({ ...this.state, error: res.data }) }
     })
   }
 

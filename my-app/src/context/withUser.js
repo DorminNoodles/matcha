@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 // initialize Context with default value
 export const UserContext = React.createContext();
 
-
-
 const withUser = (ComposedComponent) => {
     class UserProvider extends Component {
         constructor(props) {

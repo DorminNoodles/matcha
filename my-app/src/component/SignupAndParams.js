@@ -1,40 +1,40 @@
 import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
-import { SliderAge, SliderLocation, Gender, SexualOrientation, SliderAgeRange } from '../export'
+import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
 
-function ProfileImg({ image, sendFile, avatar }) {
+const ProfileImg = ({ error, sendFile, avatar, upload }) => {
+    let imgProfil = !avatar ? profile : avatar
 
-    let imgProfil = image.value !== "" ? image.value : (avatar && avatar.value !== "" ? process.env.REACT_APP_PUBLIC_URL + "pictures/lisouiw/" + avatar.value : profile)
     return (
 
         <div className="center" style={{ flexWrap: "wrap", flexDirection: "column" }}>
-            <figure className="image is-128x128">
+            <figure className="image is-128x128" style={{ margin: "20px 0px" }}>
                 <img className="is-rounded"
                     style={{ width: "128px", height: "128px" }}
                     src={imgProfil} alt="profil" />
             </figure>
-            <p className="error">{image.error}</p>
-            <p style={{
-                fontFamily: "LadylikeBB",
-                fontSize: "xx-large",
-                textAlign: "center"
-            }}>Matcha</p>
-
-            <form encType="multipart/form-data">
-                <input className="inputfile"
-                    onChange={sendFile}
-                    name="avatar"
-                    placeholder="Choose avatar"
-                    type="file"
-                />
-            </form>
+            {
+                upload === true &&
+                <React.Fragment>
+                    <p className="error">{error}</p>
+                    <p className="title-matcha">Matcha</p>
+                    <form encType="multipart/form-data">
+                        <input className="inputfile"
+                            onChange={sendFile}
+                            name="avatar"
+                            placeholder="Choose avatar"
+                            type="file"
+                        />
+                    </form>
+                </React.Fragment>
+            }
         </div>
 
     )
 }
 
-function FirstPage({ info, onChange, changePage }) {
+function FirstPage({ info, onChange, changePage, status }) {
     let { firstname, lastname, username, email, password, confirmation } = info
     return (
 
@@ -43,9 +43,13 @@ function FirstPage({ info, onChange, changePage }) {
             <Field placeholder="Lastname" position="left" action={{ onChange: onChange }} error={lastname.error} value={lastname.value} />
             <br></br>
             <Field placeholder="Username" position="left" icon="fas fa-user" action={{ onChange: onChange }} error={username.error} value={username.value} />
-            <Field placeholder="Email" position="left" icon="fas fa-envelope" action={{ onChange: onChange }} error={email.error} value={email.value} />
-            <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={password.error} value={password.value} />
-            <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={confirmation.error} value={confirmation.value} />
+            <Field placeholder="Email" position="left" icon="fas fa-envelope" action={{ onChange: onChange }} error={email.error} value={email.value} />{
+                status.value === "signup" &&
+                <React.Fragment>
+                    <Field placeholder="Password" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={password.error} value={password.value} />
+                    <Field placeholder="Confirmation" type="password" position="left" icon="fas fa-lock" action={{ onChange: onChange }} error={confirmation.error} value={confirmation.value} />
+                </React.Fragment>
+            }
             <button className="button" onClick={() => changePage(2)}>Continue</button>
         </React.Fragment>
 
@@ -61,8 +65,8 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
 
             <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
-            <SliderAgeRange onChangeAge={onChangeAge} age_min={info.age_min.value} age_max={info.age_max.value} />
-            <SliderLocation onChange={onChange} distance={info.distance.value} />
+            <SliderAgeRange onChangeAge={onChangeAge} ageMin={info.ageMin.value} ageMax={info.ageMax.value} />
+            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km"  min={5}/>
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(1) }}>
@@ -73,10 +77,12 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
     )
 }
 
-function ThirdPage({ info, onChange, changePage, error, status }) {
+function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation, success, getGeocalisation }) {
+    let { location, latitude, longitude } = info
+
     return (
 
-        <div className="">
+        <div>
 
             <div className="control">
                 <textarea className="textarea has-fixed-size" placeholder="bio" onChange={(e) => { onChange({ "bio": e.target.value }) }} value={info.bio.value}></textarea>
@@ -87,8 +93,21 @@ function ThirdPage({ info, onChange, changePage, error, status }) {
             <SliderAge onChange={onChange} age={info.age.value} />
             <br />
 
+            <Location onChangeLocation={onChangeLocation} city={location.value} lat={latitude.value} long={longitude.value} />
+            <p className="center">or</p>
+            <button className="button white-red" style={{ width: "auto", borderRadius: "31px", margin: "20px auto", display: "flex" }} onClick={() => { getGeocalisation() }}>
+                <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
+                <p>Geocalisation</p>
+                <span style={{ margin: "0px 5px" }}><i className="fas fa-map-marker-alt" /></span>
+            </button>
+            <p className="error-text center">{info.location.error}</p>
+
+            <br />
+
             <button className="button center" onClick={status.fct}>{status.text}</button>
+
             <p className="error-text center">{error}</p>
+            <p className="success center">{success}</p>
 
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(2) }}>
                 <i className="fas fa-arrow-circle-left fa-lg"></i>
@@ -99,4 +118,4 @@ function ThirdPage({ info, onChange, changePage, error, status }) {
     )
 }
 
-export { ProfileImg, FirstPage, SecondPage, ThirdPage }
+export { ProfileImg, FirstPage, SecondPage, ThirdPage, Location }

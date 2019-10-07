@@ -29,7 +29,7 @@ class Confirm extends Component {
 
   render() {
     return (
-      <div id="confirm" >
+      <div className="success center">
         <p>{this.state.message}</p>
       </div>
     )

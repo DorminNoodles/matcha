@@ -23,7 +23,8 @@ function Field({ position, icon, placeholder, error, success, type, value, style
                     </span>
                 }
             </p>
-            <p className="error-text">{error}</p>
+            {/* <p className="error-text">{error}</p> */}
+            <p className="error">{error}</p>
             <p className="success">{success}</p>
         </div>
     )
