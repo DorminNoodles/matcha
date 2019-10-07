@@ -23,6 +23,17 @@ class ListMessage extends React.Component {
     componentDidMount() {
         if (!(this.context.user.token))
             this.props.history.push('/');
+            
+        socket.emit('notif_subscribe', this.context.user.id + "_notif");
+        socket.on("notif", data => {
+            let users = this.state.users
+            this.state.users && this.state.users.map((value, i) => {
+                if (value.group_id === data.group_id) {
+                    users[i].visit = 0
+                    this.setState({ ...this.state, users })
+                }
+            })
+        })
 
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
@@ -42,7 +53,7 @@ class ListMessage extends React.Component {
             chat_visit(this.context.user.token, group_id).then(() => {
                 let list = this.state.list
                 list[i].visit = 1;
-        
+
                 this.setState({ ...this.state, list })
             })
     }

@@ -43,14 +43,14 @@ class Chat extends React.Component {
 
       this.state.list.forEach((value, i) => {
         if (value.group_id === data.id) {
-          list =  this.state.list
+          list = this.state.list
           list[i].visit = 0;
         }
       })
 
       if (this.state.group_id === data.id) {
         conversation.push(data)
-        this.setState({ ...this.state, message: "", conversation , list}, () => { })
+        this.setState({ ...this.state, message: "", conversation, list }, () => { })
       }
     })
   }
@@ -101,6 +101,7 @@ class Chat extends React.Component {
           let notif = {
             ...res.data.data,
             username: username,
+            group_id: group_id
           }
 
           conversation.push(data)
@@ -115,19 +116,21 @@ class Chat extends React.Component {
   visit = (group_id, i) => {
     let list = this.state.list
 
-    if (group_id === 0){
+    if (group_id === 0) {
       this.state.list.filter((value, i) => {
-        if (value.group_id === this.state.group_id && value.visit === 0){
+        if (value.group_id === this.state.group_id && value.visit === 0) {
           list[i].visit = 1;
           this.setState({ ...this.state, list })
         }
       })
     }
-    else if (group_id && i && list[i] && list[i].visit === 0)
-      chat_visit(this.context.user.token, group_id).then((res) => {
-        list[i].visit = 1;
-        this.setState({ ...this.state, list })
-    })
+    else if (group_id && i >= 0 && list[i] && list[i].visit === 0) {
+      chat_visit(this.context.user.token, group_id)
+        .then((res) => {
+          list[i].visit = 1;
+          this.setState({ ...this.state, list })
+        })
+    }
   }
 
   render() {

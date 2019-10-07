@@ -97,7 +97,7 @@ class MessageBox extends React.Component {
                 </div>
                 <div style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
                     <p>{username}</p>
-                    <p className="text-ellipsis ">{message}</p>
+                    {/* <p className="text-ellipsis ">{message}</p> */}
                 </div>
             </Link>
 
@@ -108,7 +108,6 @@ class MessageBox extends React.Component {
 function ListChat({ list, chat, visit, conv }) {
     let id_list = chat === true ? "list-chat" : ""
 
-    console.log(list)
     return (
         <div id={id_list}>
             <Route />
