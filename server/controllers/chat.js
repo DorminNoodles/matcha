@@ -1,33 +1,47 @@
-const chatModel = require('../models/chatModel');
+const matchs = require("./matchs");
+// const io = require('socket.io')();
+const server = require('http').createServer();
+const io = require('socket.io')(server);
 
 exports.new = (data) => {
 	return new Promise((resolve, reject) => {
-		chatModel.new(data)
-			.then((res) => { resolve(res); })
-			.catch((err) => { reject(err); })
+		matchs.checkMatch(data.liker, data.liked)
+		.then((res) => {
+			console.log("OK");
+			return socketIO.connected();
+		})
+		.then((res) => {
+			console.log("OK match !");
+			resolve();
+		})
+		.catch((err) => {
+			console.log("no match")
+			reject({status: "error", msg: "no match"});
+		})
 	})
 }
 
-exports.get = (user_id, id) => {
+exports.chatSubscribe = (userID) => {
 	return new Promise((resolve, reject) => {
-		chatModel.get(user_id, id)
-			.then((res) => { resolve(res); })
-			.catch((err) => { reject(err); })
+		console.log(userID);
+		io.on('connection', (socket) => {
+			io.removeAllListeners();
+			console.log("Hello Connection");
+			socket.on('subscribeSendMsg' + userID, () => {
+				console.log("sendMSGTO => " + userID);
+				socket.emit('msg', 'hello 42');
+			})
+		});
 	})
 }
 
-exports.list = (id) => {
-	return new Promise((resolve, reject) => {
-		chatModel.list(id)
-			.then((res) => { resolve(res); })
-			.catch((err) => { reject(err); })
-	})
-}
+io.on('connection', (socket) => {
+	console.log("socket.io connection : ");
+	// socket.on('subscribe', () => {
+	// 	console.log("sendMSGTO => ");
+	// 	socket.emit('msg', 'hello boite');
+	// })
+});
 
-exports.visit = (group_id) => {
-	return new Promise((resolve, reject) => {
-		chatModel.visit(group_id)
-			.then((res) => { resolve(res); })
-			.catch((err) => { reject(err); })
-	})
-}
+console.log("listen please");
+// io.listen(8000);

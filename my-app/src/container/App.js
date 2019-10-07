@@ -3,8 +3,8 @@ import Routers from './Routers';
 import 'bulma/css/bulma.css'
 import '../index.css'
 import { BrowserRouter } from "react-router-dom";
+import { withRouter } from "react-router";
 import UserProvider from "../context/UserProvider"
-import { logout } from '../function/post'
 
 class App extends React.Component {
    constructor(props) {
@@ -18,18 +18,12 @@ class App extends React.Component {
             orientation: "",
             gender: "",
             location: "",
+            distance: "",
             age: "",
             profil: "",
-            token: "",
-            ageMin: "",
-            ageMax: "",
-            distance: "",
-            identity: ""
+            token: ""
          },
-         header: "white-red",
-         response: false,
-         responses: false,
-         endpoint: "http://localhost:3300"
+         header: "white-red"
       }
       this.logout = this.logout.bind(this)
       this.onChange = this.onChange.bind(this)
@@ -38,19 +32,12 @@ class App extends React.Component {
 
    async componentWillMount() {
       let user = this.getObject("user");
-      let header = this.getObject("header")
+      let header = this.getObject("header") 
 
-      header = header === null ? "white-red" : "red-white"
-      if (document.cookie !== "")
-         this.setState({ ...this.state, user: JSON.parse(document.cookie), header }, () => {
-            console.log("restore ", this.state)
-         })
-      else if (document.cookie === "")
-         this.logout()
-      else
-         this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
-            console.log("restore ", this.state)
-         })
+      header = header === null ? "white-red": "red-white"
+      this.setState({ ...this.state, user: {...this.state.user, ...user}, header }, () => {
+         console.log("restore ", this.state)
+      })
    }
 
    setObject = (key, value) => {
@@ -70,39 +57,31 @@ class App extends React.Component {
    }
 
    logout = () => {
-
-      if (this.state.user.token)
-         logout(this.state.user.token).then(({ data }) => {
-            if (data.status === "success") {
-               this.setState({
-                  ...this.state,
-                  user: {
-                     username: "",
-                     firstname: "",
-                     lastname: "",
-                     email: "",
-                     orientation: "",
-                     gender: "",
-                     location: "",
-                     age: "",
-                     profil: "",
-                     token: "",
-                     ageMin: "",
-                     ageMax: "",
-                     distance: "",
-                     identity: ""
-                  }
-               }, () => { this.setObject("user", this.state) })
-            }
-         })
+      this.setState({
+         ...this.state,
+         user: {
+            username: "",
+            firstname: "",
+            lastname: "",
+            email: "",
+            orientation: "",
+            gender: "",
+            location: "",
+            distance: "",
+            age: "",
+            profil: "",
+            token: ""
+         }
+      }, () => {
+         this.setObject("user", this.state)
+      })
    }
 
    render() {
 
       return (
          <BrowserRouter>
-            <div>{this.state.response}</div>
-            <div>{this.state.responses}</div>
+
             <UserProvider.Provider value={{
                ...this.state,
                onChange: this.onChange,

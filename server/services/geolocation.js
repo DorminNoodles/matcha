@@ -1,23 +1,23 @@
-// const emitter = require('../emitter.js');
-// const db = require('../controllers/database');
+const emitter = require('../emitter.js');
+const db = require('../controllers/database');
 
 
-// class Geolocation {
+class Geolocation {
 
-// 	constructor() {
+	constructor() {
 
-// 		emitter.on('userRegistered', this.checkLocationInDb);
+		emitter.on('userRegistered', this.checkLocationInDb);
 
-// 	}
+	}
 
-// 	checkLocationInDb(data) {
-
-
-// 		console.log('Geolocation Class >> ', data);
-
-// 	}
+	checkLocationInDb(data) {
 
 
-// }
+		console.log('Geolocation Class >> ', data);
 
-// module.exports = new Geolocation();
+	}
+
+
+}
+
+module.exports = new Geolocation();

@@ -4,11 +4,10 @@ import { Field } from '../export/index'
 function BubbleTag({ value, onDelete, pos }) {
     return (
         <div style={{
-            height: "fit-content",
             border: "1px solid",
             borderRadius: "5px",
             padding: "4px",
-            margin: "0px 15px 10px 0px"
+            marginRight: "15px"
         }}>
             {value}
             <span style={{ padding: "0px 5px" }} onClick={() => onDelete(pos)}>
@@ -18,7 +17,7 @@ function BubbleTag({ value, onDelete, pos }) {
     )
 }
 
-function ModifyTag({ tagModify, tags, action, fct, value }) {
+function ModifyTag({ tagModify, tags, action, fct }) {
 
     let { onChange, onDelete } = fct
     return (
@@ -26,12 +25,12 @@ function ModifyTag({ tagModify, tags, action, fct, value }) {
             {
                 tagModify ? <React.Fragment >
 
-                    <div style={{ display: "flex", padding: "15px 0px", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", padding: "15px 0px" }}>
                         {Object.keys(tags).map((value, id) => {
-                            return (<BubbleTag key={id} pos={id} value={tags[value].tag} onDelete={onDelete} />)
+                            return (<BubbleTag key={id} pos={id} value={tags[value].name} onDelete={onDelete} />)
                         })}
                     </div>
-                    <Field icon="fas fa-tag" position="left"  value={value} style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
+                    <Field icon="fas fa-tag" position="left" style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
                     <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>Close</button>
                 </React.Fragment>
                     :

@@ -16,9 +16,9 @@ exports.username = (username) => {
 	})
 }
 
-exports.usernameAlreadyTaken = (username, id) => {
+exports.usernameAlreadyTaken = (username) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByUsername(username, id)
+		userModel.findUserByUsername(username)
 			.then(() => {
 				reject({ "status": "error", "key": "username", "msg": "Username already taken !" });
 			})
@@ -31,10 +31,10 @@ exports.usernameAlreadyTaken = (username, id) => {
 exports.password = (password) => {
 	return new Promise((resolve, reject) => {
 		const passwordRegex = RegExp(/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/);
-		if (passwordRegex.test(password) && password.length > 6)
-			resolve({ "status": "success", "key": "password" });
+		if (passwordRegex.test(password))
+			resolve({ "status": "success", "key": "password", "msg": '' });
 		else
-			reject({ "status": "error", "key": "password", "msg": "The password must contain 1 uppercase, 1 lowercase and a minimum of 7 characters" });
+			reject({ "status": "error", "key": "password", "msg": "Bad Password !" });
 	})
 }
 
@@ -75,11 +75,11 @@ exports.email = (email) => {
 	})
 }
 
-exports.emailAlreadyTaken = (email, id) => {
+exports.emailAlreadyTaken = (email) => {
 	return new Promise((resolve, reject) => {
-		userModel.findUserByEmail(email, id)
+		userModel.findUserByEmail(email)
 			.then(() => {
-				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400 });
+				reject({ "status": "error", "key": "email", "msg": "Email already taken !", "code": 400});
 			})
 			.catch((err) => {
 				resolve({ "status": "success", "key": "email", "msg": '' });
@@ -87,12 +87,18 @@ exports.emailAlreadyTaken = (email, id) => {
 	})
 }
 
-exports.location = (location, latidute, longitude) => {
+exports.location = (location) => {
 	return new Promise((resolve, reject) => {
-		if (!location || !latidute || latidute < 0 || !longitude || longitude < 0)
-			reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+		var reg = /^[a-zA-Z]+$/
+		if (location) {
+			if (!location.match(reg))
+				reject({ "status": "error", "key": "location", "msg": "Bad location !" })
+			else
+				resolve({ "status": "success", "key": "location", "msg": '' });
+		}
 		else
-			resolve({ "status": "success", "key": "location", "msg": '' });
+			resolve({ "status": "success", "key": "location" });
+
 	})
 }
 
@@ -142,6 +148,8 @@ exports.gender = (gender) => {
 exports.bio = (bio) => {
 	return new Promise((resolve, reject) => {
 		const regex = RegExp(/^[a-zA-Z0-9\s]*$/);
+		// reject({ "status": "error", "key": "bio", "msg": "Bio missing !" })
+
 		if (bio) {
 			if (!regex.test(bio))
 				reject({ "status": "error", "key": "bio", "msg": "Bio bad character !" })

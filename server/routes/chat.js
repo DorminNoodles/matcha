@@ -3,44 +3,44 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const chat = require('../controllers/chat');
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 
-router.post('/', urlencodedParser, (req, res) => {
+// router.post('/', urlencodedParser, (req, res) => {
+// 	console.log("chat route");
+// 	chat.new({
+// 		msg: req.body.msg,
+// 		liker: req.body.liker,
+// 		liked: req.body.liked
+// 	})
+// 	.then((resultat) => {
+// 		console.log("message sended !");
+// 		res.send({status: "success", msg: "message sended"});
+// 	})
+// 	.catch((err) => {
+// 		res.send(err);
+// 	});
+// })
+//
+// router.get('/', urlencodedParser, (req, res) => {
+// 	console.log("chat route");
+// 	chat.new()
+// 	.then(() => {
+// 		console.log("then");
+// 	})
+// 	res.send("chut");
+// })
+router.post('/connection', urlencodedParser, (req, res) => {
+	console.log("chat route");
+	console.log(req.body);
+	chat.chatSubscribe(req.body.userID)
+	.then(() => {
+		console.log("then");
+	})
 
-	if (!req.token)
-		res.status(401).send({ "status": "error", "msg": "bad authentification" });
+	chat.chatSubscribe(req.body.userID)
 
-	chat.new({ from_id: req.token.id, ...req.body })
-		.then((response) => { res.status(200).send(response); })
-		.catch((err) => { res.status(409).send(err); })
-})
 
-router.get('/', urlencodedParser, (req, res) => {
-	if (!req.token)
-		res.status(401).send({ "status": "error", "msg": "bad authentification" });
-
-	chat.get(req.token.id, req.query.id)
-		.then((response) => { res.status(200).send(response); })
-		.catch((err) => { res.status(409).send(err); })
-})
-
-router.get('/list', urlencodedParser, (req, res) => {
-	if (!req.token)
-		res.status(401).send({ "status": "error", "msg": "bad authentification" });
-
-	chat.list(req.token.id)
-		.then((response) => { res.status(200).send(response); })
-		.catch((err) => { res.status(400).send(err); })
-})
-
-router.post('/visit', urlencodedParser, (req, res) => {
-
-	if (!req.token)
-		res.status(401).send({ "status": "error", "msg": "bad authentification" });
-
-	chat.visit(req.body.group_id)
-		.then((response) => { res.status(200).send(response); })
-		.catch((err) => { res.status(400).send(err); })
+	res.send("chut");
 })
 
 module.exports = router;

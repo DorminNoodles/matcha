@@ -7,7 +7,6 @@ class HeaderSide extends React.Component {
     static contextType = UserProvider;
 
     logout = () => {
-        document.cookie="";
         this.context.logout();
         this.props.history.push('/');
     }
@@ -25,27 +24,36 @@ class HeaderSide extends React.Component {
                     </li>
 
                     {
-                        user.token && user.token !== "" &&
-                        <React.Fragment>
+                        user.token && user.token !== "" ?
+                            <React.Fragment>
+
+                                <li>
+                                    <Link to="/user" className={header} ><i className="fas fa-user header-link"></i></Link>
+                                </li>
+                                <li>
+                                    <Link to="/match" className={header} ><i className="fas fa-heart header-link"></i></Link>
+                                </li>
+                                <li>
+                                    <Link to="/messages" className={header}><i className="fas fa-comments header-link"></i></Link>
+                                </li>
+                                <li>
+                                    <button className={header} style={{ border: "none" }} onClick={this.logout}>
+                                        <a className={header}><i className="fas fa-sign-out-alt header-link" /></a>
+                                    </button>
+                                </li>
+                                <Link to="/parameters" className={header}><i className="fas fa-cog header-link"></i></Link>
+
+                            </React.Fragment>
+                            :
 
                             <li>
-                                <Link to="/user" className={header} ><i className="fas fa-user header-link"></i></Link>
+                                <Link to="/signin" className={this.context.header}><i className="fas fa-sign-in-alt header-link"></i></Link>
                             </li>
-                            <li>
-                                <Link to="/match" className={header} ><i className="fas fa-heart header-link"></i></Link>
-                            </li>
-                            <li>
-                                <Link to="/messages" className={header}><i className="fas fa-comments header-link"></i></Link>
-                            </li>
-                            <Link to="/parameters" className={header}><i className="fas fa-cog header-link"></i></Link>
-                            <li>
-                                <button className={header} style={{ border: "none", fontSize: "x-large" }} onClick={this.logout}>
-                                    <i className="fas fa-sign-out-alt header-link" />
-                                </button>
-                            </li>
-
-                        </React.Fragment>
                     }
+
+                    <li>
+                        <Link to="/signup" className={this.context.header}><i className="fas fa-user-plus"></i></Link>
+                    </li>
                 </ul>
             </nav>
         )

@@ -9,53 +9,47 @@ const inputModel = require('../models/inputModel');
 	on peut ajouter plusieurs fois le meme tag mais pas avec le meme userID
 */
 
-exports.new = (tag, user_id) => {
+exports.new = (tag, userId) => {
 	return new Promise((resolve, reject) => {
 
-		if (!tag || typeof tag != 'string' || !user_id || typeof user_id != 'number') {
-			reject({ status: "error", msg: "Error in params need : tag : yourTag" });
+		console.log('data: ', tag, userId)
+
+		if (!tag || typeof tag != 'string' || !userId || typeof userId != 'number') {
+			reject({status: "error", msg: "Error in params need : tag : yourTag"});
 			return;
 		}
 
 		tag = tag.toLowerCase();
 
-		inputModel.tag(tag, user_id) //sanitize input
-			.then(() => {
-				return new Promise((resolve, reject) => {
-					tagModel.get(tag, user_id)
-						.then((res) => { resolve(res) })
-						.catch((err) => { reject(err) })
-				}).then((res) => {
-					tagModel.user(user_id, res.id)
-						.then((res) => { resolve(res) })
-						.catch((err) => { reject(err); })
-				}).catch((err) => {
-					tagModel.new(tag, user_id)
-						.then((result) => { resolve(result); })
-						.catch((err) => { reject(err); })
-				})
-			}).catch((err) => { reject(err) })
-	})
+		inputModel.tag(tag)//sanitize input
+		.then(() => {
+			return tagModel.get(tag, userId)//try to get already exist tag
+		})
+		.then((result) => {
+			reject({status: "error", msg: "Tag already exist"});//if tag already exist error
+		})
+		.catch((err) => {
+			tagModel.new(tag, userId) //save new tag
+			.then((result) => {
+				resolve(result);
+			})
+			.catch(() => {
+				console.log('reject');
+				reject();
+			})
+		})
+
+	});
 }
 
 exports.get = (tag) => {
 	return new Promise((resolve, reject) => {
 		tagModel.get(tag)
-			.then(() => {
-				resolve({ "status": "success", "msg": "Tags saved !" });
-			})
-			.catch((err) => {
-				reject(err);
-			})
-	});
-}
-
-exports.delete = (body) => {
-	return new Promise((resolve, reject) => {
-		tagModel.delete(body)
-			.then((res) => { 
-				console.log(res)
-				resolve(res); })
-			.catch((err) => { reject(err); })
+		.then(() => {
+			resolve({"status": "success", "msg": "Tags saved !"});
+		})
+		.catch((err) => {
+			reject(err);
+		})
 	});
 }

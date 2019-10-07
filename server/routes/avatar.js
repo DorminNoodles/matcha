@@ -11,7 +11,7 @@ var urlencodedParser = bodyParser.urlencoded({extended : false})
 router.get('/:username', urlencodedParser, (req, res) => {
 	inputModel.username(req.params.username)
 	.then(() => {
-		return userModel.findUserByUsername(req.params.username, 0);
+		return userModel.findUserByUsername(req.params.username);
 	})
 	.then((data) => {
 		console.log(data);
