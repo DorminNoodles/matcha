@@ -281,15 +281,6 @@ form > .inputfile {
   margin: 10px;
 }
 
-
-.message-box {
-  height: 100px;
-  background: #ececec;
-  color: #B33070;
-  border-bottom: 1px solid #cdcdcd;
-  font-size: large;
-}
-
 .text-ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -541,13 +532,21 @@ form > .inputfile {
   height: 100%;
   width: 100%;
 }
-.message-active{
+
+.message-box {
+  height: 100px;
+  background: #ececec;
+  color: #B33070;
+  border-bottom: 1px solid #cdcdcd;
   font-size: large;
-  border-color: black;
-  display: flex;
+}
+
+.message-active {
+  font-size: large;
   padding: 5px;
-  border: 1px solid #b33070;
+  height: 100px;
   border-width: 0px 0px 1px 0px;
+  border-bottom: 1px solid #d6acc1;
   background: #dbc4cf !important;
 }
 

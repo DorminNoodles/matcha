@@ -170,3 +170,14 @@ export function logout(token) {
     }).then((res) => { return res })
         .catch(error => { return error; });
 }
+
+export function chat_visit(token, group_id) {
+    return axios({
+        method: 'post',
+        url: 'http://localhost:3300/api/chat/visit',
+        data: { group_id },
+        headers: { 'Authorization': "bearer " + token },
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    }).then((res) => { return res })
+        .catch(error => { return error; });
+}

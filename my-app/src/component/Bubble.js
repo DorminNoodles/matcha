@@ -6,10 +6,10 @@ class Bubble extends React.Component {
 
     render() {
         let { conversation, user } = this.props
-        let avatar = user.id === conversation.from_id ? this.context.user.avatar : conversation.avatar
+        let id = user.id === conversation.from_id ?  conversation.to_id : conversation.from_id;
+        let avatar = user.id === conversation.from_id ?  this.context.user.id + "/" + this.context.user.avatar.toLowerCase() :  id + "/" + conversation.avatar.toLowerCase()
         let bubble = user.id === conversation.from_id ? "right" : "left"
-
-        let imgProfil = process.env.REACT_APP_PUBLIC_URL + conversation.from_id + "/" + avatar.toLowerCase()
+        let imgProfil = process.env.REACT_APP_PUBLIC_URL + avatar
 
         return (
             <React.Fragment>

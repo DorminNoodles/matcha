@@ -37,7 +37,7 @@ class ConversationChat extends React.Component {
     };
 
     render() {
-        let { conversation, message, sendMsg, onInput } = this.props
+        let { conversation, message, sendMsg, onInput, visit } = this.props
 
         return (
             <React.Fragment>
@@ -51,7 +51,7 @@ class ConversationChat extends React.Component {
                     </div>
                 </div>
                 <div style={{ width: "75%", margin: "auto", height: "150px", position: "sticky", bottom: "0px" }}>
-                    <textarea className="textarea has-fixed-size" style={{ zIndex: "-1" }} value={message} placeholder="write a message..." onChange={onInput}></textarea>
+                    <textarea className="textarea has-fixed-size" style={{ zIndex: "-1" }} value={message} placeholder="write a message..." onChange={onInput} onClick={() => visit(0)}></textarea>
                     <span style={{ color: "#B33070", right: "22px", position: "absolute", bottom: "25px" }} onClick={() => sendMsg()}>
                         <i className="fas fa-paper-plane"></i>
                     </span>
@@ -79,20 +79,25 @@ function Conversation(props) {
     );
 }
 
+///////////////////////////LIST CHAT///////////////////////////////////////
 
 class MessageBox extends React.Component {
     render() {
 
-        let { value } = this.props
-        let imgProfil = value.id > 0 ?
-            process.env.REACT_APP_PUBLIC_URL + value.id + "/" + value.avatar.toLowerCase() : profile;
+        let { id, username, message, avatar, visit, group_id } = this.props.value
+        let imgProfil = id > 0 ?
+            process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : profile;
+        let mess = visit === 0 ? "message-active center" : "message-box center"
 
         return (
-            <Link to={{ pathname: "/chat", search: `?id=${value.id}` }} className="message-box center">
-                <img className="rounded-60" alt="username" src={imgProfil} />
+            <Link to={{ pathname: "/chat", search: `?id=${id}` }} className={mess} onClick={() => { this.props.visit(group_id, this.props.i) }}>
+                <div style={{ height: "100%", width: "75px", display: "contents" }}>
+                    <img className="rounded-60" alt="username" src={imgProfil} />
+                    <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
+                </div>
                 <div style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
-                    <p>{value.username}</p>
-                    <p className="text-ellipsis ">Message non lu</p>
+                    <p>{username}</p>
+                    <p className="text-ellipsis ">{message}</p>
                 </div>
             </Link>
 
@@ -100,13 +105,16 @@ class MessageBox extends React.Component {
     }
 }
 
-function ListChat({ list }) {
+function ListChat({ list, chat, visit, conv }) {
+    let id_list = chat === true ? "list-chat" : ""
+
+    console.log(list)
     return (
-        <div id="list-chat" >
+        <div id={id_list}>
             <Route />
             {
                 list && list.length > 0 && list.map((value, i) => {
-                    return <MessageBox value={value} key={i} />
+                    return <MessageBox value={value} key={i} i={i} visit={visit} />
                 })
             }
         </div>

@@ -1,25 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Route, Link } from "react-router-dom";
+import { BrowserRouter as Route } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 import { getListMsg } from '../function/get'
-
-const Contain = ({ i, value }) => {
-    return (
-        <Link key={i} to={{ pathname: "/chat", search: `?id=${value.id}` }}>
-            <div className="message-active">
-                {/* className="white-red */}
-                <figure className="image is-96x96">
-                    <div className="green-dot dot-bottom" />
-                    <img className="is-rounded" alt="1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8CtHqifdQviV5jRg-SY0SJ-HjyxrQsbiLkheW1HzusyyzzUYM" />
-                </figure>
-                <div>
-                    <p>{value.username}</p>
-                    <p>Message</p>
-                </div>
-            </div>
-        </Link>
-    )
-}
+import { chat_visit } from '../function/post'
+import { ListChat } from '../export'
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3300');
 
 class ListMessage extends React.Component {
     constructor(props) {
@@ -51,16 +37,25 @@ class ListMessage extends React.Component {
         this.props.history.push('/');
     }
 
+    visit = (group_id, i) => {
+        if (this.state.list)
+            chat_visit(this.context.user.token, group_id).then(() => {
+                let list = this.state.list
+                list[i].visit = 1;
+        
+                this.setState({ ...this.state, list })
+            })
+    }
+
     render() {
+
         return (
             <div className="list-message">
                 <Route />
                 {
-                    this.state.users && this.state.users.length > 0 && this.state.users.map((value, i) => {
-                        return <Contain key={i} value={value} />
-                    })
+                    this.state.users && this.state.users.length > 0 &&
+                    <ListChat list={this.state.users} chat={false} visit={this.visit.bind(this)} />
                 }
-
             </div>
         )
     }

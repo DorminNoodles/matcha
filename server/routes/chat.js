@@ -33,4 +33,14 @@ router.get('/list', urlencodedParser, (req, res) => {
 		.catch((err) => { res.status(400).send(err); })
 })
 
+router.post('/visit', urlencodedParser, (req, res) => {
+
+	if (!req.token)
+		res.status(401).send({ "status": "error", "msg": "bad authentification" });
+
+	chat.visit(req.body.group_id)
+		.then((response) => { res.status(200).send(response); })
+		.catch((err) => { res.status(400).send(err); })
+})
+
 module.exports = router;
