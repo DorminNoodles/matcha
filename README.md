@@ -76,6 +76,7 @@ todo :
 	REACT_APP_PUBLIC_URL=http://localhost:3300/
 
 ./server/.env : 
+
 	JWT_KEY=qwerty
 	PORT=port
 	MAP_TOKEN=token_mapbox
