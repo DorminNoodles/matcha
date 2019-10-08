@@ -119,5 +119,5 @@ export function getPhotos(id, token) {
         params: { id },
         headers: { 'Authorization': "bearer " + token }
     }).then((res) => { return (res.data) })
-        .catch(error => { return error; });
+        .catch(() => { return { "status": "error" }; });
 }

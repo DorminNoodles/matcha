@@ -12,6 +12,7 @@ import NotFound from "../container/NotFound";
 import Notification from "../container/Notification";
 import Tags from "../container/Tags";
 import ListMessage from "../container/ListMessage";
+import Loading from "../container/Loading";
 
 import { SliderAge } from "../component/SliderAge";
 import { SliderAgeRange } from "../component/SliderAge";
@@ -50,6 +51,7 @@ export {
     NotFound,
     Notification,
     Tags,
+    Loading,
     ListMessage,
     SliderAge,
     SliderAgeRange,

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Conversation, ListChat } from '../export'
+import { Conversation, ListChat, Loading } from '../export'
 import UserProvider from '../context/UserProvider';
-import { getMessages, getListMsg } from '../function/get'
 import queryString from 'query-string';
+import { getMessages, getListMsg } from '../function/get'
 import { sendMsg, chat_visit } from '../function/post'
 import { isEmpty } from '../function/utils'
 import openSocket from 'socket.io-client';
@@ -51,7 +51,7 @@ class Chat extends React.Component {
 
       if (this.state.group_id === data.id) {
         conversation.push(data)
-        this.setState({ ...this.state, message: "", conversation, list}, () => { })
+        this.setState({ ...this.state, message: "", conversation, list }, () => { })
       }
     })
   }
@@ -75,7 +75,7 @@ class Chat extends React.Component {
   getListMsg = () => {
     getListMsg(this.context.user.token).then((res) => {
       if (res && Array.isArray(res))
-        this.setState({ ...this.state, list: res ,loading: false })
+        this.setState({ ...this.state, list: res, loading: false })
     })
   }
 
@@ -112,8 +112,7 @@ class Chat extends React.Component {
             socket.emit('send message', data);
             socket.emit('notif', notif);
           })
-        })
-        .catch((err) => { console.log(err) })
+        }).catch((err) => { })
   }
 
   visit = (group_id, i) => {
@@ -143,16 +142,11 @@ class Chat extends React.Component {
   render() {
     let params = queryString.parse(this.props.location.search)
 
-    console.log(this.state)
+    if (this.state.loading === true) { return (<Loading />) }
     return (
       <div id="chat">
-        {
-          this.state.loading === true ? <div>loading</div> :
-            <React.Fragment>
-              <ListChat list={this.state.list} chat visit={this.visit.bind(this)} last_msg={true} conv={this.state.conversation} />
-              <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} visit={this.visit.bind(this)} />
-            </React.Fragment>
-        }
+        <ListChat list={this.state.list} chat visit={this.visit.bind(this)} last_msg={true} conv={this.state.conversation} />
+        <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} visit={this.visit.bind(this)} />
       </div>
     );
   }

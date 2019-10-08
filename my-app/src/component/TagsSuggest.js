@@ -32,7 +32,6 @@ class TagsSuggest extends React.Component {
 
     onSuggestionsFetchRequested = ({ value }) => {
         getTags(this.context.user.token, value).then((res) => {
-            console.log(res)
             if (typeof res === "object")
                 this.setState({ suggestions: res });
             else

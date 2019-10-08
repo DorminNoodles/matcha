@@ -19,10 +19,7 @@ const withUser = (ComposedComponent) => {
   
     onChange = (e) => {
       let index = e.target.placeholder.toLowerCase();
-      
-      console.log(index)
-      console.log( e.target.value )
-      console.log(this.state)
+
 
       // this.setState({ ...this.state, [index]: e.target.value })
     }

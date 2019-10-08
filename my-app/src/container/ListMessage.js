@@ -3,7 +3,7 @@ import { BrowserRouter as Route } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 import { getListMsg } from '../function/get'
 import { chat_visit } from '../function/post'
-import { ListChat } from '../export'
+import { ListChat, Loading } from '../export'
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:3300');
 
@@ -11,7 +11,7 @@ class ListMessage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { users: [] }
+        this.state = { users: [], loading: true }
     }
     static contextType = UserProvider;
 
@@ -42,7 +42,7 @@ class ListMessage extends React.Component {
             this.context.onChange("header", "white-red")
 
         getListMsg(this.context.user.token).then((res) => {
-            this.setState({ users: res })
+            this.setState({ users: res, loading: false })
         })
     }
 
@@ -75,14 +75,11 @@ class ListMessage extends React.Component {
 
     render() {
 
+        if (this.state.loading === true) { return <Loading /> }
         return (
             <div className="list-message">
                 <Route />
-                {
-                    this.state.users && this.state.users.length > 0 ?
-                    <ListChat list={this.state.users} chat={false} visit={this.visit.bind(this)} />:
-                    <div>loading</div>
-                }
+                <ListChat list={this.state.users} chat={false} visit={this.visit.bind(this)} />
             </div>
         )
     }
