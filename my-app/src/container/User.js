@@ -18,7 +18,7 @@ class User extends React.Component {
   }
   static contextType = UserProvider;
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let params = queryString.parse(this.props.location.search)
 
     if (!(this.context.user.token))
@@ -38,7 +38,7 @@ class User extends React.Component {
     this.getPhotos(!params.id ? this.context.user.id : params.id)
   }
 
-  componentWillReceiveProps(next) {
+  UNSAFE_componentWillReceiveProps(next) {
     let params = queryString.parse(next.location.search)
 
     if (!params.id)

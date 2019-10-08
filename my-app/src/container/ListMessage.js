@@ -15,7 +15,7 @@ class ListMessage extends React.Component {
     }
     static contextType = UserProvider;
 
-    componentWillReceiveProps() {
+    UNSAFE_componentWillReceiveProps() {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
     }
@@ -23,15 +23,18 @@ class ListMessage extends React.Component {
     componentDidMount() {
         if (!(this.context.user.token))
             this.props.history.push('/');
-            
+
         socket.emit('notif_subscribe', this.context.user.id + "_notif");
         socket.on("notif", data => {
             let users = this.state.users
+
             this.state.users && this.state.users.map((value, i) => {
                 if (value.group_id === data.group_id) {
                     users[i].visit = 0
+                    users[i].last = parseInt(data.to_id);
                     this.setState({ ...this.state, users })
                 }
+                return 0
             })
         })
 
@@ -49,13 +52,25 @@ class ListMessage extends React.Component {
     }
 
     visit = (group_id, i) => {
-        if (this.state.list)
-            chat_visit(this.context.user.token, group_id).then(() => {
-                let list = this.state.list
-                list[i].visit = 1;
+        let list = this.state.users
 
+        if (list && group_id === 0) {
+            list.filter((value, i) => {
+                if (value.group_id === this.state.group_id && value.visit === 0) {
+                    chat_visit(this.context.user.token, group_id).then(() => {
+                        list[i].visit = 1;
+                        this.setState({ ...this.state, list })
+                    })
+                }
+                return 0
+            })
+        }
+        else if (group_id && i >= 0 && list[i] && list[i].visit === 0) {
+            chat_visit(this.context.user.token, group_id).then(() => {
+                list[i].visit = 1;
                 this.setState({ ...this.state, list })
             })
+        }
     }
 
     render() {
@@ -64,8 +79,9 @@ class ListMessage extends React.Component {
             <div className="list-message">
                 <Route />
                 {
-                    this.state.users && this.state.users.length > 0 &&
-                    <ListChat list={this.state.users} chat={false} visit={this.visit.bind(this)} />
+                    this.state.users && this.state.users.length > 0 ?
+                    <ListChat list={this.state.users} chat={false} visit={this.visit.bind(this)} />:
+                    <div>loading</div>
                 }
             </div>
         )

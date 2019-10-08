@@ -36,7 +36,7 @@ class App extends React.Component {
 
    }
 
-   async componentWillMount() {
+   async UNSAFE_componentWillMount() {
       let user = this.getObject("user");
       let header = this.getObject("header")
 

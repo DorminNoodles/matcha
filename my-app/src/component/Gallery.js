@@ -58,7 +58,7 @@ class Gallery extends React.Component {
     state = { loading: true }
     static contextType = UserProvider;
 
-    componentWillReceiveProps(next) {
+    UNSAFE_componentWillReceiveProps(next) {
         if (next.photos)
             this.setState({ loading: false })
     }

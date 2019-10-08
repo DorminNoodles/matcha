@@ -34,4 +34,5 @@ package-lock.json
 node_modules
 
 ./public/pictures/*
+./public/pictures/*/*
 ./public/*

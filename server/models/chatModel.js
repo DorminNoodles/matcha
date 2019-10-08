@@ -59,7 +59,8 @@ exports.list = (id) => {
         database.connection()
             .then((conn) => {
                 var result = conn.query('SELECT users.avatar, userschat.active, username, \
-                         first_user, second_user, chat.date, users.id, userschat.id as group_id, visit, chat.message \
+                         first_user, second_user, chat.date, users.id, userschat.id as group_id, visit, chat.message, \
+                         (select to_id from chat order by date desc limit 1) as last\
                          FROM userschat \
                          LEFT JOIN users ON (users.id=IF(first_user=?, second_user, first_user) && users.id IS NOT NULL) \
                          LEFT JOIN chat ON (chat.group_id=userschat.id) \

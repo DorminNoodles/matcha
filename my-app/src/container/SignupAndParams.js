@@ -49,7 +49,7 @@ class Signup extends React.Component {
     // get the page's type
     // if param init info
 
-    componentWillReceiveProps(next) {
+    UNSAFE_componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
         if (this.state.success !== "Update succeed")

@@ -11,11 +11,11 @@ const socket = openSocket('http://localhost:3300');
 class Chat extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { conversation: [], list: [], message: "", group_id: 0 }
+    this.state = { conversation: [], list: [], message: "", group_id: 0, loading: true }
   }
   static contextType = UserProvider;
 
-  componentWillReceiveProps(next) {
+  UNSAFE_componentWillReceiveProps(next) {
 
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
@@ -45,12 +45,13 @@ class Chat extends React.Component {
         if (value.group_id === data.id) {
           list = this.state.list
           list[i].visit = 0;
+          list[i].last = data.to_id;
         }
       })
 
       if (this.state.group_id === data.id) {
         conversation.push(data)
-        this.setState({ ...this.state, message: "", conversation, list }, () => { })
+        this.setState({ ...this.state, message: "", conversation, list}, () => { })
       }
     })
   }
@@ -74,7 +75,7 @@ class Chat extends React.Component {
   getListMsg = () => {
     getListMsg(this.context.user.token).then((res) => {
       if (res && Array.isArray(res))
-        this.setState({ ...this.state, list: res })
+        this.setState({ ...this.state, list: res ,loading: false })
     })
   }
 
@@ -96,12 +97,14 @@ class Chat extends React.Component {
             id: group_id,
             message: message,
             username: username,
+            last: parseInt(params.id)
           }
 
           let notif = {
             ...res.data.data,
             username: username,
-            group_id: group_id
+            group_id: group_id,
+            last: parseInt(params.id)
           }
 
           conversation.push(data)
@@ -119,9 +122,13 @@ class Chat extends React.Component {
     if (group_id === 0) {
       this.state.list.filter((value, i) => {
         if (value.group_id === this.state.group_id && value.visit === 0) {
-          list[i].visit = 1;
-          this.setState({ ...this.state, list })
+          chat_visit(this.context.user.token, value.group_id)
+            .then((res) => {
+              list[i].visit = 1;
+              this.setState({ ...this.state, list })
+            })
         }
+        return 0
       })
     }
     else if (group_id && i >= 0 && list[i] && list[i].visit === 0) {
@@ -136,10 +143,16 @@ class Chat extends React.Component {
   render() {
     let params = queryString.parse(this.props.location.search)
 
+    console.log(this.state)
     return (
       <div id="chat">
-        <ListChat list={this.state.list} chat visit={this.visit.bind(this)} last_msg={true} conv={this.state.conversation} />
-        <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} visit={this.visit.bind(this)} />
+        {
+          this.state.loading === true ? <div>loading</div> :
+            <React.Fragment>
+              <ListChat list={this.state.list} chat visit={this.visit.bind(this)} last_msg={true} conv={this.state.conversation} />
+              <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} visit={this.visit.bind(this)} />
+            </React.Fragment>
+        }
       </div>
     );
   }

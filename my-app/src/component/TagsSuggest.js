@@ -21,7 +21,7 @@ class TagsSuggest extends React.Component {
 
     static contextType = UserProvider;
 
-    componentWillReceiveProps(next) {
+    UNSAFE_componentWillReceiveProps(next) {
         if (this.state.error !== "" && next.tags.length < 10)
             this.setState({ error: "" });
     }
