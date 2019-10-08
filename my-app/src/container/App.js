@@ -26,6 +26,7 @@ class App extends React.Component {
             distance: "",
             identity: ""
          },
+         loading: true,
          header: "white-red",
          response: false,
          responses: false,
@@ -36,24 +37,29 @@ class App extends React.Component {
 
    }
 
-   async UNSAFE_componentWillMount() {
+   async componentDidMount() {
       let user = this.getObject("user");
       let header = this.getObject("header")
 
       header = header === null ? "white-red" : "red-white"
-      if (!document.cookie === false && document.cookie !== "")
-         this.setState({ ...this.state, user: JSON.parse(document.cookie), header }, () => {
-            console.log("restore ", this.state)
+      
+      try {
+         var result = JSON.parse(document.cookie);
+         this.setState({ ...this.state, header }, () => {
+            if (result !== "")
+               this.setState({ ...this.state, loading: false, user: result, header }, () => {
+                  console.log("restore ", this.state)
+               })
+            else if (document.cookie === "")
+               this.logout()
+            else
+               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
+                  console.log("restore ", this.state)
+               })
          })
-      else if (!document.cookie === false && document.cookie === "")
-         this.logout()
-      else
-         this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
-            console.log("restore ", this.state)
-         })
-   }
+      } catch (error) { }
 
-   componentWillUnmount() { }
+   }
 
    setObject = (key, value) => {
       window.sessionStorage.setItem(key, JSON.stringify(value));
@@ -93,14 +99,16 @@ class App extends React.Component {
                      ageMax: "",
                      distance: "",
                      identity: ""
-                  }
-               }, () => { this.setObject("user", this.state) })
+                  },
+                  loading: false
+               }, () => {
+                  this.setObject("user", this.state)
+               })
             }
          })
    }
 
    render() {
-
       return (
          <BrowserRouter>
             <div>{this.state.response}</div>

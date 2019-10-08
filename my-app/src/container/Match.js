@@ -34,7 +34,6 @@ class Match extends React.Component {
       latitude: this.context.user.latitude,
       score: 0
     });
-
   }
 
   getUsers(params) {

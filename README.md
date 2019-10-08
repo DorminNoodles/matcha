@@ -68,3 +68,17 @@ todo :
 	handle change avatar
 	handle change email (emit event if user update if event update check mail if mail temp so change mail)
 	CHOOSE camelcase or underscore for DATABSE !!!/!\
+
+
+./my-app/.env : 
+
+	JWT_KEY=qwerty
+	REACT_APP_PUBLIC_URL=http://localhost:3300/
+
+./server/.env : 
+
+	JWT_KEY=qwerty
+	PORT=*port*
+	MAP_TOKEN=*token_mapbox*
+	PORT_FRONT=http://localhost:3000/
+	REACT_APP_PUBLIC_URL={pwd}/server/public/pictures/

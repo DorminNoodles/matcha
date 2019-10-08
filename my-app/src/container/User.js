@@ -46,7 +46,7 @@ class User extends React.Component {
       getUser(this.context.user.token, this.context.user.id)
         .then((res) => {
           if (res.status === 200)
-            this.setState({ ...this.state, ...res.data })
+            this.setState({ ...this.state, ...res.data, loading: false })
           else
             this.setState({ ...this.state, loading: true })
         })
