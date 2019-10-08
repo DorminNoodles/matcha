@@ -98,7 +98,7 @@ async function db() {
 			second_user INT NOT NULL, \
 			date DATETIME DEFAULT CURRENT_TIMESTAMP, \
 			active INT DEFAULT 1, \
-			visit INT DEFAULT 0,\
+			visit INT DEFAULT 1,\
 			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
 		await connection.query('CREATE TABLE ban (id INT UNSIGNED NOT NULL)');

@@ -18,7 +18,7 @@ class Home extends React.Component {
   }
   static contextType = UserProvider;
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
   }
@@ -56,11 +56,9 @@ class Home extends React.Component {
 
     uploadPicture(data, this.context.user.token)
       .then((res) => {
-        console.log(res)
         this.setState({ ...this.state, avatar: res.data.photo }, () => {
           this.context.onChange("user", { ...this.context.user, avatar: res.data.photo })
         })
-
       }).catch((err) => { this.setState({ ...this.state, error: "upload failed" }) })
   };
 
@@ -70,10 +68,15 @@ class Home extends React.Component {
     let photos = []
 
     getPhotos(id, token).then(res => {
-      for (var i in res)
-        if (res[i] !== avatar)
-          photos.push(res[i])
-      this.setState({ ...this.state, photos })
+
+      if (res.status === "error")
+        this.setState({ ...this.state, error: "Internal Error" })
+      else {
+        for (var i in res)
+          if (res[i] !== avatar)
+            photos.push(res[i])
+        this.setState({ ...this.state, photos, error: "" })
+      }
     })
   };
 
@@ -95,6 +98,7 @@ class Home extends React.Component {
     const { id, avatar } = this.context.user
     let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
 
+    if (this.state.error !== "") { return <div>{this.state.error}</div> }
     return (
       <React.Fragment>
         {

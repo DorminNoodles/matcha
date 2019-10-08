@@ -82,12 +82,14 @@ function Conversation(props) {
 ///////////////////////////LIST CHAT///////////////////////////////////////
 
 class MessageBox extends React.Component {
+    static contextType = UserProvider;
+
     render() {
 
-        let { id, username, message, avatar, visit, group_id } = this.props.value
+        let { id, username, avatar, visit, group_id, last } = this.props.value
         let imgProfil = id > 0 ?
             process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : profile;
-        let mess = visit === 0 ? "message-active center" : "message-box center"
+        let mess = visit === 0 && last === this.context.user.id ? "message-active center" : "message-box center"
 
         return (
             <Link to={{ pathname: "/chat", search: `?id=${id}` }} className={mess} onClick={() => { this.props.visit(group_id, this.props.i) }}>

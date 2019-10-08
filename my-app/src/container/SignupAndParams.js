@@ -49,7 +49,7 @@ class Signup extends React.Component {
     // get the page's type
     // if param init info
 
-    componentWillReceiveProps(next) {
+    UNSAFE_componentWillReceiveProps(next) {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
         if (this.state.success !== "Update succeed")
@@ -231,7 +231,7 @@ class Signup extends React.Component {
         else
             signPage = <ThirdPage status={status} info={info} onChange={this.onChange} onChangeLocation={this.onChangeLocation} changePage={this.changePage} error={error} success={success} getGeocalisation={this.getGeocalisation} />
 
-        return (
+return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
                     <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id} />

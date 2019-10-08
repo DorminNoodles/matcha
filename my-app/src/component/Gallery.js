@@ -1,6 +1,7 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
 import profile from "../image/profile.png"
+import { Loading } from '../export'
 
 const AddPicture = ({ sendFile, position }) => (
     <form >
@@ -58,15 +59,16 @@ class Gallery extends React.Component {
     state = { loading: true }
     static contextType = UserProvider;
 
-    componentWillReceiveProps(next) {
+    UNSAFE_componentWillReceiveProps(next) {
         if (next.photos)
             this.setState({ loading: false })
     }
 
     render() {
+        if (this.state.loading === true) { return (<Loading />) }
         return (
             <div className="list-picture">
-                {this.state.loading === true ? <div>Loading</div> : <Block {...this.props} />}
+                <Block {...this.props} />
             </div>
         );
     }

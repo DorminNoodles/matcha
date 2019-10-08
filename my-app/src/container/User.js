@@ -1,6 +1,6 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
-import { UserProfil, ModalPhoto, ModalBlockReport } from '../export'
+import { UserProfil, ModalPhoto, ModalBlockReport, Loading } from '../export'
 import { getUser, getPhotos } from '../function/get'
 import queryString from 'query-string'
 import { like, report, block } from '../function/post'
@@ -14,11 +14,12 @@ class User extends React.Component {
     modalReport: "modal",
     modalBlock: "modal",
     photos: [],
-    number: 0
+    number: 0,
+    loading: true
   }
   static contextType = UserProvider;
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let params = queryString.parse(this.props.location.search)
 
     if (!(this.context.user.token))
@@ -38,13 +39,16 @@ class User extends React.Component {
     this.getPhotos(!params.id ? this.context.user.id : params.id)
   }
 
-  componentWillReceiveProps(next) {
+  UNSAFE_componentWillReceiveProps(next) {
     let params = queryString.parse(next.location.search)
 
     if (!params.id)
       getUser(this.context.user.token, this.context.user.id)
         .then((res) => {
-          this.setState({ ...this.state, ...res.data })
+          if (res.status === 200)
+            this.setState({ ...this.state, ...res.data })
+          else
+            this.setState({ ...this.state, loading: true })
         })
 
     if (this.context.header !== "red-white")
@@ -116,6 +120,7 @@ class User extends React.Component {
 
     if (this.state.ban && this.state.ban === 1)
       return <div>ban</div>
+    else if (this.state.loading === true) { return <Loading /> }
     else
       return (
         <div id="user" >

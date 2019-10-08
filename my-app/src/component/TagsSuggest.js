@@ -21,7 +21,7 @@ class TagsSuggest extends React.Component {
 
     static contextType = UserProvider;
 
-    componentWillReceiveProps(next) {
+    UNSAFE_componentWillReceiveProps(next) {
         if (this.state.error !== "" && next.tags.length < 10)
             this.setState({ error: "" });
     }
@@ -32,7 +32,6 @@ class TagsSuggest extends React.Component {
 
     onSuggestionsFetchRequested = ({ value }) => {
         getTags(this.context.user.token, value).then((res) => {
-            console.log(res)
             if (typeof res === "object")
                 this.setState({ suggestions: res });
             else

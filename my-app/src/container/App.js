@@ -36,22 +36,24 @@ class App extends React.Component {
 
    }
 
-   async componentWillMount() {
+   async UNSAFE_componentWillMount() {
       let user = this.getObject("user");
       let header = this.getObject("header")
 
       header = header === null ? "white-red" : "red-white"
-      if (document.cookie !== "")
+      if (!document.cookie === false && document.cookie !== "")
          this.setState({ ...this.state, user: JSON.parse(document.cookie), header }, () => {
             console.log("restore ", this.state)
          })
-      else if (document.cookie === "")
+      else if (!document.cookie === false && document.cookie === "")
          this.logout()
       else
          this.setState({ ...this.state, user: { ...this.state.user, ...user }, header }, () => {
             console.log("restore ", this.state)
          })
    }
+
+   componentWillUnmount() { }
 
    setObject = (key, value) => {
       window.sessionStorage.setItem(key, JSON.stringify(value));
@@ -73,7 +75,7 @@ class App extends React.Component {
 
       if (this.state.user.token)
          logout(this.state.user.token).then(({ data }) => {
-            if (data.status === "success") {
+            if (data && data.status === "success") {
                this.setState({
                   ...this.state,
                   user: {

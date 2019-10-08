@@ -12,7 +12,7 @@ class Password extends React.Component {
     }
     static contextType = UserProvider;
 
-    componentWillReceiveProps() {
+    UNSAFE_componentWillReceiveProps() {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
     }

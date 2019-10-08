@@ -18,7 +18,7 @@ class Signin extends Component {
   }
   static contextType = UserProvider;
 
-  componentWillReceiveProps(history, props) {
+  UNSAFE_componentWillReceiveProps(history, props) {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
   }
