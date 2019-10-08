@@ -78,7 +78,7 @@ todo :
 ./server/.env : 
 
 	JWT_KEY=qwerty
-	PORT=port
-	MAP_TOKEN=token_mapbox
+	PORT=*port*
+	MAP_TOKEN=*token_mapbox*
 	PORT_FRONT=http://localhost:3000/
 	REACT_APP_PUBLIC_URL={pwd}/server/public/pictures/
