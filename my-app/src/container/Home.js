@@ -18,6 +18,13 @@ class Home extends React.Component {
   }
   static contextType = UserProvider;
 
+  componentDidMount() {
+    if (this.context.user && this.context.user.token)
+      this.getPicture()
+    else
+      this.setState({ ...this.state, loading: false })
+  }
+
   UNSAFE_componentWillReceiveProps() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
@@ -96,7 +103,7 @@ class Home extends React.Component {
     const { id, avatar } = this.context.user
     let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
 
-    if ((this.context.user.token) && this.state.loading === true) { this.init() }
+    if ((this.context.user.token) && !(this.state.photos)) { this.init() }
     else if (this.state.error !== "") { return <div>{this.state.error}</div> }
     else if (this.state.loading === true) { return <Loading /> }
     return (
