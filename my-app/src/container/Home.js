@@ -1,6 +1,6 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
-import { HomePage, HomeUser } from '../export'
+import { HomePage, HomeUser, Loading } from '../export'
 import { getPhotos } from '../function/get'
 import { uploadPicture } from "../function/post"
 import { deletePhoto } from "../function/delete"
@@ -9,7 +9,7 @@ import queryString from 'query-string'
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { error: "" }
+    this.state = { error: "", loading: true }
     this.fct = {
       sendFile: this.sendFile.bind(this),
       sendAvatar: this.sendAvatar.bind(this),
@@ -23,13 +23,11 @@ class Home extends React.Component {
       this.context.onChange("header", "white-red")
   }
 
-  componentDidMount() {
-    if (this.context.header !== "white-red")
-      this.context.onChange("header", "white-red")
-    this.setState({ ...this.state, avatar: this.context.user.avatar })
-
+  init = () => {
     if (this.context.user && this.context.user.token)
       this.getPicture()
+    else
+      this.setState({ ...this.state, loading: false })
   }
 
   sendFile = (e) => {
@@ -75,7 +73,7 @@ class Home extends React.Component {
         for (var i in res)
           if (res[i] !== avatar)
             photos.push(res[i])
-        this.setState({ ...this.state, photos, error: "" })
+        this.setState({ ...this.state, avatar: this.context.user.avatar, photos, error: "", loading: false })
       }
     })
   };
@@ -98,7 +96,9 @@ class Home extends React.Component {
     const { id, avatar } = this.context.user
     let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
 
-    if (this.state.error !== "") { return <div>{this.state.error}</div> }
+    if ((this.context.user.token) && this.state.loading === true) { this.init() }
+    else if (this.state.error !== "") { return <div>{this.state.error}</div> }
+    else if (this.state.loading === true) { return <Loading /> }
     return (
       <React.Fragment>
         {
