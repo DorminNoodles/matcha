@@ -13,16 +13,16 @@ class Home extends React.Component {
     this.fct = {
       sendFile: this.sendFile.bind(this),
       sendAvatar: this.sendAvatar.bind(this),
-      deletePhoto: this.deletePhoto.bind(this)
+      deletePhoto: this.deletePhoto.bind(this),
+      getPicture: this.getPicture.bind(this)
+
     }
   }
   static contextType = UserProvider;
 
-  componentDidMount() {
-    if (this.context.user && this.context.user.token)
-      this.getPicture()
-    else
-      this.setState({ ...this.state, loading: false })
+  UNSAFE_componentWillMount() {
+    if (this.context.header !== "white-red")
+      this.context.onChange("header", "white-red")
   }
 
   UNSAFE_componentWillReceiveProps() {

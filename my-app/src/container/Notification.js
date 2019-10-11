@@ -26,29 +26,39 @@ function NotifMessage({ username, type, date, deleteNotifs, id, position }) {
 class Notification extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { notifications: [] }
+        this.state = { notifications: [], loading: true }
+        this.getNotifs = this.getNotifs.bind(this)
+
     }
     static contextType = UserProvider;
 
-    async componentDidMount() {
-        if (this.context.user.token) {
-            socket.emit('notif_subscribe', this.context.user.id + "_notif");
+
+    componentDidUpdate() {
+        if (this.context.user.token && this.state.loading === true)
+            this.getNotifs()
+    }
+    
+    getNotifs() {
+        let { user } = this.context
+
+        this.setState({ ...this.state, loading: false }, () => {
+            socket.emit('notif_subscribe', user.id + "_notif");
             socket.on("notif", data => {
                 let notifications = this.state.notifications;
                 notifications.unshift(data);
-                this.setState({ ...this.state, notifications }, () => {
+                this.setState({ ...this.state, notifications, loading: false }, () => {
                     this.props.numberNotifs(this.props.number + 1)
                 })
             })
 
-            await getNotifications(this.context.user.token).then((res) => {
+            getNotifications(user.token).then((res) => {
                 if (res && res.data && res.data.length > 0) {
-                    this.setState({ ...this.state, notifications: res.data }, () => {
+                    this.setState({ ...this.state, notifications: res.data, loading: false }, () => {
                         this.props.numberNotifs(res.data[0].count)
                     })
                 }
             })
-        }
+        })
     }
 
     deleteNotifs = (position, id) => {

@@ -243,22 +243,6 @@ exports.update = (data, id) => {
 	})
 }
 
-// exports.changeEmail = (id, tmp_email) => {
-// 	return new Promise((resolve, reject) => {
-
-// 		database.connection()
-// 			.then((conn) => {
-// 				return conn.query('UPDATE users SET ? WHERE id=?', [{ "email": tmp_email }, id]);
-// 			})
-// 			.then((conn) => {
-// 				resolve();
-// 			})
-// 			.catch((err) => {
-// 				reject();
-// 			})
-// 	})
-// }
-
 exports.logout = (id) => {
 	return new Promise((resolve, reject) => {
 

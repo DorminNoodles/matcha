@@ -58,7 +58,7 @@ exports.list = (id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                var result = conn.query('SELECT users.avatar, userschat.active, username, \
+                return conn.query('SELECT users.avatar, userschat.active, username, \
                          first_user, second_user, chat.date, users.id, userschat.id as group_id, visit, chat.message, \
                          (select to_id from chat order by date desc limit 1) as last\
                          FROM userschat \
@@ -69,14 +69,8 @@ exports.list = (id) => {
                          GROUP BY id \
                          ORDER BY chat.date DESC;'
                     , [id, id, id])
-                    .then((res) => {
-                        conn.end();
-                        resolve(res)
-                    })
-                    .catch((err) => { reject({ "status": "error", "msg": "Bad query !" }); })
-
-                return result;
             })
+            .then((res) => { resolve(res) })
             .catch((err) => {
                 reject({ "status": "error", "msg": "Bad query !" });
             })
