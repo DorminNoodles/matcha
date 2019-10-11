@@ -32,7 +32,7 @@ class Chat extends React.Component {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
 
-   this.getConversation(this.props).then(() => {
+    this.getConversation(this.props).then(() => {
       this.getListMsg()
     })
 
@@ -49,7 +49,9 @@ class Chat extends React.Component {
       })
 
       if (this.state.group_id === data.id) {
+        let conversation = this.state.conversation
         conversation.push(data)
+
         this.setState({ ...this.state, message: "", conversation, list }, () => { })
       }
     })
@@ -121,8 +123,8 @@ class Chat extends React.Component {
     if (this.state.loading === true) { return (<Loading />) }
     return (
       <div id="chat">
-        <ListChat list={this.state.list} chat  last_msg={true} />
-        <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)}  />
+        <ListChat list={this.state.list} chat last_msg={true} />
+        <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} />
       </div>
     );
   }
