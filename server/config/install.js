@@ -27,7 +27,6 @@ async function db() {
 		await connection.query('DROP TABLE IF EXISTS likes');
 		await connection.query('DROP TABLE IF EXISTS block');
 		await connection.query('DROP TABLE IF EXISTS report');
-		await connection.query('DROP TABLE IF EXISTS visits');
 		await connection.query('DROP TABLE IF EXISTS notifs');
 		await connection.query('DROP TABLE IF EXISTS chat');
 		await connection.query('CREATE TABLE users (\
@@ -98,7 +97,6 @@ async function db() {
 			second_user INT NOT NULL, \
 			date DATETIME DEFAULT CURRENT_TIMESTAMP, \
 			active INT DEFAULT 1, \
-			visit INT DEFAULT 1,\
 			CONSTRAINT UC_userschat UNIQUE (first_user, second_user)\
 		)');
 		await connection.query('CREATE TABLE ban (id INT UNSIGNED NOT NULL)');
@@ -127,9 +125,7 @@ async function db() {
 		);
 
 		await connection.end();
-	} catch (error) {
-		console.error(error);
-	}
+	} catch (error) { console.error(error); }
 }
 
 db();
