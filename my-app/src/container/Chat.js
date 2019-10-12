@@ -3,7 +3,7 @@ import { Conversation, ListChat, Loading } from '../export'
 import UserProvider from '../context/UserProvider';
 import queryString from 'query-string';
 import { getMessages, getListMsg } from '../function/get'
-import { sendMsg, chat_visit } from '../function/post'
+import { sendMsg } from '../function/post'
 import { isEmpty } from '../function/utils'
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:3300');
@@ -35,8 +35,6 @@ class Chat extends React.Component {
     this.getConversation(this.props).then(() => {
       this.getListMsg()
     })
-
-    let { conversation } = this.state
 
     socket.on("new message", data => {
       let list = {}

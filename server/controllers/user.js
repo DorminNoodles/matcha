@@ -197,23 +197,24 @@ exports.updatePassword = ({ token, password, confirmPassword, id, key }) => {
 			.then(() => {
 				inputModel.password(password)
 					.then(() => {
-						bcrypt.hash(password, 10)
-							.then((hash) => {
-								passCrypted = hash;
-								return jwt.verify(token, process.env.JWT_KEY);
-							})
-							.then((decoded) => {
-								return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-									.then(() => {
-										resolve({ "status": "success", "msg": "The password is successfully change " });
-									})
-							})
-					})
+						try {
+							bcrypt.hash(password, 10)
+								.then((hash) => {
+									passCrypted = hash;
+									return jwt.verify(token, process.env.JWT_KEY);
+								})
+								.then((decoded) => {
+									return userModel.changePwd(decoded.email, decoded.username, passCrypted)
+										.then(() => {
+											resolve({ "status": "success", "msg": "The password is successfully change " });
+										})
+								})
+						}
+						catch (error) { reject(error); }
+
+					}).catch((err) => { reject(err); })
 			}).catch((err) => {
-				if (err.msg === "key email not valid")
-					resolve(err )
-				else
-					reject(err);
+				err.msg === "key email not valid" ? resolve(err) : reject(err);
 			})
 	})
 }

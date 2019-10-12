@@ -3,7 +3,6 @@ import { BrowserRouter as Route } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
 import { getListMsg } from '../function/get'
 import { ListChat, Loading } from '../export'
-import openSocket from 'socket.io-client';
 
 class ListMessage extends React.Component {
     constructor(props) {

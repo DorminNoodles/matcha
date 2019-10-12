@@ -15,12 +15,8 @@ router.post('/', urlencodedParser, (req, res) => {
 		req.body.avatar = req.files.avatar;
 
 	user.new(req.body)
-		.then((result) => {
-			res.status(200).send(result);
-		})
-		.catch((err) => {
-			res.status(400).send(err);
-		})
+		.then((result) => { res.status(200).send(result); })
+		.catch((err) => { res.status(400).send(err); })
 })
 
 router.patch('/', urlencodedParser, (req, res) => {
@@ -35,12 +31,8 @@ router.patch('/', urlencodedParser, (req, res) => {
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-		.then((response) => {
-			res.status(200).send(response);
-		})
-		.catch((err) => {
-			res.status(500).send({ "status": "error", "msg": "error" });
-		})
+		.then((response) => { es.status(200).send(response); })
+		.catch((err) => { res.status(500).send({ "status": "error", "msg": "error" }); })
 })
 
 router.put('/password', urlencodedParser, (req, res) => {
@@ -49,12 +41,8 @@ router.put('/password', urlencodedParser, (req, res) => {
 		res.status(401).send({ status: "error", msg: "access denied !" });
 
 	user.updatePassword({ ...req.body, id: req.token.id })
-		.then((result) => {
-			res.status(200).send(result);
-		})
-		.catch((err) => {
-			res.status(400).send(err)
-		})
+		.then((result) => { res.status(200).send(result); })
+		.catch((err) => { res.status(400).send(err) })
 })
 
 router.post('/logout', urlencodedParser, (req, res) => {
@@ -63,12 +51,8 @@ router.post('/logout', urlencodedParser, (req, res) => {
 		res.status(401).send({ status: "error", msg: "access denied !" });
 
 	user.logout(req.token.id)
-		.then((result) => {
-			res.status(200).send(result);
-		})
-		.catch((err) => {
-			res.status(400).send(err);
-		})
+		.then((result) => { res.status(200).send(result); })
+		.catch((err) => { res.status(400).send(err); })
 })
 
 router.get('/confirm', urlencodedParser, (req, res) => {
@@ -82,9 +66,8 @@ router.get('/confirm', urlencodedParser, (req, res) => {
 				res.status(500).send({ "status": "error", "msg": "error" });
 			})
 	}
-	else {
+	else
 		res.status(400).send({ "status": "error", "msg": "bad request" });
-	}
 })
 
 router.get('/avatar', urlencodedParser, (req, res) => {
@@ -107,12 +90,8 @@ router.get('/', urlencodedParser, (req, res) => {
 
 	if (req.query.id) {
 		user.get(parseInt(req.query.id), req.token.id)
-			.then((user) => {
-				res.status(200).send({ ...user });
-			})
-			.catch(() => {
-				res.status(400).send({ "status": "error", "msg": "" });
-			})
+			.then((user) => { res.status(200).send({ ...user }); })
+			.catch(() => { res.status(400).send({ "status": "error", "msg": "" }); })
 	}
 })
 

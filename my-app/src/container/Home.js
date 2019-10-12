@@ -23,6 +23,8 @@ class Home extends React.Component {
   UNSAFE_componentWillMount() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
+
+    this.init()
   }
 
   UNSAFE_componentWillReceiveProps() {
@@ -104,7 +106,7 @@ class Home extends React.Component {
     let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
 
     if ((this.context.user.token) && !(this.state.photos)) { this.init() }
-    else if (this.state.error !== "") { return <div>{this.state.error}</div> }
+    if (this.state.error !== "") { return <div>{this.state.error}</div> }
     else if (this.state.loading === true) { return <Loading /> }
     return (
       <React.Fragment>

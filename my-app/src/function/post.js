@@ -29,7 +29,7 @@ export function password(password, confirmPassword, token, key) {
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => { return response.data; })
-        .catch(error => { return error; });
+        .catch(error => { return error.response.data; });
 }
 
 export function register(data, info) {

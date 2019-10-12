@@ -219,7 +219,6 @@ exports.changePwd = (email, username, pwd) => {
 				resolve({ "status": "success", "msg": "Password changed!" });
 			})
 			.catch((err) => {
-				console.log(err)
 				reject({ status: "error", msg: "error db !" });
 			})
 	});
@@ -250,7 +249,7 @@ exports.logout = (id) => {
 		database.connection()
 			.then((conn) => { return conn.query('UPDATE users SET active=? WHERE id=?', [d, id]); })
 			.then(() => { resolve({ "status": "success" }); })
-			.catch((err) => { reject({ "status": "error" }); })
+			.catch(() => { reject({ "status": "error" }); })
 	})
 }
 
@@ -260,7 +259,7 @@ exports.setKeyPassword = (key, id) => {
 		database.connection()
 			.then((conn) => { return conn.query('UPDATE users SET tmp_email=? WHERE id=?', [key, id]); })
 			.then(() => { resolve({ "status": "success" }); })
-			.catch((err) => { reject({ "status": "error" }); })
+			.catch(() => { reject({ "status": "error" }); })
 	})
 }
 
@@ -275,8 +274,6 @@ exports.checkKeyPassword = (key, id) => {
 						else
 							reject({ "status": "error", "msg": "key email not valid" });
 					})
-			})
-			.catch((err) => { 
-				reject({ "status": "error", "msg": "Internal Server Error" }); })
+			}).catch(() => { reject({ "status": "error", "msg": "Internal Server Error" }); })
 	})
 }
