@@ -24,9 +24,17 @@ exports.new = (id, photo, prev) => {
 		let name = date + photo.name
 		name = name.toLowerCase()
 
-		this.move(id, photo, name)
-			.then((res) => { resolve(res) })
-			.catch((err) => { reject(err); })
+		if (prev) {
+			photosModel.deleteFile(id, prev).then(() => {
+				this.move(id, photo, name)
+					.then((res) => { resolve(res) })
+					.catch((err) => { reject(err) })
+			}).catch((err) => { reject(err); })
+		}
+		else
+			this.move(id, photo, name)
+				.then((res) => { resolve(res) })
+				.catch((err) => { reject(err); })
 	})
 }
 

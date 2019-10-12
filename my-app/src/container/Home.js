@@ -31,7 +31,8 @@ class Home extends React.Component {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
 
-    this.init()
+    if (!(this.state.avatar))
+      this.init()
   }
 
   init = () => {

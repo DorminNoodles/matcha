@@ -74,6 +74,7 @@ class App extends React.Component {
    onChange = (index, e) => {
       this.setState({ ...this.state, [index]: e }, () => {
          this.setObject(index, e)
+        document.cookie = JSON.stringify({ token: this.state.user.token, ...this.state.user })
       })
    }
 
