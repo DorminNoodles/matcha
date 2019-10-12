@@ -82,12 +82,13 @@ exports.findUser = (id) => {
 				return conn.query('SELECT username, id, email, gender, orientation, \
 					location, latitude, longitude, age, avatar, ageMin, ageMax,	distance, identity \
 					FROM users WHERE id=? ', [id])
-			}).then((result) => {
-				conn.end();
+					.then((result) => {
+						conn.end();
 
-				if (result[0]) { resolve(result[0]); }
-				else
-					reject({ "status": "error", "msg": "User does not exist" });
+						if (result[0]) { resolve(result[0]); }
+						else
+							reject({ "status": "error", "msg": "User does not exist" });
+					})
 			})
 			.catch(() => {
 				reject({ "status": "error", "msg": "Internal Server Error" });
@@ -161,10 +162,10 @@ exports.findUserById = (id, user_id) => {
 				LEFT JOIN report ON(report.reported=? AND report.reporting=?)\
 				LEFT JOIN likes ON (likes.liked=?) \
 				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
-			}).then((result) => {
-				conn.end();
-
-				result[0] ? resolve(result[0]) : reject();
+					.then((result) => {
+						conn.end();
+						result[0] ? resolve(result[0]) : reject();
+					})
 			}).catch((error) => { reject(error); })
 	})
 }
@@ -224,12 +225,12 @@ exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username]);
-			})
-			.then((res) => {
-				conn.end();
+				return conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username])
+					.then((res) => {
+						conn.end();
 
-				resolve({ "status": "success", "msg": "Password changed!" });
+						resolve({ "status": "success", "msg": "Password changed!" });
+					})
 			})
 			.catch((err) => {
 				reject({ status: "error", msg: "error db !" });
@@ -243,10 +244,13 @@ exports.update = (data, id) => {
 		database.connection()
 			.then((conn) => {
 				return conn.query('UPDATE users SET ? WHERE id=?', [data, id])
-					.then(() => { return this.findUser(id) })
+					.then(() => {
+						conn.end();
+
+						return this.findUser(id)
+					})
 			})
 			.then((data) => {
-				conn.end();
 
 				if (data)
 					resolve({ "status": "success", "msg": "update user", data });

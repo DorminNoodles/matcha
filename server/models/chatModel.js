@@ -66,10 +66,10 @@ exports.list = (id) => {
                          GROUP BY id \
                          ORDER BY chat.date DESC;'
                     , [id, id, id])
-            })
-            .then((res) => {
-                conn.end();
-                resolve(res)
+                    .then((res) => {
+                        conn.end();
+                        resolve(res)
+                    })
             })
             .catch((err) => {
                 reject({ "status": "error", "msg": "Bad query !" });

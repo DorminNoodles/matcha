@@ -15,9 +15,9 @@ exports.new = (tag, user_id) => {
 			.then((conn) => {
 				conn.query('INSERT INTO tags (tag) VALUES (?)', [tag])
 					.then((res) => {
+						conn.end();
 						exports.user(user_id, res.insertId)
 							.then(() => {
-								conn.end();
 								resolve({ "status": "success", "msg": "Tag saved !" });
 							}).catch((err) => { reject(err) })
 					})

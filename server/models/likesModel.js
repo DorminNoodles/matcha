@@ -38,7 +38,10 @@ exports.new = (liker, liked) => {
 														HAVING COUNT(*)=2)', [liker, liked, liker, liked])
 											.then((res) => {
 												return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-													.then((res) => { resolve({ res, like: { ...like, id: id_notifs } }) })
+													.then((res) => {
+														conn.end()
+														resolve({ res, like: { ...like, id: id_notifs } })
+													})
 											})
 									});
 							})
@@ -46,7 +49,6 @@ exports.new = (liker, liked) => {
 			})
 			.then((res) => { resolve({ "status": "success", "msg": "like added !", ...res }) })
 			.catch(() => {
-				conn.end()
 				reject({ "status": "error", "msg": "request failed" })
 			})
 	})
@@ -140,11 +142,11 @@ exports.getLike = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked]);
-			})
-			.then((res) => {
-				conn.end();
-				res[0] ? resolve(res[0]) : reject('Like not found.')
+				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked])
+				.then((res) => {
+					conn.end();
+					res[0] ? resolve(res[0]) : reject('Like not found.')
+				})
 			})
 			.catch((err) => {
 				console.log(err);
@@ -157,11 +159,11 @@ exports.getLikes = (liked) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT COUNT (*) FROM likes WHERE liked=?', [liked]);
-			})
-			.then((res) => {
-				conn.end();
-				res[0] ? resolve(res[0]) : reject('Likes not found.');
+				return conn.query('SELECT COUNT (*) FROM likes WHERE liked=?', [liked])
+				.then((res) => {
+					conn.end();
+					res[0] ? resolve(res[0]) : reject('Likes not found.');
+				})
 			})
 			.catch((err) => {
 				console.log(err);
