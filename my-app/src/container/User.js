@@ -33,10 +33,11 @@ class User extends React.Component {
           let date = new Date(res.data.active)
           let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
 
-          this.setState({ ...this.state, ...res.data, date_active }, () => { })
+          this.setState({ ...this.state, ...res.data, date_active }, () => {
+            this.getPhotos(!params.id ? this.context.user.id : params.id)
+          })
         }
       })
-    this.getPhotos(!params.id ? this.context.user.id : params.id)
   }
 
   UNSAFE_componentWillReceiveProps(next) {

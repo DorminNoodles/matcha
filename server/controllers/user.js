@@ -114,50 +114,51 @@ exports.get = (id, user_id) => {
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
 		inputModel.username(data.username)
-			.then(() => { return inputModel.password(data.password) })
-			.then(() => { return userModel.findUserByUsername(data.username, 0) })
-			.then((result) => {
-				if (!result.mailValidation) {
-					reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
-					return;
-				}
-				else if (result.ban === 1)
-					resolve({ status: 'error', msg: 'ban' });
+			.then(() => {
+				inputModel.password(data.password)
+					.then((res) => {
+						userModel.findUserByUsername(data.username, 0)
+							.then((result) => {
+								if (!result.mailValidation) {
+									reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
+									return;
+								}
+								else if (result.ban === 1)
+									resolve({ status: 'error', msg: 'ban' });
+								else
+									userModel.checkLogin(data.username, data.password)
+										.then(() => {
+											let datas = {};
 
-				userModel.checkLogin(data.username, data.password)
-					.then(() => {
-						let datas = {};
-
-						datas.token = jwt.sign({
-							id: result.id,
-							username: result.username,
-							email: result.email
-						}, process.env.JWT_KEY);
+											datas.token = jwt.sign({
+												id: result.id,
+												username: result.username,
+												email: result.email
+											}, process.env.JWT_KEY);
 
 
-						datas.user = {
-							id: result.id,
-							username: result.username,
-							email: result.email,
-							gender: result.gender,
-							orientation: result.orientation,
-							location: result.location,
-							latitude: result.latitude,
-							longitude: result.longitude,
-							age: result.age,
-							avatar: result.avatar,
-							ageMin: result.ageMin,
-							ageMax: result.ageMax,
-							distance: result.distance,
-							identity: result.identity
-						};
+											datas.user = {
+												id: result.id,
+												username: result.username,
+												email: result.email,
+												gender: result.gender,
+												orientation: result.orientation,
+												location: result.location,
+												latitude: result.latitude,
+												longitude: result.longitude,
+												age: result.age,
+												avatar: result.avatar,
+												ageMin: result.ageMin,
+												ageMax: result.ageMax,
+												distance: result.distance,
+												identity: result.identity
+											};
 
-						resolve({ status: 'success', msg: 'connected !', ...datas });
-
-					}).catch((error) => { reject(error) })
-			}).catch((err) => {
-				reject(err);
-			})
+											resolve({ status: 'success', msg: 'connected !', ...datas });
+										})
+							})
+					}).catch((err) => { reject(err); })
+			}).catch((err) => { reject(err); })
 	})
 }
 

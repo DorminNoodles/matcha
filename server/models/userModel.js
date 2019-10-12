@@ -99,16 +99,16 @@ exports.findUserByUsername = (username, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT username, id, mailValidation, email, \
+				conn.query('SELECT username, id, mailValidation, email, \
 									gender, orientation, location, latitude, \
 									longitude, age, avatar, ageMin, ageMax, distance, identity,\
 									IF((SELECT id FROM ban WHERE id=users.id), TRUE, FALSE) as ban \
-									FROM users WHERE username=? AND id NOT IN (?)', [username, id]);
-			}).then((result) => {
-				conn.end();
-
-				result[0] ? resolve(result[0]) :
-					reject({ "status": "error", "key": "user", "msg": "User does not exist" });
+									FROM users WHERE username=? AND id NOT IN (?)', [username, id])
+					.then((result) => {
+						conn.end();
+						result[0] ? resolve(result[0]) :
+							reject({ "status": "error", "key": "user", "msg": "User does not exist" });
+					})
 			}).catch((error) => {
 				reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 			})
@@ -173,20 +173,20 @@ exports.checkLogin = (username, password) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT password FROM users WHERE username=?', [username]);
-			}).then((result) => {
-				bcrypt.compare(password, result[0].password)
-					.then((res) => {
-						conn.end();
+				conn.query('SELECT password FROM users WHERE username=?', [username])
+					.then((result) => {
+						conn.end()
+						bcrypt.compare(password, result[0].password)
+							.then((res) => {
+								if (res)
+									this.setActive(username)
+										.then((res) => { resolve(res) })
+										.catch((error) => { reject(error); })
+								else
+									reject({ "status": "error", "key": "password", "msg": "Wrong password" });
 
-						if (res)
-							this.setActive(username)
-								.then((res) => resolve(res))
-								.catch((error) => { reject(error); })
-						else
-							reject({ "status": "error", "key": "password", "msg": "Wrong password" });
-
-					}).catch(() => { reject({ "status": "error" }); })
+							})
+					})
 			}).catch(() => { reject({ "status": "error" }); })
 	})
 }
@@ -262,13 +262,16 @@ exports.logout = (id) => {
 
 		var d = new Date();
 		database.connection()
-			.then((conn) => { return conn.query('UPDATE users SET active=? WHERE id=?', [d, id]); })
-			.then(() => {
-				conn.end();
-
-				resolve({ "status": "success" });
+			.then((conn) => {
+				conn.query('UPDATE users SET active=? WHERE id=?', [d, id])
+					.then(() => {
+						conn.end()
+						resolve({ "status": "success" });
+					})
 			})
-			.catch(() => { reject({ "status": "error" }); })
+			.catch((err) => {
+				reject({ "status": "error" });
+			})
 	})
 }
 
@@ -276,11 +279,12 @@ exports.setKeyPassword = (key, id) => {
 	return new Promise((resolve, reject) => {
 
 		database.connection()
-			.then((conn) => { return conn.query('UPDATE users SET tmp_email=? WHERE id=?', [key, id]); })
-			.then(() => {
-				conn.end();
-
-				resolve({ "status": "success" });
+			.then((conn) => {
+				return conn.query('UPDATE users SET tmp_email=? WHERE id=?', [key, id])
+					.then(() => {
+						conn.end();
+						resolve({ "status": "success" });
+					})
 			})
 			.catch(() => { reject({ "status": "error" }); })
 	})
@@ -293,7 +297,6 @@ exports.checkKeyPassword = (key, id) => {
 				return conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
 					.then((res) => {
 						conn.end();
-
 						if (res && res.length > 0)
 							resolve({ "status": "success" });
 						else
