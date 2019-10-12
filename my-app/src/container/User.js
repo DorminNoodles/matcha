@@ -105,7 +105,7 @@ class User extends React.Component {
 
   getPhotos(id) {
     getPhotos(id, this.context.user.token)
-      .then((res) => { this.setState({ ...this.state, photos: res }) })
+      .then((res) => { this.setState({ ...this.state, photos: res, loading: false }) })
   }
 
   onChangePicture(number) {

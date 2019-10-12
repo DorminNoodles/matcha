@@ -11,7 +11,6 @@ var io = socket(server);
 
 const user = require('./routes/user');
 const users = require('./routes/users');
-// const messages = require('./routes/messages');
 const notification = require('./routes/notification');
 const likes = require('./routes/likes');
 const like = require('./routes/like');
@@ -21,12 +20,10 @@ const emitter = require('./emitter');
 const jwtToken = require('./middlewares/jwtToken');
 const chat = require("./routes/chat");
 const score = require("./routes/score");
-const visit = require("./routes/visit");
 const tag = require("./routes/tag");
 const tags = require("./routes/tags");
 const authenticate = require("./routes/authenticate");
 const avatar = require("./routes/avatar");
-// const confirm = require("./routes/confirm");
 const location = require("./routes/location");
 const report = require("./routes/report");
 
@@ -67,20 +64,16 @@ app.use(jwtToken);
 
 /*ROUTES*/
 app.use('/api/user', user);
-// app.use('/api/messages', messages);
 app.use('/api/chat', chat);
 app.use('/api/users', users);
 app.use('/api/likes', likes);
 app.use('/api/like', like);
 app.use('/api/photos', photos);
 app.use('/api/score', score);
-app.use('/api/visit', visit);
 app.use('/api/tag', tag);
 app.use('/api/tags', tags);
-// app.use('/api/gpsDistance', gpsDistance);
 app.use('/api/authenticate', authenticate);
 app.use('/api/avatar', avatar);
-// app.use('/api/confirm', confirm);
 app.use('/api/location', location);
 app.use('/api/block', block);
 app.use('/api/report', report);

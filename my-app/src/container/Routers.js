@@ -28,7 +28,7 @@ class Routers extends React.Component {
 
         <div id="main">
           <Notification {...this.state} numberNotifs={this.numberNotifs.bind(this)} />
-
+     
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/user" component={User} />

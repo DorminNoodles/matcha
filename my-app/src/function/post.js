@@ -29,7 +29,7 @@ export function password(password, confirmPassword, token, key) {
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => { return response.data; })
-        .catch(error => { return error; });
+        .catch(error => { return error.response.data; });
 }
 
 export function register(data, info) {
@@ -167,17 +167,6 @@ export function logout(token) {
     return axios({
         method: 'post',
         url: 'http://localhost:3300/api/user/logout',
-        headers: { 'Authorization': "bearer " + token },
-        config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    }).then((res) => { return res })
-        .catch(error => { return error; });
-}
-
-export function chat_visit(token, group_id) {
-    return axios({
-        method: 'post',
-        url: 'http://localhost:3300/api/chat/visit',
-        data: { group_id },
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then((res) => { return res })

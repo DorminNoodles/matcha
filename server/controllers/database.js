@@ -20,6 +20,7 @@ exports.connection = () => {
 			resolve(conn);
 		})
 		.catch((err) =>{
+			console.log(err)
 			console.log("\033[31m");
 			console.log("/!\\ DATABASE ERROR CONNECTION /!\\");
 			console.log("\033[0m");

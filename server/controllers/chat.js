@@ -23,11 +23,3 @@ exports.list = (id) => {
 			.catch((err) => { reject(err); })
 	})
 }
-
-exports.visit = (group_id) => {
-	return new Promise((resolve, reject) => {
-		chatModel.visit(group_id)
-			.then((res) => { resolve(res); })
-			.catch((err) => { reject(err); })
-	})
-}

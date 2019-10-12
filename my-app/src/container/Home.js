@@ -13,10 +13,19 @@ class Home extends React.Component {
     this.fct = {
       sendFile: this.sendFile.bind(this),
       sendAvatar: this.sendAvatar.bind(this),
-      deletePhoto: this.deletePhoto.bind(this)
+      deletePhoto: this.deletePhoto.bind(this),
+      getPicture: this.getPicture.bind(this)
+
     }
   }
   static contextType = UserProvider;
+
+  UNSAFE_componentWillMount() {
+    if (this.context.header !== "white-red")
+      this.context.onChange("header", "white-red")
+
+    this.init()
+  }
 
   UNSAFE_componentWillReceiveProps() {
     if (this.context.header !== "white-red")
@@ -96,8 +105,8 @@ class Home extends React.Component {
     const { id, avatar } = this.context.user
     let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
 
-    if ((this.context.user.token) && this.state.loading === true) { this.init() }
-    else if (this.state.error !== "") { return <div>{this.state.error}</div> }
+    if ((this.context.user.token) && !(this.state.photos)) { this.init() }
+    if (this.state.error !== "") { return <div>{this.state.error}</div> }
     else if (this.state.loading === true) { return <Loading /> }
     return (
       <React.Fragment>
