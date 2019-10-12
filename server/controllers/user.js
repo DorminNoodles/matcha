@@ -276,34 +276,6 @@ exports.update = (data, id) => {
 	})
 }
 
-// exports.changeEmail = (token) => {
-// 	return new Promise((resolve, reject) => {
-
-// 		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-// 			if (err)
-// 				reject({ status: 'error', msg: 'Token false !' });
-// 			else {
-// 				console.log(decoded);
-// 				console.log('decode Ok !');
-
-// 				userModel.changeEmail(decoded.id, decoded.email)
-// 					.then((result) => {
-// 						console.log('OK');
-// 						resolve();
-// 					})
-// 					.catch(() => {
-// 						console.log('ERROR 457');
-// 						reject();
-
-// 					})
-
-// 			}
-// 		});
-
-// 		// resolve();
-// 	})
-// }
-
 exports.logout = (id) => {
 	return new Promise((resolve, reject) => {
 		userModel.logout(id)

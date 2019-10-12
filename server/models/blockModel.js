@@ -8,20 +8,18 @@ exports.new = (blocker, blocked) => {
 		userModel.findUserById(blocked, blocker).then((res) => {
 			database.connection()
 				.then((conn) => {
-					var result = conn.query('INSERT INTO block (`blocker`, `blocked`) \
+					return conn.query('INSERT INTO block (`blocker`, `blocked`) \
 							VALUES ( ?, ?)', [blocker, blocked])
 						.then(() => {
-							var result = conn.query('UPDATE userschat SET active=0 \
+							return conn.query('UPDATE userschat SET active=0 \
 											 WHERE first_user=LEAST(?, ?) \
 											 AND second_user=GREATEST(?, ?)'
 								, [blocker, blocked, blocker, blocked]);
-
 						})
+				}).then(() => {
 					conn.end();
-					return result
-				})
-				.then(() => { resolve({ "status": "success", "msg": "block success" }); })
-				.catch(() => { reject({ "status": "error", "msg": "error db" }); })
+					resolve({ "status": "success", "msg": "block success" });
+				}).catch(() => { reject({ "status": "error", "msg": "error db" }); })
 		}).catch(() => {
 			reject({ "status": "error", "msg": "user not exist" });
 		})

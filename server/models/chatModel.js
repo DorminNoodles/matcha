@@ -67,7 +67,10 @@ exports.list = (id) => {
                          ORDER BY chat.date DESC;'
                     , [id, id, id])
             })
-            .then((res) => { resolve(res) })
+            .then((res) => {
+                conn.end();
+                resolve(res)
+            })
             .catch((err) => {
                 reject({ "status": "error", "msg": "Bad query !" });
             })

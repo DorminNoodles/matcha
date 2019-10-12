@@ -9,10 +9,10 @@ exports.move = (id, photo, name) => {
 				try {
 					Photos.move(id, photo, name)
 					resolve({ "status": "success", "msg": "Photo added", "photo": name });
+				} catch (err) {
+					reject({ "status": "error", "msg": "upload failed" });
 				}
-				catch (err) { reject({ "status": "error", "msg": "upload failed" }); }
 			}).catch(() => {
-				fs.unlink('./public/pictures/' + id + '/' + name)
 				reject({ "status": "error", "msg": "bad query" });
 			})
 	})
@@ -23,19 +23,10 @@ exports.new = (id, photo, prev) => {
 		let date = new Date().getTime()
 		let name = date + photo.name
 		name = name.toLowerCase()
-		
-		if (prev) {
-			photosModel.deleteFile(id, prev).then(() => {
-				this.move(id, photo, name)
-					.then((res) => { resolve(res) })
-					.catch((err) => { reject(err) })
-			}).catch((err) => { reject(err); })
-		}
-		else {
-			this.move(id, photo, name)
-				.then((res) => { resolve(res) })
-				.catch((err) => { reject(err); })
-		}
+
+		this.move(id, photo, name)
+			.then((res) => { resolve(res) })
+			.catch((err) => { reject(err); })
 	})
 }
 

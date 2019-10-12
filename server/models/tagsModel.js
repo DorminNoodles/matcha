@@ -7,6 +7,8 @@ exports.user = (userId) => {
 			.then((conn) => {
 				conn.query('SELECT tags.tag , tags.id FROM tags INNER JOIN usertags ON tags.id=usertags.tag_id WHERE usertags.user_id=' + userId)
 					.then((res) => {
+						conn.end();
+
 						resolve({ "status": "success", data: res });
 					})
 					.catch((err) => {
@@ -23,6 +25,8 @@ exports.get = (tag) => {
 			.then((conn) => {
 				conn.query('SELECT id, tag as value from tags WHERE LOWER(tag) LIKE "' + tag + '%";')
 					.then((res) => {
+						conn.end();
+
 						resolve(res)
 					})
 					.catch((err) => { reject({ status: "error" }); })
@@ -37,6 +41,8 @@ exports.users = (userId) => {
 			.then((conn) => {
 				conn.query('SELECT tags.tag , tags.id FROM tags INNER JOIN usertags ON tags.id=usertags.tag_id WHERE usertags.user_id=' + userId)
 					.then((res) => {
+						conn.end();
+
 						resolve({ "status": "success", data: res });
 					})
 					.catch((err) => {

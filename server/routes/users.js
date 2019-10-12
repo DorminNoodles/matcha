@@ -19,7 +19,6 @@ router.get('/', urlencodedParser, (req, res) => {
 		res.send(data);
 	})
 	.catch((err) => {
-		console.log('users route error > ', err);
 		res.status(404).send({"status": "error", "key": err.key, "msg": err.msg});
 	})
 })

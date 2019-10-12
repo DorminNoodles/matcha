@@ -17,6 +17,7 @@ exports.new = (tag, user_id) => {
 					.then((res) => {
 						exports.user(user_id, res.insertId)
 							.then(() => {
+								conn.end();
 								resolve({ "status": "success", "msg": "Tag saved !" });
 							}).catch((err) => { reject(err) })
 					})
@@ -37,6 +38,8 @@ exports.get = (tag) => {
 				return new Promise((resolve, reject) => {
 					conn.query('SELECT * FROM tags WHERE tag="' + tag + '"')
 						.then((res) => {
+							conn.end();
+
 							if (res.length === 0)
 								reject({ status: 'error', msg: 'Tag not found' });
 							else
@@ -61,6 +64,7 @@ exports.user = (user_id, tag_id) => {
 						if (res.length === 0)
 							conn.query('INSERT INTO usertags (user_id, tag_id) VALUES (?, ?)', [user_id, tag_id])
 								.then((res) => {
+									conn.end();
 									resolve({ "status": "success", "msg": "Tags saved !" });
 								}).catch((err) => { reject(err); })
 						else
@@ -78,24 +82,11 @@ exports.delete = ({ user_id, tag_id }) => {
 				return new Promise((resolve, reject) => {
 					conn.query('DELETE FROM usertags WHERE user_id=? AND tag_id=?;', [user_id, tag_id])
 						.then((res) => {
+							conn.end();
 							resolve({ "status": "success", "msg": "Tags deleted" })
 						}).catch((err) => { reject(err); })
 				})
 			}).then((res) => { resolve(res) })
 			.catch((err) => { reject(err); })
-	});
-}
-
-exports.patch = (tag, data) => {
-	return new Promise((resolve, reject) => {
-		database.connection()
-			.then((conn) => {
-				let str = data.toString();
-				console.log(str)
-				// conn.query('UPDATE tags SET `users` ')
-			})
-			.cath((err) => {
-				reject(err);
-			})
 	});
 }

@@ -30,6 +30,8 @@ class Home extends React.Component {
   UNSAFE_componentWillReceiveProps() {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
+
+    this.init()
   }
 
   init = () => {

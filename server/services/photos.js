@@ -14,7 +14,6 @@ class Photos {
 
 			userModel.findUserByUsername(data.username, 0)
 				.then((res) => {
-					console.log(res.id);
 					mkdirp('public/pictures/' + res.id, (err) => {
 						if (err)
 							reject({ 'status': 'error', 'msg': 'Photo UserFolder not created !' });
@@ -23,7 +22,6 @@ class Photos {
 					});
 				})
 				.catch(() => {
-					console.log("error");
 					reject();
 				})
 		})
@@ -31,6 +29,7 @@ class Photos {
 
 	static move(id, data, name) {
 		data.mv('public/pictures/' + id + '/' + name, (err) => {
+
 			if (err)
 				return ({ status: "error", key: "avatar", msg: "Avatar upload error !" });
 			else

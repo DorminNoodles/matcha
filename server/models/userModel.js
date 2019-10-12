@@ -83,6 +83,8 @@ exports.findUser = (id) => {
 					location, latitude, longitude, age, avatar, ageMin, ageMax,	distance, identity \
 					FROM users WHERE id=? ', [id])
 			}).then((result) => {
+				conn.end();
+
 				if (result[0]) { resolve(result[0]); }
 				else
 					reject({ "status": "error", "msg": "User does not exist" });
@@ -103,6 +105,8 @@ exports.findUserByUsername = (username, id) => {
 									IF((SELECT id FROM ban WHERE id=users.id), TRUE, FALSE) as ban \
 									FROM users WHERE username=? AND id NOT IN (?)', [username, id]);
 			}).then((result) => {
+				conn.end();
+
 				result[0] ? resolve(result[0]) :
 					reject({ "status": "error", "key": "user", "msg": "User does not exist" });
 			}).catch((error) => {
@@ -158,6 +162,8 @@ exports.findUserById = (id, user_id) => {
 				LEFT JOIN likes ON (likes.liked=?) \
 				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
 			}).then((result) => {
+				conn.end();
+
 				result[0] ? resolve(result[0]) : reject();
 			}).catch((error) => { reject(error); })
 	})
@@ -171,6 +177,8 @@ exports.checkLogin = (username, password) => {
 			}).then((result) => {
 				bcrypt.compare(password, result[0].password)
 					.then((res) => {
+						conn.end();
+
 						if (res)
 							this.setActive(username)
 								.then((res) => resolve(res))
@@ -188,7 +196,10 @@ exports.setActive = (username, password) => {
 
 		database.connection().then((conn) => {
 			conn.query('UPDATE users SET active=0 WHERE username=?', [username])
-				.then(() => { resolve({ "status": "success" }) })
+				.then(() => {
+					conn.end();
+					resolve({ "status": "success" })
+				})
 				.catch((error) => { reject({ "status": "error" }) })
 		})
 	})
@@ -216,6 +227,8 @@ exports.changePwd = (email, username, pwd) => {
 				return conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username]);
 			})
 			.then((res) => {
+				conn.end();
+
 				resolve({ "status": "success", "msg": "Password changed!" });
 			})
 			.catch((err) => {
@@ -233,6 +246,8 @@ exports.update = (data, id) => {
 					.then(() => { return this.findUser(id) })
 			})
 			.then((data) => {
+				conn.end();
+
 				if (data)
 					resolve({ "status": "success", "msg": "update user", data });
 				else
@@ -248,7 +263,11 @@ exports.logout = (id) => {
 		var d = new Date();
 		database.connection()
 			.then((conn) => { return conn.query('UPDATE users SET active=? WHERE id=?', [d, id]); })
-			.then(() => { resolve({ "status": "success" }); })
+			.then(() => {
+				conn.end();
+
+				resolve({ "status": "success" });
+			})
 			.catch(() => { reject({ "status": "error" }); })
 	})
 }
@@ -258,7 +277,11 @@ exports.setKeyPassword = (key, id) => {
 
 		database.connection()
 			.then((conn) => { return conn.query('UPDATE users SET tmp_email=? WHERE id=?', [key, id]); })
-			.then(() => { resolve({ "status": "success" }); })
+			.then(() => {
+				conn.end();
+
+				resolve({ "status": "success" });
+			})
 			.catch(() => { reject({ "status": "error" }); })
 	})
 }
@@ -269,6 +292,8 @@ exports.checkKeyPassword = (key, id) => {
 			.then((conn) => {
 				return conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
 					.then((res) => {
+						conn.end();
+
 						if (res && res.length > 0)
 							resolve({ "status": "success" });
 						else
