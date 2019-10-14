@@ -13,21 +13,17 @@ exports.new = (tag, user_id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				conn.query('INSERT INTO tags (tag) VALUES (?)', [tag])
-					.then((res) => {
-						conn.end();
-						exports.user(user_id, res.insertId)
-							.then(() => {
-								resolve({ "status": "success", "msg": "Tag saved !" });
-							}).catch((err) => { reject(err) })
+				let rsl = conn.query('INSERT INTO tags (tag) VALUES (?)', [tag])
+				conn.end();
+				return rsl;
+			}).then((res) => {
+				exports.user(user_id, res.insertId)
+					.then(() => {
+						resolve({ "status": "success", "msg": "Tag saved !" });
 					})
-					.catch((err) => {
-						reject({ "status": "error", "msg": "Bad query !" });
-					})
+					.catch((err) => { reject(err) })
 			})
-			.catch((err) => {
-				reject(err);
-			})
+			.catch((err) => { reject({ "status": "error", "msg": "Bad query !" }); })
 	});
 }
 
@@ -60,17 +56,20 @@ exports.user = (user_id, tag_id) => {
 			.then((conn) => {
 				conn.query('SELECT * FROM usertags WHERE user_id=? AND tag_id=?;', [user_id, tag_id])
 					.then((res) => {
-
 						if (res.length === 0)
 							conn.query('INSERT INTO usertags (user_id, tag_id) VALUES (?, ?)', [user_id, tag_id])
 								.then((res) => {
 									conn.end();
 									resolve({ "status": "success", "msg": "Tags saved !" });
-								}).catch((err) => { reject(err); })
-						else
+								}).catch((err) => {
+									conn.end();
+									reject(err);
+								})
+						else {
+							conn.end();
 							reject({ "status": "error", "key": "query", "msg": "Already saved" });
-
-					}).catch((err) => { reject(err); })
+						}
+					})
 			}).catch((err) => { reject(err); })
 	});
 }

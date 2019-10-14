@@ -100,16 +100,17 @@ exports.findUserByUsername = (username, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				conn.query('SELECT username, id, mailValidation, email, \
+				let rsl = conn.query('SELECT username, id, mailValidation, email, \
 									gender, orientation, location, latitude, \
 									longitude, age, avatar, ageMin, ageMax, distance, identity,\
 									IF((SELECT id FROM ban WHERE id=users.id), TRUE, FALSE) as ban \
 									FROM users WHERE username=? AND id NOT IN (?)', [username, id])
-					.then((result) => {
-						conn.end();
-						result[0] ? resolve(result[0]) :
-							reject({ "status": "error", "key": "user", "msg": "User does not exist" });
-					})
+				conn.end();
+				return rsl;
+			})
+			.then((result) => {
+				result[0] ? resolve(result[0]) :
+					reject({ "status": "error", "key": "user", "msg": "User does not exist" });
 			}).catch((error) => {
 				reject({ "status": "error", "key": "connected", "msg": "Internal Server Error" });
 			})
@@ -121,8 +122,10 @@ exports.findUserByEmail = (email, id) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT username, id, email \
+				let rsl = conn.query('SELECT username, id, email \
 									FROM users WHERE email=? AND id NOT IN (?)', [email, id]);
+				conn.end();
+				return rsl;
 			}).then((result) => {
 				result[0] ? resolve(result[0]) : reject();
 			}).catch((error) => { reject(error); })
@@ -138,7 +141,9 @@ exports.saveUser = (data) => {
 				return database.connection();
 			})
 			.then((conn) => {
-				return conn.query("INSERT INTO users SET ?", data);
+				let rsl = conn.query("INSERT INTO users SET ?", data);
+				conn.end()
+				return rsl
 			})
 			.then((res) => { resolve({ status: "success", id: res.insertId }); })
 			.catch((err) => { reject(err); })
@@ -214,9 +219,7 @@ exports.activateUser = (username, email) => {
 				conn.end();
 				return query;
 			})
-			.then((res) => {
-				resolve({ "status": "success", "msg": "UserActivated !" });
-			})
+			.then((res) => { resolve({ "status": "success", "msg": "UserActivated !" }); })
 			.catch((err) => { reject(err); })
 	})
 }
@@ -225,13 +228,11 @@ exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username])
-					.then((res) => {
-						conn.end();
-
-						resolve({ "status": "success", "msg": "Password changed!" });
-					})
+				let rsl = conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username])
+				conn.end();
+				return rsl
 			})
+			.then((res) => { resolve({ "status": "success", "msg": "Password changed!" }); })
 			.catch((err) => {
 				reject({ status: "error", msg: "error db !" });
 			})
@@ -294,18 +295,22 @@ exports.setKeyPassword = (key, id) => {
 	})
 }
 
-exports.checkKeyPassword = (key, id) => {
+exports.checkKeyPassword = (key, id, useKey) => {
 	return new Promise((resolve, reject) => {
-		database.connection()
-			.then((conn) => {
-				return conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
-					.then((res) => {
-						conn.end();
-						if (res && res.length > 0)
-							resolve({ "status": "success" });
-						else
-							reject({ "status": "error", "msg": "key email not valid" });
-					})
-			}).catch(() => { reject({ "status": "error", "msg": "Internal Server Error" }); })
+		if (useKey === false)
+			resolve({ "status": "success" });
+		else
+			database.connection()
+				.then((conn) => {
+					let rsl = conn.query('SELECT tmp_email FROM users WHERE tmp_email=? AND id=? HAVING COUNT(*)=1', [key, id])
+					conn.end();
+					return rsl
+						.then((res) => {
+							if (res && res.length > 0)
+								resolve({ "status": "success" });
+							else
+								reject({ "status": "error", "msg": "key email not valid" });
+						})
+				}).catch(() => { reject({ "status": "error", "msg": "Internal Server Error" }); })
 	})
 }

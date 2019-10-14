@@ -15,7 +15,7 @@ export function forgot(email) {
     });
 }
 
-export function password(password, confirmPassword, token, key) {
+export function password(password, confirmPassword, token, key, useKey) {
 
     return axios({
         method: 'PUT',
@@ -24,7 +24,8 @@ export function password(password, confirmPassword, token, key) {
             password,
             confirmPassword,
             token,
-            key
+            key,
+            useKey
         },
         headers: { 'Authorization': "bearer " + token },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }

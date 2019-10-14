@@ -128,9 +128,10 @@ exports.delete = (liker, liked) => {
 						 WHERE first_user=LEAST(?,?) \
 						 AND second_user = GREATEST(?,?);', [liker, liked, liker, liked])
 							.then(() => {
-								return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 4, date])
-									.then((res) => ({ unlike: { to_id: liked, from_id: liker, type: 4, date, id: res.insertId } }))
-							})
+								let rlt = conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 4, date])
+								conn.end();
+								return rlt
+							}).then((res) => ({ unlike: { to_id: liked, from_id: liker, type: 4, date, id: res.insertId } }))
 					})
 					.then((res) => { resolve({ "status": "success", ...res }) })
 					.catch((err) => reject({ "status": "error", "msg": "request failed" }))
@@ -143,10 +144,10 @@ exports.getLike = (liker, liked) => {
 		database.connection()
 			.then((conn) => {
 				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked])
-				.then((res) => {
-					conn.end();
-					res[0] ? resolve(res[0]) : reject('Like not found.')
-				})
+					.then((res) => {
+						conn.end();
+						res[0] ? resolve(res[0]) : reject('Like not found.')
+					})
 			})
 			.catch((err) => {
 				console.log(err);
@@ -160,10 +161,10 @@ exports.getLikes = (liked) => {
 		database.connection()
 			.then((conn) => {
 				return conn.query('SELECT COUNT (*) FROM likes WHERE liked=?', [liked])
-				.then((res) => {
-					conn.end();
-					res[0] ? resolve(res[0]) : reject('Likes not found.');
-				})
+					.then((res) => {
+						conn.end();
+						res[0] ? resolve(res[0]) : reject('Likes not found.');
+					})
 			})
 			.catch((err) => {
 				console.log(err);

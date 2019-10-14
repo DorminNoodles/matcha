@@ -85,15 +85,14 @@ exports.new = (data) => {
 
 		userModel.checkDataNew(data)
 			.then((res) => {
+				resolve({ status: 'success', msg: "user created" });
 				return userModel.saveUser({
 					...data,
 					...binary,
 					avatar: data.avatar.name
 				});
 			})
-			.then((res) => {
-				return avatarUpload(data, res.id);
-			})
+			.then((res) => { return avatarUpload(data, res.id); })
 			.then((res) => {
 				myEmitter.emit('userRegistered', data);
 				resolve({ status: 'success', msg: "user created" });
@@ -187,14 +186,14 @@ exports.forgot = (data) => {
 	})
 }
 
-exports.updatePassword = ({ token, password, confirmPassword, id, key }) => {
+exports.updatePassword = ({ token, password, confirmPassword, id, key, useKey }) => {
 	return new Promise((resolve, reject) => {
 
 		let passCrypted;
 		if (password !== confirmPassword)
 			reject({ "status": "error", "msg": "Password and confirmation does not match" });
 
-		userModel.checkKeyPassword(key, id)
+		userModel.checkKeyPassword(key, id, useKey)
 			.then(() => {
 				inputModel.password(password)
 					.then(() => {
