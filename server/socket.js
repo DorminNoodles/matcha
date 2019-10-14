@@ -40,8 +40,8 @@ module.exports = (io) => {
                     .then((conn) => {
                         return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [data.to_id, data.from_id, data.type, date])
                             .then((res) => {
-                                socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
                                 conn.end();
+                                socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
                             }).catch()
                     })
             }

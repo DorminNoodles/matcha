@@ -55,21 +55,20 @@ exports.list = (id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                return conn.query('SELECT users.avatar, userschat.active, username, \
-                         first_user, second_user, chat.date, users.id, userschat.id as group_id, chat.message, \
-                         (select to_id from chat order by date desc limit 1) as last\
-                         FROM userschat \
-                         LEFT JOIN users ON (users.id=IF(first_user=?, second_user, first_user) && users.id IS NOT NULL) \
-                         LEFT JOIN chat ON (chat.group_id=userschat.id) \
-                         WHERE (first_user=? OR second_user=?) \
-                         AND userschat.active=1 \
-                         GROUP BY id \
-                         ORDER BY chat.date DESC;'
-                    , [id, id, id])
+                let rsl = conn.query('SELECT users.avatar, userschat.active, username, \
+                first_user, second_user, chat.date, users.id, userschat.id as group_id, chat.message, \
+                (select to_id from chat order by date desc limit 1) as last\
+                FROM userschat \
+                LEFT JOIN users ON (users.id=IF(first_user=?, second_user, first_user) && users.id IS NOT NULL) \
+                LEFT JOIN chat ON (chat.group_id=userschat.id) \
+                WHERE (first_user=? OR second_user=?) \
+                AND userschat.active=1 \
+                GROUP BY id \
+                ORDER BY chat.date DESC;', [id, id, id])
+                conn.end()
+                return rsl
             })
             .then((res) => { resolve(res) })
-            .catch((err) => {
-                reject({ "status": "error", "msg": "Bad query !" });
-            })
+            .catch((err) => { reject({ "status": "error", "msg": "Bad query !" }); })
     });
 }

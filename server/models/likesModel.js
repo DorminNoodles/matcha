@@ -20,6 +20,7 @@ exports.new = (liker, liked) => {
 									WHERE first_user=LEAST(?, ?) \
 									AND second_user=GREATEST(?,?)', [liker, liked, liker, liked, liker, liked, liker, liked])
 									.then((res) => {
+										conn.end()
 										if (res.changedRows === 0)
 											return this.createLikesNotifs(liker, liked, like, match, id_notifs, date)
 												.then((response) => response)
@@ -34,18 +35,19 @@ exports.new = (liker, liked) => {
 										return conn.query('SELECT * from likes \
 														WHERE (liker=? AND liked=?) \
 														OR (liked=? AND liker=?) \
-														HAVING COUNT(*)=2 \)', [liker, liked, liker, liked])
+														HAVING COUNT(*)=2)', [liker, liked, liker, liked])
 											.then((res) => {
 												return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-													.then((res) => { resolve({ res, like: { ...like, id: id_notifs } }) })
+													.then((res) => {
+														conn.end()
+														resolve({ res, like: { ...like, id: id_notifs } })
+													})
 											})
 									});
 							})
 					})
 			})
-			.then((res) => {
-				resolve({ "status": "success", "msg": "like added !", ...res })
-			})
+			.then((res) => { resolve({ "status": "success", "msg": "like added !", ...res }) })
 			.catch(() => {
 				reject({ "status": "error", "msg": "request failed" })
 			})
@@ -64,13 +66,20 @@ exports.createLikesNotifs = (liker, liked, like, match, id_notifs, date) => {
 					.then((res) => {
 						if (res.changedRows > 0) {
 							return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
-								.then((res) => { return ({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }) })
+								.then((res) => {
+									conn.end();
+									return ({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } })
+								})
 						}
 						else if (res.affectedRows > 0) {
 							return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
-								.then((res) => { return ({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }) })
+								.then((res) => {
+									conn.end();
+									return ({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } })
+								})
 						}
 						else {
+							conn.end();
 							return ({ like: { ...like, id: id_notifs } })
 						}
 					});
@@ -95,7 +104,10 @@ exports.updateLikesNotifs = (liker, liked, like, match, id_notifs, date) => {
 							HAVING COUNT(*)=2 ', [liker, liked, liker, liked])
 					.then((res) => {
 						return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
-								.then((res) => { resolve({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } }) })
+							.then((res) => {
+								conn.end();
+								resolve({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } })
+							})
 					})
 			})
 			.catch((err) => {
@@ -116,9 +128,10 @@ exports.delete = (liker, liked) => {
 						 WHERE first_user=LEAST(?,?) \
 						 AND second_user = GREATEST(?,?);', [liker, liked, liker, liked])
 							.then(() => {
-								return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 4, date])
-									.then((res) => ({ unlike: { to_id: liked, from_id: liker, type: 4, date, id: res.insertId } }))
-							})
+								let rlt = conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 4, date])
+								conn.end();
+								return rlt
+							}).then((res) => ({ unlike: { to_id: liked, from_id: liker, type: 4, date, id: res.insertId } }))
 					})
 					.then((res) => { resolve({ "status": "success", ...res }) })
 					.catch((err) => reject({ "status": "error", "msg": "request failed" }))
@@ -130,11 +143,11 @@ exports.getLike = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked]);
-			})
-			.then((res) => {
-				if (res[0]) { resolve(res[0]) }
-				else { reject('Like not found.') }
+				return conn.query('SELECT * FROM likes WHERE liker=? AND liked=?', [liker, liked])
+					.then((res) => {
+						conn.end();
+						res[0] ? resolve(res[0]) : reject('Like not found.')
+					})
 			})
 			.catch((err) => {
 				console.log(err);
@@ -147,13 +160,11 @@ exports.getLikes = (liked) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT COUNT (*) FROM likes WHERE liked=?', [liked]);
-			})
-			.then((res) => {
-				if (res[0])
-					resolve(res[0]);
-				else
-					reject('Likes not found.');
+				return conn.query('SELECT COUNT (*) FROM likes WHERE liked=?', [liked])
+					.then((res) => {
+						conn.end();
+						res[0] ? resolve(res[0]) : reject('Likes not found.');
+					})
 			})
 			.catch((err) => {
 				console.log(err);

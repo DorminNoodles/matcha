@@ -8,20 +8,18 @@ exports.new = (blocker, blocked) => {
 		userModel.findUserById(blocked, blocker).then((res) => {
 			database.connection()
 				.then((conn) => {
-					var result = conn.query('INSERT INTO block (`blocker`, `blocked`) \
-							VALUES ( ?, ?)', [blocker, blocked])
+					conn.query('INSERT INTO block (`blocker`, `blocked`) VALUES ( ?, ?)', [blocker, blocked])
 						.then(() => {
-							var result = conn.query('UPDATE userschat SET active=0 \
+							conn.query('UPDATE userschat SET active=0 \
 											 WHERE first_user=LEAST(?, ?) \
 											 AND second_user=GREATEST(?, ?)'
-								, [blocker, blocked, blocker, blocked]);
-
+								, [blocker, blocked, blocker, blocked])
+								.then(() => {
+									conn.end();
+									resolve({ "status": "success", "msg": "block success" });
+								})
 						})
-					conn.end();
-					return result
-				})
-				.then(() => { resolve({ "status": "success", "msg": "block success" }); })
-				.catch(() => { reject({ "status": "error", "msg": "error db" }); })
+				}).catch(() => { reject({ "status": "error", "msg": "error db" }); })
 		}).catch(() => {
 			reject({ "status": "error", "msg": "user not exist" });
 		})
@@ -33,15 +31,11 @@ exports.get = (blocker, blocked) => {
 
 		database.connection()
 			.then((conn) => {
-				var result = conn.query('SELECT * FROM block WHERE blocker=? AND blocked=?', [blocker, blocked])
-				conn.end();
-				return result
-			})
-			.then((res) => {
-				if (res[0])
-					resolve(res[0]);
-				else
-					reject('Block not found.');
+				conn.query('SELECT * FROM block WHERE blocker=? AND blocked=?', [blocker, blocked])
+					.then((res) => {
+						conn.end();
+						res[0] ? resolve(res[0]) : reject('Block not found.');
+					})
 			})
 			.catch((err) => { reject(); })
 	})

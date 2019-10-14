@@ -54,9 +54,12 @@ exports.get = (params, id) => {
 
 				rsl = getQuery(params, id)
 
-				return conn.query(query + rsl.query, rsl.arg);
+				return conn.query(query + rsl.query, rsl.arg)
+					.then((res) => {
+						conn.end();
+						resolve(res);
+					})
 			})
-			.then((res) => { resolve(res); })
 			.catch(() => {
 				reject({ status: "error", msg: "Query error !", data: [] });
 			})

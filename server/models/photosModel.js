@@ -5,9 +5,13 @@ const fs = require('fs');
 exports.new = (name, id) => {
     return new Promise((resolve, reject) => {
         database.connection()
-            .then((conn) => { return conn.query('UPDATE users SET avatar=? WHERE id=?', [name, id]); })
-            .then((res) => { resolve({ "status": "success", "msg": "report success" }); })
-            .catch((err) => { reject({ "status": "error", "msg": "error db" }); })
+            .then((conn) => {
+                return conn.query('UPDATE users SET avatar=? WHERE id=?', [name, id])
+                    .then(() => {
+                        conn.end();
+                        resolve({ "status": "success", "msg": "report success" });
+                    })
+            })
     }).catch((err) => {
         reject({ "status": "error", "msg": "user not exist" });
     })

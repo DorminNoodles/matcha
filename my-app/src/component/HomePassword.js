@@ -34,7 +34,7 @@ class HomePassword extends React.Component {
         else if (password !== confirmation)
             this.setState({ ...this.state, success: "", error: "Password and confirmation does not match" })
         else {
-            changePassword(password, confirmation, this.context.user.token).then((value) => {
+            changePassword(password, confirmation, this.context.user.token, 1000, false).then((value) => {
                 if (value.status === "success")
                     this.setState({ ...this.state, success: "Your password has been changed successfully", error: "" })
                 else
