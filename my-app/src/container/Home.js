@@ -106,7 +106,7 @@ class Home extends React.Component {
   render() {
     const params = queryString.parse(this.props.location.search)
     const { id, avatar } = this.context.user
-    let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
+    let img = avatar ? avatar.toLowerCase() : ""
 
     if ((this.context.user.token) && !(this.state.photos)) { this.init() }
     if (this.state.error !== "") { return <div>{this.state.error}</div> }

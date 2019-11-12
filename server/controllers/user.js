@@ -1,15 +1,15 @@
 const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
-
+const database = require('./database');
 const events = require('events');
 
 const userModel = require('../models/userModel');
 const inputModel = require('../models/inputModel');
 
-var eventEmitter = new events.EventEmitter();
+new events.EventEmitter();
+require('dotenv').config();
 
 const avatarUpload = (data, id) => {
 	return new Promise((resolve, reject) => {
@@ -22,8 +22,17 @@ const avatarUpload = (data, id) => {
 		data.avatar.mv('public/pictures/' + id + '/' + name, (err) => {
 			if (err)
 				reject({ status: "error", key: "avatar", msg: "Avatar upload error !" });
-			else
-				resolve({ status: "success" });
+			else {
+				let avatar = process.env.REACT_APP_PUBLIC + id + "/" + name
+
+				database.connection().then((conn) => {
+					conn.query('UPDATE users SET avatar=? WHERE id=?', [avatar, id])
+						.then(() => {
+							conn.end();
+							resolve({ "status": "success" })
+						}).catch(() => { reject({ "status": "error" }) })
+				})
+			}
 		})
 	})
 }

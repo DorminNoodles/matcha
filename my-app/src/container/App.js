@@ -38,12 +38,12 @@ class App extends React.Component {
    }
 
    async componentDidMount() {
-      try {
          let header = this.getObject("header")
          header = header === null ? "white-red" : "red-white"
 
-         let user = this.getObject("user");
-         var result = JSON.parse(document.cookie);
+         let user = await this.getObject("user");
+         var result = JSON.parse(document.cookie)
+
          this.setState({ ...this.state, header }, () => {
             if (result !== "")
                this.setState({ ...this.state, loading: false, user: result, header }, () => {
@@ -56,8 +56,6 @@ class App extends React.Component {
                   console.log("restore ", this.state)
                })
          })
-      } catch (error) { }
-
    }
 
    setObject = (key, value) => {
@@ -109,19 +107,23 @@ class App extends React.Component {
    }
 
    render() {
-      return (
-         <BrowserRouter>
-            <div>{this.state.response}</div>
-            <div>{this.state.responses}</div>
-            <UserProvider.Provider value={{
-               ...this.state,
-               onChange: this.onChange,
-               logout: this.logout,
-            }}>
-               <Routers />
-            </UserProvider.Provider>
-         </BrowserRouter>
-      );
+
+      if (this.state.loading === true)
+         return (<div>loading</div>)
+      else
+         return (
+            <BrowserRouter>
+               <div>{this.state.response}</div>
+               <div>{this.state.responses}</div>
+               <UserProvider.Provider value={{
+                  ...this.state,
+                  onChange: this.onChange,
+                  logout: this.logout,
+               }}>
+                  <Routers />
+               </UserProvider.Provider>
+            </BrowserRouter>
+         );
    }
 }
 

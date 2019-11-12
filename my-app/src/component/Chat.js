@@ -37,7 +37,7 @@ class ConversationChat extends React.Component {
     };
 
     render() {
-        let { conversation, message, sendMsg, onInput} = this.props
+        let { conversation, message, sendMsg, onInput } = this.props
 
         return (
             <React.Fragment>
@@ -87,8 +87,7 @@ class MessageBox extends React.Component {
     render() {
 
         let { id, username, avatar } = this.props.value
-        let imgProfil = id > 0 ?
-            process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : profile;
+        let imgProfil = id > 0 ? avatar : profile;
 
         return (
             <Link to={{ pathname: "/chat", search: `?id=${id}` }} className='message-box center'>
@@ -106,7 +105,7 @@ class MessageBox extends React.Component {
     }
 }
 
-function ListChat({ list, chat}) {
+function ListChat({ list, chat }) {
     let id_list = chat === true ? "list-chat" : ""
 
     return (
@@ -114,7 +113,7 @@ function ListChat({ list, chat}) {
             <Route />
             {
                 list && list.length > 0 && list.map((value, i) => {
-                    return <MessageBox value={value} key={i} i={i}  />
+                    return <MessageBox value={value} key={i} i={i} />
                 })
             }
         </div>

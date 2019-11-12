@@ -118,7 +118,7 @@ class Chat extends React.Component {
   render() {
     let params = queryString.parse(this.props.location.search)
 
-    if (this.state.loading === true) { return (<Loading />) }
+    if (this.state.loading === true && this.context.loading === true) { return (<Loading />) }
     return (
       <div id="chat">
         <ListChat list={this.state.list} chat last_msg={true} />

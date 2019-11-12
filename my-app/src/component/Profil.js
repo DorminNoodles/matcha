@@ -51,8 +51,7 @@ class Profil extends React.Component {
   render() {
     let { username, id, avatar, active } = this.props.values
 
-    let imgProfil = id === 0 && avatar ? profile :
-      process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
+    let imgProfil = id === 0 && avatar ? profile : avatar
 
     return (
       <div id="profil" onMouseEnter={() => this.setState({ ...this.state, modal: true })} onMouseLeave={() => this.setState({ ...this.state, modal: false })}>
