@@ -80,8 +80,10 @@ export function getGeocalisation() {
     return axios({
         method: 'GET',
         url: 'http://localhost:3300/api/location/position',
-    }).then((res) => { return (res.data) })
-        .catch(error => { return error; });
+    }).then((res) => { return ({ res: res.data }) })
+        .catch(error => {
+            return (error.status ? error : { err: "Internal Error" })
+        });
 }
 
 export function getListMsg(token) {

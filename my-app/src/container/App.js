@@ -38,12 +38,11 @@ class App extends React.Component {
    }
 
    async componentDidMount() {
-      let user = this.getObject("user");
-      let header = this.getObject("header")
-
-      header = header === null ? "white-red" : "red-white"
-      
       try {
+         let header = this.getObject("header")
+         header = header === null ? "white-red" : "red-white"
+
+         let user = this.getObject("user");
          var result = JSON.parse(document.cookie);
          this.setState({ ...this.state, header }, () => {
             if (result !== "")
@@ -74,7 +73,7 @@ class App extends React.Component {
    onChange = (index, e) => {
       this.setState({ ...this.state, [index]: e }, () => {
          this.setObject(index, e)
-        document.cookie = JSON.stringify({ token: this.state.user.token, ...this.state.user })
+         document.cookie = JSON.stringify({ token: this.state.user.token, ...this.state.user })
       })
    }
 

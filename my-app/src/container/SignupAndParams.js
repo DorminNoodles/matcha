@@ -113,13 +113,17 @@ class Signup extends React.Component {
     }
 
     getGeocalisation = () => {
-        getGeocalisation().then((res) => {
-            let data = {
-                location: { value: res.city, error: "" },
-                latitude: { value: res.latitude, error: "" },
-                longitude: { value: res.longitude, error: "" }
+        getGeocalisation().then(({ res, err }) => {
+            if (err)
+                this.setState({ ...this.state, error: err })
+            else {
+                let data = {
+                    location: { value: res.city, error: "" },
+                    latitude: { value: res.latitude, error: "" },
+                    longitude: { value: res.longitude, error: "" }
+                }
+                this.onChangeLocation(data)
             }
-            this.onChangeLocation(data)
         })
     }
 
@@ -155,7 +159,9 @@ class Signup extends React.Component {
         else {
             register(data, this.state.info).then(({ res, err }) => {
 
-                if (err !== "") {
+                if (err && !res)
+                    this.setState({ ...this.state, error: err })
+                else if (err !== "" && res) {
                     this.setState({
                         ...this.state,
                         info: { ...res },
@@ -231,7 +237,7 @@ class Signup extends React.Component {
         else
             signPage = <ThirdPage status={status} info={info} onChange={this.onChange} onChangeLocation={this.onChangeLocation} changePage={this.changePage} error={error} success={success} getGeocalisation={this.getGeocalisation} />
 
-return (
+        return (
             <div id="signup" className="center" style={{ overflow: "scroll" }} >
                 <div style={{ display: "flex", flexDirection: "column", height: "initial", margin: "20px" }}>
                     <ProfileImg error={image.error} sendFile={this.sendFile} avatar={avatar} upload={upload} id={id} />

@@ -51,17 +51,18 @@ class Location extends React.Component {
         let { onChangeLocation } = this.props
         if ((e.key === "Enter" || e.type === "click") && this.state.value.length > 0) {
             getLocation(this.context.user.token, this.state.value).then((res) => {
-                res.map((e) => {
-                    if (e.place_name === this.state.value) {
-                        this.setState({ ...this.state, city: e });
-                        onChangeLocation({
-                            location: { value: e.text, error: "" },
-                            latitude: { value: e.center[1], error: "" },
-                            longitude: { value: e.center[0], error: "" }
-                        })
-                    }
-                    return 0;
-                })
+                if (res)
+                    res.map((e) => {
+                        if (e.place_name === this.state.value) {
+                            this.setState({ ...this.state, city: e });
+                            onChangeLocation({
+                                location: { value: e.text, error: "" },
+                                latitude: { value: e.center[1], error: "" },
+                                longitude: { value: e.center[0], error: "" }
+                            })
+                        }
+                        return 0;
+                    })
             })
         }
     }
