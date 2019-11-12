@@ -38,24 +38,29 @@ class App extends React.Component {
    }
 
    async componentDidMount() {
-         let header = this.getObject("header")
-         header = header === null ? "white-red" : "red-white"
+      let header = this.getObject("header")
+      header = header === null ? "white-red" : "red-white"
 
-         let user = await this.getObject("user");
-         var result = JSON.parse(document.cookie)
+      let user = await this.getObject("user");
+      try { var result = JSON.parse(document.cookie) }
+      catch (err) {
+         const regex = RegExp(/{?.*?}/);
+         var reg = document.cookie.match(regex)
+         var result = JSON.parse(reg[0])
+      }
 
-         this.setState({ ...this.state, header }, () => {
-            if (result !== "")
-               this.setState({ ...this.state, loading: false, user: result, header }, () => {
-                  console.log("restore ", this.state)
-               })
-            else if (document.cookie === "")
-               this.logout()
-            else
-               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
-                  console.log("restore ", this.state)
-               })
-         })
+      this.setState({ ...this.state, header }, () => {
+         if (result !== "")
+            this.setState({ ...this.state, loading: false, user: result, header }, () => {
+               console.log("restore ", this.state)
+            })
+         else if (document.cookie === "")
+            this.logout()
+         else
+            this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
+               console.log("restore ", this.state)
+            })
+      })
    }
 
    setObject = (key, value) => {

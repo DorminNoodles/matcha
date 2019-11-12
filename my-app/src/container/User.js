@@ -22,28 +22,12 @@ class User extends React.Component {
   UNSAFE_componentWillMount() {
     if (this.context.header !== "red-white")
       this.context.onChange("header", "red-white")
-  }
 
-  UNSAFE_componentWillReceiveProps(next) {
-    let params = queryString.parse(next.location.search)
+    let params = queryString.parse(this.props.location.search)
 
     if (this.context.loading === false && !(this.context.user && this.context.user.token))
       this.props.history.push('/');
     else if (this.context.loading === false && this.context.user && this.context.user.token) {
-
-      getUser(this.context.user.token, !params.id ? this.context.user.id : params.id)
-        .then((res) => {
-
-          if (res && res.data) {
-
-            let date = new Date(res.data.active)
-            let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
-
-            this.setState({ ...this.state, ...res.data, date_active }, () => {
-              this.getPhotos(!params.id ? this.context.user.id : params.id)
-            })
-          }
-        })
 
       if (!params.id)
         getUser(this.context.user.token, this.context.user.id)
@@ -53,9 +37,24 @@ class User extends React.Component {
             else
               this.setState({ ...this.state, loading: true })
           })
-    }
 
+      else
+        getUser(this.context.user.token, params.id)
+          .then((res) => {
+            if (res && res.data) {
+
+              let date = new Date(res.data.active)
+              let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
+
+              this.setState({ ...this.state, ...res.data, date_active }, () => {
+                this.getPhotos(!params.id ? this.context.user.id : params.id)
+              })
+            }
+          })
+          
+    }
   }
+
 
   componentDidMount() {
     let params = queryString.parse(this.props.location.search)
@@ -122,7 +121,7 @@ class User extends React.Component {
 
     if (this.state.ban && this.state.ban === 1)
       return <div>ban</div>
-    else if (this.state.loading === true && this.context.loading === true) { return <Loading /> }
+    else if (this.state.loading === true || this.context.loading === true) { return <Loading /> }
     else
       return (
         <div id="user" >
