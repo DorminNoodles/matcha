@@ -44,9 +44,12 @@ class App extends React.Component {
       let user = await this.getObject("user");
       try { var result = JSON.parse(document.cookie) }
       catch (err) {
+         var result = this.state.user
          const regex = RegExp(/{?.*?}/);
          var reg = document.cookie.match(regex)
-         var result = JSON.parse(reg[0])
+         
+         if (reg && reg[0] && reg[0].token)
+         result = JSON.parse(reg[0])
       }
 
       this.setState({ ...this.state, header }, () => {
