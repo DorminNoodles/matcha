@@ -18,8 +18,7 @@ class Picture extends React.Component {
     render() {
         let { photo, deletePhoto, position } = this.props
         let { id } = this.context.user
-        let imgProfil = id === 0 || !photo ? profile :
-            process.env.REACT_APP_PUBLIC_URL + id + "/" + photo.toLowerCase()
+        let imgProfil = id === 0 || !photo ? profile : photo.toLowerCase()
 
         return (
             <figure className="home-upload" >

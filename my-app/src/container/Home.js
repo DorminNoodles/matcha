@@ -83,7 +83,7 @@ class Home extends React.Component {
         this.setState({ ...this.state, error: "Internal Error" })
       else {
         for (var i in res)
-          if (res[i] !== avatar)
+          if (process.env.REACT_APP_PUBLIC_URL + id + '/' + res[i] !== avatar)
             photos.push(res[i])
         this.setState({ ...this.state, avatar: this.context.user.avatar, photos, error: "", loading: false })
       }
