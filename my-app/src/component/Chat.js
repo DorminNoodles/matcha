@@ -7,8 +7,7 @@ import { BrowserRouter as Route, Link } from "react-router-dom";
 function HeaderChat(props) {
 
     let { user } = props
-    let imgProfil = user.id > 0 && user.avatar ?
-        process.env.REACT_APP_PUBLIC_URL + user.id + "/" + user.avatar.toLowerCase() : profile
+    let imgProfil = user.id > 0 && user.avatar ? user.avatar.toLowerCase() : profile
 
     return (
         <div className="header-chat center">

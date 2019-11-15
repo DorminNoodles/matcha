@@ -228,7 +228,7 @@ class Signup extends React.Component {
         let signPage;
         let upload = status && status.value && status.value === "signup" ? true : false
         let id = status && status.value && status.value === "signup" ? 0 : this.context.user.id
-        let avatar = status && status.value && status.value === "signup" ? image.value : this.context.user.avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + this.context.user.avatar.toLowerCase() : profile
+        let avatar = status && status.value && status.value === "signup" ? image.value : this.context.user.avatar ? this.context.user.avatar.toLowerCase() : profile
 
         if (page === 1)
             signPage = <FirstPage status={status} info={info} onChange={this.onChange} changePage={this.changePage} />
