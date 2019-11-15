@@ -1,9 +1,9 @@
 const database = require('../controllers/database');
-const photosModel = require('../models/photosModel');
 const fs = require('fs');
 
 exports.new = (name, id) => {
     return new Promise((resolve, reject) => {
+
         database.connection()
             .then((conn) => {
                 return conn.query('UPDATE users SET avatar=? WHERE id=?', [name, id])
