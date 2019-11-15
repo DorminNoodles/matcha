@@ -2,8 +2,8 @@ import React from 'react';
 import { Tags } from '../export'
 import profile from "../image/profile.png"
 
-function UserProfil({ onChange, info, id, like, id_pic, date_active }) {
-    let imgProfil = info.avatar && info.avatar !== "" ? info.avatar.toLowerCase() : profile
+function UserProfil({ onChange, info, id, like, id_pic, date_active, pic }) {
+    let imgProfil = info.avatar && info.avatar !== "" ? pic : profile
 
     return (
         <React.Fragment>

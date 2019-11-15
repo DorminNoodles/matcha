@@ -43,7 +43,7 @@ class ListMessage extends React.Component {
         return (
             <div className="list-message">
                 <Route />
-                <ListChat list={this.state.users} chat={false} />
+                <ListChat history={this.props.history} list={this.state.users} chat={false} />
             </div>
         )
     }

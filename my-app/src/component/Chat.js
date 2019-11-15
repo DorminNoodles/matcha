@@ -3,6 +3,7 @@ import UserProvider from '../context/UserProvider';
 import { Bubble } from '../export'
 import profile from "../image/profile.png"
 import { BrowserRouter as Route, Link } from "react-router-dom";
+import { Media } from 'reactstrap';
 
 function HeaderChat(props) {
 
@@ -94,17 +95,18 @@ class MessageBox extends React.Component {
                     <img className="rounded-60" alt="username" src={imgProfil} />
                     <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
                 </div>
-                <div style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
-                    <p>{username}</p>
-                    {/* <p className="text-ellipsis ">{message}</p> */}
-                </div>
+                <Media href="/user" to={{ pathname: "/user", search: `?id=${id}` }} style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
+                    <p className="link-red" style={{ fontSize: "large", width: "fit-content" }}>
+                        {username}
+                    </p>
+                </Media>
             </Link>
 
         );
     }
 }
 
-function ListChat({ list, chat }) {
+function ListChat({ history, list, chat }) {
     let id_list = chat === true ? "list-chat" : ""
 
     return (
@@ -112,7 +114,7 @@ function ListChat({ list, chat }) {
             <Route />
             {
                 list && list.length > 0 && list.map((value, i) => {
-                    return <MessageBox value={value} key={i} i={i} />
+                    return <MessageBox history={history} value={value} key={i} i={i} />
                 })
             }
         </div>

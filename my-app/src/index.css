@@ -579,15 +579,15 @@ form > .inputfile {
 .link-red{
   cursor: pointer;
   color: #B33070;
-  background:white;
+  background: none;
   border: none
 }
 
-.link-white:hover {
-  color: #ffd3e9
+.link-red:hover {
+  color: #ffd3e9 !important
 }
 
-.link-white:focus {
+.link-red:focus {
   outline: none;
 }
 
