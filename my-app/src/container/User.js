@@ -19,7 +19,9 @@ class User extends React.Component {
   }
   static contextType = UserProvider;
 
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount() { this.getProfil() }
+
+  getProfil() {
     if (this.context.header !== "red-white")
       this.context.onChange("header", "red-white")
 
@@ -51,10 +53,8 @@ class User extends React.Component {
               })
             }
           })
-          
     }
   }
-
 
   componentDidMount() {
     let params = queryString.parse(this.props.location.search)
@@ -123,7 +123,9 @@ class User extends React.Component {
     if (this.state.ban && this.state.ban === 1)
       return <div>ban</div>
     else if (this.state.loading === true || this.context.loading === true) { return <Loading /> }
-    else
+    else {
+      if ((params.id && parseInt(this.state.id) !== parseInt(params.id)) || (!params.id && parseInt(this.state.id) !== parseInt(this.context.user.id)))
+        this.getProfil()
       return (
         <div id="user" >
           <div id="info-user">
@@ -134,6 +136,7 @@ class User extends React.Component {
           </div>
         </div>
       );
+    }
   }
 }
 

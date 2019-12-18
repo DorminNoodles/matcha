@@ -163,7 +163,7 @@ exports.authenticate = (data) => {
 											};
 
 											resolve({ status: 'success', msg: 'connected !', ...datas });
-										})
+										}).catch((err) => { reject(err); })
 							})
 					}).catch((err) => { reject(err); })
 			}).catch((err) => { reject(err); })

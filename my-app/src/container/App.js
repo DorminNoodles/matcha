@@ -67,6 +67,7 @@ class App extends React.Component {
    }
 
    setObject = (key, value) => {
+      window.sessionStorage.removeItem(key);
       window.sessionStorage.setItem(key, JSON.stringify(value));
    }
 

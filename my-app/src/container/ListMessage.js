@@ -39,7 +39,7 @@ class ListMessage extends React.Component {
 
     render() {
 
-        if (this.state.loading === true && this.context.loading === true) { return <Loading /> }
+        if (this.state.loading === true || this.context.loading === true) { return <Loading /> }
         return (
             <div className="list-message">
                 <Route />
