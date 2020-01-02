@@ -44,7 +44,7 @@ class App extends React.Component {
       let user = await this.getObject("user");
       try { var result = JSON.parse(document.cookie) }
       catch (err) {
-         var result = this.state.user
+         result = this.state.user
          const regex = RegExp(/{?.*?}/);
          var reg = document.cookie.match(regex)
          
@@ -116,7 +116,6 @@ class App extends React.Component {
    }
 
    render() {
-
       if (this.state.loading === true)
          return (<div>loading</div>)
       else

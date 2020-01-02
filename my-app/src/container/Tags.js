@@ -23,7 +23,7 @@ class Tags extends React.Component {
     }
     static contextType = UserProvider;
 
-    componentDidMount() { this.getUserTags()}
+    componentDidMount() { this.getUserTags() }
 
     getUserTags() {
         let id = this.props.id > 0 ? this.props.id : this.context.user.id
@@ -45,13 +45,19 @@ class Tags extends React.Component {
     }
 
     handleKeyDown(props) {
-        if (props.keyCode === 13)
-            addTag(props.target.value, this.context.user.token).then((res) => {
-                if (res.status === "success"){
-                    this.getUserTags()
-                    this.setState({ ...this.state, value: "" })
-                }
-            })
+        if (props.keyCode === 13 && this.state.value.length > 0) {
+
+            if (this.state.tags.length < 10)
+                addTag(props.target.value, this.context.user.token).then((res) => {
+                    if (res.status === "success") {
+                        this.getUserTags()
+                        this.setState({ ...this.state, value: "", error: "" })
+                    }
+                })
+            else if (this.state.tags.length >= 10)
+                this.setState({ error: "10 tags maximum!" });
+        }
+        else { this.setState({ error: "" }); }
     }
 
     onChange(value) { this.setState({ ...this.state, ...value }) }
@@ -65,15 +71,13 @@ class Tags extends React.Component {
     }
 
     render() {
-        let action = { onKeyDown: this.function.handleKeyDown, onChange: (e) => { this.onChange({value:e.target.value})} }
+        let action = { onKeyDown: this.function.handleKeyDown, onChange: (e) => { this.onChange({ value: e.target.value }) } }
 
         return (
             <React.Fragment>
-                {
-                    <p style={{ fontStyle: "italic", fontWeight: "700" }}>
-                        {this.listTags()}
-                    </p>
-                }
+                <p style={{ fontStyle: "italic", fontWeight: "700" }}>
+                    {this.listTags()}
+                </p>
                 {
                     this.props.id > 0 ? <React.Fragment />
                         : <ModifyTag {...this.state} value={this.state.value} action={action} fct={this.function} />

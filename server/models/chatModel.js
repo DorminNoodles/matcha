@@ -55,7 +55,7 @@ exports.list = (id) => {
     return new Promise((resolve, reject) => {
         database.connection()
             .then((conn) => {
-                let rsl = conn.query('SELECT users.avatar, userschat.active, username, \
+                let rsl = conn.query('SELECT users.avatar, userschat.active, users.active as connection, username, \
                 first_user, second_user, chat.date, users.id, userschat.id as group_id, chat.message, \
                 (select to_id from chat order by date desc limit 1) as last\
                 FROM userschat \

@@ -6,6 +6,7 @@ import { getMessages, getListMsg } from '../function/get'
 import { sendMsg } from '../function/post'
 import { isEmpty } from '../function/utils'
 import openSocket from 'socket.io-client';
+
 const socket = openSocket('http://localhost:3300');
 
 class Chat extends React.Component {
@@ -121,11 +122,11 @@ class Chat extends React.Component {
     if (this.state.loading === true && this.context.loading === true) { return (<Loading />) }
     return (
       <div id="chat">
-        <ListChat list={this.state.list} chat last_msg={true} />
+        <ListChat list={this.state.list} chat last_msg={true} history={this.props.history} />
         <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} />
       </div>
     );
   }
 }
 
-export default (Chat);
+export default Chat;

@@ -218,8 +218,12 @@ class Signup extends React.Component {
         }
 
         if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0]);
-            this.setState({ ...this.state, data: e.target.files[0] }, () => { })
+            if (!e.target.files[0].name.match(/.(jpg|jpeg|png)$/i))
+                this.setState({ ...this.state, image: { value: "", error: "Not the right format" } })
+            else {
+                reader.readAsDataURL(e.target.files[0]);
+                this.setState({ ...this.state, data: e.target.files[0] }, () => { })
+            }
         }
     };
 

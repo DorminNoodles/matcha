@@ -18,7 +18,7 @@ function BubbleTag({ value, onDelete, pos }) {
     )
 }
 
-function ModifyTag({ tagModify, tags, action, fct, value }) {
+function ModifyTag({ tagModify, tags, action, fct, value, error }) {
 
     let { onChange, onDelete } = fct
     return (
@@ -31,7 +31,8 @@ function ModifyTag({ tagModify, tags, action, fct, value }) {
                             return (<BubbleTag key={id} pos={id} value={tags[value].tag} onDelete={onDelete} />)
                         })}
                     </div>
-                    <Field icon="fas fa-tag" position="left"  value={value} style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
+                    <p className="error center">{error}</p>
+                    <Field icon="fas fa-tag" position="left" value={value} style={{ width: "80%" }} placeholder="Add a #tag..." action={action} />
                     <button className="button red-white center" onClick={() => onChange({ tagModify: !tagModify })}>Close</button>
                 </React.Fragment>
                     :

@@ -43,7 +43,7 @@ class Home extends React.Component {
   }
 
   sendFile = (e) => {
-    if (!e.target.files[0].name.match(/.(jpg|jpeg|png|gif)$/i))
+    if (!e.target.files[0].name.match(/.(jpg|jpeg|png)$/i))
       this.setState({ ...this.state, error: "Not the right format" })
     else {
       const data = new FormData();
@@ -68,7 +68,7 @@ class Home extends React.Component {
   sendAvatar = (e) => {
     const data = new FormData();
 
-    if (!e.target.files[0].name.match(/.(jpg|jpeg|png|gif)$/i))
+    if (!e.target.files[0].name.match(/.(jpg|jpeg|png)$/i))
       this.setState({ ...this.state, error: "Not the right format" })
     else {
       var photo = this.state.avatar.split('/')

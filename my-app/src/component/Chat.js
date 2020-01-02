@@ -2,8 +2,7 @@ import React from 'react';
 import UserProvider from '../context/UserProvider';
 import { Bubble } from '../export'
 import profile from "../image/profile.png"
-import { BrowserRouter as Route, Link } from "react-router-dom";
-import { Media } from 'reactstrap';
+import { BrowserRouter as Route } from "react-router-dom";
 
 function HeaderChat(props) {
 
@@ -81,26 +80,43 @@ function Conversation(props) {
 
 ///////////////////////////LIST CHAT///////////////////////////////////////
 
+
+function LinkUser({ username, onClick }) {
+    return (
+
+        <div style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
+            <div className="link-red" style={{ fontSize: "large", width: "fit-content" }} onClick={onClick}>
+                {username}
+            </div>
+        </div>
+    )
+}
+
 class MessageBox extends React.Component {
     static contextType = UserProvider;
 
+    onClick(page, id, e) {
+        this.props.history.push(`/${page}?id=${id}`)
+        if (e) { e.stopPropagation() }
+    }
+
     render() {
 
-        let { id, username, avatar } = this.props.value
+        let { id, avatar, connection } = this.props.value
         let imgProfil = id > 0 ? avatar : profile;
 
         return (
-            <Link to={{ pathname: "/chat", search: `?id=${id}` }} className='message-box center'>
+            <div to={{ pathname: "/chat", search: `?id=${id}` }} className='message-box center' onClick={() => this.onClick('chat', id)}>
                 <div style={{ height: "100%", width: "75px", display: "contents" }}>
                     <img className="rounded-60" alt="username" src={imgProfil} />
-                    <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
+                    {
+                        !(Date.parse(connection)) ?
+                        <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} /> :
+                        <div className="red-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
+                    }
                 </div>
-                <Media href="/user" to={{ pathname: "/user", search: `?id=${id}` }} style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
-                    <p className="link-red" style={{ fontSize: "large", width: "fit-content" }}>
-                        {username}
-                    </p>
-                </Media>
-            </Link>
+                <LinkUser {...this.props.value} onClick={(e) => this.onClick("user", id, e)} />
+            </div>
 
         );
     }

@@ -42,13 +42,11 @@ class Signin extends Component {
         document.cookie = JSON.stringify({ token: res.data.token, ...res.data.user })
         this.context.onChange("user", { token: res.data.token, ...res.data.user })
         this.props.history.push("/")
-      }  else { this.setState({ ...this.state, error: res.data }) }
+      } else { this.setState({ ...this.state, error: res.data }) }
     })
   }
 
-  password = () => {
-    this.props.history.push("/user/password")
-  }
+  password = () => { this.props.history.push("/user/password")}
 
   render() {
 
@@ -68,4 +66,4 @@ class Signin extends Component {
   }
 }
 
-export default withRouter(Signin);;   
+export default withRouter(Signin);
