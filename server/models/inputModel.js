@@ -142,7 +142,7 @@ exports.gender = (gender) => {
 
 exports.bio = (bio) => {
 	return new Promise((resolve, reject) => {
-		const regex = RegExp(/^[a-zA-Z0-9\s]*$/);
+		const regex = RegExp(/^[a-zàâçéèêëîïôûùüÿñæœ\r\n !?:+='&.-]*$/i);
 		if (bio) {
 			if (!regex.test(bio))
 				reject({ "status": "error", "key": "bio", "msg": "Bio bad character !" })
