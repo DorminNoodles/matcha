@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profil, SearchHeader } from "../export";
+import { Profil, SearchHeader, Loading } from "../export";
 import UserProvider from '../context/UserProvider';
 import { getUsers } from '../function/get'
 import { like } from '../function/post'
@@ -11,7 +11,7 @@ class Match extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { users: [], height: "60px" }
+    this.state = { users: [], height: "60px", loading: true }
   }
   static contextType = UserProvider;
 
@@ -40,7 +40,7 @@ class Match extends React.Component {
 
     getUsers(this.context.user.token, params)
       .then((res) => {
-        this.setState({ ...this.state, users: res.data })
+        this.setState({ ...this.state, users: res.data, loading: false })
       })
       .catch(() =>
         this.setState({ ...this.state, users: [] })
@@ -56,7 +56,7 @@ class Match extends React.Component {
       like(id, token).then((res) => {
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
-          if (res.like) 
+          if (res.like)
             socket.emit('notif', { ...res.like, username });
           if (res.match)
             socket.emit('notif', { ...res.match, username, second });
@@ -82,19 +82,21 @@ class Match extends React.Component {
 
 
   render() {
-    let { users } = this.state
+    let { users, loading } = this.state
 
-    return (
-      <div id="match">
-        <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
-        <div id="list-profil" style={{ top: `${this.state.height}` }}>
-          {
-            users && users.length > 0 && users.map((value, i) => {
-              return <Profil key={i} values={value} likes={this.likes.bind(this)} />
-            })
-          }
-        </div>
-      </div>);
+    if (loading) { return <Loading /> }
+    else
+      return (
+        <div id="match">
+          <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
+          <div id="list-profil" style={{ top: `${this.state.height}` }}>
+            {
+              users && users.length > 0 && users.map((value, i) => {
+                return <Profil key={i} values={value} likes={this.likes.bind(this)} />
+              })
+            }
+          </div>
+        </div>);
   }
 }
 
