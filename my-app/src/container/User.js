@@ -35,11 +35,12 @@ class User extends React.Component {
         getUser(this.context.user.token, this.context.user.id)
           .then((res) => {
             if (res.status === 200)
-              this.setState({ ...this.state, ...res.data, loading: false })
+              this.setState({ ...this.state, ...res.data, loading: false }, () => {
+                this.getPhotos(this.context.user.id)
+              })
             else
               this.setState({ ...this.state, loading: true })
           })
-
       else
         getUser(this.context.user.token, params.id)
           .then((res) => {
@@ -49,7 +50,7 @@ class User extends React.Component {
               let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
 
               this.setState({ ...this.state, ...res.data, date_active }, () => {
-                this.getPhotos(!params.id ? this.context.user.id : params.id)
+                this.getPhotos(params.id)
               })
             }
           })

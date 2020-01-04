@@ -76,7 +76,7 @@ class Home extends React.Component {
       data.append('file', e.target.files[0]);
       data.append('prev', photo[photo.length - 1])
 
-      uploadPicture(data, this.context.user.token, 1)
+      uploadPicture(data, this.context.user.token)
         .then((res) => {
           this.setState({ ...this.state, avatar: res.data.photo }, () => {
             this.context.onChange("user", { ...this.context.user, avatar: res.data.photo })
