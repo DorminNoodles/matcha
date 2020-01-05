@@ -16,14 +16,13 @@ class Chat extends React.Component {
   }
   static contextType = UserProvider;
 
-  UNSAFE_componentWillReceiveProps(next) {
 
+  UNSAFE_componentWillReceiveProps(next) {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
 
     if (this.props.location.search !== next.location.search)
       this.getConversation(next)
-
   }
 
   UNSAFE_componentWillMount() {
@@ -112,7 +111,7 @@ class Chat extends React.Component {
             socket.emit('send message', data);
             socket.emit('notif', notif);
           })
-        }).catch((err) => { })
+        }).catch(() => { })
   }
 
 

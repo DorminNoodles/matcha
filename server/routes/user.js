@@ -31,7 +31,7 @@ router.patch('/', urlencodedParser, (req, res) => {
 
 router.post('/forgot', urlencodedParser, (req, res) => {
 	user.forgot(req.body.email)
-		.then((response) => { es.status(200).send(response); })
+		.then((response) => { res.status(200).send(response); })
 		.catch((err) => { res.status(500).send({ "status": "error", "msg": "error" }); })
 })
 

@@ -23,8 +23,8 @@ exports.new = (liker, liked) => {
 										conn.end()
 										if (res.changedRows === 0)
 											return this.createLikesNotifs(liker, liked, like, match, id_notifs, date)
-												.then((response) => response)
-												.catch((err) => reject(err))
+											.then((response) => response)
+											.catch((err) => reject(err))
 										else {
 											return this.updateLikesNotifs(liker, liked, like, match, id_notifs, date)
 												.then((response) => response)

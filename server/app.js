@@ -28,8 +28,8 @@ const report = require("./routes/report");
 
 
 //SERVICES
-const activationMail = require('./services/activationMail');
-const geolocation = require('./services/geolocation');
+let activationMail = require('./services/activationMail');
+// const geolocation = require('./services/geolocation');
 
 
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION

@@ -8,21 +8,22 @@ module.exports = (io) => {
         socket.on('subscribe', function (room) {
 
             console.log('joining room', room);
-            if (room){
-                socket.leave(room); 
+            if (room) {
+                socket.leave(room);
                 socket.join(room);
             }
         });
 
         socket.on('notif_subscribe', function (room) {
             console.log('joining room notif_subscribe: ', room);
-            if (room){
-                socket.leave(room); 
+            if (room) {
+                socket.leave(room);
                 socket.join(room);
             }
         });
 
         socket.on('send message', function (data) {
+            console.log('seng message', data);
             if (data.id)
                 socket.to(data.id).broadcast.emit('new message', { ...data });
         });
@@ -45,9 +46,10 @@ module.exports = (io) => {
                             }).catch()
                     })
             }
-            else if(data.type === 2) {
+            else if (data.type === 2) {
+                console.log(data)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
-                socket.to(data.from_id + "_notif").broadcast.emit('notif', { username: data.second, type: data.type, date: data.date });
+                socket.to(data.from_id + "_notif").broadcast.emit('notif', { username: data.second, type: data.type, date: data.date, id: data.id });
             }
             else if (data.to_id)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
