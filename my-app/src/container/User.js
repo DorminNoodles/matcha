@@ -80,8 +80,11 @@ class User extends React.Component {
         this.setState({ ...this.state, likes: 1, nb_likes: ++nb_likes }, () => {
           if (res.like)
             socket.emit('notif', { ...res.like, username });
-          if (res.match)
-            socket.emit('notif', { ...res.match, username, second: this.state.username });
+          if (res.match) {
+            socket.emit('notif', { ...res.match[0], username, second: this.state.username });
+            socket.emit('notif', { ...res.match[1], username: this.state.username, second: username });
+          }
+          socket.emit('notif', { ...res.match, username, second: this.state.username });
         })
       })
     }
