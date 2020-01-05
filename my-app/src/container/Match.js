@@ -58,8 +58,10 @@ class Match extends React.Component {
         this.setState({ ...this.state, users }, () => {
           if (res.like)
             socket.emit('notif', { ...res.like, username });
-          if (res.match)
-            socket.emit('notif', { ...res.match, username, second });
+          if (res.match) {
+            socket.emit('notif', { ...res.match[0], username, second });
+            socket.emit('notif', { ...res.match[1], second, username });
+          }
         })
       })
     }

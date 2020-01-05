@@ -2,117 +2,80 @@ const database = require('../controllers/database');
 
 exports.new = (liker, liked) => {
 	return new Promise((resolve, reject) => {
+
+
+		database.connection()
+			.then((conn) => {
+				// insert like
+				return conn.query('INSERT INTO likes (liker, liked) VALUES (?, ?) ', [liker, liked])
+					.then((res) => {
+
+						//create userchat
+						return conn.query('INSERT IGNORE INTO userschat (first_user, second_user, active) \
+						VALUES (?,?,0)', [Math.min(liker, liked), Math.max(liker, liked)])
+							.then((res) => {
+								return this.match(liker, liked).then((res) => {
+									return this.notif(liker, liked, res)
+								})
+							})
+							.catch((err) => { reject(err) })
+					})
+					.then((res) => { resolve(res) })
+			})
+	})
+}
+
+
+exports.notif = (liker, liked, type) => {
+	return new Promise((resolve, reject) => {
 		let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 		let like = { to_id: liked, from_id: liker, type: 3, date }
 		let match = { to_id: liked, from_id: liker, type: 2, date }
+		let match_two = { to_id: liker, from_id: liked, type: 2, date }
 
 		database.connection()
 			.then((conn) => {
-				return conn.query('INSERT INTO likes (liker, liked) VALUES (?, ?) ', [liker, liked]) // insert like
-					.then(() => {
-						return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 3, date]) // insert like notifs
-							.then((res) => {
-								const id_notifs = res.insertId
-								return conn.query('UPDATE userschat \
-									INNER JOIN  likes ON (likes.liker=? and likes.liked=?) \
-									INNER JOIN likes as liki ON (liki.liked=? and liki.liker=?)\
-									SET active=1 \
-									WHERE first_user=LEAST(?, ?) \
-									AND second_user=GREATEST(?,?)', [liker, liked, liker, liked, liker, liked, liker, liked])
-									.then((res) => {
-										conn.end()
-										if (res.changedRows === 0)
-											return this.createLikesNotifs(liker, liked, like, match, id_notifs, date)
-											.then((response) => response)
-											.catch((err) => reject(err))
-										else {
-											return this.updateLikesNotifs(liker, liked, like, match, id_notifs, date)
-												.then((response) => response)
-												.catch((err) => reject(err))
-										}
-									})
-									.catch((err) => {
-										return conn.query('SELECT * from likes \
-														WHERE (liker=? AND liked=?) \
-														OR (liked=? AND liker=?) \
-														HAVING COUNT(*)=2)', [liker, liked, liker, liked])
-											.then((res) => {
-												return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
-													.then((res) => {
-														conn.end()
-														resolve({ res, like: { ...like, id: id_notifs } })
-													})
-											})
-									});
-							})
-					})
+				return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 3, date])
+					.then((res) => {
+						const id_notifs = res.insertId
+
+						if (type === "match") {
+							return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
+								.then((res) => {
+									const id_one = res.insertId
+									return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liker, liked, 2, date])
+										.then((res) => {
+											return ({ like: { ...like, id: id_notifs }, match: [{ ...match, id: id_one }, { ...match_two, id: res.insertId }] })
+										})
+								})
+						}
+						else { return ({ like: { ...like, id: id_notifs } }) }
+					}) // insert like notifs
 			})
-			.then((res) => { resolve({ "status": "success", "msg": "like added !", ...res }) })
-			.catch(() => {
-				reject({ "status": "error", "msg": "request failed" })
-			})
+			.then((res) => { resolve(res) })
+			.catch((err) => { reject(err); })
 	})
 }
 
-exports.createLikesNotifs = (liker, liked, like, match, id_notifs, date) => {
-	return new Promise((resolve, reject) => {
-		database.connection()
-			.then((conn) => {
-				return conn.query('INSERT INTO userschat (first_user, second_user, active)\
-								(SELECT liker, liked, TRUE as active FROM likes \
-								WHERE(liker=LEAST(?, ?)  AND liked =GREATEST(?,?)) \
-								OR (liked =GREATEST(?,?) AND liker =LEAST(?, ?) ) )'
-					, [liker, liked, liker, liked, liker, liked, liker, liked])
-					.then((res) => {
-						if (res.changedRows > 0) {
-							return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
-								.then((res) => {
-									conn.end();
-									return ({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } })
-								})
-						}
-						else if (res.affectedRows > 0) {
-							return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
-								.then((res) => {
-									conn.end();
-									return ({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } })
-								})
-						}
-						else {
-							conn.end();
-							return ({ like: { ...like, id: id_notifs } })
-						}
-					});
-			})
-			.then((response) => { resolve(response) })
-			.catch((err) => {
-				if (err.code === "ER_DUP_ENTRY")
-					resolve({ like: { ...like, id: id_notifs } })
-				else
-					reject({ "status": "error", "msg": "request failed" })
-			})
-	})
-}
 
-exports.updateLikesNotifs = (liker, liked, like, match, id_notifs, date) => {
+
+exports.match = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 		database.connection()
 			.then((conn) => {
-				return conn.query('SELECT * from likes \
-							WHERE (liker=? AND liked=?) \
-							OR (liked=? AND liker=?) \
-							HAVING COUNT(*)=2 ', [liker, liked, liker, liked])
+				return conn.query('UPDATE userschat\
+								SET active=1\
+			  					WHERE (select count(*) from likes\
+			   					WHERE (liker=? && liked=?) OR (liker=? && liked=?)) = 2 ', [liker, liked, liked, liker])
 					.then((res) => {
-						return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?), (?, ?, ?, ?)', [liked, liker, 2, date, liker, liked, 3, date])
-							.then((res) => {
-								conn.end();
-								resolve({ like: { ...like, id: id_notifs }, match: { ...match, id: res.insertId } })
-							})
+						conn.end();
+						if (res.affectedRows === 1)
+							resolve("match")
+						else
+							resolve("no")
 					})
 			})
-			.catch((err) => {
-				reject({ "status": "error", "msg": "request failed" })
-			})
+			.catch((err) => { reject(err); })
 	})
 }
 

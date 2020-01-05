@@ -34,7 +34,6 @@ module.exports = (io) => {
         })
 
         socket.on('notif', function (data) {
-
             if (data.type === 5) {
                 let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
                 database.connection()
@@ -46,11 +45,8 @@ module.exports = (io) => {
                             }).catch()
                     })
             }
-            else if (data.type === 2) {
-                console.log(data)
+            else if (data.type === 2) 
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
-                socket.to(data.from_id + "_notif").broadcast.emit('notif', { username: data.second, type: data.type, date: data.date, id: data.id });
-            }
             else if (data.to_id)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
 
