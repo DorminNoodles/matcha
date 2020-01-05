@@ -68,7 +68,7 @@ class Profil extends React.Component {
               {!(Date.parse(active)) ? <p className="green-dot"></p> : <p className="red-dot"></p>}
             </span>
 
-            <p style={{ width: "calc(190px - 56px)", overflow: "scroll" }} > { username }</p>
+            <p style={{ width: "calc(190px - 56px)", overflow: "hidden", textOverflow: "ellipsis" }} > { username }</p>
             {
               this.state.heart === 0 &&
               <span onClick={this.like.bind(this)}>
