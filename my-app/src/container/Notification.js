@@ -33,11 +33,13 @@ class Notification extends React.Component {
     static contextType = UserProvider;
 
 
+    componentWillMount() { this.getNotifs() }
+
     componentDidUpdate() {
         if (this.context.user.token && this.state.loading === true)
             this.getNotifs()
     }
-    
+
     getNotifs() {
         let { user } = this.context
 
