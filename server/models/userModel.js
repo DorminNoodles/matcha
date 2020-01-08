@@ -201,7 +201,7 @@ exports.setActive = (username, password) => {
 	return new Promise((resolve, reject) => {
 
 		database.connection().then((conn) => {
-			conn.query('UPDATE users SET active=0 WHERE username=?', [username])
+			conn.query('UPDATE users SET active=null WHERE username=?', [username])
 				.then(() => {
 					conn.end();
 					resolve({ "status": "success" })
@@ -226,16 +226,13 @@ exports.activateUser = (username, email) => {
 
 exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
-		database.connection()
-			.then((conn) => {
-				let rsl = conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username])
-				conn.end();
-				return rsl
-			})
-			.then((res) => { resolve({ "status": "success", "msg": "Password changed!" }); })
-			.catch((err) => {
-				reject({ status: "error", msg: "error db !" });
-			})
+		database.connection().then((conn) => {
+			let rsl = conn.query('UPDATE users SET password=?, tmp_email=null WHERE email=? AND username=?', [pwd, email, username])
+			conn.end();
+			return rsl
+		})
+			.then(() => { resolve({ "status": "success", "msg": "Password changed!" }); })
+			.catch(() => { reject({ status: "error", msg: "error db !" }); })
 	});
 }
 

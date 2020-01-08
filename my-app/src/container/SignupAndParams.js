@@ -57,19 +57,20 @@ class Signup extends React.Component {
     }
 
     componentDidMount() {
-        let { token } = this.context.user
-        let { pathname } = this.props.location
-
-        if ((!token && pathname === "/parameters") || (token && pathname === "/signup"))
-            this.props.history.push("/")
-        if (this.context.header !== "white-red")
-            this.context.onChange("header", "white-red")
+        if (this.context.user) {
+            let { token } = this.context.user
+            let { pathname } = this.props.location
+            if ((!token && pathname === "/parameters") || (token && pathname === "/signup"))
+                this.props.history.push("/")
+            if (this.context.header !== "white-red")
+                this.context.onChange("header", "white-red")
+        }
 
         this.setting(this.props.location.pathname)
     }
 
     setting(pathname) {
-        if (!(this.context.user.token) && pathname === "/parameters")
+        if (!(this.context.user && this.context.user.token) && pathname === "/parameters")
             this.props.history.push('/');
 
         if (pathname === "/parameters")

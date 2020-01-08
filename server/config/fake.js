@@ -6,12 +6,12 @@ let orientation = {
     male: [
         { orientation: "heterosexual", identity: 17, mask: 32 },
         { orientation: "homosexual", identity: 10, mask: 8 },
-        { orientation: "heterosexual", identity: 27, mask: 2 }
+        { orientation: "bisexual", identity: 27, mask: 2 }
     ],
     female: [
         { orientation: "heterosexual", identity: 34, mask: 16 },
         { orientation: "homosexual", identity: 5, mask: 4 },
-        { orientation: "heterosexual", identity: 39, mask: 1 }
+        { orientation: "bisexual", identity: 39, mask: 1 }
     ]
 }
 

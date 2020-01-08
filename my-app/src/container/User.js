@@ -31,16 +31,17 @@ class User extends React.Component {
       this.props.history.push('/');
     else if (this.context.loading === false && this.context.user && this.context.user.token) {
 
-      if (!params.id)
+      if (!params.id) {
         getUser(this.context.user.token, this.context.user.id)
           .then((res) => {
             if (res.status === 200)
               this.setState({ ...this.state, ...res.data, loading: false }, () => {
                 this.getPhotos(this.context.user.id)
               })
-            else
-              this.setState({ ...this.state, loading: true })
+            // else
+            //   this.setState({ ...this.state, loading: true })
           })
+      }
       else
         getUser(this.context.user.token, params.id)
           .then((res) => {
@@ -63,7 +64,7 @@ class User extends React.Component {
     if (this.context.header !== "red-white")
       this.context.onChange("header", "red-white")
 
-    if (params.id)
+    if (this.context.user && params.id)
       socket.emit('notif', { type: 5, from_id: this.context.user.id, to_id: params.id, username: this.context.user.username });
   }
 
@@ -84,7 +85,6 @@ class User extends React.Component {
             socket.emit('notif', { ...res.match[0], username, second: this.state.username });
             socket.emit('notif', { ...res.match[1], username: this.state.username, second: username });
           }
-          socket.emit('notif', { ...res.match, username, second: this.state.username });
         })
       })
     }
@@ -120,9 +120,10 @@ class User extends React.Component {
 
   render() {
     let params = queryString.parse(this.props.location.search)
+    let { user } = this.context
     let id = !params.id ? 0 : params.id
-    let id_pic = !params.id ? this.context.user.id : params.id
-    let pic = !params.id ? this.context.user.avatar : this.state.avatar
+    let id_pic = !params.id ? user ? user.id : 0 : params.id
+    let pic = !params.id ? user ? user.avatar : "" : this.state.avatar
 
     if (this.state.ban && this.state.ban === 1)
       return <div>ban</div>

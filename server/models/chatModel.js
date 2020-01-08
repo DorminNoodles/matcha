@@ -63,12 +63,14 @@ exports.list = (id) => {
                 LEFT JOIN chat ON (chat.group_id=userschat.id) \
                 WHERE (first_user=? OR second_user=?) \
                 AND userschat.active=1 \
-                GROUP BY id \
+                GROUP BY  userschat.id  \
                 ORDER BY chat.date DESC;', [id, id, id])
                 conn.end()
                 return rsl
             })
             .then((res) => { resolve(res) })
-            .catch((err) => { reject({ "status": "error", "msg": "Bad query !" }); })
+            .catch((err) => {
+                reject({ "status": "error", "msg": "Bad query !" });
+            })
     });
 }

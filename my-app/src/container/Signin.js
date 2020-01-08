@@ -24,7 +24,7 @@ class Signin extends Component {
   }
 
   componentDidMount() {
-    if (this.context.user.token)
+    if (this.context.user && this.context.user.token)
       this.props.history.push("/")
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")

@@ -110,7 +110,7 @@ class MessageBox extends React.Component {
                 <div style={{ height: "100%", width: "75px", display: "contents" }}>
                     <img className="rounded-60" alt="username" src={imgProfil} />
                     {
-                        !(Date.parse(connection)) ?
+                        connection === null ?
                         <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} /> :
                         <div className="red-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
                     }

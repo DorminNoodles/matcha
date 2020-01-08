@@ -4,7 +4,6 @@ import profile from "../image/profile.png"
 
 function UserProfil({ onChange, info, id, like, id_pic, date_active, pic }) {
     let imgProfil = info.avatar && info.avatar !== "" ? pic : profile
-
     return (
         <React.Fragment>
             <div>
@@ -23,9 +22,9 @@ function UserProfil({ onChange, info, id, like, id_pic, date_active, pic }) {
                         <div>
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 {
-                                    !(Date.parse(info.active)) ?
-                                        <p className="green-dot" style={{ marginRight: "5px" }}></p> :
-                                        <p className="red-dot" style={{ marginRight: "5px" }}></p>
+                                    info.active === null ?
+                                    <p className="green-dot" style={{ marginRight: "5px" }}></p> :
+                                    <p className="red-dot" style={{ marginRight: "5px" }}></p>
                                 }
                                 <p>{info.firstname} {info.lastname}</p>
                             </div>

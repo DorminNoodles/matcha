@@ -27,7 +27,7 @@ class HomePassword extends React.Component {
     }
 
     password = () => {
-        const { password, confirmation } = this.state
+        let { password, confirmation } = this.state
 
         if (!password || password.length === 0 || !confirmation || confirmation.length === 0)
             this.setState({ ...this.state, success: "", error: "Please complete all required fields" })

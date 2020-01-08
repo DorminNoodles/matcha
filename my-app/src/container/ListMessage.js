@@ -22,10 +22,9 @@ class ListMessage extends React.Component {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
 
-        if (!(this.context.user.token))
+        if (!(this.context.user && this.context.user.token))
             this.props.history.push('/');
         else {
-
             getListMsg(this.context.user.token).then((res) => {
                 this.setState({ users: res, loading: false })
             })

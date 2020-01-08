@@ -26,33 +26,34 @@ class Chat extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    if (!(this.context.user.token))
+    if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
 
-    if (this.context.header !== "white-red")
-      this.context.onChange("header", "white-red")
-
-    this.getConversation(this.props).then(() => {
-      this.getListMsg()
-    })
-
-    socket.on("new message", data => {
-      let list = {}
-
-      this.state.list.forEach((value, i) => {
-        if (value.group_id === data.id) {
-          list = this.state.list
-          list[i].last = data.to_id;
-        }
+      this.getConversation(this.props).then(() => {
+        this.getListMsg()
       })
 
-      if (this.state.group_id === data.id) {
-        let conversation = this.state.conversation
-        conversation.push(data)
+    if (this.context.user && this.context.header !== "white-red") {
 
-        this.setState({ ...this.state, message: "", conversation, list }, () => { })
-      }
-    })
+      this.context.onChange("header", "white-red")
+
+      socket.on("new message", data => {
+        let list = {}
+
+        this.state.list.forEach((value, i) => {
+          if (value.group_id === data.id) {
+            list = this.state.list
+            list[i].last = data.to_id;
+          }
+        })
+
+        if (this.state.group_id === data.id) {
+          let conversation = this.state.conversation
+          conversation.push(data)
+          this.setState({ ...this.state, message: "", conversation, list }, () => { })
+        }
+      })
+    }
   }
 
   getConversation = (props) => {
@@ -64,8 +65,9 @@ class Chat extends React.Component {
           if (!(conversation && group_id))
             this.props.history.push('/messages');
           else {
-            socket.emit('subscribe', group_id);
-            this.setState({ ...this.state, conversation, group_id }, () => { resolve() })
+            this.setState({ ...this.state, conversation, group_id }, () => { 
+              socket.emit('subscribe', group_id);
+              resolve() })
           }
         })
     })

@@ -1,5 +1,5 @@
 
-const notificationModel = require('./models/notificationModel.js');
+// const notificationModel = require('./models/notificationModel.js');
 const database = require('./controllers/database');
 
 module.exports = (io) => {
@@ -45,7 +45,7 @@ module.exports = (io) => {
                             }).catch()
                     })
             }
-            else if (data.type === 2) 
+            else if (data.type === 2)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });
             else if (data.to_id)
                 socket.to(data.to_id + "_notif").broadcast.emit('notif', { ...data });

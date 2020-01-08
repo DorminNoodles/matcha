@@ -21,19 +21,21 @@ class Match extends React.Component {
   }
 
   componentDidMount() {
-    if (!(this.context.user.token))
+    if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
-    else if (this.context.header !== "white-red")
+    else if (this.context.header !== "white-red") {
       this.context.onChange("header", "white-red")
-    this.getUsers({
-      ageMin: this.context.user.ageMin,
-      ageMax: this.context.user.ageMax,
-      distance: this.context.user.distance,
-      identity: this.context.user.identity,
-      longitude: this.context.user.longitude,
-      latitude: this.context.user.latitude,
-      score: 0
-    });
+
+      this.getUsers({
+        ageMin: this.context.user.ageMin,
+        ageMax: this.context.user.ageMax,
+        distance: this.context.user.distance,
+        identity: this.context.user.identity,
+        longitude: this.context.user.longitude,
+        latitude: this.context.user.latitude,
+        score: 0
+      });
+    }
   }
 
   getUsers(params) {

@@ -14,6 +14,7 @@ exports.new = (liker, liked) => {
 						return conn.query('INSERT IGNORE INTO userschat (first_user, second_user, active) \
 						VALUES (?,?,0)', [Math.min(liker, liked), Math.max(liker, liked)])
 							.then((res) => {
+								conn.end()
 								return this.match(liker, liked).then((res) => {
 									return this.notif(liker, liked, res)
 								})
@@ -45,6 +46,7 @@ exports.notif = (liker, liked, type) => {
 									const id_one = res.insertId
 									return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liker, liked, 2, date])
 										.then((res) => {
+											conn.end()
 											return ({ like: { ...like, id: id_notifs }, match: [{ ...match, id: id_one }, { ...match_two, id: res.insertId }] })
 										})
 								})
@@ -69,7 +71,7 @@ exports.match = (liker, liked) => {
 			   					WHERE (liker=? && liked=?) OR (liker=? && liked=?)) = 2 ', [liker, liked, liked, liker])
 					.then((res) => {
 						conn.end();
-						if (res.affectedRows === 1)
+						if (res.affectedRows > 0)
 							resolve("match")
 						else
 							resolve("no")

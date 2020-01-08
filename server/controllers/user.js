@@ -160,7 +160,7 @@ exports.authenticate = (data) => {
 
 								resolve({ status: 'success', msg: 'connected !', ...datas });
 							}).catch((err) => { reject(err); })
-				})
+				}).catch((err) => { reject(err); })
 			}).catch((err) => { reject(err); })
 		}).catch((err) => { reject(err); })
 	})
@@ -197,6 +197,7 @@ exports.updatePassword = ({ token, password, confirmPassword, id, key, useKey })
 		if (password !== confirmPassword)
 			reject({ "status": "error", "msg": "Password and confirmation does not match" });
 
+		console.log(token, password, confirmPassword, id, key, useKey)
 		userModel.checkKeyPassword(key, id, useKey)
 			.then(() => {
 				inputModel.password(password)
@@ -209,9 +210,8 @@ exports.updatePassword = ({ token, password, confirmPassword, id, key, useKey })
 								})
 								.then((decoded) => {
 									return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-										.then(() => {
-											resolve({ "status": "success", "msg": "The password is successfully change " });
-										})
+										.then(() => { resolve({ "status": "success", "msg": "The password is successfully change " }); })
+										.catch((err) => { reject(err); })
 								})
 						}
 						catch (error) { reject(error); }

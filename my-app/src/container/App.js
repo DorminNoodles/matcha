@@ -39,31 +39,35 @@ class App extends React.Component {
 
    async componentDidMount() {
       let header = this.getObject("header")
+      let user = await this.getObject("user");
+
       header = header === null ? "white-red" : "red-white"
 
-      let user = await this.getObject("user");
-      try { var result = JSON.parse(document.cookie) }
+      try {
+         // var result = JSON.parse(document.cookie)
+         var result = user
+
+         this.setState({ ...this.state, header }, () => {
+            if (result !== "")
+               this.setState({ ...this.state, loading: false, user: result, header }, () => {
+                  console.log("restore ", this.state)
+               })
+            else if (document.cookie === "")
+               this.logout()
+            else
+               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
+                  console.log("restore ", this.state)
+               })
+         })
+      }
       catch (err) {
          result = this.state.user
          const regex = RegExp(/{?.*?}/);
          var reg = document.cookie.match(regex)
-         
-         if (reg && reg[0] && reg[0].token)
-         result = JSON.parse(reg[0])
-      }
 
-      this.setState({ ...this.state, header }, () => {
-         if (result !== "")
-            this.setState({ ...this.state, loading: false, user: result, header }, () => {
-               console.log("restore ", this.state)
-            })
-         else if (document.cookie === "")
-            this.logout()
-         else
-            this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
-               console.log("restore ", this.state)
-            })
-      })
+         if (reg && reg[0] && reg[0].token)
+            result = JSON.parse(reg[0])
+      }
    }
 
    setObject = (key, value) => {
@@ -73,15 +77,15 @@ class App extends React.Component {
 
    getObject = (key) => {
       var retrievedObject = window.sessionStorage.getItem(key);
-
       return JSON.parse(retrievedObject);
    }
 
    onChange = (index, e) => {
-      this.setState({ ...this.state, [index]: e }, () => {
-         this.setObject(index, e)
-         document.cookie = JSON.stringify({ token: this.state.user.token, ...this.state.user })
-      })
+         this.setState({ ...this.state, [index]: e }, () => {
+            this.setObject(index, e)
+            let token = (this.state.user) ? this.state.user.token : ""
+            document.cookie = JSON.stringify({ token, ...this.state.user })
+         })
    }
 
    logout = () => {

@@ -117,10 +117,9 @@ class Home extends React.Component {
 
   render() {
     const params = queryString.parse(this.props.location.search)
-    const { avatar } = this.context.user
-    let img = avatar ? avatar.toLowerCase() : ""
+    let img = (this.context.user) && this.context.user.avatar ? this.context.user.avatar.toLowerCase() : ""
 
-    if ((this.context.user.token) && !(this.state.photos)) { this.init() }
+    if (this.context.user && (this.context.user.token) && !(this.state.photos)) { this.init() }
     if (this.state.error !== "") { return <div>{this.state.error}</div> }
     else if (this.state.loading === true || this.context.loading === true) { return <Loading /> }
     return (
