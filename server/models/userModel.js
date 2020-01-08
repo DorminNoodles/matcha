@@ -162,11 +162,12 @@ exports.findUserById = (id, user_id) => {
 				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
 				COUNT(liked) as nb_likes,\
 				IF(report.reported=users.id, TRUE, FALSE) as report,\
-				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes\
+				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes,\
+				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as love\
 				FROM users \
 				LEFT JOIN report ON(report.reported=? AND report.reporting=?)\
 				LEFT JOIN likes ON (likes.liked=?) \
-				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
+				WHERE id =? ', [id, user_id, id, id, user_id, id, user_id, id, id])
 					.then((result) => {
 						conn.end();
 						result[0] ? resolve(result[0]) : reject();
