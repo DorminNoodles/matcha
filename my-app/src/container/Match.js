@@ -20,13 +20,29 @@ class Match extends React.Component {
       this.context.onChange("header", "white-red")
   }
 
-  componentDidMount() {
+  async UNSAFE_componentWillMount() {
+
+    if (this.context.user) {
+      await this.getUsers({
+        ageMin: this.context.user.ageMin,
+        ageMax: this.context.user.ageMax,
+        distance: this.context.user.distance,
+        identity: this.context.user.identity,
+        longitude: this.context.user.longitude,
+        latitude: this.context.user.latitude,
+        score: 0
+      });
+    }
+  }
+
+
+  async componentDidMount() {
     if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
     else if (this.context.header !== "white-red") {
       this.context.onChange("header", "white-red")
 
-      this.getUsers({
+      await this.getUsers({
         ageMin: this.context.user.ageMin,
         ageMax: this.context.user.ageMax,
         distance: this.context.user.distance,

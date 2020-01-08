@@ -38,14 +38,12 @@ class User extends React.Component {
               this.setState({ ...this.state, ...res.data, loading: false }, () => {
                 this.getPhotos(this.context.user.id)
               })
-            // else
-            //   this.setState({ ...this.state, loading: true })
           })
       }
       else
         getUser(this.context.user.token, params.id)
           .then((res) => {
-            if (res && res.data) {
+            if (res && res.data && res.data.id) {
 
               let date = new Date(res.data.active)
               let date_active = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}    ${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
@@ -54,6 +52,7 @@ class User extends React.Component {
                 this.getPhotos(params.id)
               })
             }
+            else { this.props.history.push('/'); }
           })
     }
   }
