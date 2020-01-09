@@ -32,10 +32,9 @@ class Notification extends React.Component {
     }
     static contextType = UserProvider;
 
-    
     async UNSAFE_componentWillMount() { await this.getNotifs() }
 
-    getNotifs() {
+    async getNotifs() {
         let { user } = this.context
 
         if (!(user))
@@ -50,14 +49,14 @@ class Notification extends React.Component {
                         this.props.numberNotifs(this.props.number + 1)
                     })
                 })
-
-                getNotifications(user.token).then((res) => {
-                    if (res && res.data && res.data.length > 0) {
-                        this.setState({ ...this.state, notifications: res.data, loading: false }, () => {
-                            this.props.numberNotifs(res.data[0].count)
-                        })
-                    }
-                })
+                if (user.token)
+                    getNotifications(user.token).then((res) => {
+                        if (res && res.data && res.data.length > 0) {
+                            this.setState({ ...this.state, notifications: res.data, loading: false }, () => {
+                                this.props.numberNotifs(res.data[0].count)
+                            })
+                        }
+                    })
             })
         }
     }

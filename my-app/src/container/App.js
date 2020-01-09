@@ -40,7 +40,7 @@ class App extends React.Component {
 
    }
 
-   async componentDidMount() {
+   async componentWillMount() {
       let header = await this.getObject("header")
       let user = await this.getObject("user");
 
