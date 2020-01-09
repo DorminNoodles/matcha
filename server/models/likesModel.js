@@ -66,9 +66,9 @@ exports.match = (liker, liked) => {
 		database.connection()
 			.then((conn) => {
 				return conn.query('UPDATE userschat\
-								SET active=1\
-			  					WHERE (select count(*) from likes\
-			   					WHERE (liker=? && liked=?) OR (liker=? && liked=?)) = 2 ', [liker, liked, liked, liker])
+									SET active=1\
+								  	WHERE (SELECT count(*) FROM likes WHERE (liker=? && liked=?) OR (liker=? && liked=?)) = 2 \
+								  	AND(first_user = ? AND second_user =?)', [liker, liked, liked, liker, Math.min(liker, liked), Math.max(liker, liked)])
 					.then((res) => {
 						conn.end();
 						if (res.affectedRows > 0)
