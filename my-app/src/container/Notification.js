@@ -32,7 +32,7 @@ class Notification extends React.Component {
     }
     static contextType = UserProvider;
 
-
+    
     async UNSAFE_componentWillMount() { await this.getNotifs() }
 
     getNotifs() {

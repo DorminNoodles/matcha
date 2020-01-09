@@ -25,18 +25,12 @@ class Chat extends React.Component {
       this.getConversation(next)
   }
 
-  UNSAFE_componentWillMount() {
+  async UNSAFE_componentWillMount() {
     if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
 
-      this.getConversation(this.props).then(() => {
-        this.getListMsg()
-      })
-
-    if (this.context.user && this.context.header !== "white-red") {
-
-      this.context.onChange("header", "white-red")
-
+    this.getConversation(this.props).then(() => {
+      this.getListMsg()
       socket.on("new message", data => {
         let list = {}
 
@@ -53,7 +47,10 @@ class Chat extends React.Component {
           this.setState({ ...this.state, message: "", conversation, list }, () => { })
         }
       })
-    }
+    })
+
+    if (this.context.user && this.context.header !== "white-red")
+      this.context.onChange("header", "white-red")
   }
 
   getConversation = (props) => {
@@ -65,9 +62,10 @@ class Chat extends React.Component {
           if (!(conversation && group_id))
             this.props.history.push('/messages');
           else {
-            this.setState({ ...this.state, conversation, group_id }, () => { 
+            this.setState({ ...this.state, conversation, group_id }, () => {
               socket.emit('subscribe', group_id);
-              resolve() })
+              resolve()
+            })
           }
         })
     })

@@ -15,7 +15,7 @@ module.exports = (io) => {
         });
 
         socket.on('notif_subscribe', function (room) {
-            console.log('joining room notif_subscribe: ', room);
+            console.log('joining room NOTIF_subscribe: ', room);
             if (room) {
                 socket.leave(room);
                 socket.join(room);
@@ -24,8 +24,10 @@ module.exports = (io) => {
 
         socket.on('send message', function (data) {
             console.log('seng message', data);
-            if (data.id)
+            if (data.id) {
+                socket.join(data.id)
                 socket.to(data.id).broadcast.emit('new message', { ...data });
+            }
         });
 
         socket.on('unsubscribe', function (room) {

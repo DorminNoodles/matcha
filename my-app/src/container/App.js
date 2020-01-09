@@ -5,6 +5,9 @@ import '../index.css'
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "../context/UserProvider"
 import { logout } from '../function/post'
+import openSocket from 'socket.io-client';
+
+const socket = openSocket('http://localhost:3300');
 
 class App extends React.Component {
    constructor(props) {
@@ -38,7 +41,7 @@ class App extends React.Component {
    }
 
    async componentDidMount() {
-      let header = this.getObject("header")
+      let header = await this.getObject("header")
       let user = await this.getObject("user");
 
       header = header === null ? "white-red" : "red-white"
@@ -49,15 +52,11 @@ class App extends React.Component {
 
          this.setState({ ...this.state, header }, () => {
             if (result !== "")
-               this.setState({ ...this.state, loading: false, user: result, header }, () => {
-                  console.log("restore ", this.state)
-               })
+               this.setState({ ...this.state, loading: false, user: result, header }, () => { })
             else if (document.cookie === "")
                this.logout()
             else
-               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
-                  console.log("restore ", this.state)
-               })
+               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => { })
          })
       }
       catch (err) {
@@ -81,11 +80,11 @@ class App extends React.Component {
    }
 
    onChange = (index, e) => {
-         this.setState({ ...this.state, [index]: e }, () => {
-            this.setObject(index, e)
-            let token = (this.state.user) ? this.state.user.token : ""
-            document.cookie = JSON.stringify({ token, ...this.state.user })
-         })
+      this.setState({ ...this.state, [index]: e }, () => {
+         this.setObject(index, e)
+         let token = (this.state.user) ? this.state.user.token : ""
+         document.cookie = JSON.stringify({ token, ...this.state.user })
+      })
    }
 
    logout = () => {
@@ -114,6 +113,7 @@ class App extends React.Component {
                   loading: false
                }, () => {
                   this.setObject("user", this.state)
+                  socket.emit('disconnect');
                })
             }
          })
