@@ -3,9 +3,9 @@ const database = require('../controllers/database');
 exports.new = (liker, liked) => {
 	return new Promise((resolve, reject) => {
 
-
 		database.connection()
 			.then((conn) => {
+
 				// insert like
 				return conn.query('INSERT INTO likes (liker, liked) VALUES (?, ?) ', [liker, liked])
 					.then((res) => {
@@ -13,15 +13,12 @@ exports.new = (liker, liked) => {
 						//create userchat
 						return conn.query('INSERT IGNORE INTO userschat (first_user, second_user, active) \
 						VALUES (?,?,0)', [Math.min(liker, liked), Math.max(liker, liked)])
-							.then((res) => {
+							.then(() => {
 								conn.end()
-								return this.match(liker, liked).then((res) => {
-									return this.notif(liker, liked, res)
-								})
-							})
-							.catch((err) => { reject(err) })
-					})
-					.then((res) => { resolve(res) })
+								return this.match(liker, liked)
+									.then(() => { return this.notif(liker, liked, res) })
+							}).catch((err) => { reject(err) })
+					}).then((res) => { resolve(res) })
 			})
 	})
 }

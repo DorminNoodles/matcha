@@ -40,23 +40,30 @@ class App extends React.Component {
 
    }
 
-   async componentWillMount() {
+   async componentDidUpdate (){
+      if (this.state.user && this.state.user.id ){
+         socket.emit('notif_subscribe', this.state.user.id + "_notif")
+      }
+   }
+
+   async UNSAFE_componentWillMount() {
       let header = await this.getObject("header")
       let user = await this.getObject("user");
 
       header = header === null ? "white-red" : "red-white"
 
       try {
-         // var result = JSON.parse(document.cookie)
          var result = user
 
          this.setState({ ...this.state, header }, () => {
             if (result !== "")
-               this.setState({ ...this.state, loading: false, user: result, header }, () => { })
+               this.setState({ ...this.state, loading: false, user, header }, () => { })
             else if (document.cookie === "")
                this.logout()
-            else
+            else{
                this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => { })
+               socket.emit('notif_subscribe', user.id + "_notif");
+            }
          })
       }
       catch (err) {
@@ -113,7 +120,6 @@ class App extends React.Component {
                   loading: false
                }, () => {
                   this.setObject("user", this.state)
-                  socket.emit('disconnect');
                })
             }
          })
