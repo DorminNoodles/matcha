@@ -5,9 +5,6 @@ import '../index.css'
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "../context/UserProvider"
 import { logout } from '../function/post'
-import openSocket from 'socket.io-client';
-
-const socket = openSocket('http://localhost:3300');
 
 class App extends React.Component {
    constructor(props) {
@@ -40,12 +37,6 @@ class App extends React.Component {
 
    }
 
-   async componentDidUpdate (){
-      if (this.state.user && this.state.user.id ){
-         socket.emit('notif_subscribe', this.state.user.id + "_notif")
-      }
-   }
-
    async UNSAFE_componentWillMount() {
       let header = await this.getObject("header")
       let user = await this.getObject("user");
@@ -60,10 +51,8 @@ class App extends React.Component {
                this.setState({ ...this.state, loading: false, user, header }, () => { })
             else if (document.cookie === "")
                this.logout()
-            else{
+            else
                this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => { })
-               socket.emit('notif_subscribe', user.id + "_notif");
-            }
          })
       }
       catch (err) {

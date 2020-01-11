@@ -31,31 +31,38 @@ class Chat extends React.Component {
 
     this.getConversation(this.props).then(() => {
       this.getListMsg()
-      socket.on("new message", data => {
+
+      socket.once("new message", data => {
         let list = {}
 
         this.state.list.forEach((value, i) => {
           if (value.group_id === data.id) {
+            let conversation = this.state.conversation
+            
+            conversation.push(data)
+
             list = this.state.list
             list[i].last = data.to_id;
+            this.setState({ ...this.state, message: "" }, () => { })
           }
         })
-
-        if (this.state.group_id === data.id) {
-          let conversation = this.state.conversation
-          conversation.push(data)
-          this.setState({ ...this.state, message: "", conversation, list }, () => { })
-        }
       })
+      this.setState({ ...this.state, message: "" })
     })
 
     if (this.context.user && this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
   }
 
+  componentWillUnmount() {
+    socket.emit("unsubscribe", this.state.group_id)
+  }
+
   getConversation = (props) => {
     return new Promise((resolve) => {
       let params = queryString.parse(props.location.search)
+
+      const last_gp = this.state.group_id
 
       getMessages(parseInt(params.id), this.context.user.token)
         .then(({ conversation, group_id }) => {
@@ -63,6 +70,7 @@ class Chat extends React.Component {
             this.props.history.push('/messages');
           else {
             this.setState({ ...this.state, conversation, group_id }, () => {
+              socket.emit('unsubscribe', last_gp);
               socket.emit('subscribe', group_id);
               resolve()
             })

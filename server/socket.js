@@ -5,24 +5,32 @@ const database = require('./controllers/database');
 module.exports = (io) => {
 
     io.on('connection', (socket) => {
-
         socket.on('subscribe', function (room) {
-            console.log('joining room', room);
-            if (room) { socket.join(room); }
+            if (room) {
+                socket.join(room, () => { console.log('joining room', room); });
+            }
+        });
+
+        socket.on('unsubscribe', function (room) {
+            if (room) {
+                socket.leave(room, (err) => {
+                    console.log('unsubscribe room', room);
+                });
+            }
         });
 
         socket.on('notif_subscribe', function (room) {
-            if (room) { 
-                console.log('joining room NOTIF_subscribe: ', room);
-                socket.join(room);
-             }
+            if (room) {
+                socket.join(room, () => {
+                    console.log('joining room NOTIF_subscribe: ', room)
+                });
+            }
         });
 
         socket.on('send message', function (data) {
             console.log('seng message', data);
             if (data.id) {
-                socket.join(data.id)
-                socket.to(data.id).broadcast.emit('new message', { ...data });
+                socket.to(data.id).emit('new message', { ...data });
             }
         });
 

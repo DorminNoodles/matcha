@@ -3,9 +3,6 @@ import { Field } from "../export"
 import { connect } from "../function/post"
 import UserProvider from '../context/UserProvider';
 import { withRouter } from "react-router";
-import openSocket from 'socket.io-client';
-
-const socket = openSocket('http://localhost:3300');
 
 class Signin extends Component {
   constructor(props) {
