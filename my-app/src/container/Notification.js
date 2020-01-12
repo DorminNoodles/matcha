@@ -1,8 +1,9 @@
 import React from 'react';
 import UserProvider from '../context/UserProvider';
-import openSocket from 'socket.io-client';
 import { getNotifications } from '../function/get';
 import { deleteNotifs } from '../function/delete';
+import openSocket from 'socket.io-client';
+
 const socket = openSocket('http://localhost:3300');
 
 function NotifMessage({ username, type, date, deleteNotifs, id, position, from_id }) {
@@ -41,7 +42,6 @@ class Notification extends React.Component {
             return this.setState({ ...this.state, loading: false })
         else {
             this.setState({ ...this.state }, () => {
-                socket.emit('notif_subscribe', user.id + "_notif");
                 socket.on("notif", data => {
                     let notifications = this.state.notifications;
                     notifications.unshift(data);
@@ -49,7 +49,8 @@ class Notification extends React.Component {
                         this.props.numberNotifs(this.props.number + 1)
                     })
                 })
-                if (user.token)
+                if (user.token) {
+                    socket.emit('notif_subscribe', user.id + "_notif");
                     getNotifications(user.token).then((res) => {
                         if (res && res.data && res.data.length > 0) {
                             this.setState({ ...this.state, notifications: res.data, loading: false }, () => {
@@ -57,6 +58,7 @@ class Notification extends React.Component {
                             })
                         }
                     })
+                }
             })
         }
     }

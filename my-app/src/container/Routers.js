@@ -5,7 +5,6 @@ import UserProvider from '../context/UserProvider';
 import openSocket from 'socket.io-client';
 
 const socket = openSocket('http://localhost:3300');
-
 class Routers extends React.Component {
   constructor(props) {
     super(props);
@@ -13,8 +12,8 @@ class Routers extends React.Component {
   }
   static contextType = UserProvider;
 
-  async componentDidUpdate() {
-    socket.emit('notif_subscribe', this.context.user.id + "_notif")
+  async UNSAFE_componentWillMount(){
+    await socket.emit('notif_subscribe', this.context.user.id + "_notif");
   }
 
   icon = () => {

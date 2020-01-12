@@ -16,7 +16,7 @@ exports.new = (liker, liked) => {
 							.then(() => {
 								conn.end()
 								return this.match(liker, liked)
-									.then(() => { return this.notif(liker, liked, res) })
+									.then((res) => { return this.notif(liker, liked, res) })
 							}).catch((err) => { reject(err) })
 					}).then((res) => { resolve(res) })
 			})
@@ -36,10 +36,11 @@ exports.notif = (liker, liked, type) => {
 				return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 3, date])
 					.then((res) => {
 						const id_notifs = res.insertId
-
 						if (type === "match") {
 							return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liked, liker, 2, date])
 								.then((res) => {
+									console.log("HOALLAL")
+									console.log(res)
 									const id_one = res.insertId
 									return conn.query('INSERT INTO notifs (to_id, from_id, type, date) VALUES(?, ?, ?, ?)', [liker, liked, 2, date])
 										.then((res) => {
@@ -67,6 +68,9 @@ exports.match = (liker, liked) => {
 								  	WHERE (SELECT count(*) FROM likes WHERE (liker=? && liked=?) OR (liker=? && liked=?)) = 2 \
 								  	AND(first_user = ? AND second_user =?)', [liker, liked, liked, liker, Math.min(liker, liked), Math.max(liker, liked)])
 					.then((res) => {
+
+						console.log(res)
+						console.log("===================")
 						conn.end();
 						if (res.affectedRows > 0)
 							resolve("match")

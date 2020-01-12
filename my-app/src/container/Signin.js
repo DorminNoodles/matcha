@@ -3,6 +3,9 @@ import { Field } from "../export"
 import { connect } from "../function/post"
 import UserProvider from '../context/UserProvider';
 import { withRouter } from "react-router";
+import openSocket from 'socket.io-client';
+
+const socket = openSocket('http://localhost:3300');
 
 class Signin extends Component {
   constructor(props) {
@@ -41,6 +44,7 @@ class Signin extends Component {
       if (res.res === 1) {
         document.cookie = JSON.stringify({ token: res.data.token, ...res.data.user })
         this.context.onChange("user", { token: res.data.token, ...res.data.user })
+        socket.emit('notif_subscribe', res.data.user.id + "_notif");
         this.props.history.push("/")
       }
       else { this.setState({ ...this.state, error: res.data }) }
