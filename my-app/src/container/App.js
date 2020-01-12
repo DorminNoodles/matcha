@@ -37,44 +37,49 @@ class App extends React.Component {
 
    }
 
-   async componentDidMount() {
-      let user = this.getObject("user");
-      let header = this.getObject("header")
+   async UNSAFE_componentWillMount() {
+      let header = await this.getObject("header")
+      let user = await this.getObject("user");
 
       header = header === null ? "white-red" : "red-white"
-      
+
       try {
-         var result = JSON.parse(document.cookie);
+         var result = user
+
          this.setState({ ...this.state, header }, () => {
             if (result !== "")
-               this.setState({ ...this.state, loading: false, user: result, header }, () => {
-                  console.log("restore ", this.state)
-               })
+               this.setState({ ...this.state, loading: false, user, header }, () => { })
             else if (document.cookie === "")
                this.logout()
             else
-               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => {
-                  console.log("restore ", this.state)
-               })
+               this.setState({ ...this.state, loading: false, user: { ...this.state.user, ...user }, header }, () => { })
          })
-      } catch (error) { }
+      }
+      catch (err) {
+         result = this.state.user
+         const regex = RegExp(/{?.*?}/);
+         var reg = document.cookie.match(regex)
 
+         if (reg && reg[0] && reg[0].token)
+            result = JSON.parse(reg[0])
+      }
    }
 
    setObject = (key, value) => {
+      window.sessionStorage.removeItem(key);
       window.sessionStorage.setItem(key, JSON.stringify(value));
    }
 
    getObject = (key) => {
       var retrievedObject = window.sessionStorage.getItem(key);
-
       return JSON.parse(retrievedObject);
    }
 
    onChange = (index, e) => {
       this.setState({ ...this.state, [index]: e }, () => {
          this.setObject(index, e)
-        document.cookie = JSON.stringify({ token: this.state.user.token, ...this.state.user })
+         let token = (this.state.user) ? this.state.user.token : ""
+         document.cookie = JSON.stringify({ token, ...this.state.user })
       })
    }
 
@@ -110,19 +115,22 @@ class App extends React.Component {
    }
 
    render() {
-      return (
-         <BrowserRouter>
-            <div>{this.state.response}</div>
-            <div>{this.state.responses}</div>
-            <UserProvider.Provider value={{
-               ...this.state,
-               onChange: this.onChange,
-               logout: this.logout,
-            }}>
-               <Routers />
-            </UserProvider.Provider>
-         </BrowserRouter>
-      );
+      if (this.state.loading === true)
+         return (<div>loading</div>)
+      else
+         return (
+            <BrowserRouter>
+               <div>{this.state.response}</div>
+               <div>{this.state.responses}</div>
+               <UserProvider.Provider value={{
+                  ...this.state,
+                  onChange: this.onChange,
+                  logout: this.logout,
+               }}>
+                  <Routers />
+               </UserProvider.Provider>
+            </BrowserRouter>
+         );
    }
 }
 

@@ -26,12 +26,8 @@ router.post('/', urlencodedParser, (req, res) => {
 		res.status(400).send({ "status": "error", "msg": "No photo" });
 	else
 		photos.new(req.token.id, req.files.file, req.body.prev)
-			.then((result) => {
-				res.status(200).send(result);
-			})
-			.catch((err) => {
-				res.status(400).send(err);
-			})
+			.then((result) => { res.status(200).send(result); })
+			.catch((err) => { res.status(400).send(err); })
 })
 
 // send token get photo-1549917933804.jpg

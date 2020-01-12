@@ -2,13 +2,12 @@ import React from 'react';
 import UserProvider from '../context/UserProvider';
 import { Bubble } from '../export'
 import profile from "../image/profile.png"
-import { BrowserRouter as Route, Link } from "react-router-dom";
+import { BrowserRouter as Route } from "react-router-dom";
 
 function HeaderChat(props) {
 
     let { user } = props
-    let imgProfil = user.id > 0 && user.avatar ?
-        process.env.REACT_APP_PUBLIC_URL + user.id + "/" + user.avatar.toLowerCase() : profile
+    let imgProfil = user.id > 0 && user.avatar ? user.avatar.toLowerCase() : profile
 
     return (
         <div className="header-chat center">
@@ -37,7 +36,7 @@ class ConversationChat extends React.Component {
     };
 
     render() {
-        let { conversation, message, sendMsg, onInput} = this.props
+        let { conversation, message, sendMsg, onInput } = this.props
 
         return (
             <React.Fragment>
@@ -81,32 +80,49 @@ function Conversation(props) {
 
 ///////////////////////////LIST CHAT///////////////////////////////////////
 
+
+function LinkUser({ username, onClick }) {
+    return (
+
+        <div style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
+            <div className="link-red" style={{ fontSize: "large", width: "fit-content" }} onClick={onClick}>
+                {username}
+            </div>
+        </div>
+    )
+}
+
 class MessageBox extends React.Component {
     static contextType = UserProvider;
 
+    onClick(page, id, e) {
+        this.props.history.push(`/${page}?id=${id}`)
+        if (e) { e.stopPropagation() }
+    }
+
     render() {
 
-        let { id, username, avatar } = this.props.value
-        let imgProfil = id > 0 ?
-            process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : profile;
+        let { id, avatar, connection } = this.props.value
+        let imgProfil = id > 0 ? avatar : profile;
 
         return (
-            <Link to={{ pathname: "/chat", search: `?id=${id}` }} className='message-box center'>
+            <div to={{ pathname: "/chat", search: `?id=${id}` }} className='message-box center' onClick={() => this.onClick('chat', id)}>
                 <div style={{ height: "100%", width: "75px", display: "contents" }}>
                     <img className="rounded-60" alt="username" src={imgProfil} />
-                    <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
+                    {
+                        connection === null ?
+                        <div className="green-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} /> :
+                        <div className="red-dot dot-bottom" style={{ position: "relative", top: "23px", left: "50px" }} />
+                    }
                 </div>
-                <div style={{ width: "calc(100% - 75px)", marginLeft: "auto" }}>
-                    <p>{username}</p>
-                    {/* <p className="text-ellipsis ">{message}</p> */}
-                </div>
-            </Link>
+                <LinkUser {...this.props.value} onClick={(e) => this.onClick("user", id, e)} />
+            </div>
 
         );
     }
 }
 
-function ListChat({ list, chat}) {
+function ListChat({ history, list, chat }) {
     let id_list = chat === true ? "list-chat" : ""
 
     return (
@@ -114,7 +130,7 @@ function ListChat({ list, chat}) {
             <Route />
             {
                 list && list.length > 0 && list.map((value, i) => {
-                    return <MessageBox value={value} key={i} i={i}  />
+                    return <MessageBox history={history} value={value} key={i} i={i} />
                 })
             }
         </div>

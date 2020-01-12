@@ -22,10 +22,9 @@ class ListMessage extends React.Component {
         if (this.context.header !== "white-red")
             this.context.onChange("header", "white-red")
 
-        if (!(this.context.user.token))
+        if (!(this.context.user && this.context.user.token))
             this.props.history.push('/');
         else {
-
             getListMsg(this.context.user.token).then((res) => {
                 this.setState({ users: res, loading: false })
             })
@@ -39,11 +38,11 @@ class ListMessage extends React.Component {
 
     render() {
 
-        if (this.state.loading === true) { return <Loading /> }
+        if (this.state.loading === true || this.context.loading === true) { return <Loading /> }
         return (
             <div className="list-message">
                 <Route />
-                <ListChat list={this.state.users} chat={false} />
+                <ListChat history={this.props.history} list={this.state.users} chat={false} />
             </div>
         )
     }

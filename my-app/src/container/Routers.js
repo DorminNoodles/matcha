@@ -2,13 +2,19 @@ import React from 'react';
 import { Home, User, Match, Chat, SignupAndParams, Signin, Password, Header, HeaderSide, NotFound, Confirm, ListMessage, Notification } from '../export'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProvider from '../context/UserProvider';
+import openSocket from 'socket.io-client';
 
+const socket = openSocket('http://localhost:3300');
 class Routers extends React.Component {
   constructor(props) {
     super(props);
     this.state = { open: false, number: 0 }
   }
   static contextType = UserProvider;
+
+  async UNSAFE_componentWillMount(){
+    await socket.emit('notif_subscribe', this.context.user.id + "_notif");
+  }
 
   icon = () => {
     this.setState({ open: !this.state.open })
@@ -28,7 +34,7 @@ class Routers extends React.Component {
 
         <div id="main">
           <Notification {...this.state} numberNotifs={this.numberNotifs.bind(this)} />
-     
+
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/user" component={User} />

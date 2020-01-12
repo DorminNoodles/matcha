@@ -33,6 +33,4 @@ package-lock.json
 ./server/package-lock.json
 node_modules
 
-./public/pictures/*
-./public/pictures/*/*
-./public/*
+/server/public/pictures/*

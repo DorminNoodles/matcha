@@ -25,7 +25,7 @@ class HeaderSide extends React.Component {
                     </li>
 
                     {
-                        user.token && user.token !== "" &&
+                        (user) && user.token && user.token !== "" &&
                         <React.Fragment>
 
                             <li>

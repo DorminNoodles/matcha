@@ -43,35 +43,47 @@ class Home extends React.Component {
   }
 
   sendFile = (e) => {
-    const data = new FormData();
+    if (!e.target.files[0].name.match(/.(jpg|jpeg|png)$/i))
+      this.setState({ ...this.state, error: "Not the right format" })
+    else {
+      const data = new FormData();
 
-    data.append('file', e.target.files[0]);
-    data.append('position', 1);
+      data.append('file', e.target.files[0]);
+      data.append('position', 1);
 
-    uploadPicture(data, this.context.user.token)
-      .then((res) => {
-        let photos = this.state.photos
-        photos.push(res.data.photo)
-        this.setState({ ...this.state, photos })
+      uploadPicture(data, this.context.user.token)
+        .then((res) => {
+          let photos = this.state.photos
+          var photo = res.data.photo.split('/');
 
-      }).catch(() => { this.setState({ ...this.state, error: "upload failed" }) })
+          photos.push(photo[photo.length - 1])
+
+          this.setState({ ...this.state, photos })
+
+        }).catch(() => { this.setState({ ...this.state, error: "upload failed" }) })
+    }
   };
 
 
   sendAvatar = (e) => {
     const data = new FormData();
 
-    data.append('file', e.target.files[0]);
-    data.append('prev', this.state.avatar);
+    if (!e.target.files[0].name.match(/.(jpg|jpeg|png)$/i))
+      this.setState({ ...this.state, error: "Not the right format" })
+    else {
+      var photo = this.state.avatar.split('/')
 
-    uploadPicture(data, this.context.user.token)
-      .then((res) => {
-        this.setState({ ...this.state, avatar: res.data.photo }, () => {
-          this.context.onChange("user", { ...this.context.user, avatar: res.data.photo })
-        })
-      }).catch((err) => { this.setState({ ...this.state, error: "upload failed" }) })
+      data.append('file', e.target.files[0]);
+      data.append('prev', photo[photo.length - 1])
+
+      uploadPicture(data, this.context.user.token)
+        .then((res) => {
+          this.setState({ ...this.state, avatar: res.data.photo }, () => {
+            this.context.onChange("user", { ...this.context.user, avatar: res.data.photo })
+          })
+        }).catch((err) => { this.setState({ ...this.state, error: "upload failed" }) })
+    }
   };
-
 
   getPicture = (e) => {
     let { token, avatar, id } = this.context.user
@@ -83,7 +95,7 @@ class Home extends React.Component {
         this.setState({ ...this.state, error: "Internal Error" })
       else {
         for (var i in res)
-          if (res[i] !== avatar)
+          if (process.env.REACT_APP_PUBLIC_URL + id + '/' + res[i] !== avatar)
             photos.push(res[i])
         this.setState({ ...this.state, avatar: this.context.user.avatar, photos, error: "", loading: false })
       }
@@ -105,12 +117,11 @@ class Home extends React.Component {
 
   render() {
     const params = queryString.parse(this.props.location.search)
-    const { id, avatar } = this.context.user
-    let img = avatar ? process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase() : ""
+    let img = (this.context.user) && this.context.user.avatar ? this.context.user.avatar.toLowerCase() : ""
 
-    if ((this.context.user.token) && !(this.state.photos)) { this.init() }
+    if (this.context.user && (this.context.user.token) && !(this.state.photos)) { this.init() }
     if (this.state.error !== "") { return <div>{this.state.error}</div> }
-    else if (this.state.loading === true) { return <Loading /> }
+    else if (this.state.loading === true || this.context.loading === true) { return <Loading /> }
     return (
       <React.Fragment>
         {

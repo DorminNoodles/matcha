@@ -3,6 +3,9 @@ import { Field } from "../export"
 import { connect } from "../function/post"
 import UserProvider from '../context/UserProvider';
 import { withRouter } from "react-router";
+import openSocket from 'socket.io-client';
+
+const socket = openSocket('http://localhost:3300');
 
 class Signin extends Component {
   constructor(props) {
@@ -24,7 +27,7 @@ class Signin extends Component {
   }
 
   componentDidMount() {
-    if (this.context.user.token)
+    if (this.context.user && this.context.user.token)
       this.props.history.push("/")
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
@@ -36,20 +39,19 @@ class Signin extends Component {
     this.setState({ ...this.state, [index]: e.target.value })
   }
 
-  connect = () => {
-    connect(this.state.username, this.state.password).then((res) => {
+  async connect() {
+    await connect(this.state.username, this.state.password).then((res) => {
       if (res.res === 1) {
         document.cookie = JSON.stringify({ token: res.data.token, ...res.data.user })
         this.context.onChange("user", { token: res.data.token, ...res.data.user })
+        socket.emit('notif_subscribe', res.data.user.id + "_notif");
         this.props.history.push("/")
       }
       else { this.setState({ ...this.state, error: res.data }) }
     })
   }
 
-  password = () => {
-    this.props.history.push("/user/password")
-  }
+  password = () => { this.props.history.push("/user/password") }
 
   render() {
 
@@ -69,4 +71,4 @@ class Signin extends Component {
   }
 }
 
-export default withRouter(Signin);;   
+export default withRouter(Signin);

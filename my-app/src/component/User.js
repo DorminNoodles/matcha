@@ -2,10 +2,8 @@ import React from 'react';
 import { Tags } from '../export'
 import profile from "../image/profile.png"
 
-function UserProfil({ onChange, info, id, like, id_pic, date_active }) {
-    let imgProfil = info.avatar && info.avatar !== "" ?
-        process.env.REACT_APP_PUBLIC_URL + id_pic + "/" + info.avatar.toLowerCase() : profile
-
+function UserProfil({ onChange, info, id, like, pic }) {
+    let imgProfil = info.avatar && info.avatar !== "" ? pic : profile
     return (
         <React.Fragment>
             <div>
@@ -24,7 +22,7 @@ function UserProfil({ onChange, info, id, like, id_pic, date_active }) {
                         <div>
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 {
-                                    !(Date.parse(info.active)) ?
+                                    info.active === null ?
                                         <p className="green-dot" style={{ marginRight: "5px" }}></p> :
                                         <p className="red-dot" style={{ marginRight: "5px" }}></p>
                                 }
@@ -35,13 +33,21 @@ function UserProfil({ onChange, info, id, like, id_pic, date_active }) {
                     </span>
 
                     <br />
-                    <br />
-                    {
-                        !(Date.parse(info.active)) ? <React.Fragment />
-                            : <span>   Last connection: {info.date_active}</span>
+                    <br />{
+                        info.love === 1 &&
+                        <React.Fragment>
+                            <p className="white-red">{info.username} liked your profile</p>
+                            <br />
+                        </React.Fragment>
                     }
-                    <br />
-                    <br />
+                    {
+                        info.active !== null &&
+                        <React.Fragment>
+                            <span>Last connection: {info.date_active}</span>
+                            <br />
+                            <br />
+                        </React.Fragment>
+                    }
 
                     <span style={{ display: "inline-flex", fontWeight: "bold", fontSize: "large", alignItems: "center" }}>
                         <p style={{ marginRight: "5px" }}>{info.location}</p><i className="fas fa-map-marker-alt" />
@@ -65,6 +71,7 @@ function UserProfil({ onChange, info, id, like, id_pic, date_active }) {
                 </div>
 
             </div>
+
             <br />
             <span style={{ display: "flex" }}>
                 {

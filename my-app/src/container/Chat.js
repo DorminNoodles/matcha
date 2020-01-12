@@ -6,6 +6,7 @@ import { getMessages, getListMsg } from '../function/get'
 import { sendMsg } from '../function/post'
 import { isEmpty } from '../function/utils'
 import openSocket from 'socket.io-client';
+
 const socket = openSocket('http://localhost:3300');
 
 class Chat extends React.Component {
@@ -15,57 +16,64 @@ class Chat extends React.Component {
   }
   static contextType = UserProvider;
 
-  UNSAFE_componentWillReceiveProps(next) {
 
+  UNSAFE_componentWillReceiveProps(next) {
     if (this.context.header !== "white-red")
       this.context.onChange("header", "white-red")
 
     if (this.props.location.search !== next.location.search)
       this.getConversation(next)
-
   }
 
-  UNSAFE_componentWillMount() {
-    if (!(this.context.user.token))
+  async UNSAFE_componentWillMount() {
+    if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
-
-    if (this.context.header !== "white-red")
-      this.context.onChange("header", "white-red")
 
     this.getConversation(this.props).then(() => {
       this.getListMsg()
-    })
 
-    socket.on("new message", data => {
-      let list = {}
+      socket.once("new message", data => {
+        let list = {}
 
-      this.state.list.forEach((value, i) => {
-        if (value.group_id === data.id) {
-          list = this.state.list
-          list[i].last = data.to_id;
-        }
+        this.state.list.forEach((value, i) => {
+          if (value.group_id === data.id) {
+            let conversation = this.state.conversation
+            
+            conversation.push(data)
+
+            list = this.state.list
+            list[i].last = data.to_id;
+            this.setState({ ...this.state, message: "" }, () => { })
+          }
+        })
       })
-
-      if (this.state.group_id === data.id) {
-        let conversation = this.state.conversation
-        conversation.push(data)
-
-        this.setState({ ...this.state, message: "", conversation, list }, () => { })
-      }
+      this.setState({ ...this.state, message: "" })
     })
+
+    if (this.context.user && this.context.header !== "white-red")
+      this.context.onChange("header", "white-red")
+  }
+
+  componentWillUnmount() {
+    socket.emit("unsubscribe", this.state.group_id)
   }
 
   getConversation = (props) => {
     return new Promise((resolve) => {
       let params = queryString.parse(props.location.search)
 
+      const last_gp = this.state.group_id
+
       getMessages(parseInt(params.id), this.context.user.token)
         .then(({ conversation, group_id }) => {
           if (!(conversation && group_id))
             this.props.history.push('/messages');
           else {
-            socket.emit('subscribe', group_id);
-            this.setState({ ...this.state, conversation, group_id }, () => { resolve() })
+            this.setState({ ...this.state, conversation, group_id }, () => {
+              socket.emit('unsubscribe', last_gp);
+              socket.emit('subscribe', group_id);
+              resolve()
+            })
           }
         })
     })
@@ -111,21 +119,21 @@ class Chat extends React.Component {
             socket.emit('send message', data);
             socket.emit('notif', notif);
           })
-        }).catch((err) => { })
+        }).catch(() => { })
   }
 
 
   render() {
     let params = queryString.parse(this.props.location.search)
 
-    if (this.state.loading === true) { return (<Loading />) }
+    if (this.state.loading === true && this.context.loading === true) { return (<Loading />) }
     return (
       <div id="chat">
-        <ListChat list={this.state.list} chat last_msg={true} />
+        <ListChat list={this.state.list} chat last_msg={true} history={this.props.history} />
         <Conversation {...this.state} id={parseInt(params.id)} sendMsg={this.sendMsg.bind(this)} onInput={this.onInput.bind(this)} />
       </div>
     );
   }
 }
 
-export default (Chat);
+export default Chat;

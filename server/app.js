@@ -23,14 +23,13 @@ const score = require("./routes/score");
 const tag = require("./routes/tag");
 const tags = require("./routes/tags");
 const authenticate = require("./routes/authenticate");
-const avatar = require("./routes/avatar");
 const location = require("./routes/location");
 const report = require("./routes/report");
 
 
 //SERVICES
-const activationMail = require('./services/activationMail');
-const geolocation = require('./services/geolocation');
+let activationMail = require('./services/activationMail');
+// const geolocation = require('./services/geolocation');
 
 
 const cors = require("cors"); //TO ACCESS LOCALHOST-LOCALHOST CONNECTION
@@ -73,7 +72,6 @@ app.use('/api/score', score);
 app.use('/api/tag', tag);
 app.use('/api/tags', tags);
 app.use('/api/authenticate', authenticate);
-app.use('/api/avatar', avatar);
 app.use('/api/location', location);
 app.use('/api/block', block);
 app.use('/api/report', report);

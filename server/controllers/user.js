@@ -1,15 +1,15 @@
-const UserService = require('../services/user');
+// const UserService = require('../services/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-var nodemailer = require('nodemailer');
 const myEmitter = require('../emitter');
-
+const database = require('./database');
 const events = require('events');
 
 const userModel = require('../models/userModel');
 const inputModel = require('../models/inputModel');
 
-var eventEmitter = new events.EventEmitter();
+new events.EventEmitter();
+require('dotenv').config();
 
 const avatarUpload = (data, id) => {
 	return new Promise((resolve, reject) => {
@@ -22,8 +22,17 @@ const avatarUpload = (data, id) => {
 		data.avatar.mv('public/pictures/' + id + '/' + name, (err) => {
 			if (err)
 				reject({ status: "error", key: "avatar", msg: "Avatar upload error !" });
-			else
-				resolve({ status: "success" });
+			else {
+				let avatar = process.env.REACT_APP_PUBLIC + id + "/" + name
+
+				database.connection().then((conn) => {
+					conn.query('UPDATE users SET avatar=? WHERE id=?', [avatar, id])
+						.then(() => {
+							conn.end();
+							resolve({ "status": "success" })
+						}).catch(() => { reject({ "status": "error" }) })
+				})
+			}
 		})
 	})
 }
@@ -112,52 +121,48 @@ exports.get = (id, user_id) => {
 
 exports.authenticate = (data) => {
 	return new Promise((resolve, reject) => {
-		inputModel.username(data.username)
-			.then(() => {
-				inputModel.password(data.password)
-					.then((res) => {
-						userModel.findUserByUsername(data.username, 0)
-							.then((result) => {
-								if (!result.mailValidation) {
-									reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
-									return;
-								}
-								else if (result.ban === 1)
-									resolve({ status: 'error', msg: 'ban' });
-								else
-									userModel.checkLogin(data.username, data.password)
-										.then(() => {
-											let datas = {};
+		inputModel.username(data.username).then(() => {
+			inputModel.password(data.password).then((res) => {
+				userModel.findUserByUsername(data.username, 0).then((result) => {
+					if (!result.mailValidation) {
+						reject({ "status": "error", "key": "mailActivation", "msg": "mail not validate" });
+						return;
+					}
+					else if (result.ban === 1)
+						resolve({ status: 'error', msg: 'ban' });
+					else
+						userModel.checkLogin(data.username, data.password)
+							.then(() => {
+								let datas = {};
 
-											datas.token = jwt.sign({
-												id: result.id,
-												username: result.username,
-												email: result.email
-											}, process.env.JWT_KEY);
+								datas.token = jwt.sign({
+									id: result.id,
+									username: result.username,
+									email: result.email
+								}, process.env.JWT_KEY);
 
+								datas.user = {
+									id: result.id,
+									username: result.username,
+									email: result.email,
+									gender: result.gender,
+									orientation: result.orientation,
+									location: result.location,
+									latitude: result.latitude,
+									longitude: result.longitude,
+									age: result.age,
+									avatar: result.avatar,
+									ageMin: result.ageMin,
+									ageMax: result.ageMax,
+									distance: result.distance,
+									identity: result.identity
+								};
 
-											datas.user = {
-												id: result.id,
-												username: result.username,
-												email: result.email,
-												gender: result.gender,
-												orientation: result.orientation,
-												location: result.location,
-												latitude: result.latitude,
-												longitude: result.longitude,
-												age: result.age,
-												avatar: result.avatar,
-												ageMin: result.ageMin,
-												ageMax: result.ageMax,
-												distance: result.distance,
-												identity: result.identity
-											};
-
-											resolve({ status: 'success', msg: 'connected !', ...datas });
-										})
-							})
-					}).catch((err) => { reject(err); })
+								resolve({ status: 'success', msg: 'connected !', ...datas });
+							}).catch((err) => { reject(err); })
+				}).catch((err) => { reject(err); })
 			}).catch((err) => { reject(err); })
+		}).catch((err) => { reject(err); })
 	})
 }
 
@@ -168,7 +173,6 @@ exports.forgot = (data) => {
 			.then((res) => {
 				var key = Math.floor(Math.random() * 900000000) + 100000000;
 				userModel.setKeyPassword(key, res.id).then(() => {
-
 					var token = jwt.sign({
 						id: res.id,
 						username: res.username,
@@ -193,6 +197,7 @@ exports.updatePassword = ({ token, password, confirmPassword, id, key, useKey })
 		if (password !== confirmPassword)
 			reject({ "status": "error", "msg": "Password and confirmation does not match" });
 
+		console.log(token, password, confirmPassword, id, key, useKey)
 		userModel.checkKeyPassword(key, id, useKey)
 			.then(() => {
 				inputModel.password(password)
@@ -205,9 +210,8 @@ exports.updatePassword = ({ token, password, confirmPassword, id, key, useKey })
 								})
 								.then((decoded) => {
 									return userModel.changePwd(decoded.email, decoded.username, passCrypted)
-										.then(() => {
-											resolve({ "status": "success", "msg": "The password is successfully change " });
-										})
+										.then(() => { resolve({ "status": "success", "msg": "The password is successfully change " }); })
+										.catch((err) => { reject(err); })
 								})
 						}
 						catch (error) { reject(error); }

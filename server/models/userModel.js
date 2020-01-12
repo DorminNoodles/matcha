@@ -162,11 +162,12 @@ exports.findUserById = (id, user_id) => {
 				(SELECT tag_id FROM usertags WHERE user_id=users.id)) * 5) as score,\
 				COUNT(liked) as nb_likes,\
 				IF(report.reported=users.id, TRUE, FALSE) as report,\
-				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes\
+				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as likes,\
+				IF((SELECT count(*) FROM likes WHERE liker=? and liked=?) = 1, TRUE, FALSE) as love\
 				FROM users \
 				LEFT JOIN report ON(report.reported=? AND report.reporting=?)\
 				LEFT JOIN likes ON (likes.liked=?) \
-				WHERE id =? ', [id, user_id, id, id, user_id, id, id])
+				WHERE id =? ', [id, user_id, id, id, user_id, id, user_id, id, id])
 					.then((result) => {
 						conn.end();
 						result[0] ? resolve(result[0]) : reject();
@@ -201,7 +202,7 @@ exports.setActive = (username, password) => {
 	return new Promise((resolve, reject) => {
 
 		database.connection().then((conn) => {
-			conn.query('UPDATE users SET active=0 WHERE username=?', [username])
+			conn.query('UPDATE users SET active=null WHERE username=?', [username])
 				.then(() => {
 					conn.end();
 					resolve({ "status": "success" })
@@ -226,16 +227,13 @@ exports.activateUser = (username, email) => {
 
 exports.changePwd = (email, username, pwd) => {
 	return new Promise((resolve, reject) => {
-		database.connection()
-			.then((conn) => {
-				let rsl = conn.query('UPDATE users SET password=?, tmp_email="" WHERE email=? AND username=?', [pwd, email, username])
-				conn.end();
-				return rsl
-			})
-			.then((res) => { resolve({ "status": "success", "msg": "Password changed!" }); })
-			.catch((err) => {
-				reject({ status: "error", msg: "error db !" });
-			})
+		database.connection().then((conn) => {
+			let rsl = conn.query('UPDATE users SET password=?, tmp_email=null WHERE email=? AND username=?', [pwd, email, username])
+			conn.end();
+			return rsl
+		})
+			.then(() => { resolve({ "status": "success", "msg": "Password changed!" }); })
+			.catch(() => { reject({ status: "error", msg: "error db !" }); })
 	});
 }
 

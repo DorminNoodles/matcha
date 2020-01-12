@@ -35,25 +35,24 @@ class ActivationMail {
 				text: 'Hi!',
 				html: '<html>\
 							<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">\
-							<body style="background-color: #B33070;font-family: Helvetica, sans-serif;">\
-							<h1 style="color:white;text-align:center;padding-top:100px;font-size:70px;">Matcha</h1>\
-							<div style="text-align:center;font-size:20px;color:white;">\
-								<p> Welcome ' + data.firstname + '!	</p> \
-								<p>Click on the following link to validate your account </p>\
-								<a style="color:white;" href='+ process.env.PORT_FRONT + 'user/confirm?login=' + data.username + '&key=' + token + '>Confirm your Account</a>\
-							</div>\
-							<footer style="margin-top:200px;margin-bottom:50px;">\
-								<hr />\
-								<p style="font-style: italic;text-align: right;color:white;">© Matcha 2019</p>\
-							</footer>\
+							<body style="background-color: #B33070 !important;font-family: Helvetica, sans-serif;">\
+								<div style="background-color: #B33070 !important;text-align:center;font-size:20px;color:white !important; padding-bottom: 110px;">\
+									<h1 style="color:white;text-align:center;padding-top:100px;font-size:70px;">Matcha</h1>\
+									<p style="color:white;"> Welcome ' + data.firstname + '!	</p> \
+									<p style="color:white;">Click on the following link to validate your account </p>\
+									<a style="color:white;" href='+ process.env.PORT_FRONT + 'user/confirm?login=' + data.username + '&key=' + token + '>Confirm your Account</a>\
+								</div>\
+								<footer style="height:60px;padding: 10px;">\
+									<p style="font-style: italic;text-align: right;color:white;">© Matcha 2019</p>\
+								</footer>\
 							</body>\
 						</html>'
 			};
+
 			transporter.sendMail(mailOptions, (error, info) => {
-				if (error) {
-					return console.log(error);
-				}
+				if (error) { return console.log(error); }
 			});
+
 		});
 	}
 

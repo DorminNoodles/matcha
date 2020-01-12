@@ -51,8 +51,7 @@ class Profil extends React.Component {
   render() {
     let { username, id, avatar, active } = this.props.values
 
-    let imgProfil = id === 0 && avatar ? profile :
-      process.env.REACT_APP_PUBLIC_URL + id + "/" + avatar.toLowerCase()
+    let imgProfil = id === 0 && avatar ? profile : avatar
 
     return (
       <div id="profil" onMouseEnter={() => this.setState({ ...this.state, modal: true })} onMouseLeave={() => this.setState({ ...this.state, modal: false })}>
@@ -66,10 +65,10 @@ class Profil extends React.Component {
           <div className="profil-bottom">
 
             <span style={{ display: "flex", alignItems: "center" }}>
-              {!(Date.parse(active)) ? <p className="green-dot"></p> : <p className="red-dot"></p>}
+              {active === null ? <p className="green-dot"></p> : <p className="red-dot"></p>}
             </span>
-            
-            <p>{username}</p>
+
+            <p style={{ width: "calc(190px - 56px)", overflow: "hidden", textOverflow: "ellipsis" }} > {username}</p>
             {
               this.state.heart === 0 &&
               <span onClick={this.like.bind(this)}>

@@ -17,7 +17,7 @@ router.get('/', urlencodedParser, (req, res) => {
         params: {
             access_token: process.env.MAP_TOKEN,
             types: ["place"],
-            country: ["FR"]
+            // country: ["FR"]
         },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {

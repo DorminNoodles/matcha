@@ -4,7 +4,7 @@ import { Field } from "../export"
 export const ForgotPassword = ({ onChange, error, success, forgot }) => (
     <React.Fragment>
         <Field placeholder="Email" type="email" position="left" icon="fas fa-envelope" action={{ onChange: (e) => onChange(e, "value") }} error={error} success={success} />
-        <button className="button white-red" onClick={forgot} >Send</button>
+        <button className="button white-red" onClick={forgot}>Send</button>
     </React.Fragment>
 )
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profil, SearchHeader } from "../export";
+import { Profil, SearchHeader, Loading } from "../export";
 import UserProvider from '../context/UserProvider';
 import { getUsers } from '../function/get'
 import { like } from '../function/post'
@@ -11,7 +11,7 @@ class Match extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { users: [], height: "60px" }
+    this.state = { users: [], height: "60px", loading: true }
   }
   static contextType = UserProvider;
 
@@ -20,27 +20,45 @@ class Match extends React.Component {
       this.context.onChange("header", "white-red")
   }
 
-  componentDidMount() {
-    if (!(this.context.user.token))
+  async UNSAFE_componentWillMount() {
+
+    if (this.context.user) {
+      await this.getUsers({
+        ageMin: this.context.user.ageMin,
+        ageMax: this.context.user.ageMax,
+        distance: this.context.user.distance,
+        identity: this.context.user.identity,
+        longitude: this.context.user.longitude,
+        latitude: this.context.user.latitude,
+        score: 0
+      });
+    }
+  }
+
+
+  async componentDidMount() {
+    if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
-    else if (this.context.header !== "white-red")
+    else if (this.context.header !== "white-red") {
       this.context.onChange("header", "white-red")
-    this.getUsers({
-      ageMin: this.context.user.ageMin,
-      ageMax: this.context.user.ageMax,
-      distance: this.context.user.distance,
-      identity: this.context.user.identity,
-      longitude: this.context.user.longitude,
-      latitude: this.context.user.latitude,
-      score: 0
-    });
+
+      await this.getUsers({
+        ageMin: this.context.user.ageMin,
+        ageMax: this.context.user.ageMax,
+        distance: this.context.user.distance,
+        identity: this.context.user.identity,
+        longitude: this.context.user.longitude,
+        latitude: this.context.user.latitude,
+        score: 0
+      });
+    }
   }
 
   getUsers(params) {
 
     getUsers(this.context.user.token, params)
       .then((res) => {
-        this.setState({ ...this.state, users: res.data })
+        this.setState({ ...this.state, users: res.data, loading: false })
       })
       .catch(() =>
         this.setState({ ...this.state, users: [] })
@@ -56,10 +74,12 @@ class Match extends React.Component {
       like(id, token).then((res) => {
         users[result].likes = 1;
         this.setState({ ...this.state, users }, () => {
-          if (res.like) 
+          if (res.like)
             socket.emit('notif', { ...res.like, username });
-          if (res.match)
-            socket.emit('notif', { ...res.match, username, second });
+          if (res.match) {
+            socket.emit('notif', { ...res.match[0], username, second });
+            socket.emit('notif', { ...res.match[1], second, username });
+          }
         })
       })
     }
@@ -82,19 +102,21 @@ class Match extends React.Component {
 
 
   render() {
-    let { users } = this.state
+    let { users, loading } = this.state
 
-    return (
-      <div id="match">
-        <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
-        <div id="list-profil" style={{ top: `${this.state.height}` }}>
-          {
-            users && users.length > 0 && users.map((value, i) => {
-              return <Profil key={i} values={value} likes={this.likes.bind(this)} />
-            })
-          }
-        </div>
-      </div>);
+    if (loading) { return <Loading /> }
+    else
+      return (
+        <div id="match">
+          <SearchHeader getUsers={this.getUsers.bind(this)} filter={this.filter.bind(this)} height={this.state.height} />
+          <div id="list-profil" style={{ top: `${this.state.height}` }}>
+            {
+              users && users.length > 0 && users.map((value, i) => {
+                return <Profil key={i} values={value} likes={this.likes.bind(this)} />
+              })
+            }
+          </div>
+        </div>);
   }
 }
 
