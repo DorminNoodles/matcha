@@ -26,6 +26,7 @@ class App extends React.Component {
             distance: "",
             identity: ""
          },
+         notif: false,
          loading: true,
          header: "white-red",
          response: false,
@@ -83,6 +84,10 @@ class App extends React.Component {
       })
    }
 
+   icon = () => {
+      this.setState({ ...this.state, notif: !this.state.notif })
+    }
+
    logout = () => {
 
       if (this.state.user.token)
@@ -106,6 +111,7 @@ class App extends React.Component {
                      distance: "",
                      identity: ""
                   },
+                  notif: false,
                   loading: false
                }, () => {
                   this.setObject("user", this.state)
@@ -126,6 +132,7 @@ class App extends React.Component {
                   ...this.state,
                   onChange: this.onChange,
                   logout: this.logout,
+                  icon: this.icon,
                }}>
                   <Routers />
                </UserProvider.Provider>

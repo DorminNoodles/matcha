@@ -77,10 +77,11 @@ class Notification extends React.Component {
 
     render() {
         let { notifications } = this.state
+
         return (
             <React.Fragment>
                 {
-                    this.props.open &&
+                    this.context.notif &&
                     <div id="list-notif">
                         {
                             notifications && notifications.length > 0 &&

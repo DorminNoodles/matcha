@@ -12,16 +12,14 @@ class Routers extends React.Component {
   }
   static contextType = UserProvider;
 
-  async UNSAFE_componentWillMount(){
+  async UNSAFE_componentWillMount() {
     await socket.emit('notif_subscribe', this.context.user.id + "_notif");
   }
 
-  icon = () => {
-    this.setState({ open: !this.state.open })
-  }
+  icon = () => { this.context.icon() }
 
   numberNotifs = (i) => {
-    this.setState({ number: i })
+    this.setState({ ...this.state, number: i })
   }
 
   render() {
@@ -29,7 +27,7 @@ class Routers extends React.Component {
     return (
       <Router>
 
-        {token && token !== "" ? <Header icon={this.icon.bind(this)} number={this.state.number} /> : <React.Fragment></React.Fragment>}
+        {token && token !== "" ? <Header icon={this.icon} number={this.state.number} /> : <React.Fragment></React.Fragment>}
         <HeaderSide />
 
         <div id="main">
