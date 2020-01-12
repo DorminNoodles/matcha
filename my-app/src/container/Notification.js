@@ -33,22 +33,18 @@ class Notification extends React.Component {
     }
     static contextType = UserProvider;
 
-    async UNSAFE_componentWillMount() { await this.getNotifs() }
+    async UNSAFE_componentWillMount() { await this.getNotifs(this.context.user) }
 
-    async getNotifs() {
-        let { user } = this.context
+    async UNSAFE_componentWillReceiveProps(prev, next) {
+        if (this.state.loading === true && next.user)
+            await this.getNotifs(next.user)
+    }
 
-        if (!(user))
-            return this.setState({ ...this.state, loading: false })
-        else {
-            this.setState({ ...this.state }, () => {
-                socket.on("notif", data => {
-                    let notifications = this.state.notifications;
-                    notifications.unshift(data);
-                    this.setState({ ...this.state, notifications, loading: false }, () => {
-                        this.props.numberNotifs(this.props.number + 1)
-                    })
-                })
+    async getNotifs(user) {
+
+        if (user.token) {
+            this.setState({ ...this.state, loading: false }, () => {
+
                 if (user.token) {
                     socket.emit('notif_subscribe', user.id + "_notif");
                     getNotifications(user.token).then((res) => {
@@ -57,6 +53,14 @@ class Notification extends React.Component {
                                 this.props.numberNotifs(res.data[0].count)
                             })
                         }
+                    })
+
+                    socket.on("notif", data => {
+                        let notifications = this.state.notifications;
+                        notifications.unshift(data);
+                        this.setState({ ...this.state, notifications, loading: false }, () => {
+                            this.props.numberNotifs(this.props.number + 1)
+                        })
                     })
                 }
             })
@@ -78,21 +82,23 @@ class Notification extends React.Component {
     render() {
         let { notifications } = this.state
 
-        return (
-            <React.Fragment>
-                {
-                    this.context.notif &&
-                    <div id="list-notif">
-                        {
-                            notifications && notifications.length > 0 &&
-                            notifications.map((value, i) => {
-                                return <NotifMessage {...value} deleteNotifs={this.deleteNotifs.bind(this)} key={i} position={i} />
-                            })
-                        }
-                    </div>
-                }
-            </React.Fragment>
-        )
+        if (this.state.loading === false)
+            return (
+                <React.Fragment>
+                    {
+                        this.context.notif &&
+                        <div id="list-notif">
+                            {
+                                notifications && notifications.length > 0 &&
+                                notifications.map((value, i) => {
+                                    return <NotifMessage {...value} deleteNotifs={this.deleteNotifs.bind(this)} key={i} position={i} />
+                                })
+                            }
+                        </div>
+                    }
+                </React.Fragment>
+            )
+        else return <React.Fragment />
     }
 }
 

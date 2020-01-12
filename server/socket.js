@@ -27,6 +27,14 @@ module.exports = (io) => {
             }
         });
 
+        socket.on('notif_unsubscribe', function (room) {
+            if (room) {
+                socket.leave(room, () => {
+                    console.log('leave room NOTIF_subscribe: ', room)
+                });
+            }
+        });
+
         socket.on('send message', function (data) {
             console.log('seng message', data);
             if (data.id) {

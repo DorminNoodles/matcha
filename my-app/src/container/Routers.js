@@ -12,8 +12,9 @@ class Routers extends React.Component {
   }
   static contextType = UserProvider;
 
-  async UNSAFE_componentWillMount() {
-    await socket.emit('notif_subscribe', this.context.user.id + "_notif");
+  async UNSAFE_componentDidMount() {
+    if (this.context.user && this.context.user.id)
+      await socket.emit('notif_subscribe', this.context.user.id + "_notif");
   }
 
   icon = () => { this.context.icon() }
