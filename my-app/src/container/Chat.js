@@ -28,27 +28,29 @@ class Chat extends React.Component {
   async UNSAFE_componentWillMount() {
     if (!(this.context.user && this.context.user.token))
       this.props.history.push('/');
+    else {
 
-    this.getConversation(this.props).then(() => {
-      this.getListMsg()
+      this.getConversation(this.props).then(() => {
+        this.getListMsg()
 
-      socket.once("new message", data => {
-        let list = {}
+        socket.once("new message", data => {
+          let list = {}
 
-        this.state.list.forEach((value, i) => {
-          if (value.group_id === data.id) {
-            let conversation = this.state.conversation
-            
-            conversation.push(data)
+          this.state.list.forEach((value, i) => {
+            if (value.group_id === data.id) {
+              let conversation = this.state.conversation
 
-            list = this.state.list
-            list[i].last = data.to_id;
-            this.setState({ ...this.state, message: "" }, () => { })
-          }
+              conversation.push(data)
+
+              list = this.state.list
+              list[i].last = data.to_id;
+              this.setState({ ...this.state, message: "" }, () => { })
+            }
+          })
         })
+        this.setState({ ...this.state, message: "" })
       })
-      this.setState({ ...this.state, message: "" })
-    })
+    }
 
     if (this.context.user && this.context.header !== "white-red")
       this.context.onChange("header", "white-red")

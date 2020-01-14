@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from "../export"
 import profile from "../image/profile.png"
-import { SliderAge, SliderOne, Gender, SexualOrientation, SliderAgeRange, Location } from '../export'
+import { SliderOne, SliderAgeRange, Gender, SexualOrientation, Location } from '../export'
 
 const ProfileImg = ({ error, sendFile, avatar, upload }) => {
     let imgProfil = !avatar ? profile : avatar
@@ -66,7 +66,7 @@ function SecondPage({ info, onChange, changePage, onChangeAge }) {
             <SexualOrientation onChange={onChange} orientation={info.orientation.value} />
             <br />
             <SliderAgeRange onChangeAge={onChangeAge} ageMin={info.ageMin.value} ageMax={info.ageMax.value} />
-            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km"  min={5}/>
+            <SliderOne onChange={onChange} val={info.distance.value} i="Distance" unite="km" min={5} max={300} />
             <br />
             <button className="button center" onClick={() => changePage(3)}>Continue</button>
             <span className="pointer center" style={{ marginTop: "10px" }} onClick={() => { changePage(1) }}>
@@ -89,8 +89,7 @@ function ThirdPage({ info, onChange, changePage, error, status, onChangeLocation
             </div>
             <p className="error-text">{info.bio.error}</p>
 
-            <br />
-            <SliderAge onChange={onChange} age={info.age.value} />
+            <SliderOne onChange={onChange} val={info.age.value} i="Age" unite="years" min={18} max={100} />
             <br />
 
             <Location onChangeLocation={onChangeLocation} city={location.value} lat={latitude.value} long={longitude.value} />

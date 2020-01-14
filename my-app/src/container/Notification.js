@@ -42,7 +42,7 @@ class Notification extends React.Component {
 
     async getNotifs(user) {
 
-        if (user.token) {
+        if (user && user.token) {
             this.setState({ ...this.state, loading: false }, () => {
 
                 if (user.token) {

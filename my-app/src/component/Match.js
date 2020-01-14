@@ -32,8 +32,8 @@ const SearchOpen = ({ fct, props, getUsers }) => {
                 <i className="fas fa-times-circle fa-lg"></i>
             </span>
             <SliderAgeRange onChangeAge={onChangeAge} ageMin={ageMin} ageMax={ageMax} />
-            <SliderOne onChange={onChange} val={distance} i="Distance" unite="km" min={5}/>
-            <SliderOne onChange={onChange} val={score} i="Score" unite="points" min={0}/>
+            <SliderOne onChange={onChange} val={distance} i="Distance" unite="km" min={5} max={300}/>
+            <SliderOne onChange={onChange} val={score} i="Score" unite="points" min={0} max={500}/>
             {listTags(tags, onDelete)}
             <TagsSuggest onChange={onChange} tags={tags} />
             <Button name="Search" onClick={getUsers} />

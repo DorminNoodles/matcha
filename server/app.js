@@ -5,9 +5,9 @@ const fileUpload = require('express-fileupload');
 const express = require('express');
 var app = express();
 var server = app.listen(3300, () => { console.log("listen on 3300") })
-var socket = require('socket.io');
-var io = socket(server);
-
+const io = require('socket.io')(server, {
+    pingTimeout: 60000,
+  });
 
 const user = require('./routes/user');
 const users = require('./routes/users');

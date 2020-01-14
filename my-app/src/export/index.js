@@ -14,7 +14,6 @@ import Tags from "../container/Tags";
 import ListMessage from "../container/ListMessage";
 import Loading from "../container/Loading";
 
-import { SliderAge } from "../component/SliderAge";
 import { SliderAgeRange } from "../component/SliderAge";
 import { SliderOne } from "../component/SliderOne";
 import { Gender } from "../component/Gender";
@@ -53,7 +52,6 @@ export {
     Tags,
     Loading,
     ListMessage,
-    SliderAge,
     SliderAgeRange,
     SliderOne,
     Gender,
