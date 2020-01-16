@@ -17,14 +17,14 @@ router.get('/', urlencodedParser, (req, res) => {
         params: {
             access_token: process.env.MAP_TOKEN,
             types: ["place"],
-            // country: ["FR"]
+            country: ["FR"]
         },
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
     }).then(response => {
         res.status(200).send(response.data.features)
 
     }).catch(error => {
-        res.status(500).send(error)
+        res.status(404).send(error)
     });
 })
 
